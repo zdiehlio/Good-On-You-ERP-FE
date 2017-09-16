@@ -44,7 +44,14 @@ class App extends Component {
               this.state.data[0] ? console.log(this.state.data[0].answers) : console.log("no")
             }
           </p>
-            <Question></Question>
+            <Question
+              question={
+                this.state.data[0] ? this.state.data[0].question : "null"
+              }
+              answers={
+                this.state.data[0] ? this.state.data[0].answers : []
+              }
+            ></Question>
           </div>
           <Answer/>
         </div>
