@@ -1,0 +1,20 @@
+.footer {
+  padding: 1.5em;
+  flex: 0 0 auto;
+  position: relative;
+  background-color: #2D2D2F;
+  height: 1.2em;
+  color: #939393;
+  text-align: center;
+}
+
+.footer-links {
+
+}
+
+.footer-tm {
+  display: inline-block;
+  color: #939393;
+  font-weight: 300;
+  font-size: 12px;
+}
