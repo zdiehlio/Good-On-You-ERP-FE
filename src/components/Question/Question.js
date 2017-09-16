@@ -14,16 +14,15 @@ export default function Question(props) {
   // })
 
   var answers = props.answers.map((ele) =>
-    <span><input type="checkbox" name="vehicle" value="Car"/>{ele}</span>
+    <span><input type="checkbox" name="vehicle" value="Car"/>{ele.text}</span>
   )
-
     return (
       <div className="card">
         <div className="container">
           <h4>{props.question}</h4>
             <div className="answer-container">
               {answers}
-              <span><input className="button" type="submit" value="Save" style={style}/></span>
+              <span><input onClick={props.handleSaveQuestion} className="button" type="submit" value="Save" style={style}/></span>
             </div>
         </div>
       </div>

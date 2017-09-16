@@ -1,0 +1,3376 @@
+{
+	"categories": [{
+			"category_id": "environment",
+			"short_text": "Impact of fashion brand on environment",
+			"description": "",
+			"themes": [{
+					"theme_id": "resource",
+					"short_text": "Resource management and disposal",
+					"description": "Product lifecycle including types of materials used, efforts to reduce fabric and material waste in design and manufacturing, types of packaging used, product durability and promotion of long­term use"
+				},
+				{
+					"theme_id": "energy",
+					"short_text": "Energy use and carbon emissions",
+					"description": "How energy use is managed including direct emissions (company facilities and vehicles) and indirect emissions (purchased electricity, emissions generated from the supply chain beyond own operations)"
+				},
+				{
+					"theme_id": "chemical",
+					"short_text": "Chemical use and disposal",
+					"description": "Chemical use and disposal, goals to reduce chemical use and alternatives such as vegetable based or water based dyes"
+				},
+				{
+					"theme_id": "water",
+					"short_text": "Water usage and effluent",
+					"description": "How energy use is managed including direct emissions (company facilities and vehicles) and indirect emissions (purchased electricity, emissions generated from the supply chain beyond own operations)"
+				}
+			]
+		},
+		{
+			"category_id": "labour",
+			"short_text": "Impact of fashion brand on workers",
+			"description": "",
+			"themes": [{
+					"theme_id": "worker_policies",
+					"short_text": "Worker policies and empowerment",
+					"description": "Workers’ rights principles applied across the entire supply chain, including health and safety, child labour, forced labour, freedom of association, freedom of movement, collective bargaining, non­discrimination, non­excessive working hours and the right and capacity to make a complaint"
+				},
+				{
+					"theme_id": "wages",
+					"short_text": "Living wages",
+					"description": "Living wage definition and implementation across the supply chain"
+				},
+				{
+					"theme_id": "suppliers",
+					"short_text": "Knowing suppliers",
+					"description": "Supply chain transparency including publishing supplier lists and tracking subcontractors"
+				},
+				{
+					"theme_id": "practices",
+					"short_text": "Supplier relationships, auditing and other assurance",
+					"description": "Auditing and assurance practices throughout the supply chain and public reporting including unannounced visits and off­site worker interviews"
+				}
+			]
+		},
+		{
+			"category_id": "animal",
+			"short_text": "Impact of fashion brand on animals",
+			"description": "",
+			"themes": [{
+					"theme_id": "rights",
+					"short_text": "Rights",
+					"description": ""
+				},
+				{
+					"theme_id": "fur",
+					"short_text": "Fur",
+					"description": "Use of, sherling and karakul lamb fur and commmitment not to use fur"
+				},
+				{
+					"theme_id": "leather",
+					"short_text": "Leather",
+					"description": "Use of leather and if upcycled/ recycled"
+				},
+				{
+					"theme_id": "wool",
+					"short_text": "Wool",
+					"description": "Use of wool and if sourced from non-mulesed sheep"
+				},
+				{
+					"theme_id": "feathers",
+					"short_text": "Down and feathers",
+					"description": "Use of down and adopted practices"
+				},
+				{
+					"theme_id": "angora",
+					"short_text": "Angora",
+					"description": "Use of angora and commmitment not to use angora"
+				},
+				{
+					"theme_id": "hairs",
+					"short_text": "Exotic animal hairs",
+					"description": "Use of exotic animal hair used such as pashmina, cashmere, mohair, alpaca, llama, vicuna and shahtoosh"
+				},
+				{
+					"theme_id": "skins",
+					"short_text": "Exotic animal skins",
+					"description": "Use of exotic animal skin such as crocodile and alligator"
+				}
+			]
+		}
+	],
+	"questions": [{
+			"text": "Which of the following is the brand certified by? ",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "all",
+			"answers": [{
+					"text": "All products fully certified by Cradle to Cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "All products fully certified by Cradle to Cradle Silver",
+					"score": 0.65
+				},
+				{
+					"text": "All fabrics fully certified by Bluesign system ",
+					"score": 0.35
+				},
+				{
+					"text": "All fibers fully certified by GOTS",
+					"score": 1.0
+				},
+				{
+					"text": "All products fully certified by Cradle to Cradle Bronze or Basic",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by STeP by OEKO-TEX",
+					"score": 0.35
+				},
+				{
+					"text": "All products fully certified by Global Recycle Standard",
+					"score": 0.35
+				},
+				{
+					"text": "All products fully certified by The EU Ecolabel ",
+					"score": 0.65
+				},
+				{
+					"text": "All products are certifed under the Fair Trade Textile Standard",
+					"score": 0.35
+				},
+				{
+					"text": "All products certified by Fair Trade - Hired labour",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Oeko-tex Standard 100",
+					"score": 0.35
+				},
+				{
+					"text": "No evidence that brand uses any of these certification",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following does the brand do to minimise textile waste?",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "all",
+			"answers": [{
+					"text": "Reuses all of its offcuts; ",
+					"score": 0.65
+				},
+				{
+					"text": "Reuses offcuts from other companies; ",
+					"score": 0.65
+				},
+				{
+					"text": "Recycles all offcuts",
+					"score": 0.35
+				},
+				{
+					"text": "Minimizes waste/offcuts (uses low-waste cutting techniques); ",
+					"score": 0.75
+				},
+				{
+					"text": "Uses upcycled materials",
+					"score": 0.65
+				},
+				{
+					"text": "Uses recycled materials",
+					"score": 0.60
+				},
+				{
+					"text": "Recycles clothing",
+					"score": 0.60
+				},
+				{
+					"text": "Donates unused clothes to charity;",
+					"score": 0.20
+				},
+				{
+					"text": "Donates used clothes",
+					"score": 0.30
+				},
+				{
+					"text": "Made to order",
+					"score": 0.35
+				},
+				{
+					"text": "Limited production run (JIT)",
+					"score": 0.35
+				},
+				{
+					"text": "Uses second-hand clothing",
+					"score": 0.65
+				},
+				{
+					"text": "Fully circular process (best available practice) for 100% of production",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Platinum ",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Silver",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Bronze or Basic",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Carbon Trust Standards (Water, Waste, Carbon)",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Global Recycle Standard",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Carbon Trust Standard (Waste)",
+					"score": 0.35
+				},
+				{
+					"text": "No evidence that brand minimises textile waste",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following does the brand do to ensure it produces high quality, seasonless products?",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "all",
+			"answers": [{
+					"text": "Warranty 2-5 years",
+					"score": 0.6
+				},
+				{
+					"text": "5+ year warranty",
+					"score": 0.8
+				},
+				{
+					"text": "20+ year warranty",
+					"score": 1.0
+				},
+				{
+					"text": "Offers free repairs;",
+					"score": 0.8
+				},
+				{
+					"text": "Emphasises it produces long lasting products",
+					"score": 0.4
+				},
+				{
+					"text": "No evidence that it produces long lasting products",
+					"score": 0.0
+				},
+				{
+					"text": "No evidence that it produces long lasting products and has one or more of the following fast fashion traits: new arrivals every week; on trend styles; low price point; very regular sales with large reductions",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following does the brand do to minimize the environmental impact of packaging? ",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "all",
+			"answers": [{
+					"text": "Uses 100% recycled packaging",
+					"score": 1.0
+				},
+				{
+					"text": "Uses~50% recycled packaging",
+					"score": 0.6
+				},
+				{
+					"text": "Uses 100% compostable packaging",
+					"score": 0.4
+				},
+				{
+					"text": "Uses 100% readily re-usable packaging",
+					"score": 0.6
+				},
+				{
+					"text": "Minimal/minimises packaging",
+					"score": 0.6
+				},
+				{
+					"text": "Reuses cardboard and/or paper for most/all of its packaging",
+					"score": 1.0
+				},
+				{
+					"text": "Uses packaging that can be recycled",
+					"score": 0.4
+				},
+				{
+					"text": "Uses plastic-free packaging",
+					"score": 0.6
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle (platinum)",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle (gold)",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle (silver)",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by GOTS ",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle (bronze or basic)",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by STeP by OEKO-TEX",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Global Recycle Standard",
+					"score": 0.65
+				},
+				{
+					"text": "No evidence of brand minimizing packaging",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following is the brand doing to minimise non-textile waste in its supply chain?",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Has set target to reduce waste at a large percentage (~50% +) of waste at its distribution centre",
+					"score": 0.7
+				},
+				{
+					"text": "Has reached its previous target to reduce a large percentage (~50% +) of waste at its distribution centre ",
+					"score": 0.8
+				},
+				{
+					"text": "Has set a target to reduce waste in in one or more stages of its supply chain by a specific date",
+					"score": 0.8
+				},
+				{
+					"text": "Has reached its previous target of reducing waste in one or more stages of its supply chain",
+					"score": 1.0
+				},
+				{
+					"text": "Has set a target to reduce waste at retail outlets",
+					"score": 0.2
+				},
+				{
+					"text": "Has reached its previous target of reducing waste at retail outlets",
+					"score": 0.3
+				},
+				{
+					"text": "Follows the reduce, reuse, recycle principles",
+					"score": 0.2
+				},
+				{
+					"text": "General statement but no evidence of specific strategy or targets  ",
+					"score": 0.0
+				},
+				{
+					"text": "No mention of waste minimisation strategy or targets",
+					"score": 0.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Silver",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by GOTS",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Bronze or Basic",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by STeP by OEKO-TEX",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Carbon Trust (water, waste, carbon)",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Global Recycle Standard",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Fair Trade Hired Labour",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Fair Trade Small Producers",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Carbon Trust (waste)",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Leather Working Group",
+					"score": 0.35
+				}
+			]
+		},
+		{
+			"text": "Which of the following materials does the brand source? If none, please move to climate change section",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Leather",
+					"score": 0.0
+				},
+				{
+					"text": "Rayon",
+					"score": 0.0
+				},
+				{
+					"text": "Viscose",
+					"score": 0.0
+				},
+				{
+					"text": "Mondal",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following commitments has the brand made to prevent deforestation in its supply chain",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Zero deforestation and forest degradation",
+					"score": 0.0
+				},
+				{
+					"text": "Zero net deforestation and forest degradation",
+					"score": 0.0
+				},
+				{
+					"text": "High Conservation Value (HCV) management",
+					"score": 0.0
+				},
+				{
+					"text": "High Carbon Stock (HCS) management",
+					"score": 0.0
+				},
+				{
+					"text": "Avoidance of land area under conservation",
+					"score": 0.0
+				},
+				{
+					"text": "Free, Prior and Informed Consent (FPIC)",
+					"score": 0.0
+				},
+				{
+					"text": "Net positive impact",
+					"score": 0.0
+				},
+				{
+					"text": "Certification",
+					"score": 0.0
+				},
+				{
+					"text": "Avoidance of IUCN Red List of Threatened Species",
+					"score": 0.0
+				},
+				{
+					"text": "Avoidance of CITES listed species",
+					"score": 0.0
+				},
+				{
+					"text": "No commitment",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following tools does the brand use to measure and report its GHG emissions?",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "GHG Protocol (GHG Corporate Accounting and Reporting Standard)",
+					"score": 1.0
+				},
+				{
+					"text": "India GHG",
+					"score": 1.0
+				},
+				{
+					"text": "ISO 14064-1",
+					"score": 1.0
+				},
+				{
+					"text": "Greenhouse Gas Reporting Program",
+					"score": 1.0
+				},
+				{
+					"text": "The Climate Registry: General Reporting Protocol",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Silver",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Bronze or Basic",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by STeP by OEKO-TEX",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Carbon Trust (water, waste, carbon)",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by The EU Ecolabel",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Carbon Trust (carbon)",
+					"score": 1.0
+				},
+				{
+					"text": "No evidence of using GHG emissions measuring tools",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following GHG emissions scopes does the brand measure?",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": ";arge",
+			"answers": [{
+					"text": "scope 1 - Direct emissions from sources that are owned or controlled by the brand",
+					"score": 0.35
+				},
+				{
+					"text": "scope 2 (location-based)- Indirect GHG emissions from consumption of purchased electricity, heat or steam",
+					"score": 0.25
+				},
+				{
+					"text": "scope 2 (market-based)- Indirect GHG emissions from consumption of purchased electricity, heat or steam",
+					"score": 0.1
+				},
+				{
+					"text": "scope 3 (2 or more categories) - Other indirect emissions in its value chain",
+					"score": 0.35
+				},
+				{
+					"text": "scope 3 (single figure) - Other indirect emissions in its value chain",
+					"score": 0.2
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by GOTS",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Fair Trade Hired Labour",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Fair Trade Small Producers",
+					"score": 0.65
+				},
+				{
+					"text": "No evidence of measuring any GHG emissions scopes",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Are its emissions being measured in CO2e or as CO2?",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "CO2e",
+					"score": 1.0
+				},
+				{
+					"text": "CO2",
+					"score": 0.0
+				},
+				{
+					"text": "Not specified",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Has the brand taken any of the following actions to reduce its GHG emissions?",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "100% purchased or installed renewable energy across all of its supply chain",
+					"score": 1.0
+				},
+				{
+					"text": "100% purchased or installed renewable energy for its direct operations",
+					"score": 0.7
+				},
+				{
+					"text": "Renewable energy purchased or installed for part of its supply chain",
+					"score": 0.4
+				},
+				{
+					"text": "Renewable energy purchased for part of its direct operations",
+					"score": 0.3
+				},
+				{
+					"text": "Uses a valid carbon offset program",
+					"score": 0.6
+				},
+				{
+					"text": "Uses 100% sea freight for shipping",
+					"score": 0.4
+				},
+				{
+					"text": "Uses 100% electric vehicles",
+					"score": 0.4
+				},
+				{
+					"text": "Energy efficiency in production",
+					"score": 0.25
+				},
+				{
+					"text": "Agriculture methane capture",
+					"score": 0.25
+				},
+				{
+					"text": "Agriculture N20 reductions",
+					"score": 0.25
+				},
+				{
+					"text": "Initiatives to reduce process emissions from manufacturing",
+					"score": 0.35
+				},
+				{
+					"text": "Internal staff behavioral change",
+					"score": 0.15
+				},
+				{
+					"text": "Consumer behavioral change",
+					"score": 0.5
+				},
+				{
+					"text": "Waste recovery",
+					"score": 0.25
+				},
+				{
+					"text": "Green project finance",
+					"score": 0.25
+				},
+				{
+					"text": "Manufactures in same country as retail outlets",
+					"score": 0.3
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by GOTS",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Carbon Trust (water, waste, carbon)",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Fair Trade Small Producers",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Carbon Trust (carbon)",
+					"score": 1.0
+				},
+				{
+					"text": "No evidence of taking any meaningful action on reducing carbon emissions",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Has the brand previously met a GHG emissions reduction target in the last 5 years?",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Has met a GHG emissions reduction target within the last 5 years",
+					"score": 0.0
+				},
+				{
+					"text": "No evidence of meeting a previous GHG emissions reduction target ",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Scope 1 Which of the following targets has the brand previously met in the last 5 years",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Has met an absolute target",
+					"score": 0.25
+				},
+				{
+					"text": "Has met an intensity target",
+					"score": 0.20
+				},
+				{
+					"text": "None of the Above",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Scope 1: Which of the following targets has the brand previously met in the last 5 years",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Has met an absolute target",
+					"score": 0.25
+				},
+				{
+					"text": "Has met an intensity target",
+					"score": 0.20
+				},
+				{
+					"text": "None of the Above",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Scope 2: Which of the following targets has the brand previously met in the last 5 years",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Has met an absolute target",
+					"score": 0.4
+				},
+				{
+					"text": "Has met an intensity target",
+					"score": 0.30
+				},
+				{
+					"text": "None of the Above",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Scope 3: Which of the following targets has the brand previously met in the last 5 years",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Has met an absolute target",
+					"score": 0.6
+				},
+				{
+					"text": "Has met an intensity target",
+					"score": 0.4
+				},
+				{
+					"text": "Has met a target to reduce emissions in its supply chain",
+					"score": 0.35
+				},
+				{
+					"text": "Has met a target to reduce energy use in its supply chain",
+					"score": 0.3
+				},
+				{
+					"text": "Has met a target to reduce KWhr per product",
+					"score": 0.25
+				},
+				{
+					"text": "Has met a supplier engagement target",
+					"score": 0.2
+				},
+				{
+					"text": "None of the Above",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "If the brand did not specify the scope for its target, what emissions reduction target did it make?",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Absolute target",
+					"score": 0.35
+				},
+				{
+					"text": "Intensity target",
+					"score": 0.2
+				},
+				{
+					"text": "None of the Above",
+					"score": 0.0
+				},
+				{
+					"text": "Does not specify time-bound deadline",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Does the brand have a current GHG emissions reduction target? If no, skip the following related questions.",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Has a current GHG emissions reduction target",
+					"score": 0.0
+				},
+				{
+					"text": "No evidence of a current GHG emissions reduction target",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Current Scope 1: Which of the following targets has the brand previously met in the last 5 years",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Has met an absolute target",
+					"score": 0.25
+				},
+				{
+					"text": "Has met an intensity target",
+					"score": 0.20
+				},
+				{
+					"text": "None of the Above",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Current Scope 2: Which of the following targets has the brand previously met in the last 5 years",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Has met an absolute target",
+					"score": 0.4
+				},
+				{
+					"text": "Has met an intensity target",
+					"score": 0.30
+				},
+				{
+					"text": "None of the Above",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Current Scope 3: Which of the following targets has the brand previously met in the last 5 years",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Has met an absolute target",
+					"score": 0.6
+				},
+				{
+					"text": "Has met an intensity target",
+					"score": 0.4
+				},
+				{
+					"text": "Has met a target to reduce emissions in its supply chain",
+					"score": 0.35
+				},
+				{
+					"text": "Has met a target to reduce energy use in its supply chain",
+					"score": 0.3
+				},
+				{
+					"text": "Has met a target to reduce KWhr per product",
+					"score": 0.25
+				},
+				{
+					"text": "Has met a supplier engagement target",
+					"score": 0.2
+				},
+				{
+					"text": "None of the Above",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "If the brand does not specify the scope for its targets, what emissions reduction target has it made?",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Absolute target",
+					"score": 0.0
+				},
+				{
+					"text": "Intensity target",
+					"score": 0.0
+				},
+				{
+					"text": "None of the Above",
+					"score": 0.0
+				},
+				{
+					"text": "Does not specify time-bound deadline",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following does the brand do to  reduce its carbon and other greenhouse gas emissions?",
+			"category_id": "environment",
+			"theme_id": "resource",
+			"brand_size": "small",
+			"answers": [{
+					"text": "Implements a carbon offset program like Carbon Neutral accredited by Carbon Trust",
+					"score": 0.5
+				},
+				{
+					"text": "Uses 100% green energy in its final stage of production",
+					"score": 0.75
+				},
+				{
+					"text": "Uses 100% eco-friendly materials from Class A or B or recycled materials not included in Made By",
+					"score": 0.5
+				},
+				{
+					"text": "Renewable energy purchased or installed for part of its supply chain",
+					"score": 0.4
+				},
+				{
+					"text": "Renewable energy purchased or installed for its direct operations",
+					"score": 0.3
+				},
+				{
+					"text": "Initiatives to reduce process emissions from manufacturing",
+					"score": 0.3
+				},
+				{
+					"text": "Waste recovery",
+					"score": 0.25
+				},
+				{
+					"text": "Staff behavioral change",
+					"score": 0.2
+				},
+				{
+					"text": "Initiatives in energy efficiency in production",
+					"score": 0.2
+				},
+				{
+					"text": "Uses~50% eco-friendly materials from Class A or B or recycled materials not included in Made By",
+					"score": 0.25
+				},
+				{
+					"text": "Produces products by hand/artsinally",
+					"score": 0.25
+				},
+				{
+					"text": "Manufactures in same country as retail outlet/s",
+					"score": 0.25
+				},
+				{
+					"text": "Sea freight bulk products (less emissions)",
+					"score": 0.25
+				},
+				{
+					"text": "Is fully certified by Cradle to cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by GOTS",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Carbon Trust (Water, Waste, Carbon)",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Carbon Trust (Carbon)",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Fair Trade Small Producers",
+					"score": 0.35
+				},
+				{
+					"text": "No evidence of brand reducing its carbon and other greenhouse gas emissions ",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following has the brand done to reduce or eliminate hazardous chemicals?",
+			"category_id": "environment",
+			"theme_id": "chemicals",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Has already eliminated hazardous chemicals",
+					"score": 1.0
+				},
+				{
+					"text": "Has set a deadline to eliminate hazardous chemicals by 2018",
+					"score": 0.8
+				},
+				{
+					"text": "Has set a deadline to eliminate hazardous chemicals by 2020",
+					"score": 0.7
+				},
+				{
+					"text": "Has set a deadline to eliminate hazardous chemicals after 2020",
+					"score": 0.5
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by GOTS",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Silver",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Bronze",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Basic",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by STeP by Oeko-tex",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Global Recycle Standard",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by The EU Ecolabel",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Fairtrade - Small Producers",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Oeko-tex Standard 100",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Better Cotton Initiative",
+					"score": 0.35
+				},
+				{
+					"text": "None of these",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following Restricted Substances Lists (RSL) and/or Manufacturing Restricted Substances Lists (MRSL) does the brand state that it complies with?",
+			"category_id": "environment",
+			"theme_id": "chemicals",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Fully complies with ZDHC MRSL",
+					"score": 1.0
+				},
+				{
+					"text": "Fully complies with REACH RSL",
+					"score": 0.8
+				},
+				{
+					"text": "Greenpeace Detox Program (Avant-Garde)",
+					"score": 1.0
+				},
+				{
+					"text": "Has its own MRSL",
+					"score": 0.8
+				},
+				{
+					"text": "Has its own RSL",
+					"score": 0.6
+				},
+				{
+					"text": "Bans AZO dyes",
+					"score": 0.6
+				},
+				{
+					"text": "Does not use PFC's",
+					"score": 0.5
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by GOTS",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Silver",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Bronze",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Basic",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by STeP by Oeko-tex",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Global Recycle Standard",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by The EU Ecolabel",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Fairtrade - Small Producers",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Fairtrade - Hired Labour",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Oeko-tex Standard 100",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Better Cotton Initiative",
+					"score": 0.35
+				},
+				{
+					"text": "None of these",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Does the brand sell items that include leather?",
+			"category_id": "chemicals",
+			"theme_id": "resource",
+			"brand_size": "all",
+			"answers": [{
+				"text": "Uses leather/Does not use leather",
+				"score": 0.0
+			}]
+		},
+		{
+			"text": "Which of the following does the brand do to avoid chromium and other chemicals in the leather tanning process?",
+			"category_id": "environment",
+			"theme_id": "chemicals",
+			"brand_size": "all",
+			"answers": [{
+					"text": "Does not use chromium in its leather tanning processes",
+					"score": 0.75
+				},
+				{
+					"text": "Has its own policy to reduce chromium from its leather tanning processes",
+					"score": 0.5
+				},
+				{
+					"text": "Uses chrome-free dyes",
+					"score": 0.35
+				},
+				{
+					"text": "Uses 100% vegetable tanned leather",
+					"score": 0.75
+				},
+				{
+					"text": "Minimises other chemicals used in the leather tanning process apart from chrome",
+					"score": 0.35
+				},
+				{
+					"text": "Uses 100% recycled leather",
+					"score": 1.0
+				},
+				{
+					"text": "Uses ~50% recycled leather",
+					"score": 0.65
+				},
+				{
+					"text": "Uses tanneries that are Leather Working Group Gold certified",
+					"score": 0.65
+				},
+				{
+					"text": "Uses tanneries that are Leather Working Group Silver certified",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Silver",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by GOTS",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Bronze",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Basic",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by STeP by Oeko-Tex",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Global Recycle Standard",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Oeko-tex Standard 100",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by ZDHC MRSL",
+					"score": 1.0
+				},
+				{
+					"text": "Is a Greenpeace Detox Program Avant-Garde",
+					"score": 1.0
+				},
+				{
+					"text": "No evidence of avoiding chromium and other chemicals in the leather tanning process",
+					"score": 1.0
+				}
+			]
+		},
+		{
+			"text": "Does the brand sell shoes? ",
+			"category_id": "environment",
+			"theme_id": "chemicals",
+			"brand_size": "all",
+			"answers": [{
+				"text": "Sells shoes/Does not sell shoes",
+				"score": 0.0
+			}]
+		},
+		{
+			"text": "Which of the following does the brand do to minimize the use of solvent-based chemicals in its shoe production?",
+			"category_id": "environment",
+			"theme_id": "chemicals",
+			"brand_size": "all",
+			"answers": [{
+					"text": "Prohibits Volatile Organic Chemicals (VOC's);",
+					"score": 0.5
+				},
+				{
+					"text": "Minimises Volatile Organic Chemicals (VOC's);",
+					"score": 0.35
+				},
+				{
+					"text": "Uses 100% water based glues;",
+					"score": 1.0
+				},
+				{
+					"text": "Uses 50% water based glues",
+					"score": 0.5
+				},
+				{
+					"text": "Uses injection moulding",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Leather Working Group Gold",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by ZDHC MRSL",
+					"score": 0.35
+				},
+				{
+					"text": "Is a Greenpeace Detox Program Avant-Garde",
+					"score": 1.0
+				},
+				{
+					"text": "No evidence of minimizing the use of solvent-based chemicals in its shoe production",
+					"score": 1.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following approaches does the brand use to track its water impact at a local level?",
+			"category_id": "environment",
+			"theme_id": "water",
+			"brand_size": "all",
+			"answers": [{
+					"text": "States that it sources products from water-stressed basins",
+					"score": 0.7
+				},
+				{
+					"text": "States that it does not source products from water-stressed basins",
+					"score": 0.8
+				},
+				{
+					"text": "WBCSD Global Water Tool",
+					"score": 1.0
+				},
+				{
+					"text": "WRI Aqueduct",
+					"score": 1.0
+				},
+				{
+					"text": "WWF Water Risk Filter",
+					"score": 1.0
+				},
+				{
+					"text": "WAITING ON PAULINE",
+					"score": 0.0
+				},
+				{
+					"text": "Does not state whether it sources products from water-stressed basins",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following stakeholders does the brand engage with on water issues?",
+			"category_id": "environment",
+			"theme_id": "water",
+			"brand_size": "all",
+			"answers": [{
+					"text": "Engages with production suppliers",
+					"score": 0.3
+				},
+				{
+					"text": "Engages with input suppliers",
+					"score": 0.3
+				},
+				{
+					"text": "Engages with raw material suppliers",
+					"score": 0.4
+				},
+				{
+					"text": "Engages with policy-makers at a local level",
+					"score": 0.5
+				},
+				{
+					"text": "Engages with policy-makers at a national level",
+					"score": 0.35
+				},
+				{
+					"text": "Engages with local communities",
+					"score": 0.5
+				},
+				{
+					"text": "Engages with NGOs on water issues at a local level",
+					"score": 0.5
+				},
+				{
+					"text": "Engages with NGOs on water issues at a national level",
+					"score": 0.35
+				},
+				{
+					"text": "Consumers",
+					"score": 0.5
+				},
+				{
+					"text": "Does not source water from water-stressed basins and has used an appropiate tool",
+					"score": 1.0
+				},
+				{
+					"text": "Brand does not engage with stakeholders on water issues",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Does the brand have a current water target or goal for any stage of its supply chain? If no, skip the following related questions.",
+			"category_id": "environment",
+			"theme_id": "water",
+			"brand_size": "all",
+			"answers": [{
+					"text": "Has a current quantitative water target or goal",
+					"score": 0.0
+				},
+				{
+					"text": "Has a current qualitative water target or goal",
+					"score": 0.0
+				},
+				{
+					"text": "No evidence of a current water target or goal",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following quantitative targets or goals has the brand implemented?",
+			"category_id": "environment",
+			"theme_id": "water",
+			"brand_size": "all",
+			"answers": [{
+					"text": "Absolute reduction of water withdrawals",
+					"score": 0.6
+				},
+				{
+					"text": "Reduction in consumption",
+					"score": 0.5
+				},
+				{
+					"text": "Reduction of product water intensity",
+					"score": 0.5
+				},
+				{
+					"text": "Increased water recycling/reuse",
+					"score": 0.5
+				},
+				{
+					"text": "Efficiency improvement",
+					"score": 0.5
+				},
+				{
+					"text": "Reduction in wastewater",
+					"score": 0.5
+				},
+				{
+					"text": "Water pollution prevention",
+					"score": 0.5
+				}
+			]
+		},
+		{
+			"text": "What scale is the target being measured in?",
+			"category_id": "environment",
+			"theme_id": "water",
+			"brand_size": "all",
+			"answers": [{
+					"text": "Country",
+					"score": 0.0
+				},
+				{
+					"text": "Basin site",
+					"score": 0.0
+				},
+				{
+					"text": "Product",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following qualitative targets or goals has the brand implemented?",
+			"category_id": "environment",
+			"theme_id": "water",
+			"brand_size": "all",
+			"answers": [{
+					"text": "Providing access to Water, Sanitation and Hygiene in workplace",
+					"score": 0.4
+				},
+				{
+					"text": "Providing access to Water, Sanitation and Hygiene in local communities",
+					"score": 0.4
+				},
+				{
+					"text": "Strengthen links with local community",
+					"score": 0.25
+				},
+				{
+					"text": "Educate customers to help them minimize product impacts",
+					"score": 0.5
+				},
+				{
+					"text": "Engagement with public policy makers to advance sustainable water policies and management",
+					"score": 0.5
+				},
+				{
+					"text": "Engagement with suppliers to help them improve water stewardship",
+					"score": 0.75
+				},
+				{
+					"text": "Sustainable agriculture",
+					"score": 0.5
+				},
+				{
+					"text": "Watershed remediation and habitat restoration, ecosystem preservation",
+					"score": 0.25
+				},
+				{
+					"text": "Data transparency",
+					"score": 0.25
+				},
+				{
+					"text": "Context-based target",
+					"score": 1.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following water reduction initiatives has the brand implemented?",
+			"category_id": "environment",
+			"theme_id": "water",
+			"brand_size": "all",
+			"answers": [{
+					"text": "No pre-washing performed;",
+					"score": 0.35
+				},
+				{
+					"text": "Uses 100% eco-friendly materials",
+					"score": 0.8
+				},
+				{
+					"text": "Uses~50% eco-friendly materials",
+					"score": 0.4
+				},
+				{
+					"text": "Uses natural dyes which reduce/eliminate wastewater creation",
+					"score": 0.65
+				},
+				{
+					"text": "Uses a closed-loop system",
+					"score": 0.65
+				},
+				{
+					"text": "Uses rain-water in its manufacturing",
+					"score": 0.35
+				},
+				{
+					"text": "Uses flow restrictors",
+					"score": 0.35
+				},
+				{
+					"text": "Uses waterless digital printing technology",
+					"score": 0.65
+				},
+				{
+					"text": "Uses 100% upcycled materials",
+					"score": 0.65
+				},
+				{
+					"text": "Uses 100% vintage clothing/material",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Silver",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by GOTS",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Bronze",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by STeP by Oeko-tex",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Carbon Trust Standard (water, waste, carbon)",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Global Recycle Standard",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Fair Trade Hired Labour",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Fair Trade Small Producers",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Carbon Trust Standard (water)",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Better Cotton Initiative",
+					"score": 0.35
+				},
+				{
+					"text": "No evidence that brand implements water reduction initiatives",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following wastewater management initiatives has the brand implemented?",
+			"category_id": "environment",
+			"theme_id": "water",
+			"brand_size": "all",
+			"answers": [{
+					"text": "Uses natural dyes which reduce/eliminate wastewater creation",
+					"score": 1.0
+				},
+				{
+					"text": "Uses 100% one of the following eco-friendly materials",
+					"score": 0.8
+				},
+				{
+					"text": "Uses~50% one of the following eco-friendly materials",
+					"score": 0.4
+				},
+				{
+					"text": "Closed-loop system",
+					"score": 1.0
+				},
+				{
+					"text": "Wastewater is treated and discharged properly",
+					"score": 0.75
+				},
+				{
+					"text": "Uses waterless digital printing technology",
+					"score": 1.0
+				},
+				{
+					"text": "Uses 100% upcycled materials",
+					"score": 0.8
+				},
+				{
+					"text": "Uses 100% vintage clothing/material",
+					"score": 0.8
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Silver",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by GOTS",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Bronze",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Basic",
+					"score": 0.0
+				},
+				{
+					"text": "Is fully certified by STeP by Oeko-tex",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Carbon Trust Standard (water, waste, carbon)",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Global Recycle Standard",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Fair Trade Hired Labour",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Fair Trade Small Producers",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Carbon Trust Standard (water)",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Better Cotton Initiative",
+					"score": 0.35
+				},
+				{
+					"text": "No evidence that brand implements wastewater management initiatives",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Does the brand measure its water use?",
+			"category_id": "environment",
+			"theme_id": "water",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Measures and records data on water consumption",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Silver",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by GOTS",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Bronze",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Basic ",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by STeP by Oeko-tex",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Carbon Trust Standard (water, waste, carbon)",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Global Recycle Standard",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by The EU Ecolabel",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Fair Trade Hired Labour",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Fair Trade Small Producers",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Carbon Trust Standard (water)",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Better Cotton Initiative",
+					"score": 0.35
+				},
+				{
+					"text": "No evidence that brand publishes water reduction policies or targets for its supply chain",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Does the brand measure its wastewater produced? ",
+			"category_id": "environment",
+			"theme_id": "water",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Measures and records data on its wastewater",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Platinum",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Gold",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Bluesign System",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Silver",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by GOTS",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Bronze",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Cradle to Cradle Basic ",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by STeP by Oeko-tex",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by Carbon Trust Standard (water, waste, carbon)",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Global Recycle Standard",
+					"score": 1.0
+				},
+				{
+					"text": "Is fully certified by The EU Ecolabel",
+					"score": 0.65
+				},
+				{
+					"text": "Is fully certified by Carbon Trust Standard (water)",
+					"score": 0.35
+				},
+				{
+					"text": "Is fully certified by Better Cotton Initiative",
+					"score": 0.35
+				},
+				{
+					"text": "No evidence that brand publishes wastewater management policies or targets for its supply chain",
+					"score": 0.0
+				}
+			]
+		},
+		{
+			"text": "Which of the following ILO fundamental principle labour standards does the brand include in its Code of Conduct?",
+			"category_id": "labour",
+			"theme_id": "worker_policies",
+			"brand_size": "small",
+			"answers": [{
+				"text": "Has a code of conduct that covers all of the ILO principles",
+				"score": 1
+			}, {
+				"text": "Has a code of conduct that covers some of the ILO principles",
+				"score": 0.5
+			}, {
+				"text": "Code of Conduct does not include any of the ILO labour standards",
+				"score": 0
+			}, {
+				"text": "No evidence of Code of Conduct",
+				"score": 0
+			}, {
+				"text": "Has a formal statement covering workers rights",
+				"score": 0.8
+			}, {
+				"text": "Made in-house by the owner and small team",
+				"score": 0.8
+			}, {
+				"text": "Scores full marks for 'positive labour conditions'",
+				"score": 0.8
+			}, {
+				"text": "Brand says it has a Code of Conduct but it does not publicly share it",
+				"score": 0.2
+			}, {
+				"text": "Is fully certified by Fair Trade Textile Standard",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Fairtrade International - Hired Labour",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Social Accountability International - SA8000",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+				"score": 1
+			}, {
+				"text": "Is fully certified by FLA Workplace Code of Conduct",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+				"score": 1
+			}, {
+				"text": "Is fully certified by STeP by OEKO-TEX ®",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Fair Trade USA",
+				"score": 1
+			}, {
+				"text": "Is fully certified by WFTO Guarantee System",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Fair Wear Foundation",
+				"score": 1
+			}, {
+				"text": "Is fully certified by bluesign® system",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+				"score": 1
+			}, {
+				"text": "Is fully certified by International Labour Organization Labour Standards",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Better Cotton Initiative",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Ethical Trading Initiative - ETI",
+				"score": 1
+			}]
+		},
+
+		{
+			"text": "Which of the following does the brand do to investigate and report on safety incidents?",
+			"category_id": "labour",
+			"theme_id": "worker_policies",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Monitors health and safety issues with an internal procedure",
+					"score": 0.5
+				}, {
+					"text": "100% third party audit of its final stage of production suppliers",
+					"score": 0
+				}, {
+					"text": "Visits 100% of its final stage of production suppliers",
+					"score": 0
+				}, {
+					"text": "Made in-house by the owner and small team",
+					"score": 0
+				}, {
+					"text": "Scores full marks for 'positive labour conditions'",
+					"score": 0
+				}, {
+					"text": "100% of final stage of production made in low/medium risk countries",
+					"score": 0
+				}, {
+					"text": "Has a formal internal grievance mechanism",
+					"score": 0
+				}, {
+					"text": "Has an external grievance mechanism where reporting can be made anonymously",
+					"score": 0.8
+				}, {
+					"text": "Is fully certified by Fair Trade Textile Standard",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Fairtrade International - Hired Labour",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Social Accountability International - SA8000",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+					"score": 1
+				}, {
+					"text": "Is fully certified by FLA Workplace Code of Conduct",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+					"score": 0.65
+				}, {
+					"text": "Is fully certified by STeP by OEKO-TEX ®",
+					"score": 1
+				}, {
+					"text": "States it complies with Clean Clothes Campaign - Code of Labour Practices",
+					"score": 0.35
+				}, {
+					"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Fair Trade USA",
+					"score": 1
+				}, {
+					"text": "Compliant with WFTO Guarantee System",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Fair Wear Foundation",
+					"score": 0.65
+				}, {
+					"text": "Is fully certified by bluesign® system",
+					"score": 0.65
+				}, {
+					"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+					"score": 1
+				}, {
+					"text": "States it complies with Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+					"score": 0.65
+				}, {
+					"text": "States it fully complies with International Labour Organization Labour Standards",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+					"score": 0.65
+				}, {
+					"text": "Is fully certified by Better Cotton Initiative",
+					"score": 1
+				}, {
+					"text": "States it complies with Ethical Trading Initiative - ETI",
+					"score": 0.65
+				}, {
+					"text": "No evidence that it investigates and reports on safety incidents ",
+					"score": 0
+				},
+				{
+					"text": "Which of the following does the brand do to investigate and report on safety incidents?",
+					"category_id": "labour",
+					"theme_id": "worker_policies",
+					"brand_size": "small",
+					"answers": [{
+						"text": "Monitors health and safety issues with an internal procedure",
+						"score": 0.5
+					}, {
+						"text": "100% third party audit of its final stage of production suppliers",
+						"score": 1
+					}, {
+						"text": "Visits 100% of its final stage of production suppliers",
+						"score": 0.8
+					}, {
+						"text": "Made in-house by the owner and small team",
+						"score": 0.8
+					}, {
+						"text": "Scores full marks for 'positive labour conditions'",
+						"score": 0.8
+					}, {
+						"text": "100% of final stage of production made in low/medium risk countries",
+						"score": 0.6
+					}, {
+						"text": "Has a formal internal grievance mechanism",
+						"score": 0
+					}, {
+						"text": "Has an external grievance mechanism where reporting can be made anonymously",
+						"score": 0.8
+					}, {
+						"text": "Is fully certified by Fair Trade Textile Standard",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fairtrade International - Hired Labour",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Social Accountability International - SA8000",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+						"score": 1
+					}, {
+						"text": "Is fully certified by FLA Workplace Code of Conduct",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by STeP by OEKO-TEX ®",
+						"score": 1
+					}, {
+						"text": "States it complies with Clean Clothes Campaign - Code of Labour Practices",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fair Trade USA",
+						"score": 1
+					}, {
+						"text": "Compliant with WFTO Guarantee System",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fair Wear Foundation",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by bluesign® system",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+						"score": 1
+					}, {
+						"text": "States it complies with Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+						"score": 0.65
+					}, {
+						"text": "States it fully complies with International Labour Organization Labour Standards",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by Better Cotton Initiative",
+						"score": 1
+					}, {
+						"text": "States it complies with Ethical Trading Initiative - ETI",
+						"score": 0.65
+					}, {
+						"text": "No evidence that it investigates and reports on safety incidents ",
+						"score": 0
+					}]
+				},
+				{
+					"text": "Which of the following worker empowerment options does the brand have?",
+					"category_id": "labour",
+					"theme_id": "worker_policies",
+					"brand_size": "large",
+					"answers": [{
+						"text": "Has an external grievance mechanism where reporting can be made anonymously",
+						"score": 1
+					}, {
+						"text": "Has an internal grievance mechanism",
+						"score": 0.8
+					}, {
+						"text": "Allows off-site worker interviews",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fair Trade Textile Standard",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fairtrade International - Hired Labour",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by Social Accountability International - SA8000",
+						"score": 1
+					}, {
+						"text": "Is fully certified by FLA Workplace Code of Conduct",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by STeP by OEKO-TEX ®",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fair Trade USA",
+						"score": 1
+					}, {
+						"text": "Is fully certified by WFTO Guarantee System",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Fair Wear Foundation",
+						"score": 1
+					}, {
+						"text": "Is fully certified by bluesign® system",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by International Labour Organization Labour Standards",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Ethical Trading Initiative - ETI",
+						"score": 0.35
+					}, {
+						"text": "No evidence that it has any worker empowerment options",
+						"score": 0
+					}]
+				},
+
+				{
+					"text": "Which of the following stages of the supply chain does the brand's code of conduct apply to?",
+					"category_id": "labour",
+					"theme_id": "worker_polcies",
+					"brand_size": "large",
+					"answers": [{
+						"text": "Made in-house by the owner and small team",
+						"score": 0
+					}, {
+						"text": "Scores full marks for 'positive labour conditions'",
+						"score": 0
+					}, {
+						"text": "100% of final stage of production made in low/medium risk countries",
+						"score": 0
+					}, {
+						"text": "Code of Conduct/formal statement applies to all of its supply chain",
+						"score": 1
+					}, {
+						"text": "Code of Conduct applies to final stage of production only",
+						"score": 0.4
+					}, {
+						"text": "Unclear if the Code of Conduct/formal statement applies to more than final stage of production",
+						"score": 0.4
+					}, {
+						"text": "Code of Conduct applies to second stage of production",
+						"score": 0.35
+					}, {
+						"text": "Code of Conduct applies to first stage of production ",
+						"score": 0.15
+					}, {
+						"text": "Code of Conduct applies to subcontractors",
+						"score": 0.1
+					}, {
+						"text": "Brand does not state which production stage its code of conduct applies to",
+						"score": 0.45
+					}, {
+						"text": "No Code of Conduct/formal statement",
+						"score": 0
+					}]
+				},
+				{
+					"text": "Which of the following stages of the supply chain does the brand's code of conduct apply to?",
+					"category_id": "labour",
+					"theme_id": "worker_polcies",
+					"brand_size": "small",
+					"answers": [{
+						"text": "Made in-house by the owner and small team",
+						"score": 0.4
+					}, {
+						"text": "Scores full marks for 'positive labour conditions'",
+						"score": 0.4
+					}, {
+						"text": "100% of final stage of production made in low/medium risk countries",
+						"score": 0.3
+					}, {
+						"text": "Code of Conduct/formal statement applies to all of its supply chain",
+						"score": 1
+					}, {
+						"text": "Code of Conduct applies to final stage of production only",
+						"score": 0.5
+					}, {
+						"text": "Unclear if the Code of Conduct/formal statement applies to more than final stage of production",
+						"score": 0.5
+					}, {
+						"text": "Code of Conduct applies to second stage of production",
+						"score": 0.35
+					}, {
+						"text": "Code of Conduct applies to first stage of production ",
+						"score": 0.15
+					}, {
+						"text": "Code of Conduct applies to subcontractors",
+						"score": 0.1
+					}, {
+						"text": "Brand does not state which production stage its code of conduct applies to",
+						"score": 0.45
+					}, {
+						"text": "No Code of Conduct/formal statement",
+						"score": 0
+					}]
+				},
+				{
+					"text": "Which of the following high/extreme risk countries does the brand source from?",
+					"category_id": "labour",
+					"theme_id": "work_policies",
+					"brand_size": "all",
+					"answers": [{
+						"text": "Sources final stage of production from one or more of these extreme risk countries: Indonesia; Phillipines; Vietnam; Cambodia; Thailand; China; Myanmar; India; Nepal; Bangladesh; Sri Lanka; Kazakhstan; Uzbekistan; Afghanistan; Pakistan; Iran; Iraq; Syria; Saudi Arabia; United Arab Emirates; Yemen; Russia; Belarus; Egypt; Libya; Sudan; Eritrea; Ethiopia; Somalia; Chad; South Sudan; Niger; Uganda; Rwanda; Central African Republic; Democratic Republic of Congo; Cameroon; Zimbabwe; Swaziland Mali; Mauritania; Guinea; Sierra Leone; Morocco; Colombia; Peru; Nicaragua; Honduras; Guatemala; Haiti",
+						"score": 0
+					}, {
+						"text": "Sources final stage of production from one or more of these high risk countries: Papua New Guinea; Malaysia; Laos; Bhutan; Mongolia; Kyrgyzstan; Tajikistan; Turkmenistan; Azerbaijan; Georgia; Armenia; Turkey; Ukraine; Moldova; Romania; Serbia; Bosnia and Herzegovina; Croatia; Albania; Montenegro; Slovenia; Jordan; Lebanon; Israel; Oman; Algeria; Tunisia; Senegal; Liberia; Cote d'Ivoire; Ghana; Burkina Faso; Togo; Benin; Equatorial Guinea; Gabon; Republic of the Congo; Angola; Namibia; South Africa; Botswana; Lesotho; Mozambique; Madagascar; Burundi; Tanzania; Malawi; Kenya; Zambia; Cuba; Dominican Republic; Puerto Rico; Panama; Venezuela; Guyana; Suriname; Ecuador; Brazil; Bolivia; Paraguay; Chile; Argentina",
+						"score": 0
+					}, {
+						"text": "Sources final stage of production from one or more of these medium risk countries: USA; France; UK; Spain; Portugal; Italy; Greece; Bulgaria; Macedonia; Hungary; Poland; Slovakia; Czech republic; Lithuania; Latvia; Estonia; Uruguay; South Korea; Japan; Taiwan; French Guiana",
+						"score": 0.75
+					}, {
+						"text": "Sources final stage of production from one or more of these low risk countries: Australia; New Zealand; Canada; Sweden; Finland; Norway; Ireland; Iceland; Germany; Austria; Switzerland; Belgium; Netherlands; Denmark;",
+						"score": 1
+					}, {
+						"text": "No evidence of where final stage of production occurs",
+						"score": 0
+					}, {
+						"text": "Sources second stage of production from one or more of these extreme risk countries: Indonesia; Phillipines; Vietnam; Cambodia; Thailand; China; Myanmar; India; Nepal; Bangladesh; Sri Lanka; Kazakhstan; Uzbekistan; Afghanistan; Pakistan; Iran; Iraq; Syria; Saudi Arabia; United Arab Emirates; Yemen; Russia; Belarus; Egypt; Libya; Sudan; Eritrea; Ethiopia; Somalia; Chad; South Sudan; Niger; Uganda; Rwanda; Central African Republic; Democratic Republic of Congo; Cameroon; Zimbabwe; Swaziland Mali; Mauritania; Guinea; Sierra Leone; Morocco; Colombia; Peru; Nicaragua; Honduras; Guatemala; Haiti",
+						"score": 0
+					}, {
+						"text": "Sources second stage of production from one or more of these high risk countries: Papua New Guinea; Malaysia; Laos; Bhutan; Mongolia; Kyrgyzstan; Tajikistan; Turkmenistan; Azerbaijan; Georgia; Armenia; Turkey; Ukraine; Moldova; Romania; Serbia; Bosnia and Herzegovina; Croatia; Albania; Montenegro; Slovenia; Jordan; Lebanon; Israel; Oman; Algeria; Tunisia; Senegal; Liberia; Cote d'Ivoire; Ghana; Burkina Faso; Togo; Benin; Equatorial Guinea; Gabon; Republic of the Congo; Angola; Namibia; South Africa; Botswana; Lesotho; Mozambique; Madagascar; Burundi; Tanzania; Malawi; Kenya; Zambia; Cuba; Dominican Republic; Puerto Rico; Panama; Venezuela; Guyana; Suriname; Ecuador; Brazil; Bolivia; Paraguay; Chile; Argentina",
+						"score": 0
+					}, {
+						"text": "Sources second stage of production from one or more of these medium risk countries: USA; France; UK; Spain; Portugal; Italy; Greece; Bulgaria; Macedonia; Hungary; Poland; Slovakia; Czech republic; Lithuania; Latvia; Estonia; Uruguay; South Korea; Japan; Taiwan; French Guiana",
+						"score": 0.75
+					}, {
+						"text": "Sources second stage of production from one or more of these low risk countries: Australia; New Zealand; Canada; Sweden; Finland; Norway; Ireland; Iceland; Germany; Austria; Switzerland; Belgium; Netherlands; Denmark;",
+						"score": 1
+					}, {
+						"text": "No evidence of where second stage of production occurs",
+						"score": 0
+					}, {
+						"text": "Sources first stage of production from one or more of these extreme risk countries: Indonesia; Phillipines; Vietnam; Cambodia; Thailand; China; Myanmar; India; Nepal; Bangladesh; Sri Lanka; Kazakhstan; Uzbekistan; Afghanistan; Pakistan; Iran; Iraq; Syria; Saudi Arabia; United Arab Emirates; Yemen; Russia; Belarus; Egypt; Libya; Sudan; Eritrea; Ethiopia; Somalia; Chad; South Sudan; Niger; Uganda; Rwanda; Central African Republic; Democratic Republic of Congo; Cameroon; Zimbabwe; Swaziland Mali; Mauritania; Guinea; Sierra Leone; Morocco; Colombia; Peru; Nicaragua; Honduras; Guatemala; Haiti",
+						"score": 0
+					}, {
+						"text": "Sources first stage of production from one or more of these high risk countries: Papua New Guinea; Malaysia; Laos; Bhutan; Mongolia; Kyrgyzstan; Tajikistan; Turkmenistan; Azerbaijan; Georgia; Armenia; Turkey; Ukraine; Moldova; Romania; Serbia; Bosnia and Herzegovina; Croatia; Albania; Montenegro; Slovenia; Jordan; Lebanon; Israel; Oman; Algeria; Tunisia; Senegal; Liberia; Cote d'Ivoire; Ghana; Burkina Faso; Togo; Benin; Equatorial Guinea; Gabon; Republic of the Congo; Angola; Namibia; South Africa; Botswana; Lesotho; Mozambique; Madagascar; Burundi; Tanzania; Malawi; Kenya; Zambia; Cuba; Dominican Republic; Puerto Rico; Panama; Venezuela; Guyana; Suriname; Ecuador; Brazil; Bolivia; Paraguay; Chile; Argentina",
+						"score": 0
+					}, {
+						"text": "Sources first stage of production from one or more of these medium risk countries: USA; France; UK; Spain; Portugal; Italy; Greece; Bulgaria; Macedonia; Hungary; Poland; Slovakia; Czech republic; Lithuania; Latvia; Estonia; Uruguay; South Korea; Japan; Taiwan; French Guiana",
+						"score": 0.75
+					}, {
+						"text": "Sources first stage of production from one or more of these low risk countries: Australia; New Zealand; Canada; Sweden; Finland; Norway; Ireland; Iceland; Germany; Austria; Switzerland; Belgium; Netherlands; Denmark;",
+						"score": 1
+					}, {
+						"text": "No evidence of where first stage of production occurs",
+						"score": 0
+					}]
+				},
+				{
+					"text": "Which of the following multi-stakeholder initiatives is the brand involved in?",
+					"category_id": "labour",
+					"theme_id": "worker_policies",
+					"brand_size": "large",
+					"answers": [{
+						"text": "Business Social Compliance Initiative",
+						"score": 1
+					}, {
+						"text": "Ethical Trading Initiative",
+						"score": 1
+					}, {
+						"text": "Fair Wear Foundation",
+						"score": 1
+					}, {
+						"text": "Stop the Traffik - Traffik Free Protocol Responsible Sourcing Network",
+						"score": 1
+					}, {
+						"text": "World Fair Trade Organisation",
+						"score": 1
+					}, {
+						"text": "Bangladesh Fire and Safety Accord",
+						"score": 0.65
+					}, {
+						"text": "Business for Social Responsibility",
+						"score": 0.65
+					}, {
+						"text": "Child Labour Free",
+						"score": 0.65
+					}, {
+						"text": "Fair Labor Association",
+						"score": 0.65
+					}, {
+						"text": "Alliance for Bangladesh Worker Safety",
+						"score": 0.35
+					}, {
+						"text": "Better Cotton Initiative",
+						"score": 0.35
+					}, {
+						"text": "Ethical Fashion Forum",
+						"score": 0.35
+					}, {
+						"text": "End Human Trafficking Now! Campaign",
+						"score": 0.35
+					}, {
+						"text": "Global Social Compliance Program",
+						"score": 0.35
+					}, {
+						"text": "Institute for Human Rights in Business",
+						"score": 0.35
+					}, {
+						"text": "Uzbek Cotton Pledge",
+						"score": 0.35
+					}, {
+						"text": "No evidence of brand being part of a Multi-Stakeholder Initiative",
+						"score": 0
+					}]
+				}
+			]
+		},
+		{
+			"text": "Which of the following ILO fundamental principle labour standards does the brand include in its Code of Conduct?",
+			"category_id": "labour",
+			"theme_id": "worker_policies",
+			"brand_size": "large",
+			"answers": [{
+				"text": "Has a code of conduct that covers all of the ILO principles",
+				"score": 1
+			}, {
+				"text": "Has a code of conduct that covers some of the ILO principles",
+				"score": 0.5
+			}, {
+				"text": "Code of Conduct does not include any of the ILO labour standards",
+				"score": 0
+			}, {
+				"text": "No evidence of Code of Conduct",
+				"score": 0
+			}, {
+				"text": "Has a formal statement covering workers rights",
+				"score": 0
+			}, {
+				"text": "Made in-house by the owner and small team",
+				"score": 0
+			}, {
+				"text": "Scores full marks for 'positive labour conditions'",
+				"score": 0
+			}, {
+				"text": "Brand says it has a Code of Conduct but it does not publicly share it",
+				"score": 0.2
+			}, {
+				"text": "Is fully certified by Fair Trade Textile Standard",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Fairtrade International - Hired Labour",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Social Accountability International - SA8000",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+				"score": 1
+			}, {
+				"text": "Is fully certified by FLA Workplace Code of Conduct",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+				"score": 1
+			}, {
+				"text": "Is fully certified by STeP by OEKO-TEX ®",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Fair Trade USA",
+				"score": 1
+			}, {
+				"text": "Is fully certified by WFTO Guarantee System",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Fair Wear Foundation",
+				"score": 1
+			}, {
+				"text": "Is fully certified by bluesign® system",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+				"score": 1
+			}, {
+				"text": "Is fully certified by International Labour Organization Labour Standards",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Better Cotton Initiative",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Ethical Trading Initiative - ETI",
+				"score": 1
+			}]
+		},
+		{
+			"text": "Which of the following ILO fundamental principle labour standards does the brand include in its Code of Conduct?",
+			"category_id": "labour",
+			"theme_id": "worker_policies",
+			"brand_size": "small",
+			"answers": [{
+				"text": "Has a code of conduct that covers all of the ILO principles",
+				"score": 1
+			}, {
+				"text": "Has a code of conduct that covers some of the ILO principles",
+				"score": 0.5
+			}, {
+				"text": "Code of Conduct does not include any of the ILO labour standards",
+				"score": 0
+			}, {
+				"text": "No evidence of Code of Conduct",
+				"score": 0
+			}, {
+				"text": "Has a formal statement covering workers rights",
+				"score": 0.8
+			}, {
+				"text": "Made in-house by the owner and small team",
+				"score": 0.8
+			}, {
+				"text": "Scores full marks for 'positive labour conditions'",
+				"score": 0.8
+			}, {
+				"text": "Brand says it has a Code of Conduct but it does not publicly share it",
+				"score": 0.2
+			}, {
+				"text": "Is fully certified by Fair Trade Textile Standard",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Fairtrade International - Hired Labour",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Social Accountability International - SA8000",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+				"score": 1
+			}, {
+				"text": "Is fully certified by FLA Workplace Code of Conduct",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+				"score": 1
+			}, {
+				"text": "Is fully certified by STeP by OEKO-TEX ®",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Fair Trade USA",
+				"score": 1
+			}, {
+				"text": "Is fully certified by WFTO Guarantee System",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Fair Wear Foundation",
+				"score": 1
+			}, {
+				"text": "Is fully certified by bluesign® system",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+				"score": 1
+			}, {
+				"text": "Is fully certified by International Labour Organization Labour Standards",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Better Cotton Initiative",
+				"score": 1
+			}, {
+				"text": "Is fully certified by Ethical Trading Initiative - ETI",
+				"score": 1
+			}]
+		},
+
+		{
+			"text": "Which of the following does the brand do to investigate and report on safety incidents?",
+			"category_id": "labour",
+			"theme_id": "worker_policies",
+			"brand_size": "large",
+			"answers": [{
+					"text": "Monitors health and safety issues with an internal procedure",
+					"score": 0.5
+				}, {
+					"text": "100% third party audit of its final stage of production suppliers",
+					"score": 0
+				}, {
+					"text": "Visits 100% of its final stage of production suppliers",
+					"score": 0
+				}, {
+					"text": "Made in-house by the owner and small team",
+					"score": 0
+				}, {
+					"text": "Scores full marks for 'positive labour conditions'",
+					"score": 0
+				}, {
+					"text": "100% of final stage of production made in low/medium risk countries",
+					"score": 0
+				}, {
+					"text": "Has a formal internal grievance mechanism",
+					"score": 0
+				}, {
+					"text": "Has an external grievance mechanism where reporting can be made anonymously",
+					"score": 0.8
+				}, {
+					"text": "Is fully certified by Fair Trade Textile Standard",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Fairtrade International - Hired Labour",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Social Accountability International - SA8000",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+					"score": 1
+				}, {
+					"text": "Is fully certified by FLA Workplace Code of Conduct",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+					"score": 0.65
+				}, {
+					"text": "Is fully certified by STeP by OEKO-TEX ®",
+					"score": 1
+				}, {
+					"text": "States it complies with Clean Clothes Campaign - Code of Labour Practices",
+					"score": 0.35
+				}, {
+					"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Fair Trade USA",
+					"score": 1
+				}, {
+					"text": "Compliant with WFTO Guarantee System",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Fair Wear Foundation",
+					"score": 0.65
+				}, {
+					"text": "Is fully certified by bluesign® system",
+					"score": 0.65
+				}, {
+					"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+					"score": 1
+				}, {
+					"text": "States it complies with Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+					"score": 0.65
+				}, {
+					"text": "States it fully complies with International Labour Organization Labour Standards",
+					"score": 1
+				}, {
+					"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+					"score": 0.65
+				}, {
+					"text": "Is fully certified by Better Cotton Initiative",
+					"score": 1
+				}, {
+					"text": "States it complies with Ethical Trading Initiative - ETI",
+					"score": 0.65
+				}, {
+					"text": "No evidence that it investigates and reports on safety incidents ",
+					"score": 0
+				},
+				{
+					"text": "Which of the following does the brand do to investigate and report on safety incidents?",
+					"category_id": "labour",
+					"theme_id": "worker_policies",
+					"brand_size": "small",
+					"answers": [{
+						"text": "Monitors health and safety issues with an internal procedure",
+						"score": 0.5
+					}, {
+						"text": "100% third party audit of its final stage of production suppliers",
+						"score": 1
+					}, {
+						"text": "Visits 100% of its final stage of production suppliers",
+						"score": 0.8
+					}, {
+						"text": "Made in-house by the owner and small team",
+						"score": 0.8
+					}, {
+						"text": "Scores full marks for 'positive labour conditions'",
+						"score": 0.8
+					}, {
+						"text": "100% of final stage of production made in low/medium risk countries",
+						"score": 0.6
+					}, {
+						"text": "Has a formal internal grievance mechanism",
+						"score": 0
+					}, {
+						"text": "Has an external grievance mechanism where reporting can be made anonymously",
+						"score": 0.8
+					}, {
+						"text": "Is fully certified by Fair Trade Textile Standard",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fairtrade International - Hired Labour",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Social Accountability International - SA8000",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+						"score": 1
+					}, {
+						"text": "Is fully certified by FLA Workplace Code of Conduct",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by STeP by OEKO-TEX ®",
+						"score": 1
+					}, {
+						"text": "States it complies with Clean Clothes Campaign - Code of Labour Practices",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fair Trade USA",
+						"score": 1
+					}, {
+						"text": "Compliant with WFTO Guarantee System",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fair Wear Foundation",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by bluesign® system",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+						"score": 1
+					}, {
+						"text": "States it complies with Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+						"score": 0.65
+					}, {
+						"text": "States it fully complies with International Labour Organization Labour Standards",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by Better Cotton Initiative",
+						"score": 1
+					}, {
+						"text": "States it complies with Ethical Trading Initiative - ETI",
+						"score": 0.65
+					}, {
+						"text": "No evidence that it investigates and reports on safety incidents ",
+						"score": 0
+					}]
+				},
+				{
+					"text": "Which of the following worker empowerment options does the brand have?",
+					"category_id": "labour",
+					"theme_id": "worker_policies",
+					"brand_size": "large",
+					"answers": [{
+						"text": "Has an external grievance mechanism where reporting can be made anonymously",
+						"score": 1
+					}, {
+						"text": "Has an internal grievance mechanism",
+						"score": 0.8
+					}, {
+						"text": "Allows off-site worker interviews",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fair Trade Textile Standard",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fairtrade International - Hired Labour",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by Social Accountability International - SA8000",
+						"score": 1
+					}, {
+						"text": "Is fully certified by FLA Workplace Code of Conduct",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by STeP by OEKO-TEX ®",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+						"score": 1
+					}, {
+						"text": "Is fully certified by Fair Trade USA",
+						"score": 1
+					}, {
+						"text": "Is fully certified by WFTO Guarantee System",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Fair Wear Foundation",
+						"score": 1
+					}, {
+						"text": "Is fully certified by bluesign® system",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+						"score": 0.65
+					}, {
+						"text": "Is fully certified by Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by International Labour Organization Labour Standards",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+						"score": 0.35
+					}, {
+						"text": "Is fully certified by Ethical Trading Initiative - ETI",
+						"score": 0.35
+					}, {
+						"text": "No evidence that it has any worker empowerment options",
+						"score": 0
+					}]
+				},
+
+				{
+					"text": "Which of the following stages of the supply chain does the brand's code of conduct apply to?",
+					"category_id": "labour",
+					"theme_id": "worker_polcies",
+					"brand_size": "large",
+					"answers": [{
+						"text": "Made in-house by the owner and small team",
+						"score": 0
+					}, {
+						"text": "Scores full marks for 'positive labour conditions'",
+						"score": 0
+					}, {
+						"text": "100% of final stage of production made in low/medium risk countries",
+						"score": 0
+					}, {
+						"text": "Code of Conduct/formal statement applies to all of its supply chain",
+						"score": 1
+					}, {
+						"text": "Code of Conduct applies to final stage of production only",
+						"score": 0.4
+					}, {
+						"text": "Unclear if the Code of Conduct/formal statement applies to more than final stage of production",
+						"score": 0.4
+					}, {
+						"text": "Code of Conduct applies to second stage of production",
+						"score": 0.35
+					}, {
+						"text": "Code of Conduct applies to first stage of production ",
+						"score": 0.15
+					}, {
+						"text": "Code of Conduct applies to subcontractors",
+						"score": 0.1
+					}, {
+						"text": "Brand does not state which production stage its code of conduct applies to",
+						"score": 0.45
+					}, {
+						"text": "No Code of Conduct/formal statement",
+						"score": 0
+					}]
+				},
+				{
+					"text": "Which of the following stages of the supply chain does the brand's code of conduct apply to?",
+					"category_id": "labour",
+					"theme_id": "worker_polcies",
+					"brand_size": "small",
+					"answers": [{
+						"text": "Made in-house by the owner and small team",
+						"score": 0.4
+					}, {
+						"text": "Scores full marks for 'positive labour conditions'",
+						"score": 0.4
+					}, {
+						"text": "100% of final stage of production made in low/medium risk countries",
+						"score": 0.3
+					}, {
+						"text": "Code of Conduct/formal statement applies to all of its supply chain",
+						"score": 1
+					}, {
+						"text": "Code of Conduct applies to final stage of production only",
+						"score": 0.5
+					}, {
+						"text": "Unclear if the Code of Conduct/formal statement applies to more than final stage of production",
+						"score": 0.5
+					}, {
+						"text": "Code of Conduct applies to second stage of production",
+						"score": 0.35
+					}, {
+						"text": "Code of Conduct applies to first stage of production ",
+						"score": 0.15
+					}, {
+						"text": "Code of Conduct applies to subcontractors",
+						"score": 0.1
+					}, {
+						"text": "Brand does not state which production stage its code of conduct applies to",
+						"score": 0.45
+					}, {
+						"text": "No Code of Conduct/formal statement",
+						"score": 0
+					}]
+				},
+				{
+					"text": "Which of the following high/extreme risk countries does the brand source from?",
+					"category_id": "labour",
+					"theme_id": "work_policies",
+					"brand_size": "all",
+					"answers": [{
+						"text": "Sources final stage of production from one or more of these extreme risk countries: Indonesia; Phillipines; Vietnam; Cambodia; Thailand; China; Myanmar; India; Nepal; Bangladesh; Sri Lanka; Kazakhstan; Uzbekistan; Afghanistan; Pakistan; Iran; Iraq; Syria; Saudi Arabia; United Arab Emirates; Yemen; Russia; Belarus; Egypt; Libya; Sudan; Eritrea; Ethiopia; Somalia; Chad; South Sudan; Niger; Uganda; Rwanda; Central African Republic; Democratic Republic of Congo; Cameroon; Zimbabwe; Swaziland Mali; Mauritania; Guinea; Sierra Leone; Morocco; Colombia; Peru; Nicaragua; Honduras; Guatemala; Haiti",
+						"score": 0
+					}, {
+						"text": "Sources final stage of production from one or more of these high risk countries: Papua New Guinea; Malaysia; Laos; Bhutan; Mongolia; Kyrgyzstan; Tajikistan; Turkmenistan; Azerbaijan; Georgia; Armenia; Turkey; Ukraine; Moldova; Romania; Serbia; Bosnia and Herzegovina; Croatia; Albania; Montenegro; Slovenia; Jordan; Lebanon; Israel; Oman; Algeria; Tunisia; Senegal; Liberia; Cote d'Ivoire; Ghana; Burkina Faso; Togo; Benin; Equatorial Guinea; Gabon; Republic of the Congo; Angola; Namibia; South Africa; Botswana; Lesotho; Mozambique; Madagascar; Burundi; Tanzania; Malawi; Kenya; Zambia; Cuba; Dominican Republic; Puerto Rico; Panama; Venezuela; Guyana; Suriname; Ecuador; Brazil; Bolivia; Paraguay; Chile; Argentina",
+						"score": 0
+					}, {
+						"text": "Sources final stage of production from one or more of these medium risk countries: USA; France; UK; Spain; Portugal; Italy; Greece; Bulgaria; Macedonia; Hungary; Poland; Slovakia; Czech republic; Lithuania; Latvia; Estonia; Uruguay; South Korea; Japan; Taiwan; French Guiana",
+						"score": 0.75
+					}, {
+						"text": "Sources final stage of production from one or more of these low risk countries: Australia; New Zealand; Canada; Sweden; Finland; Norway; Ireland; Iceland; Germany; Austria; Switzerland; Belgium; Netherlands; Denmark;",
+						"score": 1
+					}, {
+						"text": "No evidence of where final stage of production occurs",
+						"score": 0
+					}, {
+						"text": "Sources second stage of production from one or more of these extreme risk countries: Indonesia; Phillipines; Vietnam; Cambodia; Thailand; China; Myanmar; India; Nepal; Bangladesh; Sri Lanka; Kazakhstan; Uzbekistan; Afghanistan; Pakistan; Iran; Iraq; Syria; Saudi Arabia; United Arab Emirates; Yemen; Russia; Belarus; Egypt; Libya; Sudan; Eritrea; Ethiopia; Somalia; Chad; South Sudan; Niger; Uganda; Rwanda; Central African Republic; Democratic Republic of Congo; Cameroon; Zimbabwe; Swaziland Mali; Mauritania; Guinea; Sierra Leone; Morocco; Colombia; Peru; Nicaragua; Honduras; Guatemala; Haiti",
+						"score": 0
+					}, {
+						"text": "Sources second stage of production from one or more of these high risk countries: Papua New Guinea; Malaysia; Laos; Bhutan; Mongolia; Kyrgyzstan; Tajikistan; Turkmenistan; Azerbaijan; Georgia; Armenia; Turkey; Ukraine; Moldova; Romania; Serbia; Bosnia and Herzegovina; Croatia; Albania; Montenegro; Slovenia; Jordan; Lebanon; Israel; Oman; Algeria; Tunisia; Senegal; Liberia; Cote d'Ivoire; Ghana; Burkina Faso; Togo; Benin; Equatorial Guinea; Gabon; Republic of the Congo; Angola; Namibia; South Africa; Botswana; Lesotho; Mozambique; Madagascar; Burundi; Tanzania; Malawi; Kenya; Zambia; Cuba; Dominican Republic; Puerto Rico; Panama; Venezuela; Guyana; Suriname; Ecuador; Brazil; Bolivia; Paraguay; Chile; Argentina",
+						"score": 0
+					}, {
+						"text": "Sources second stage of production from one or more of these medium risk countries: USA; France; UK; Spain; Portugal; Italy; Greece; Bulgaria; Macedonia; Hungary; Poland; Slovakia; Czech republic; Lithuania; Latvia; Estonia; Uruguay; South Korea; Japan; Taiwan; French Guiana",
+						"score": 0.75
+					}, {
+						"text": "Sources second stage of production from one or more of these low risk countries: Australia; New Zealand; Canada; Sweden; Finland; Norway; Ireland; Iceland; Germany; Austria; Switzerland; Belgium; Netherlands; Denmark;",
+						"score": 1
+					}, {
+						"text": "No evidence of where second stage of production occurs",
+						"score": 0
+					}, {
+						"text": "Sources first stage of production from one or more of these extreme risk countries: Indonesia; Phillipines; Vietnam; Cambodia; Thailand; China; Myanmar; India; Nepal; Bangladesh; Sri Lanka; Kazakhstan; Uzbekistan; Afghanistan; Pakistan; Iran; Iraq; Syria; Saudi Arabia; United Arab Emirates; Yemen; Russia; Belarus; Egypt; Libya; Sudan; Eritrea; Ethiopia; Somalia; Chad; South Sudan; Niger; Uganda; Rwanda; Central African Republic; Democratic Republic of Congo; Cameroon; Zimbabwe; Swaziland Mali; Mauritania; Guinea; Sierra Leone; Morocco; Colombia; Peru; Nicaragua; Honduras; Guatemala; Haiti",
+						"score": 0
+					}, {
+						"text": "Sources first stage of production from one or more of these high risk countries: Papua New Guinea; Malaysia; Laos; Bhutan; Mongolia; Kyrgyzstan; Tajikistan; Turkmenistan; Azerbaijan; Georgia; Armenia; Turkey; Ukraine; Moldova; Romania; Serbia; Bosnia and Herzegovina; Croatia; Albania; Montenegro; Slovenia; Jordan; Lebanon; Israel; Oman; Algeria; Tunisia; Senegal; Liberia; Cote d'Ivoire; Ghana; Burkina Faso; Togo; Benin; Equatorial Guinea; Gabon; Republic of the Congo; Angola; Namibia; South Africa; Botswana; Lesotho; Mozambique; Madagascar; Burundi; Tanzania; Malawi; Kenya; Zambia; Cuba; Dominican Republic; Puerto Rico; Panama; Venezuela; Guyana; Suriname; Ecuador; Brazil; Bolivia; Paraguay; Chile; Argentina",
+						"score": 0
+					}, {
+						"text": "Sources first stage of production from one or more of these medium risk countries: USA; France; UK; Spain; Portugal; Italy; Greece; Bulgaria; Macedonia; Hungary; Poland; Slovakia; Czech republic; Lithuania; Latvia; Estonia; Uruguay; South Korea; Japan; Taiwan; French Guiana",
+						"score": 0.75
+					}, {
+						"text": "Sources first stage of production from one or more of these low risk countries: Australia; New Zealand; Canada; Sweden; Finland; Norway; Ireland; Iceland; Germany; Austria; Switzerland; Belgium; Netherlands; Denmark;",
+						"score": 1
+					}, {
+						"text": "No evidence of where first stage of production occurs",
+						"score": 0
+					}]
+				},
+				{
+					"text": "Which of the following multi-stakeholder initiatives is the brand involved in?",
+					"category_id": "labour",
+					"theme_id": "worker_policies",
+					"brand_size": "large",
+					"answers": [{
+						"text": "Business Social Compliance Initiative",
+						"score": 1
+					}, {
+						"text": "Ethical Trading Initiative",
+						"score": 1
+					}, {
+						"text": "Fair Wear Foundation",
+						"score": 1
+					}, {
+						"text": "Stop the Traffik - Traffik Free Protocol Responsible Sourcing Network",
+						"score": 1
+					}, {
+						"text": "World Fair Trade Organisation",
+						"score": 1
+					}, {
+						"text": "Bangladesh Fire and Safety Accord",
+						"score": 0.65
+					}, {
+						"text": "Business for Social Responsibility",
+						"score": 0.65
+					}, {
+						"text": "Child Labour Free",
+						"score": 0.65
+					}, {
+						"text": "Fair Labor Association",
+						"score": 0.65
+					}, {
+						"text": "Alliance for Bangladesh Worker Safety",
+						"score": 0.35
+					}, {
+						"text": "Better Cotton Initiative",
+						"score": 0.35
+					}, {
+						"text": "Ethical Fashion Forum",
+						"score": 0.35
+					}, {
+						"text": "End Human Trafficking Now! Campaign",
+						"score": 0.35
+					}, {
+						"text": "Global Social Compliance Program",
+						"score": 0.35
+					}, {
+						"text": "Institute for Human Rights in Business",
+						"score": 0.35
+					}, {
+						"text": "Uzbek Cotton Pledge",
+						"score": 0.35
+					}, {
+						"text": "No evidence of brand being part of a Multi-Stakeholder Initiative",
+						"score": 0
+					}]
+				},
+				{
+					"text": "Has the brand been involved in an animal rights scandal in the last 3 years?",
+					"category_id": "animal",
+					"theme_id": "rights",
+					"brand_size": "all",
+					"answers": [{
+							"text": "Brand has been involved in an animal rights scandal in the last 3 years without best practice remdiation and compensation ",
+							"score": -1
+						},
+						{
+							"text": "Brand has not been involved in an animal rights scandal in the last 3 years",
+							"score": 0
+						}
+					]
+				},
+				{
+					"text": "Which of the following does the brand do to be a strong advocate for animal protection?",
+					"category_id": "animal",
+					"theme_id": "rights",
+					"brand_size": "all",
+					"answers": [{
+							"text": "Gives to an animal cause",
+							"score": 0.5
+						},
+						{
+							"text": "Works with an animal NGO",
+							"score": 1
+						},
+						{
+							"text": "Campaigns on an animal issue",
+							"score": 1
+						},
+						{
+							"text": "No evidence that it is a strong advocate for animal protection",
+							"score": 0
+						}
+					]
+				},
+				{
+					"text": "Does the brand use any of the following animal materials: fur, angora, animal skin, animal hair, shearling or karakul?",
+					"category_id": "animal",
+					"theme_id": "skins",
+					"brand_size": "all",
+					"answers": [{
+						"text": "Uses fur",
+						"score": -0.10
+					}, {
+						"text": "Uses angora *",
+						"score": -0.10
+					}, {
+						"text": "Uses crocodile",
+						"score": -0.10
+					}, {
+						"text": "Uses snake",
+						"score": -0.10
+					}, {
+						"text": "Uses shearling",
+						"score": -0.05
+					}, {
+						"text": "Uses karakul",
+						"score": -0.10
+					}, {
+						"text": "Uses cashmere",
+						"score": -0.05
+					}, {
+						"text": "Uses mohair",
+						"score": -0.05
+					}, {
+						"text": "Uses alpaca",
+						"score": -0.05
+					}, {
+						"text": "Uses vicuna",
+						"score": -0.10
+					}, {
+						"text": "Uses shahtoosh",
+						"score": -0.10
+					}, {
+						"text": "Uses pashmina",
+						"score": -0.05
+					}, {
+						"text": "Uses llama",
+						"score": -0.05
+					}, {
+						"text": "No evidence it uses any of the above",
+						"score": 0
+					}, {
+						"text": "Silk - non specified",
+						"score": 0
+					}, {
+						"text": "Ahimsa (Peace) Silk",
+						"score": 0
+					}]
+				},
+				{
+					"text": "Does the brand use Caregora certified angora?",
+					"category_id": "animal",
+					"theme_id": "angora",
+					"brand_size": "all",
+					"answers": [{
+							"text": "Uses 100% Caregora certified angora",
+							"score": -0.05
+						},
+						{
+							"text": "No evdience it uses Caregora certified angora",
+							"score": -0.10
+						}
+					]
+				},
+				{
+					"text": "Does the brand use down? If so which of the following apply?",
+					"category_id": "animal",
+					"theme_id": "feathers",
+					"brand_size": "all",
+					"answers": [{
+							"text": "No evdience that it uses down",
+							"score": 0
+						},
+						{
+							"text": "Brand uses down feather 100% accredited by the Responsible Down Standard",
+							"score": -0.05
+						},
+						{
+							"text": "Brand uses down feather 100% accredited by the Global Traceable Down Standard",
+							"score": -0.05
+						},
+						{
+							"text": "Brand uses down feather 100% accredited by the Traceable Down Standard",
+							"score": -0.05
+						},
+						{
+							"text": "Uses down but no evidence that it uses down feather from any of the certifications above",
+							"score": -0.1
+						}
+					]
+				},
+				{
+					"text": "Does the brand use leather? If so which of these applies",
+					"category_id": "animal",
+					"theme_id": "leather",
+					"brand_size": "all",
+					"answers": [{
+						"text": "No evidence that it uses leather",
+						"score": 0.15
+					}, {
+						"text": "uses recycled leather in all of its leather products",
+						"score": 0.10
+					}, {
+						"text": "uses recycled leather in~50% of its leather products",
+						"score": 0.05
+					}, {
+						"text": "uses leather sourced from 100% suppliers who comply with Soil Association Organic Standards",
+						"score": 0.05
+					}, {
+						"text": "uses leather - there is no evidence it uses recycled leather or leather sourced from certified organic suppliers",
+						"score": 0
+					}]
+				},
+				{
+					"text": "Does the brand use wool? If so which of the following apply?",
+					"category_id": "animal",
+					"theme_id": "wool",
+					"brand_size": "all",
+					"answers": [{
+						"text": "No evidence that it uses wool ",
+						"score": 0.15
+					}, {
+						"text": "Uses wool 100% certified by the ZQ Merino label",
+						"score": 0.10
+					}, {
+						"text": "Uses wool 100% certified by the Soil Association Organic Standards",
+						"score": 0.10
+					}, {
+						"text": "Uses wool 100% certified by the National Wool Declaration Integrity Programme",
+						"score": 0.05
+					}, {
+						"text": "Uses wool 100% certified by the International Wool Textile Organization",
+						"score": 0.05
+					}, {
+						"text": "States that it sources wool from non-mulesed sheep",
+						"score": 0.10
+					}, {
+						"text": "No evidence that the brand sources wool from non-mulesed sheep ie (not compliant with any of the above standards and does not state that it does not use non-mulesed sheep)",
+						"score": 0
+					}]
+				},
+				{
+					"text": "Is the brand vegan?",
+					"category_id": "animal",
+					"theme_id": "rights",
+					"brand_size": "all",
+					"answers": [{
+						"text": "Is listed by PETA as vegan",
+						"score": 1
+					}, {
+						"text": "states that it's entire product range is vegan ",
+						"score": 1
+					}, {
+						"text": "No evdience that it uses animal products but does not mention being vegan Although the brand does not claim to be vegan there is no evidence it uses animal products",
+						"score": 0.80
+					}, {
+						"text": "Uses animal products",
+						"score": 0
+					}]
+				}
+			]
+		}
+	]
+}
