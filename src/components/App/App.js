@@ -45,7 +45,6 @@ class App extends Component {
             }
           </p>
             <Question></Question>
-            <Question></Question>
           </div>
           <Answer/>
         </div>
