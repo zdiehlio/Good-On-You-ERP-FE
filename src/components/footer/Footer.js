@@ -8,7 +8,7 @@ class Footer extends Component {
     return <div className="footer">
 
         <div className="footer-links">
-          <div className="footer-tm">&copy; 2017 GOY</div>
+          <div className="footer-tm">&copy; 2017 Good On You</div>
         </div>
 
     </div>

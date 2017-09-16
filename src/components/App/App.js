@@ -16,7 +16,7 @@ class App extends Component {
       data: {},
       answeredData: [{
         "issueNumber": 1.1,
-        "question": "1 - Which of the following standards systems is the brand compliant with?",
+        "question": "Which of the following standards systems is the brand compliant with?",
         "answers":
         [
           "Cradle to Cradle Platinum",
@@ -27,7 +27,7 @@ class App extends Component {
         "score": 100
       },{
         "issueNumber": 1.2,
-        "question": "2 - Which of the following standards systems is the brand compliant with?",
+        "question": "Which of the following standards systems is the brand compliant with?",
         "answers":
         [
           "Cradle to Cradle Platinum",
@@ -93,9 +93,8 @@ class App extends Component {
               handleSaveQuestion = {this.handleSaveQuestion}
               handleSelectionChange = {this.handleSelectionChange}
             ></Question>
-            {this.state.answeredData.map((answer) => {
-            return <Answer answeredItem={answer}/>
-          })}
+
+              {this.state.answeredData.map((answer) => <Answer answeredItem={answer}/>)}
             <Answer/>
           </div>
 
