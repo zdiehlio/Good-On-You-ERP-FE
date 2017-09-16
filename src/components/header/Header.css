@@ -1,0 +1,23 @@
+.header {
+  padding: .2em;
+  flex: 0 0 auto;
+  justify-content: center;
+  border-bottom: 1px solid #DEDEDE;
+  height: 3.5em;
+  background-color: #2D2D2F;
+}
+
+.headerContainer{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 600px) {
+
+  .headerContainer {
+    width: 80%;
+  }
+}

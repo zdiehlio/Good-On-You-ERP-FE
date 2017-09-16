@@ -3,13 +3,21 @@ import logo from './../../logo.svg';
 import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Question from './../Question/Question';
+import Header from  './../header/Header'
+import Footer from  './../footer/Footer'
+import Answer from './../answer/Answer';
 
 
 class App extends Component {
   render() {
     return (
-      <div className="flex">
-        <Question></Question>
+      <div>
+        <Header/>
+        <div className="App">
+          <Question></Question>
+          <Answer/>
+        </div>
+        <Footer/>
       </div>
     );
   }
