@@ -13,7 +13,30 @@ class App extends Component {
     super(props);
 
     this.state = {
-      data: {}
+      data: {},
+      answeredData: [{
+        "issueNumber": 1.1,
+        "question": "1 - Which of the following standards systems is the brand compliant with?",
+        "answers":
+        [
+          "Cradle to Cradle Platinum",
+          "Cradle to Cradle Gold",
+        ],
+        "appliesTo": "All",
+        "chooseAllThatApply": true,
+        "score": 100
+      },{
+        "issueNumber": 1.2,
+        "question": "2 - Which of the following standards systems is the brand compliant with?",
+        "answers":
+        [
+          "Cradle to Cradle Platinum",
+          "Cradle to Cradle Gold",
+        ],
+        "appliesTo": "All",
+        "chooseAllThatApply": true,
+        "score": 100
+      }]
     };
 
     // this.getData = this.getData.bind(this)
@@ -52,8 +75,12 @@ class App extends Component {
                 this.state.data[0] ? this.state.data[0].answers : []
               }
             ></Question>
+            {this.state.answeredData.map((answer) => {
+            return <Answer answeredItem={answer}/>
+          })}
+            <Answer/>
           </div>
-          <Answer/>
+
         </div>
         <Footer/>
       </div>
