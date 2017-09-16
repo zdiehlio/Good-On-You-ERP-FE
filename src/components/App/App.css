@@ -30,3 +30,9 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.flex {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
