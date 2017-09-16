@@ -1,19 +1,36 @@
 .header {
-  padding: .2em;
   flex: 0 0 auto;
   justify-content: center;
   border-bottom: 1px solid #DEDEDE;
-  height: 3.5em;
+  height: 4em;
   background-color: #2D2D2F;
 }
 
-.headerContainer{
+.header-container{
   width: 80%;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: .9rem;
   margin: 0 auto;
 }
+
+.logo-container{
+  width: 40%;
+  display: inline-block;
+}
+
+.logo-img{
+  height: 38px;
+  display: inline-block;
+}
+
+.logo-text{
+  height: 40px;
+  display: inline-block;
+  padding-left: .5em;
+}
+
+
 
 @media screen and (min-width: 600px) {
 
