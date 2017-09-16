@@ -37,7 +37,8 @@ class App extends Component {
         "chooseAllThatApply": true,
         "score": 100
       }],
-      currentQuestion: 0
+      currentQuestion: 0,
+      selected: false
     };
 
     // this.getData = this.getData.bind(this)
@@ -63,6 +64,13 @@ class App extends Component {
     })
   }
 
+  handleSelectionChange = (event) => {
+    console.log(event.target);
+    this.setState({
+      selected: !this.state.selected
+    })
+  }
+
   render() {
     return (
       <div>
@@ -83,6 +91,7 @@ class App extends Component {
               }
               currentQuestion = {this.state.currentQuestion}
               handleSaveQuestion = {this.handleSaveQuestion}
+              handleSelectionChange = {this.handleSelectionChange}
             ></Question>
             {this.state.answeredData.map((answer) => {
             return <Answer answeredItem={answer}/>

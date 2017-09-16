@@ -13,8 +13,8 @@ export default function Question(props) {
   //   <span><input type="checkbox" name="vehicle" value="Car"/>{element}</span>
   // })
 
-  var answers = props.answers.map((ele) =>
-    <span><input type="checkbox" name="vehicle" value="Car"/>{ele.text}</span>
+  var answers = props.answers.map((ele, i) =>
+    <span key={i}><input key={i} onChange={props.handleSelectionChange} type="checkbox" name="vehicle" value="Car"/>{ele.text}</span>
   )
     return (
       <div className="card">
