@@ -14,7 +14,9 @@ class App extends Component {
       <div>
         <Header/>
         <div className="App">
-          <Question></Question>
+          <div className="flex">
+            <Question></Question>
+          </div>
           <Answer/>
         </div>
         <Footer/>
