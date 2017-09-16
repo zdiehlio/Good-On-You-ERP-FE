@@ -14,7 +14,7 @@
 					"description": "How energy use is managed including direct emissions (company facilities and vehicles) and indirect emissions (purchased electricity, emissions generated from the supply chain beyond own operations)"
 				},
 				{
-					"theme_id": "chemical",
+					"theme_id": "chemicals",
 					"short_text": "Chemical use and disposal",
 					"description": "Chemical use and disposal, goals to reduce chemical use and alternatives such as vegetable based or water based dyes"
 				},
@@ -1260,16 +1260,6 @@
 					"score": 0.0
 				}
 			]
-		},
-		{
-			"text": "Does the brand sell items that include leather?",
-			"category_id": "chemicals",
-			"theme_id": "resource",
-			"brand_size": "all",
-			"answers": [{
-				"text": "Uses leather/Does not use leather",
-				"score": 0.0
-			}]
 		},
 		{
 			"text": "Which of the following does the brand do to avoid chromium and other chemicals in the leather tanning process?",

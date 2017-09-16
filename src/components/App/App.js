@@ -15,32 +15,13 @@ class App extends Component {
 
     this.state = {
       data: {},
-      answeredData: [{
-        "issueNumber": 1.1,
-        "question": "1 - Which of the following standards systems is the brand compliant with?",
-        "answers":
-        [
-          "Cradle to Cradle Platinum",
-          "Cradle to Cradle Gold",
-        ],
-        "appliesTo": "All",
-        "chooseAllThatApply": true,
-        "score": 100
-      },{
-        "issueNumber": 1.2,
-        "question": "2 - Which of the following standards systems is the brand compliant with?",
-        "answers":
-        [
-          "Cradle to Cradle Platinum",
-          "Cradle to Cradle Gold",
-        ],
-        "appliesTo": "All",
-        "chooseAllThatApply": true,
-        "score": 100
-      }],
+      answeredData: [[]],
       currentQuestion: 0,
       selected: [],
-      page: 0
+      page: 0,
+      mappedQuestions: [],
+      categories: [],
+      subPage: 0
     };
 
     // this.getData = this.getData.bind(this)
@@ -52,9 +33,29 @@ class App extends Component {
       .then(res => {
         this.setState({
           data: res.data.questions,
+          categories: res.data.categories,
           page: 1
-        });
+        })
+        this.mapQuestionTypes()
       })
+  }
+
+  mapQuestionTypes() {
+    var returnArray = []
+    this.state.categories.forEach((category) => {
+      category.themes.forEach((theme) => {
+        var temp = this.state.data.filter((question) => {
+          return question.category_id == category.category_id && theme.theme_id == question.theme_id
+        })
+        if (temp.length > 0) {
+          returnArray.push(temp)
+        }
+      })
+    })
+    this.setState({
+      mappedQuestions: returnArray
+    })
+    console.log(this.state.mappedQuestions);
   }
 
   componentWillMount(){
@@ -69,7 +70,7 @@ class App extends Component {
     })
     console.log(selectedAnswer);
 
-    answeredData.push({
+    answeredData[this.state.subPage].push({
       question: this.state.data[this.state.currentQuestion].text,
       answers: selectedAnswer
     })
@@ -78,6 +79,28 @@ class App extends Component {
       selected: [],
       currentQuestion: this.state.currentQuestion + 1
     })
+
+    var subPageTotal = 0
+    console.log(this.state.mappedQuestions[0].length);
+    for (var i = 0; i <= this.state.subPage; i++) {
+      subPageTotal += this.state.mappedQuestions[i].length
+    }
+    subPageTotal -=1
+    console.log(subPageTotal);
+    console.log(this.state.currentQuestion);
+
+    if (this.state.data.length-1 == this.state.currentQuestion) {
+      this.setState({
+        page: this.state.page += 1
+      })
+    } else if (subPageTotal <= this.state.currentQuestion) {
+      answeredData.push([])
+      this.setState({
+        subPage: this.state.subPage + 1,
+        answeredData: answeredData
+      })
+    }
+
   }
 
   handleSelectionChange = (event) => {
@@ -131,7 +154,7 @@ class App extends Component {
                 disabled = {this.state.selected.length == 0}
                 selected = {this.state.selected}
               ></Question>
-              {this.state.answeredData.map((answer) => {
+              {this.state.answeredData[this.state.subPage].map((answer) => {
               return <Answer answeredItem={answer}/>
             })}
               <Answer/>
@@ -141,6 +164,10 @@ class App extends Component {
           <Footer/>
         </div>
       )
+      case 2:
+        return(
+          <div>Finished</div>
+        )
       default:
         return (<div></div>)
     }
