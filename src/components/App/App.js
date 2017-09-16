@@ -8,7 +8,7 @@ import Question from './../Question/Question';
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="flex">
         <Question></Question>
       </div>
     );
