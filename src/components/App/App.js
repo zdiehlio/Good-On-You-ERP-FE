@@ -45,8 +45,9 @@ class App extends Component {
             }
           </p>
             <Question></Question>
-            <Answer/>
+            <Question></Question>
           </div>
+          <Answer/>
         </div>
         <Footer/>
       </div>
