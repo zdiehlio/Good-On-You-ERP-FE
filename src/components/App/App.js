@@ -36,7 +36,8 @@ class App extends Component {
         "appliesTo": "All",
         "chooseAllThatApply": true,
         "score": 100
-      }]
+      }],
+      currentQuestion: 0
     };
 
     // this.getData = this.getData.bind(this)
@@ -44,16 +45,22 @@ class App extends Component {
 
   getData() {
     // get data from JSON
-    axios.get("/questions.json")
+    axios.get("/spec.json")
       .then(res => {
         this.setState({
-          data: res.data
+          data: res.data.questions
         });
       })
   }
 
   componentWillMount(){
     this.getData();
+  }
+
+  handleSaveQuestion = () => {
+    this.setState({
+      currentQuestion: this.state.currentQuestion + 1
+    })
   }
 
   render() {
@@ -69,11 +76,13 @@ class App extends Component {
           </p>
             <Question
               question={
-                this.state.data[0] ? this.state.data[0].question : "null"
+                this.state.data[0] ? this.state.data[this.state.currentQuestion].text : "null"
               }
               answers={
-                this.state.data[0] ? this.state.data[0].answers : []
+                this.state.data[0] ? this.state.data[this.state.currentQuestion].answers : []
               }
+              currentQuestion = {this.state.currentQuestion}
+              handleSaveQuestion = {this.handleSaveQuestion}
             ></Question>
             {this.state.answeredData.map((answer) => {
             return <Answer answeredItem={answer}/>
