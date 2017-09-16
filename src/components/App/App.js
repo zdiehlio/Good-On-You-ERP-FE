@@ -5,6 +5,7 @@ import Question from './../Question/Question';
 import Header from  './../header/Header'
 import Footer from  './../footer/Footer'
 import Answer from './../answer/Answer';
+import ProgressBar from './../ProgressBar/ProgressBar'
 
 
 class App extends Component {
@@ -16,7 +17,7 @@ class App extends Component {
       data: {},
       answeredData: [{
         "issueNumber": 1.1,
-        "question": "Which of the following standards systems is the brand compliant with?",
+        "question": "1 - Which of the following standards systems is the brand compliant with?",
         "answers":
         [
           "Cradle to Cradle Platinum",
@@ -27,7 +28,7 @@ class App extends Component {
         "score": 100
       },{
         "issueNumber": 1.2,
-        "question": "Which of the following standards systems is the brand compliant with?",
+        "question": "2 - Which of the following standards systems is the brand compliant with?",
         "answers":
         [
           "Cradle to Cradle Platinum",
@@ -38,7 +39,8 @@ class App extends Component {
         "score": 100
       }],
       currentQuestion: 0,
-      selected: false
+      selected: [],
+      page: 0
     };
 
     // this.getData = this.getData.bind(this)
@@ -49,7 +51,8 @@ class App extends Component {
     axios.get("/spec.json")
       .then(res => {
         this.setState({
-          data: res.data.questions
+          data: res.data.questions,
+          page: 1
         });
       })
   }
@@ -59,49 +62,97 @@ class App extends Component {
   }
 
   handleSaveQuestion = () => {
+    var answeredData = this.state.answeredData
+    var selectedAnswer = []
+    this.state.selected.forEach((element) => {
+      selectedAnswer.push(this.state.data[this.state.currentQuestion].answers[element].text)
+    })
+    console.log(selectedAnswer);
+
+    answeredData.push({
+      question: this.state.data[this.state.currentQuestion].text,
+      answers: selectedAnswer
+    })
     this.setState({
+      answeredData: answeredData,
+      selected: [],
       currentQuestion: this.state.currentQuestion + 1
     })
   }
 
   handleSelectionChange = (event) => {
-    console.log(event.target);
-    this.setState({
-      selected: !this.state.selected
-    })
+
+    if (!event.target.checked) {
+      var stateCopy = this.state.selected
+      stateCopy.splice(this.state.selected.indexOf(event.target.name),1)
+      this.setState({
+        selected: stateCopy
+      })
+    } else {
+      var stateCopy = this.state.selected
+      stateCopy.push(event.target.name)
+      this.setState({
+        selected: stateCopy
+      })
+    }
+  }
+
+  renderPage = () => {
+    switch (this.state.page) {
+      case 0:
+      return(
+        <h2>Loading...</h2>
+      )
+      case 1:
+      return (
+        <div>
+          <div className="container-body">
+            <div className="App">
+            <h2 className="category-text">
+              {
+                `${this.state.data[this.state.currentQuestion].category_id} > ${this.state.data[this.state.currentQuestion].theme_id}`
+              }
+            </h2>
+              <ProgressBar
+                total = {this.state.data.length}
+                currentQuestion = {this.state.currentQuestion}
+
+              />
+              <Question
+                question={
+                  this.state.data[this.state.currentQuestion].text
+                }
+                answers={
+                 this.state.data[this.state.currentQuestion].answers
+                }
+                currentQuestion = {this.state.currentQuestion}
+                handleSaveQuestion = {this.handleSaveQuestion}
+                handleSelectionChange = {this.handleSelectionChange}
+                disabled = {this.state.selected.length == 0}
+                selected = {this.state.selected}
+              ></Question>
+              {this.state.answeredData.map((answer) => {
+              return <Answer answeredItem={answer}/>
+            })}
+              <Answer/>
+            </div>
+
+          </div>
+          <Footer/>
+        </div>
+      )
+      default:
+        return (<div></div>)
+    }
   }
 
   render() {
     return (
       <div>
         <Header/>
-        <div className="container-body">
-          <div className="App">
-          <p>
-            {
-              this.state.data[0] ? console.log(this.state.data[0].answers) : console.log("no")
-            }
-          </p>
-            <Question
-              question={
-                this.state.data[0] ? this.state.data[this.state.currentQuestion].text : "null"
-              }
-              answers={
-                this.state.data[0] ? this.state.data[this.state.currentQuestion].answers : []
-              }
-              currentQuestion = {this.state.currentQuestion}
-              handleSaveQuestion = {this.handleSaveQuestion}
-              handleSelectionChange = {this.handleSelectionChange}
-            ></Question>
-
-              {this.state.answeredData.map((answer) => <Answer answeredItem={answer}/>)}
-            <Answer/>
-          </div>
-
-        </div>
-        <Footer/>
+          {this.renderPage()}
       </div>
-    );
+    )
   }
 }
 

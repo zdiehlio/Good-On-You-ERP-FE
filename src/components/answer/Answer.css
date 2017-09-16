@@ -3,6 +3,7 @@
     display: block;
     border-bottom: 1px solid #09b5ab;
     padding-bottom: .5rem;
+    width: 600px;
 }
 
 .editButton {

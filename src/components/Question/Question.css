@@ -37,3 +37,7 @@
     cursor: pointer;
     width: 100%
 }
+
+.button:disabled {
+  background-color: #666666;
+}
