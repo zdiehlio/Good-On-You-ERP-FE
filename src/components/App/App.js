@@ -71,6 +71,7 @@ class App extends Component {
     })
     console.log(selectedAnswer);
 
+    // subpage corresponds to chemicals, water, worker_policies
     answeredData[this.state.subPage].push({
       question: this.state.data[this.state.currentQuestion].text,
       answers: selectedAnswer
