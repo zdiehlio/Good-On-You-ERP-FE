@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
 import axios from 'axios'
-import Question from './../Question/Question';
+import Question from './../Question/Question'
 import Header from  './../header/Header'
 import Footer from  './../footer/Footer'
 import Answer from './../answer/Answer';
 import ProgressBar from './../ProgressBar/ProgressBar'
-
+import Summary from './../summary/Summary'
 
 class App extends Component {
 
@@ -139,7 +139,6 @@ class App extends Component {
               <ProgressBar
                 total = {this.state.data.length}
                 currentQuestion = {this.state.currentQuestion}
-
               />
               <Question
                 question={
@@ -159,14 +158,13 @@ class App extends Component {
             })}
               <Answer/>
             </div>
-
           </div>
           <Footer/>
         </div>
       )
       case 2:
         return(
-          <div>Finished</div>
+          <div><Summary/></div>
         )
       default:
         return (<div></div>)
