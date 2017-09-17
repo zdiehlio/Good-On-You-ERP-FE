@@ -143,6 +143,7 @@ class App extends Component {
                 total = {this.state.data.length}
                 currentQuestion = {this.state.currentQuestion}
                 desc = "Total"
+                color = "green"
               />
               <ProgressBar
                 total = {this.state.mappedQuestions[this.state.subPage].length}
