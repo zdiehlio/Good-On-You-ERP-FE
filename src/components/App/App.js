@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
 import axios from 'axios'
-import Question from './../Question/Question';
+import Question from './../Question/Question'
 import Header from  './../header/Header'
 import Footer from  './../footer/Footer'
-import Answer from './../answer/Answer';
+import Answer from './../answer/Answer'
+import Summary from './../summary/Summary'
 
 
 class App extends Component {
@@ -96,7 +97,9 @@ class App extends Component {
 
               {this.state.answeredData.map((answer) => <Answer answeredItem={answer}/>)}
             <Answer/>
+            <Summary/>
           </div>
+
 
         </div>
         <Footer/>

@@ -1,0 +1,9 @@
+.summary {
+}
+
+.summary-container{
+  padding: 2px 16px;
+  display: block;
+  border-bottom: 1px solid #09b5ab;
+  padding-bottom: .5rem;
+}
