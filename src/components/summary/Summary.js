@@ -1,106 +1,101 @@
 import React, { Component } from 'react'
-import {Card} from 'material-ui/Card';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {teal900} from 'material-ui/styles/colors';
 import './Summary.css';
 
-const muiTheme = getMuiTheme({
-  palette: {
-    textColor: teal900
-  }
-});
-
 class Summary extends Component {
-
   render() {
-    return <div className="summary">
-      <div className="summary-container">
-        <MuiThemeProvider muiTheme={muiTheme}>
-          <Card>
-            <p>Summary</p>
-            <p>NIKE</p>
-            <tr>
-        <th colspan="2">
-          <b>Total Fat</b>
-          14g
-        </th>
-        <td>
-          <b>22%</b>
-        </td>
-      </tr>
-      <tr>
-        <td class="blank-cell">
-        </td>
-        <th>
-          Saturated Fat
-          9g
-        </th>
-        <td>
-          <b>22%</b>
-        </td>
-      </tr>
-      <tr>
-        <td class="blank-cell">
-        </td>
-        <th>
-          Trans Fat
-          0g
-        </th>
-        <td>
-        </td>
-      </tr>
-      <tr>
-        <th colspan="2">
-          <b>Cholesterol</b>
-          55mg
-        </th>
-        <td>
-          <b>18%</b>
-        </td>
-      </tr>
-      <tr>
-        <th colspan="2">
-          <b>Sodium</b>
-          40mg
-        </th>
-        <td>
-          <b>2%</b>
-        </td>
-      </tr>
-      <tr>
-        <th colspan="2">
-          <b>Total Carbohydrate</b>
-          17g
-        </th>
-        <td>
-          <b>6%</b>
-        </td>
-      </tr>
-      <tr>
-        <td class="blank-cell">
-        </td>
-        <th>
-          Dietary Fiber
-          1g
-        </th>
-        <td>
-          <b>4%</b>
-        </td>
-      </tr>
-      <tr>
-        <td class="blank-cell">
-        </td>
-        <th>
-          Sugars
-          14g
-        </th>
-        <td>
-        </td>
-      </tr>
+    return <div className="summary-container">
+    <div className="summary-card">
+        <p className="overall">Overall 18</p>
+        <p>NIKE</p>
 
-          </Card>
-        </MuiThemeProvider>
+        <div class="container">
+        <table class="responsive-table">
+          <caption>Summary</caption>
+          <thead>
+            <tr>
+              <th scope="col">Category</th>
+              <th scope="col">Theme</th>
+              <th scope="col">Score</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <th scope="row">Environment</th>
+              <td data-title="Theme"></td>
+              <td data-title="Score" className="center"></td>
+              <td data-title="Total" className="center">17</td>
+            </tr>
+            <tr>
+              <th scope="row"> </th>
+              <td data-title="Theme">Resource</td>
+              <td data-title="Score" className="center">15/25</td>
+              <td data-title="Total" className="center"></td>
+            </tr>
+            <tr>
+              <th scope="row"> </th>
+              <td data-title="Theme">Energy</td>
+              <td data-title="Score" className="center">16/25</td>
+              <td data-title="Total" className="center"></td>
+            </tr>
+            <tr>
+              <th scope="row"> </th>
+              <td data-title="Theme">Chemicals</td>
+              <td data-title="Score" className="center">17/25</td>
+              <td data-title="Total" className="center"></td>
+            </tr>
+            <tr>
+              <th scope="row"> </th>
+              <td data-title="Theme">Water</td>
+              <td data-title="Score" className="center">20/25</td>
+              <td data-title="Total" className="center"></td>
+            </tr>
+            <tr>
+              <th scope="row">Labour</th>
+              <td data-title="Theme"></td>
+              <td data-title="Score" className="center"></td>
+              <td data-title="Total" className="center">19</td>
+            </tr>
+            <tr>
+              <th scope="row"> </th>
+              <td data-title="Theme">Worker Policies</td>
+              <td data-title="Score" className="center">5/25</td>
+              <td data-title="Total" className="center"></td>
+            </tr>
+            <tr>
+              <th scope="row"> </th>
+              <td data-title="Theme">Wages</td>
+              <td data-title="Score" className="center">25/25</td>
+              <td data-title="Total" className="center"></td>
+            </tr>
+            <tr>
+              <th scope="row"> </th>
+              <td data-title="Theme">Suppliers</td>
+              <td data-title="Score" className="center">10/25</td>
+              <td data-title="Total" className="center"></td>
+            </tr>
+            <tr>
+              <th scope="row"> </th>
+              <td data-title="Theme">Practices</td>
+              <td data-title="Score" className="center">20/25</td>
+              <td data-title="Total" className="center"></td>
+            </tr>
+            <tr>
+              <th scope="row">Animal</th>
+              <td data-title="Theme"> </td>
+              <td data-title="Score" className="center"></td>
+              <td data-title="Total" className="center">16</td>
+            </tr>
+            <tr>
+              <th scope="row"> </th>
+              <td data-title="Theme">Rights</td>
+              <td data-title="Score" className="center">5/5</td>
+              <td data-title="Total" className="center"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       </div>
     </div>
   }
