@@ -21,7 +21,8 @@ class App extends Component {
       page: 0,
       mappedQuestions: [],
       categories: [],
-      subPage: 0
+      subPage: 0,
+      subPageTotal: 0
     };
 
     // this.getData = this.getData.bind(this)
@@ -33,8 +34,7 @@ class App extends Component {
       .then(res => {
         this.setState({
           data: res.data.questions,
-          categories: res.data.categories,
-          page: 1
+          categories: res.data.categories
         })
         this.mapQuestionTypes()
       })
@@ -53,7 +53,8 @@ class App extends Component {
       })
     })
     this.setState({
-      mappedQuestions: returnArray
+      mappedQuestions: returnArray,
+      page: 1
     })
     console.log(this.state.mappedQuestions);
   }
@@ -98,9 +99,11 @@ class App extends Component {
       answeredData.push([])
       this.setState({
         subPage: this.state.subPage + 1,
-        answeredData: answeredData
+        answeredData: answeredData,
+        subPageTotal: subPageTotal
       })
     }
+    console.log(this.state.subPageTotal);
 
   }
 
@@ -140,6 +143,14 @@ class App extends Component {
               <ProgressBar
                 total = {this.state.data.length}
                 currentQuestion = {this.state.currentQuestion}
+                desc = "Total"
+                color = "green"
+              />
+              <ProgressBar
+                total = {this.state.mappedQuestions[this.state.subPage].length}
+                currentQuestion = {this.state.currentQuestion - this.state.subPageTotal}
+                desc = "Current"
+
               />
               <Question
                 question={
