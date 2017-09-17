@@ -26,14 +26,8 @@ export default function Question(props) {
     alignSelf: "flex-end"
   }
 
-  var a = [1,2,3]
-
-  // var answers = props.answers.map(function(element,i) {
-  //   <span><input type="checkbox" name="vehicle" value="Car"/>{element}</span>
-  // })
-
   var answers = props.answers.map((ele, i) =>
-    // <span key={i}><input key={i} onChange={props.handleSelectionChange} type="checkbox" name="vehicle" value="Car"/>{ele.text}</span>
+    // <span key={`q${props.currentQuestion}-res${i}`}><input onChange={props.handleSelectionChange} type="checkbox" name={i} value={false}/>{ele.text}</span>
 
     <span key={`q${props.currentQuestion}-res${i}`}>
       <MuiThemeProvider muiTheme={muiTheme}>
@@ -41,6 +35,7 @@ export default function Question(props) {
               label={ele.text}
               onCheck={props.handleSelectionChange}
               style={styles.checkbox}
+              name={i}
             />
       </MuiThemeProvider>
     </span>
@@ -51,7 +46,7 @@ export default function Question(props) {
           <h4>{props.question}</h4>
             <div className="answer-container">
               {answers}
-              <span><input onClick={props.handleSaveQuestion} className="button" type="submit" value="Save" style={style}/></span>
+              <span><input onClick={props.handleSaveQuestion} className="button" type="submit" value="Save" style={style} disabled={props.disabled}/></span>
             </div>
         </div>
       </div>

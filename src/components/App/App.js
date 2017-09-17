@@ -4,9 +4,9 @@ import axios from 'axios'
 import Question from './../Question/Question'
 import Header from  './../header/Header'
 import Footer from  './../footer/Footer'
-import Answer from './../answer/Answer'
+import Answer from './../answer/Answer';
+import ProgressBar from './../ProgressBar/ProgressBar'
 import Summary from './../summary/Summary'
-
 
 class App extends Component {
 
@@ -15,31 +15,13 @@ class App extends Component {
 
     this.state = {
       data: {},
-      answeredData: [{
-        "issueNumber": 1.1,
-        "question": "Which of the following standards systems is the brand compliant with?",
-        "answers":
-        [
-          "Cradle to Cradle Platinum",
-          "Cradle to Cradle Gold",
-        ],
-        "appliesTo": "All",
-        "chooseAllThatApply": true,
-        "score": 100
-      },{
-        "issueNumber": 1.2,
-        "question": "Which of the following standards systems is the brand compliant with?",
-        "answers":
-        [
-          "Cradle to Cradle Platinum",
-          "Cradle to Cradle Gold",
-        ],
-        "appliesTo": "All",
-        "chooseAllThatApply": true,
-        "score": 100
-      }],
+      answeredData: [[]],
       currentQuestion: 0,
-      selected: false
+      selected: [],
+      page: 0,
+      mappedQuestions: [],
+      categories: [],
+      subPage: 0
     };
 
     // this.getData = this.getData.bind(this)
@@ -50,9 +32,30 @@ class App extends Component {
     axios.get("/spec.json")
       .then(res => {
         this.setState({
-          data: res.data.questions
-        });
+          data: res.data.questions,
+          categories: res.data.categories,
+          page: 1
+        })
+        this.mapQuestionTypes()
       })
+  }
+
+  mapQuestionTypes() {
+    var returnArray = []
+    this.state.categories.forEach((category) => {
+      category.themes.forEach((theme) => {
+        var temp = this.state.data.filter((question) => {
+          return question.category_id == category.category_id && theme.theme_id == question.theme_id
+        })
+        if (temp.length > 0) {
+          returnArray.push(temp)
+        }
+      })
+    })
+    this.setState({
+      mappedQuestions: returnArray
+    })
+    console.log(this.state.mappedQuestions);
   }
 
   componentWillMount(){
@@ -60,51 +63,121 @@ class App extends Component {
   }
 
   handleSaveQuestion = () => {
+    var answeredData = this.state.answeredData
+    var selectedAnswer = []
+    this.state.selected.forEach((element) => {
+      selectedAnswer.push(this.state.data[this.state.currentQuestion].answers[element].text)
+    })
+    console.log(selectedAnswer);
+
+    answeredData[this.state.subPage].push({
+      question: this.state.data[this.state.currentQuestion].text,
+      answers: selectedAnswer
+    })
     this.setState({
+      answeredData: answeredData,
+      selected: [],
       currentQuestion: this.state.currentQuestion + 1
     })
+
+    var subPageTotal = 0
+    console.log(this.state.mappedQuestions[0].length);
+    for (var i = 0; i <= this.state.subPage; i++) {
+      subPageTotal += this.state.mappedQuestions[i].length
+    }
+    subPageTotal -=1
+    console.log(subPageTotal);
+    console.log(this.state.currentQuestion);
+
+    if (this.state.data.length-1 == this.state.currentQuestion) {
+      this.setState({
+        page: this.state.page += 1
+      })
+    } else if (subPageTotal <= this.state.currentQuestion) {
+      answeredData.push([])
+      this.setState({
+        subPage: this.state.subPage + 1,
+        answeredData: answeredData
+      })
+    }
+
   }
 
   handleSelectionChange = (event) => {
-    console.log(event.target);
-    this.setState({
-      selected: !this.state.selected
-    })
+
+    if (!event.target.checked) {
+      var stateCopy = this.state.selected
+      stateCopy.splice(this.state.selected.indexOf(event.target.name),1)
+      this.setState({
+        selected: stateCopy
+      })
+    } else {
+      var stateCopy = this.state.selected
+      stateCopy.push(event.target.name)
+      this.setState({
+        selected: stateCopy
+      })
+    }
+  }
+
+  renderPage = () => {
+    switch (this.state.page) {
+      case 0:
+      return(
+        <h2>Loading...</h2>
+      )
+      case 1:
+      return (
+        <div>
+          <div className="container-body">
+            <div className="App">
+            <h2 className="category-text">
+              {
+                `${this.state.data[this.state.currentQuestion].category_id} > ${this.state.data[this.state.currentQuestion].theme_id}`
+              }
+            </h2>
+              <ProgressBar
+                total = {this.state.data.length}
+                currentQuestion = {this.state.currentQuestion}
+              />
+              <Question
+                question={
+                  this.state.data[this.state.currentQuestion].text
+                }
+                answers={
+                 this.state.data[this.state.currentQuestion].answers
+                }
+                currentQuestion = {this.state.currentQuestion}
+                handleSaveQuestion = {this.handleSaveQuestion}
+                handleSelectionChange = {this.handleSelectionChange}
+                disabled = {this.state.selected.length == 0}
+                selected = {this.state.selected}
+              ></Question>
+              {this.state.answeredData[this.state.subPage].map((answer) => {
+              return <Answer answeredItem={answer}/>
+            })}
+              <Answer/>
+            </div>
+          </div>
+          <Footer/>
+        </div>
+      )
+      case 2:
+        return(
+          <div><Summary/></div>
+        )
+      default:
+        return (<div></div>)
+    }
   }
 
   render() {
     return (
       <div>
         <Header/>
-        <div className="container-body">
-          <div className="App">
-          <p>
-            {
-              this.state.data[0] ? console.log(this.state.data[0].answers) : console.log("no")
-            }
-          </p>
-            <Question
-              question={
-                this.state.data[0] ? this.state.data[this.state.currentQuestion].text : "null"
-              }
-              answers={
-                this.state.data[0] ? this.state.data[this.state.currentQuestion].answers : []
-              }
-              currentQuestion = {this.state.currentQuestion}
-              handleSaveQuestion = {this.handleSaveQuestion}
-              handleSelectionChange = {this.handleSelectionChange}
-            ></Question>
-
-              {this.state.answeredData.map((answer) => <Answer answeredItem={answer}/>)}
-            <Answer/>
-            <Summary/>
-          </div>
-
-
-        </div>
-        <Footer/>
+          {this.renderPage()}
       </div>
-    );
+    )
   }
 }
 

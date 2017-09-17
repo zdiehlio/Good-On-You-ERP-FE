@@ -14,7 +14,7 @@
 					"description": "How energy use is managed including direct emissions (company facilities and vehicles) and indirect emissions (purchased electricity, emissions generated from the supply chain beyond own operations)"
 				},
 				{
-					"theme_id": "chemical",
+					"theme_id": "chemicals",
 					"short_text": "Chemical use and disposal",
 					"description": "Chemical use and disposal, goals to reduce chemical use and alternatives such as vegetable based or water based dyes"
 				},
@@ -1260,16 +1260,6 @@
 					"score": 0.0
 				}
 			]
-		},
-		{
-			"text": "Does the brand sell items that include leather?",
-			"category_id": "chemicals",
-			"theme_id": "resource",
-			"brand_size": "all",
-			"answers": [{
-				"text": "Uses leather/Does not use leather",
-				"score": 0.0
-			}]
 		},
 		{
 			"text": "Which of the following does the brand do to avoid chromium and other chemicals in the leather tanning process?",
@@ -3165,6 +3155,1673 @@
 						"text": "No evidence of brand being part of a Multi-Stakeholder Initiative",
 						"score": 0
 					}]
+				},
+				{
+					"text": "Has the brand adopted a living wage definition that matches the following definition",
+					"category_id": "labour",
+					"theme_id": "wages",
+					"brand_size": "large",
+					"answers": [{
+							"text": "Has adopted a living wage definition that matches our definitio ",
+							"score": 1
+						},
+						{
+							"text": "Has adopted a living wage definition however it doesn't match our definition",
+							"score": 0
+						},
+						{
+							"text": "Mentions a living wage however does not offer its definition",
+							"score": 0
+						},
+						{
+							"text": "Does not mention a living wage",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Fair Trade Textile Standard",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Hired Labour",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Social Accountability International - SA8000",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by STeP by OEKO-TEX ®",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fair Trade USA",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by WFTO Guarantee System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fair Wear Foundation",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by International Labour Organization Labour Standards",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Ethical Trading Initiative - ETI",
+							"score": 1
+						},
+						{
+							"text": "Is an ETI member",
+							"score": 1
+						}
+					]
+				},
+				{
+					"text": "Which of the following does the brand do in regards to paying a living wage?",
+					"category_id": "labour",
+					"theme_id": "wages",
+					"brand_size": "large",
+					"answers": [{
+							"text": "Pays a living wage to ~50% of final stage of production",
+							"score": 0.5
+						},
+						{
+							"text": "Pays a living wage to all of final stage of production",
+							"score": 1
+						},
+						{
+							"text": "Pays a living wage to ~50% of its second stage of production",
+							"score": 0.5
+						},
+						{
+							"text": "Pays a living wage to all of second stage of production",
+							"score": 1
+						},
+						{
+							"text": "Pays a living wage to ~50% of its first stage of production",
+							"score": 0.5
+						},
+						{
+							"text": "Pays a living wage to all of its first stage of production",
+							"score": 1
+						},
+						{
+							"text": "Pays a living wage to some of it supply chain but does not specify which stage of the supply chain",
+							"score": 0.5
+						},
+						{
+							"text": "Has a project to improve wages in a part of its supply chain",
+							"score": 0.5
+						},
+						{
+							"text": "Does not pay a living wage at any stage of the supply chain",
+							"score": 0
+						},
+						{
+							"text": "states it provides a living wage payment throughout supply chain",
+							"score": 0
+						},
+						{
+							"text": "states it provides living wage payment for final stage of production",
+							"score": 0
+						},
+						{
+							"text": "has adopted a widely accepted definition of a living wage",
+							"score": 0
+						},
+						{
+							"text": "Made in-house by the owner and small team",
+							"score": 0
+						},
+						{
+							"text": "Scores full marks for 'positive labour conditions'",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Fair Trade Textile Standard",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Hired Labour",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Social Accountability International - SA8000",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by STeP by OEKO-TEX ®",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+							"score": 0.35
+						}
+					]
+				},
+				{
+					"text": "Which of the following does the brand do in regards to paying a living wage?",
+					"category_id": "labour",
+					"theme_id": "wages",
+					"brand_size": "small",
+					"answers": [{
+							"text": "Pays a living wage to ~50% of final stage of production",
+							"score": 0.5
+						},
+						{
+							"text": "Pays a living wage to all of final stage of production",
+							"score": 1
+						},
+						{
+							"text": "Pays a living wage to ~50% of its second stage of production",
+							"score": 0.5
+						},
+						{
+							"text": "Pays a living wage to all of second stage of production",
+							"score": 1
+						},
+						{
+							"text": "Pays a living wage to ~50% of its first stage of production",
+							"score": 0.5
+						},
+						{
+							"text": "Pays a living wage to all of its first stage of production",
+							"score": 1
+						},
+						{
+							"text": "Pays a living wage to some of it supply chain but does not specify which stage of the supply chain",
+							"score": 0.5
+						},
+						{
+							"text": "Has a project to improve wages in a part of its supply chain",
+							"score": 0.5
+						},
+						{
+							"text": "Does not pay a living wage at any stage of the supply chain",
+							"score": 1
+						},
+						{
+							"text": "states it provides a living wage payment throughout supply chain",
+							"score": 0.75
+						},
+						{
+							"text": "states it provides living wage payment for final stage of production",
+							"score": 0.2
+						},
+						{
+							"text": "has adopted a widely accepted definition of a living wage",
+							"score": 0.75
+						},
+						{
+							"text": "Made in-house by the owner and small team",
+							"score": 0.5
+						},
+						{
+							"text": "Scores full marks for 'positive labour conditions'",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Fair Trade Textile Standard",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Hired Labour",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Social Accountability International - SA8000",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by STeP by OEKO-TEX ®",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+							"score": 0.35
+						}
+					]
+				},
+				{
+					"text": "Which of the following stages of the supply chain does the brand state that it has traced?",
+					"category_id": "labour",
+					"theme_id": "suppliers",
+					"brand_size": "large",
+					"answers": [{
+							"text": "~50% of final stage of production",
+							"score": 0.25
+						},
+						{
+							"text": "All of final stage of production",
+							"score": 0.5
+						},
+						{
+							"text": "~50% of second stage of production",
+							"score": 0.2
+						},
+						{
+							"text": "All of second stage of production",
+							"score": 0.35
+						},
+						{
+							"text": "~50% of first stage of production",
+							"score": 0.1
+						},
+						{
+							"text": "All of first stage of production",
+							"score": 0.15
+						},
+						{
+							"text": "Has traced subcontractors",
+							"score": 0.1
+						},
+						{
+							"text": "No evidence that it has traced any of its supply chain",
+							"score": 1
+						},
+						{
+							"text": "Visits all of its final stage of production suppliers on a regular basis (at least bi-annually)",
+							"score": 0
+						},
+						{
+							"text": "Works directly with suppliers from final stage of production",
+							"score": 0
+						},
+						{
+							"text": "States that it knows all of its suppliers at final stage of production",
+							"score": 0
+						},
+						{
+							"text": "States it knows all of its suppliers for final stage and input stages",
+							"score": 0
+						},
+						{
+							"text": "States it knows all of its suppliers for final stage and raw material stages",
+							"score": 0
+						},
+						{
+							"text": "States it knows all of its suppliers at all stages of production ",
+							"score": 0
+						},
+						{
+							"text": "Made in-house by the owner and small team",
+							"score": 0
+						},
+						{
+							"text": "Scores full marks for 'positive labour condition'",
+							"score": 0
+						},
+						{
+							"text": "100% of final stage of production made in low/medium risk countries",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Fair Trade Textile Standard",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Hired Labour",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Social Accountability International - SA8000",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+							"score": 0.65
+						},
+						{
+							"text": "FLA Workplace Code of Conduct",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by STeP by OEKO-TEX ®",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fair Trade USA",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by WFTO Guarantee System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fair Wear Foundation",
+							"score": 1
+						},
+						{
+							"text": "Bluesign System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Better Cotton Initiative",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Ethical Trading Initiative - ETI",
+							"score": 0
+						}
+					]
+				},
+				{
+					"text": "Which of the following stages of the supply chain does the brand state that it has traced?",
+					"category_id": "labour",
+					"theme_id": "suppliers",
+					"brand_size": "small",
+					"answers": [{
+							"text": "~50% of final stage of production",
+							"score": 0.25
+						},
+						{
+							"text": "All of final stage of production",
+							"score": 0.5
+						},
+						{
+							"text": "~50% of second stage of production",
+							"score": 0.2
+						},
+						{
+							"text": "All of second stage of production",
+							"score": 0.35
+						},
+						{
+							"text": "~50% of first stage of production",
+							"score": 0.1
+						},
+						{
+							"text": "All of first stage of production",
+							"score": 0.15
+						},
+						{
+							"text": "Has traced subcontractors",
+							"score": 0.1
+						},
+						{
+							"text": "No evidence that it has traced any of its supply chain",
+							"score": 1
+						},
+						{
+							"text": "Visits all of its final stage of production suppliers on a regular basis (at least bi-annually)",
+							"score": 0.75
+						},
+						{
+							"text": "Works directly with suppliers from final stage of production",
+							"score": 0.75
+						},
+						{
+							"text": "States that it knows all of its suppliers at final stage of production",
+							"score": 0.75
+						},
+						{
+							"text": "States it knows all of its suppliers for final stage and input stages",
+							"score": 1
+						},
+						{
+							"text": "States it knows all of its suppliers for final stage and raw material stages",
+							"score": 1
+						},
+						{
+							"text": "States it knows all of its suppliers at all stages of production ",
+							"score": 1
+						},
+						{
+							"text": "Made in-house by the owner and small team",
+							"score": 0.75
+						},
+						{
+							"text": "Scores full marks for 'positive labour condition'",
+							"score": 0.75
+						},
+						{
+							"text": "100% of final stage of production made in low/medium risk countries",
+							"score": 0.75
+						},
+						{
+							"text": "Is fully certified by Fair Trade Textile Standard",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Hired Labour",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Social Accountability International - SA8000",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+							"score": 0.65
+						},
+						{
+							"text": "FLA Workplace Code of Conduct",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by STeP by OEKO-TEX ®",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fair Trade USA",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by WFTO Guarantee System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fair Wear Foundation",
+							"score": 1
+						},
+						{
+							"text": "Bluesign System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Better Cotton Initiative",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Ethical Trading Initiative - ETI",
+							"score": 0
+						}
+					]
+				},
+				{
+					"text": "Does the brand publicly list the countries of its suppliers?",
+					"category_id": "labour",
+					"theme_id": "suppliers",
+					"brand_size": "all",
+					"answers": [{
+							"text": "Lists countries for suppliers from final stage of production",
+							"score": 0.5
+						},
+						{
+							"text": "Lists countries for suppliers from second stage of production",
+							"score": 0.35
+						},
+						{
+							"text": "Lists countries for suppliers from first stage of production",
+							"score": 0.15
+						},
+						{
+							"text": "Lists countries however unsure which part of the supply chain it relates to",
+							"score": 0.4
+						},
+						{
+							"text": "No evidence of listing countries for any of its supplier",
+							"score": 0
+						}
+					]
+				},
+				{
+					"text": "Does the brand publicly list the names and addresses of its suppliers?",
+					"category_id": "labour",
+					"theme_id": "suppliers",
+					"brand_size": "all",
+					"answers": [{
+							"text": "Lists names and/or addresses for suppliers from final stage of production",
+							"score": 0.5
+						},
+						{
+							"text": "Lists names and/or addresses for suppliers from second stage of production",
+							"score": 0.35
+						},
+						{
+							"text": "Lists names and/or addresses for suppliers from first stage of production",
+							"score": 0.15
+						},
+						{
+							"text": "Lists names and/or addresses however unsure which part of the supply chain it relates to",
+							"score": 0.4
+						},
+						{
+							"text": "No evidence of listing names and/or addresses for any of its suppliers",
+							"score": 0
+						}
+					]
+				},
+				{
+					"text": "Does the brand publicly list the names and addresses of its suppliers?",
+					"category_id": "labour",
+					"theme_id": "rights",
+					"brand_size": "all",
+					"answers": [{
+							"text": "Publicly lists all suppliers from final stage of production",
+							"score": 0.75
+						},
+						{
+							"text": "Publicly lists some suppliers from final stage of production",
+							"score": 0.5
+						},
+						{
+							"text": "Publicly lists countries of all suppliers from final stage of production",
+							"score": 0.4
+						},
+						{
+							"text": "Publicly lists countries of some suppliers from final stage of production",
+							"score": 0.25
+						},
+						{
+							"text": "Publicly lists all or most suppliers from second stage of production",
+							"score": 0.25
+						},
+						{
+							"text": "Publicly lists all or most suppliers from first stage of production",
+							"score": 0.25
+						},
+						{
+							"text": "Made in-house by the owner and small team",
+							"score": 0.75
+						},
+						{
+							"text": "Scores full marks for 'positive labour conditions'",
+							"score": 0.75
+						},
+						{
+							"text": "100% of final stage of production made in low/medium risk countries",
+							"score": 0.4
+						},
+						{
+							"text": "Is fully certified by  Fair Trade Textile Standard",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by  Fairtrade International - Hired Labour",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by  Social Accountability International - SA8000",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by  Fairtrade International - Small Producers Organizations",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by FLA Workplace Code of Conduct",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by STeP by OEKO-TEX ®",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Fair Trade USA",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by WFTO Guarantee System",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Fair Wear Foundation",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by bluesign® system",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Ethical Trading Initiative - ETI",
+							"score": 0.35
+						}
+					]
+				},
+				{
+					"text": "Which of the following does the brand do to monitor its supply chain?",
+					"category_id": "labour",
+					"theme_id": "practices",
+					"brand_size": "large",
+					"answers": [{
+							"text": "~50% final stage of production is audited",
+							"score": 0.5
+						},
+						{
+							"text": "100% of final stage of production is audited",
+							"score": 0.75
+						},
+						{
+							"text": "~50% second stage of production is audited",
+							"score": 0.35
+						},
+						{
+							"text": "100% of second stage of production is audited",
+							"score": 0.5
+						},
+						{
+							"text": "~50% first stage of production is audited",
+							"score": 0.35
+						},
+						{
+							"text": "100% of first stage of production is audited",
+							"score": 0.5
+						},
+						{
+							"text": "Does audit but does not state which part of the supply chain and what percentage",
+							"score": 0.35
+						},
+						{
+							"text": "No evidence of auditing any of its supply chain",
+							"score": 0
+						},
+						{
+							"text": "100% final stage of production third party audited",
+							"score": 0
+						},
+						{
+							"text": "100% final stage of production internally audited/visited",
+							"score": 0
+						},
+						{
+							"text": "~50% final stage of production third party audited",
+							"score": 0
+						},
+						{
+							"text": "~50% final stage of production internally audited/visited",
+							"score": 0
+						},
+						{
+							"text": "100% second stage of production third party audited",
+							"score": 0
+						},
+						{
+							"text": "100% second stage of production internally audited/visited",
+							"score": 0
+						},
+						{
+							"text": "~50% second stage of production third party audited",
+							"score": 0
+						},
+						{
+							"text": "~50% second stage of production internally audited/visited",
+							"score": 0
+						},
+						{
+							"text": "100% first stage of production third party audited",
+							"score": 0
+						},
+						{
+							"text": "100% first stage of production internally audited/visited",
+							"score": 0
+						},
+						{
+							"text": "~50% first stage of production third party audited",
+							"score": 0
+						},
+						{
+							"text": "~50% first stage of production internally audited/visited",
+							"score": 0
+						},
+						{
+							"text": "No evidence of auditing any of its supply chain",
+							"score": 0
+						},
+						{
+							"text": "Made in-house by the owner and small team",
+							"score": 0
+						},
+						{
+							"text": "Scores full marks for 'positive labour conditions'",
+							"score": 0
+						},
+						{
+							"text": "100% of final stage of production made in low/medium risk countries",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Fair Trade Textile Standard",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Hired Labour",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Social Accountability International - SA8000",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by FLA Workplace Code of Conduct",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by STeP by OEKO-TEX ®",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Fair Trade USA",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by WFTO Guarantee System",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fair Wear Foundation",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Bluesign System",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Better Cotton Initiative",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Ethical Trading Initiative - ETI",
+							"score": 0.35
+						}
+					]
+				},
+        {
+					"text": "Which of the following does the brand do to monitor its supply chain?",
+					"category_id": "labour",
+					"theme_id": "practices",
+					"brand_size": "small",
+					"answers": [{
+							"text": "~50% final stage of production is audited",
+							"score": 0
+						},
+						{
+							"text": "100% of final stage of production is audited",
+							"score": 0
+						},
+						{
+							"text": "~50% second stage of production is audited",
+							"score": 0
+						},
+						{
+							"text": "100% of second stage of production is audited",
+							"score": 0
+						},
+						{
+							"text": "~50% first stage of production is audited",
+							"score": 0
+						},
+						{
+							"text": "100% of first stage of production is audited",
+							"score": 0
+						},
+						{
+							"text": "Does audit but does not state which part of the supply chain and what percentage",
+							"score": 0
+						},
+						{
+							"text": "No evidence of auditing any of its supply chain",
+							"score": 0
+						},
+						{
+							"text": "100% final stage of production third party audited",
+							"score": 0.75
+						},
+						{
+							"text": "100% final stage of production internally audited/visited",
+							"score": 0.65
+						},
+						{
+							"text": "~50% final stage of production third party audited",
+							"score": 0.6
+						},
+						{
+							"text": "~50% final stage of production internally audited/visited",
+							"score": 0.5
+						},
+						{
+							"text": "100% second stage of production third party audited",
+							"score": 0.5
+						},
+						{
+							"text": "100% second stage of production internally audited/visited",
+							"score": 0.4
+						},
+						{
+							"text": "~50% second stage of production third party audited",
+							"score": 0.35
+						},
+						{
+							"text": "~50% second stage of production internally audited/visited",
+							"score": 0.25
+						},
+						{
+							"text": "100% first stage of production third party audited",
+							"score": 0.5
+						},
+						{
+							"text": "100% first stage of production internally audited/visited",
+							"score": 0.4
+						},
+						{
+							"text": "~50% first stage of production third party audited",
+							"score": 0.35
+						},
+						{
+							"text": "~50% first stage of production internally audited/visited",
+							"score": 0.25
+						},
+						{
+							"text": "No evidence of auditing any of its supply chain",
+							"score": 0
+						},
+						{
+							"text": "Made in-house by the owner and small team",
+							"score": 0.75
+						},
+						{
+							"text": "Scores full marks for 'positive labour conditions'",
+							"score": 0.75
+						},
+						{
+							"text": "100% of final stage of production made in low/medium risk countries",
+							"score": 0.5
+						},
+						{
+							"text": "Is fully certified by Fair Trade Textile Standard",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Hired Labour",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Social Accountability International - SA8000",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by FLA Workplace Code of Conduct",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by STeP by OEKO-TEX ®",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Fair Trade USA",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by WFTO Guarantee System",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Fair Wear Foundation",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Bluesign System",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Better Cotton Initiative",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Ethical Trading Initiative - ETI",
+							"score": 0
+						}
+					]
+				},
+				{
+					"text": "How often does the brand audit its supply chain?",
+					"category_id": "labour",
+					"theme_id": "practices",
+					"brand_size": "large",
+					"answers": [{
+							"text": "Audited annually",
+							"score": 1
+						},
+						{
+							"text": "Audited every two years",
+							"score": 1
+						},
+						{
+							"text": "Audited between 2 - 5 years",
+							"score": 0.75
+						},
+						{
+							"text": "Audited between 2 - 5 years",
+							"score": 0.5
+						},
+						{
+							"text": "Audited between 2 - 5 years",
+							"score": 0.35
+						},
+						{
+							"text": "Visits/audits all final stage of production suppliers at least once every 2 years",
+							"score": 0
+						},
+						{
+							"text": "Visits/audits ~50% of final stage production suppliers at least once every 2 years",
+							"score": 0
+						},
+						{
+							"text": "Mentions visiting/auditing final stage production suppliers, but no mention how often",
+							"score": 0
+						},
+						{
+							"text": "Visits/audits all second stage of production suppliers at least once every 2 years",
+							"score": 0
+						},
+						{
+							"text": "Visits/audits ~50% of second stage of production suppliers at least once every 2 years",
+							"score": 0
+						},
+						{
+							"text": "Mentions visiting/auditing second stage production suppliers, but no mention how often",
+							"score": 0
+						},
+						{
+							"text": "Visits/audits all first stage of production suppliers at least once every 2 years",
+							"score": 0
+						},
+						{
+							"text": "Visits/audits ~50% of first stage of production suppliers at least once every 2 years",
+							"score": 0
+						},
+						{
+							"text": "Mentions visiting/auditing first stage production suppliers, but no mention how often",
+							"score": 0
+						},
+						{
+							"text": "Made in-house by the owner and small team",
+							"score": 0
+						},
+						{
+							"text": "Scores full marks for 'positive labour conditions'",
+							"score": 0
+						},
+						{
+							"text": "100% of final stage of production made in low/medium risk countries",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Fair Trade Textile Standard",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Hired Labour",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Social Accountability International - SA8000",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by FLA Workplace Code of Conduct",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by STeP by OEKO-TEX ®",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fair Trade USA",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by WFTO Guarantee System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fair Wear Foundation",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Bluesign System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Better Cotton Initiative",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Ethical Trading Initiative - ETI",
+							"score": 0.35
+						}
+					]
+				},
+				{
+					"text": "How often does the brand audit its supply chain?",
+					"category_id": "labour",
+					"theme_id": "practices",
+					"brand_size": "small",
+					"answers": [{
+							"text": "Audited annually",
+							"score": 0
+						},
+						{
+							"text": "Audited every two years",
+							"score": 0
+						},
+						{
+							"text": "Audited between 2 - 5 years",
+							"score": 0
+						},
+						{
+							"text": "Audited between 2 - 5 years",
+							"score": 0
+						},
+						{
+							"text": "Audited between 2 - 5 years",
+							"score": 0
+						},
+						{
+							"text": "Visits/audits all final stage of production suppliers at least once every 2 years",
+							"score": 0.75
+						},
+						{
+							"text": "Visits/audits ~50% of final stage production suppliers at least once every 2 years",
+							"score": 0.6
+						},
+						{
+							"text": "Mentions visiting/auditing final stage production suppliers, but no mention how often",
+							"score": 0
+						},
+						{
+							"text": "Visits/audits all second stage of production suppliers at least once every 2 years",
+							"score": 0.5
+						},
+						{
+							"text": "Visits/audits ~50% of second stage of production suppliers at least once every 2 years",
+							"score": 0.35
+						},
+						{
+							"text": "Mentions visiting/auditing second stage production suppliers, but no mention how often",
+							"score": 0
+						},
+						{
+							"text": "Visits/audits all first stage of production suppliers at least once every 2 years",
+							"score": 0.5
+						},
+						{
+							"text": "Visits/audits ~50% of first stage of production suppliers at least once every 2 years",
+							"score": 0.35
+						},
+						{
+							"text": "Mentions visiting/auditing first stage production suppliers, but no mention how often",
+							"score": 0
+						},
+						{
+							"text": "Made in-house by the owner and small team",
+							"score": 0.75
+						},
+						{
+							"text": "Scores full marks for 'positive labour conditions'",
+							"score": 0.75
+						},
+						{
+							"text": "100% of final stage of production made in low/medium risk countries",
+							"score": 0.5
+						},
+						{
+							"text": "Is fully certified by Fair Trade Textile Standard",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Hired Labour",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Social Accountability International - SA8000",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by FLA Workplace Code of Conduct",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by STeP by OEKO-TEX ®",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fair Trade USA",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by WFTO Guarantee System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fair Wear Foundation",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Bluesign System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Better Cotton Initiative",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Ethical Trading Initiative - ETI",
+							"score": 0.35
+						}
+					]
+				},
+				{
+					"text": "What type of auditing does the brand use?",
+					"category_id": "labour",
+					"theme_id": "practices",
+					"brand_size": "large",
+					"answers": [{
+							"text": "100% Third party auditing ",
+							"score": 1
+						},
+						{
+							"text": "~50% third party auditing",
+							"score": 0.5
+						},
+						{
+							"text": "100% internal auditing",
+							"score": 0.75
+						},
+						{
+							"text": "~50% internal auditing",
+							"score": 0.35
+						},
+						{
+							"text": "Type of auditing used is not specified",
+							"score": 0.75
+						},
+						{
+							"text": "Is fully certified by Fair Trade Textile Standard",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Hired Labour",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Social Accountability International - SA8000",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by FLA Workplace Code of Conduct",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by STeP by OEKO-TEX ®",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Business Social Compliance Initiative Code of Conduct (BSCI)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fair Trade USA",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by WFTO Guarantee System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fair Wear Foundation",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Bluesign System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Ethical Clothing Australia (ECA)",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Better Cotton Initiative",
+							"score": 0.35
+						},
+						{
+							"text": "Is fully certified by Ethical Trading Initiative - ETI",
+							"score": 0.35
+						}
+					]
+				},
+				{
+					"text": "Does the brand use unannounced audits?",
+					"category_id": "labour",
+					"theme_id": "practices",
+					"brand_size": "large",
+					"answers": [{
+							"text": "Brand uses announced audits",
+							"score": 1
+						},
+						{
+							"text": "Brand does not specify if it uses unannounced audits",
+							"score": 0
+						},
+						{
+							"text": "Is fully certified by Fair Trade Textile Standard",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Hired Labour",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Social Accountability International - SA8000",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fairtrade International - Small Producers Organizations",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by FLA Workplace Code of Conduct",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Workplace Condition Assessment (WCA)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Global Organic Textile Standard (GOTS)",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by STeP by OEKO-TEX ®",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Clean Clothes Campaign - Code of Labour Practices",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Fair Trade USA",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by WFTO Guarantee System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Fair Wear Foundation",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Bluesign System",
+							"score": 0.65
+						},
+						{
+							"text": "Is fully certified by Sedex Members Ethical Trade Audit - SMETA Best Practice Guidance",
+							"score": 1
+						},
+						{
+							"text": "Is fully certified by Worldwide Responsible Accredited Production - WRAP",
+							"score": 1
+						}
+					]
+				},
+				{
+					"text": "Which of the following is the brand doing to be a leading advocate on labour rights performance?",
+					"category_id": "labour",
+					"theme_id": "practices",
+					"brand_size": "large",
+					"answers": [{
+							"text": "Is involved in an international labour rights campaign",
+							"score": 1
+						},
+						{
+							"text": "Participates in a robust program which assists/empowers workers",
+							"score": 1
+						},
+						{
+							"text": "Active public campaigner on labour issues",
+							"score": 1
+						},
+						{
+							"text": "If answered yes for question 2.9.1 - Social enterprise/NGO created to provide fair employment",
+							"score": 1
+						},
+						{
+							"text": "Fair Trade certified or if a member of the following MSI'S: Business Social Compliance Initiative Ethical Trading Initiative Fair Wear Foundation Stop the Traffik - Traffik Free Protocol Responsible Sourcing Network World Fair Trade Organisation",
+							"score": 1
+						},
+						{
+							"text": "If a member of the following MSI'S: Alliance for Bangladesh Worker Safety Better Cotton Initiative Ethical Fashion Forum End Human Trafficking Now! Campaign Global Social Compliance Program Institute for Human Rights in Business Uzbek Cotton Pledge",
+							"score": 1
+						},
+						{
+							"text": "No evidence of brand being a leading advocate on labour rights performance",
+							"score": 0
+						}
+					]
+				},
+				{
+					"text": "Which of the following is the brand doing to be a leading advocate on labour rights performance?",
+					"category_id": "labour",
+					"theme_id": "practices",
+					"brand_size": "small",
+					"answers": [{
+							"text": "Is involved in an international labour rights campaign",
+							"score": 1
+						},
+						{
+							"text": "Participates in a robust program which assists/empowers workers",
+							"score": 1
+						},
+						{
+							"text": "Active public campaigner on labour issues",
+							"score": 1
+						},
+						{
+							"text": "If answered yes for question 2.9.1 - Social enterprise/NGO created to provide fair employment",
+							"score": 1
+						},
+						{
+							"text": "Fair Trade certified or if a member of the following MSI'S: Business Social Compliance Initiative Ethical Trading Initiative Fair Wear Foundation Stop the Traffik - Traffik Free Protocol Responsible Sourcing Network World Fair Trade Organisation",
+							"score": 1
+						},
+						{
+							"text": "If a member of the following MSI'S: Alliance for Bangladesh Worker Safety Better Cotton Initiative Ethical Fashion Forum End Human Trafficking Now! Campaign Global Social Compliance Program Institute for Human Rights in Business Uzbek Cotton Pledge",
+							"score": 1
+						},
+						{
+							"text": "No evidence of brand being a leading advocate on labour rights performance",
+							"score": 0
+						}
+					]
+				},
+				{
+					"text": "Has the brand been involved in an labour rights scandal in the last 3 years?",
+					"category_id": "labour",
+					"theme_id": "practices",
+					"brand_size": "all",
+					"answers": [{
+							"text": "Brand has been involved in a labour rights scandal in the last 3 years without best practice remdiation and compensation",
+							"score": -1
+						},
+						{
+							"text": "Brand has not been involved in a labour rights scandal in the last 3 years",
+							"score": 0
+						}
+					]
 				},
 				{
 					"text": "Has the brand been involved in an animal rights scandal in the last 3 years?",
