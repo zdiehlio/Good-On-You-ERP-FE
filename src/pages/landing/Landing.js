@@ -5,17 +5,22 @@ import './Landing.css';
 class Landing extends Component {
   render() {
     return (
-      <div>
+      <div className="page-container">
         <p>This is the landing page</p>
-        <span><Link to='/viewBrands' className="landingButton">
-          View Brands
-        </Link></span>
-        <span><Link to='/createBrand' className="landingButton">
-          Create Brand
-        </Link></span>
-        <span><Link to='/questionnaire' className="landingButton">
-          Questionnaire
-        </Link></span>
+        <div className="button-container">
+          <span><Link to='/viewBrands' className="landingButton">
+            View Brands
+          </Link></span>
+          <span><Link to='/createBrand' className="landingButton">
+            Create Brand
+          </Link></span>
+          <span><Link to='/createBrand' className="landingButton">
+            Place holder
+          </Link></span>
+          <span><Link to='/createBrand' className="landingButton">
+            Place holder
+          </Link></span>
+        </div>
       </div>
     );
   }

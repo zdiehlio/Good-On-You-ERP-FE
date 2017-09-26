@@ -1,4 +1,5 @@
 .header {
+  display: flex;
   flex: 0 0 auto;
   justify-content: center;
   border-bottom: 1px solid #DEDEDE;
@@ -9,14 +10,73 @@
 .header-container{
   width: 80%;
   display: flex;
-  flex-direction: column;
-  padding: .9rem;
+  flex-direction: row;
   margin: 0 auto;
 }
 
+.header-container :nth-child(2) {
+  margin-left: 20px;
+}
+
+.header-container a{
+  font-weight: 400;
+}
+
+
+.links-container-left {
+  display: flex;
+  align-items: center;
+}
+
+.links-container-left a{
+  text-decoration: none;
+  color: gray;
+  font-size: 20px;
+  padding: 0 10px;
+  align-self: center;
+}
+
+.links-container-left:hover{
+  background-color: #121d1f;
+}
+
+.links-container-left:hover a{
+  color: white;
+}
+
+
+
+
+
+
+.links-container-right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+
+}
+
+.links-container-right a{
+  text-decoration: none;
+  color: gray;
+  font-size: 20px;
+  padding: 0 10px;
+}
+
+.links-container-right:hover{
+  text-decoration: none;
+  background-color: #121d1f;
+}
+
+.links-container-right:hover a {
+  color: white;
+}
+
+
 .logo-container{
-  width: 40%;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  padding-top: 0.9rem;
 }
 
 .logo-img{
