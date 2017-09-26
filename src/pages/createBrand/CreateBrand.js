@@ -1,11 +1,46 @@
 import React, { Component } from 'react';
+import TextField from 'material-ui/TextField';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {grey900} from 'material-ui/styles/colors';
 import './CreateBrand.css';
+
+const muiTheme = getMuiTheme({
+  palette: {
+    textColor: grey900
+  }
+});
 
 class CreateBrand extends Component {
   render() {
     return (
-      <div>
-        <p>This is the create brand page</p>
+      <div className="page-container">
+        <h2><span class="fontawesome-lock"></span>Sign In</h2>
+        <form action="#" method="POST">
+
+            <MuiThemeProvider muiTheme={muiTheme}>
+            <TextField
+              hintText="brand name"
+              floatingLabelText="Brand Name"
+            /></MuiThemeProvider>
+            <br/>
+
+            <MuiThemeProvider muiTheme={muiTheme}>
+            <TextField
+              hintText="http://www.brand.url"
+              floatingLabelText="Brand URL"
+            /></MuiThemeProvider>
+            <br />
+
+            <MuiThemeProvider muiTheme={muiTheme}>
+            <TextField
+              hintText="abc@email.com"
+              floatingLabelText="Contact Email"
+            /></MuiThemeProvider>
+            <br />
+            <button class="btn"><span>GO</span></button>
+
+        </form>
       </div>
     );
   }
