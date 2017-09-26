@@ -13,6 +13,18 @@ class Header extends Component {
           <img className="logo-img" src={logo} alt='logo' />
           <img className="logo-text" src={logoText} alt='logo text' />
         </div>
+
+        <div className="links-container-left">
+          <a href="/">Home</a>
+        </div>
+
+        <div className="links-container-left">
+          <a href="/">Brand</a>
+        </div>
+
+        <div className="links-container-right">
+          <a href="/">Login</a>
+        </div>
       </div>
     </div>
   }
