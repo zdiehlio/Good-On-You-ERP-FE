@@ -16,6 +16,11 @@ import {
 import './App.css';
 
 class App extends Component {
+
+  handleLogin = () => {
+    console.log("hi");
+  }
+
   render() {
     return (
       <Router>
@@ -24,8 +29,8 @@ class App extends Component {
           <div className="container-body">
             <Switch>
               <Route exact path='/' component={Landing} />
-              <Route path='/questionnaire' component={Questionnaire} />
-              <Route path='/login' component={Login} />
+              <Route path='/questionnaire' component={Questionnaire}/>
+              <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
               <Route path='/viewBrands' component={ViewBrands} />
               <Route path='/createBrand' component={CreateBrands} />
             </Switch>
