@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import logo from '../../assets/good-on-you-logo.png';
 import logoText from '../../assets/good-on-you-logo-text.png';
 import './Header.css';
+import { Link } from 'react-router-dom';
+
 
 
 class Header extends Component {
@@ -23,7 +25,7 @@ class Header extends Component {
         </div>
 
         <div className="links-container-right">
-          <a href="/">Login</a>
+          <a href="/login">Login</a>
         </div>
       </div>
     </div>
