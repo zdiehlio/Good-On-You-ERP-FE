@@ -1,0 +1,6 @@
+export { default as Header } from './header/Header'
+export { default as Footer } from './footer/Footer'
+export { default as Question } from './question/Question'
+export { default as Answer } from './answer/Answer'
+export { default as ProgressBar } from './progressBar/ProgressBar'
+export { default as Summary } from './summary/Summary'
