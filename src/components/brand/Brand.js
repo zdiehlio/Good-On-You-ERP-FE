@@ -1,19 +1,19 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './Brand.css';
+import { Link } from 'react-router-dom';
+
 
 const Brand = (brand) => {
 
   const name = brand.name;
-  const url = brand.url;
   const category = brand.category;
-  const territory = brand.territory;
 
   return (
     <div className="page-container">
       <div className="brand-row">
-        <a className="brand-url" href={url}>{name}</a>
+        <a className="brand-url">{name}</a>
         <p className="brand-category">{category}</p>
-        <a className="brand-view-summary">view</a>
+        <Link name={brand.name} onClick={brand.handleViewSummaryClick} to='/brandSummary' className='btn btn-large waves-effect waves-light darken-1'>view</Link>
       </div>
     </div>
   )
