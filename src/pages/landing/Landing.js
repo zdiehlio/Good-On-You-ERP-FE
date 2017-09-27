@@ -1,8 +1,29 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Brand } from '../../components';
 import './Landing.css';
 
+const sampleBrands = [
+  {
+    'name': 'Asos',
+    'status': 'approved'
+  },
+  {
+    'name': 'Nike',
+    'status': 'rated'
+  },
+  {
+    'name': 'Zara',
+    'status': 'scrapped'
+  },
+];
+
 class Landing extends Component {
+  
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div className="page-container">
@@ -21,6 +42,11 @@ class Landing extends Component {
             Place holder
           </Link></span>
         </div>
+        <ul>
+          {sampleBrands.map((brand) => {
+            return <Brand handleViewSummaryClick={this.props.handleViewSummaryClick} name={brand.name} url={brand.url} category={brand.category} territory={brand.description}/>
+          })}
+        </ul>
       </div>
     );
   }
