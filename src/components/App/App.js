@@ -14,11 +14,35 @@ import {
   CreateBrands
 } from '../../pages'
 import './App.css';
+import request from "request"
+
 
 class App extends Component {
 
   handleLogin = () => {
-    console.log("hi");
+
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+
+    var dataString = '{ "strategy": "local", "email": "me@goodonyou.eco", "password": "myPassword" }';
+
+    var options = {
+      url: 'http://34.211.121.82:3030/authentication/',
+      method: 'POST',
+      headers: headers,
+      body: dataString
+    };
+
+    function callback(error, response, body) {
+      if (!error) {
+        if (JSON.parse(body).accessToken) {
+          console.log(JSON.parse(body).accessToken);
+        }
+      }
+    }
+
+    request(options, callback);
   }
 
   render() {
