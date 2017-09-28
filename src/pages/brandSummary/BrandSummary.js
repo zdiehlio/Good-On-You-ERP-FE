@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Brand } from '../../components';
+import { Brand, SummaryHeader } from '../../components';
 import './BrandSummary.css';
 
 class BrandSummary extends Component {
@@ -11,7 +11,9 @@ class BrandSummary extends Component {
   render() {
     return (
       <div className='page-container'>
+        <SummaryHeader brand={this.props.currentBrand}/>
         <Brand name={this.props.currentBrand.name} url={this.props.currentBrand.url} category={this.props.currentBrand.category}/>
+
       </div>
     );
   }
