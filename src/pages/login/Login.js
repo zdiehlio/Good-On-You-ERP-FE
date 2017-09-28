@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './Login.css';
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import $ from "jquery";
 import request from "request"
 
 

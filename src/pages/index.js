@@ -1,5 +1,5 @@
 export { default as Landing } from './landing/Landing'
 export { default as Questionnaire } from './questionnaire/Questionnaire'
 export { default as Login } from './login/Login'
-export { default as ViewBrands } from './viewBrands/ViewBrands'
 export { default as CreateBrands } from './createBrand/CreateBrand'
+export { default as BrandSummary } from './brandSummary/BrandSummary'
