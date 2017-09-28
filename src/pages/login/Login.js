@@ -2,63 +2,82 @@ import React, { Component } from 'react';
 import './Login.css';
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import $ from "jquery";
 import request from "request"
+import { Field, reduxForm } from 'redux-form'
+import { connect } from 'react-redux';
+import { login } from '../../actions';
 
+
+// <h2 className="title">Log on</h2>
+// <div className="form-container">
+//   <MuiThemeProvider>
+//     <TextField
+//       floatingLabelText="Email*"
+//     />
+//   </MuiThemeProvider>
+//   <MuiThemeProvider>
+//     <TextField
+//       floatingLabelText="Password*"
+//     />
+//   </MuiThemeProvider>
+//   <button onClick={this.props.handleLogin} className="button" style={{width: "100px", marginTop: "20px"}}>Go</button>
+// </div>
 
 class Login extends Component {
 
-  constructor(props) {
-    super(props);
+  renderField(field) {
+    return (
+      <div>
+        <MuiThemeProvider>
+          <TextField
+            floatingLabelText={field.label}
+            type={field.type}
+            {...field.input}
+          />
+        </MuiThemeProvider>
+      </div>
+    )
   }
 
-  // handleLogin = () => {
-  //
-  //   var headers = {
-  //     'Content-Type': 'application/json'
-  //   };
-  //
-  //   var dataString = '{ "strategy": "local", "email": "me@goodonyou.eco", "password": "myPassword" }';
-  //
-  //   var options = {
-  //     url: 'http://34.211.121.82:3030/authentication/',
-  //     method: 'POST',
-  //     headers: headers,
-  //     body: dataString
-  //   };
-  //
-  //   function callback(error, response, body) {
-  //     if (!error) {
-  //       if (JSON.parse(body).accessToken) {
-  //         console.log(JSON.parse(body).accessToken);
-  //       }
-  //     }
-  //   }
-  //
-  //   request(options, callback);
-  // }
+  onSubmit(values) {
+    this.props.login(values)
+  }
+
   render() {
-    console.log(this.props.handleLogin);
+    const { handleSubmit } = this.props;
 
     return (
       <div className="page-container">
-
         <h2 className="title">Log on</h2>
         <div className="form-container">
-          <MuiThemeProvider>
-            <TextField
-              floatingLabelText="Email*"
-            />
-          </MuiThemeProvider>
-          <MuiThemeProvider>
-            <TextField
-              floatingLabelText="Password*"
-            />
-          </MuiThemeProvider>
-          <button onClick={this.props.handleLogin} className="button" style={{width: "100px", marginTop: "20px"}}>Go</button>
+          <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+            <Field
+              label="Email*"
+              name="email"
+              type="email"
+              component={this.renderField}
+            ></Field>
+            <Field
+              label="Password*"
+              name="password"
+              type="password"
+              component={this.renderField}
+            ></Field>
+            <button className="button" style={{width: "100%", marginTop: "20px"}}>Go</button>
+          </form>
         </div>
       </div>
     );
   }
 }
 
-export default Login;
+function mapStateToProps(state) {
+  return {token: state.token}
+}
+
+export default reduxForm({
+  form: "LoginForm"
+})(
+  connect(mapStateToProps, { login })(Login)
+)
