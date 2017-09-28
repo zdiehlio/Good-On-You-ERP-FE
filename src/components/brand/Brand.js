@@ -26,7 +26,6 @@ const Brand = (brand) => {
         <MuiThemeProvider muiTheme={muiTheme}>
         <FlatButton
           containerElement={<Link to="/brandSummary" />}
-          linkButton={true}
           label="view"/>
         </MuiThemeProvider>
 

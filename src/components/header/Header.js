@@ -2,9 +2,23 @@ import React, { Component } from 'react'
 import logo from '../../assets/good-on-you-logo.png';
 import logoText from '../../assets/good-on-you-logo-text.png';
 import './Header.css';
+import { connect } from 'react-redux';
+import { login } from '../../actions';
+
+// { this.props.login ? <h3>{this.props.user.email}</h3> : <a href="/login">Login</a>}
+
 
 class Header extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      authenticated: !!sessionStorage.email
+    };
+
+    // this.getData = this.getData.bind(this)
+  }
   render() {
     return <div className="header">
       <div className="header-container">
@@ -22,11 +36,22 @@ class Header extends Component {
         </div>
 
         <div className="links-container-right">
-          <a href="/login">Login</a>
+
+          { this.props.email ? (
+            <div>
+              <h3 className="username">{this.props.email}</h3>
+            </div>
+          ) : <a href="/login">Login</a>
+          }
         </div>
       </div>
     </div>
   }
 }
 
-export default Header
+function mapStateToProps(state) {
+  console.log(state.login);
+  return {email: state.login.email}
+}
+
+export default connect(mapStateToProps, { login })(Header)

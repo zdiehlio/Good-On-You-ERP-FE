@@ -50,7 +50,6 @@ class BrandSummaryHeader extends Component {
                 <MuiThemeProvider muiTheme={muiTheme}>
                 <RaisedButton
                   containerElement={<Link to="/brandSummary" />}
-                  linkButton={true}
                   style={style}
                   primary={true}
                   label="history"/>
