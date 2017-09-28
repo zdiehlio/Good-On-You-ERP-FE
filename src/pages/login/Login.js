@@ -9,21 +9,6 @@ import { connect } from 'react-redux';
 import { login } from '../../actions';
 
 
-// <h2 className="title">Log on</h2>
-// <div className="form-container">
-//   <MuiThemeProvider>
-//     <TextField
-//       floatingLabelText="Email*"
-//     />
-//   </MuiThemeProvider>
-//   <MuiThemeProvider>
-//     <TextField
-//       floatingLabelText="Password*"
-//     />
-//   </MuiThemeProvider>
-//   <button onClick={this.props.handleLogin} className="button" style={{width: "100px", marginTop: "20px"}}>Go</button>
-// </div>
-
 class Login extends Component {
 
   renderField(field) {
@@ -41,7 +26,7 @@ class Login extends Component {
   }
 
   onSubmit(values) {
-    this.props.login(values)
+    this.props.login(values);
   }
 
   render() {
@@ -73,7 +58,7 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  return {token: state.token}
+  return { token: state.token }
 }
 
 export default reduxForm({
