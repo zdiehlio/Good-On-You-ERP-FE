@@ -15,3 +15,14 @@
     min-width: 960px;
   }
 }
+
+
+/*Common classNames*/
+.goy-color {
+  color: #6ac1bf;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
