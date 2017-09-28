@@ -72,6 +72,9 @@
   color: white;
 }
 
+.links-container-right:hover .username {
+  color: white;
+}
 
 .logo-container{
   display: flex;
@@ -89,6 +92,13 @@
   display: inline-block;
   padding-left: .5em;
 }
+
+.username {
+  color: gray;
+  padding: 0 10px;
+
+}
+
 
 
 

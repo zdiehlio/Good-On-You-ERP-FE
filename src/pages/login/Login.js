@@ -58,6 +58,7 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state.token);
   return { token: state.token }
 }
 
