@@ -2,3 +2,75 @@
   display: flex;
   border-bottom: 1px solid #F5F5F5;
 }
+
+.summary-container-main{
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  height: 10rem;
+}
+
+.summary-container-left{
+  width: 30%;
+}
+
+.summary-header-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid #E0E0E0;
+  height: 35px;
+  padding-bottom: 5px;
+}
+
+.summary-container-right{
+  width: 65%;
+}
+
+.row-right{
+  display: flex;
+  justify-content: flex-start;
+}
+
+.row-right > * {
+  display: inline-block;
+  width: 33.33%;
+}
+
+.summary-container-footer{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: .5rem 0;
+}
+
+.label{
+  margin:0;
+  color: #757575;
+}
+
+.value {
+  margin: 0;
+  color: #6ac1bf;
+}
+
+.brand {
+  font-size: 20px;
+  font-weight:bold;
+}
+
+.status {
+  color: #FFA000;
+  font-weight: bold;
+}
+
+.arrow-head {
+  padding: 0 1.5rem;
+}
+
+.status-pagination{
+  padding-bottom: .5rem 0;
+}
