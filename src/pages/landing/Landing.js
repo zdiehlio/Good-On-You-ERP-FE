@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Brand } from '../../components';
+import { Brand, BrandSearchBar, UserSearchBar } from '../../components';
 import './Landing.css';
 
 const sampleBrands = [
@@ -29,18 +29,14 @@ class Landing extends Component {
       <div className="page-container">
         <p>This is the landing page</p>
         <div className="button-container">
-          <span><Link to='/viewBrands' className="landingButton">
-            View Brands
-          </Link></span>
           <span><Link to='/createBrand' className="landingButton">
             Create Brand
           </Link></span>
-          <span><Link to='/createBrand' className="landingButton">
-            Place holder
+          <BrandSearchBar/>
+          <span><Link to='/createUser' className="landingButton">
+            Create User
           </Link></span>
-          <span><Link to='/createBrand' className="landingButton">
-            Place holder
-          </Link></span>
+          <UserSearchBar/>
         </div>
         <ul>
           {sampleBrands.map((brand, i) => {
