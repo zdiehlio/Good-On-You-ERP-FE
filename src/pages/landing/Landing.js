@@ -19,7 +19,7 @@ const sampleBrands = [
 ];
 
 class Landing extends Component {
-  
+
   constructor(props) {
     super(props);
   }
@@ -43,8 +43,8 @@ class Landing extends Component {
           </Link></span>
         </div>
         <ul>
-          {sampleBrands.map((brand) => {
-            return <Brand handleViewSummaryClick={this.props.handleViewSummaryClick} name={brand.name} url={brand.url} category={brand.category} territory={brand.description}/>
+          {sampleBrands.map((brand, i) => {
+            return <Brand key={i} handleViewSummaryClick={this.props.handleViewSummaryClick} name={brand.name} url={brand.url} category={brand.category} territory={brand.description}/>
           })}
         </ul>
       </div>
