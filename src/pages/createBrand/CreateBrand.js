@@ -6,6 +6,8 @@ import {grey900} from 'material-ui/styles/colors';
 import './CreateBrand.css';
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
+import { createBrand } from '../../actions';
+
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -52,6 +54,7 @@ class CreateBrand extends Component {
   }
 
   onSubmit(values) {
+    this.props.createBrand(values);
     console.log(values);
   }
 
@@ -84,13 +87,17 @@ class CreateBrand extends Component {
             <button className="button">Submit</button>
           </form>
         </div>
-
-
       </div>
     );
   }
 }
 
+function mapStateToProps(state) {
+  console.log(state);
+  return { error: state.error }
+}
+
+
 export default reduxForm({
   form: "CreateBrandForm"
-})(CreateBrand)
+})(connect(mapStateToProps, { createBrand })(CreateBrand))
