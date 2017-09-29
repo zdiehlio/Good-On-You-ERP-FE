@@ -13,7 +13,6 @@ const muiTheme = getMuiTheme({
 });
 
 const style = {
-  width: '15px',
   height: '20px'
 };
 
@@ -23,12 +22,147 @@ class BrandSummaryRating extends Component {
     super(props);
   }
 
+//   <div className="page-container">
+//     <div className="summary-rating-container">
+//       <div className="rating-row">
+//         <div className="rating-row padding-right solid-border">
+//           <p className="label status-bold goy-color">Brand Overview</p>
+//           <p className="label">x</p>
+//         </div>
+//         <div className="rating-row padding-left solid-border">
+//           <p className="label">stars</p>
+//           <p className="label">status</p>
+//         </div>
+//       </div>
+//       <div className="rating-row">
+//         <div className="rating-row padding-right solid-border">
+//           <p className="label status-bold goy-color">General</p>
+//
+//         </div>
+//         <div className="rating-row padding-left solid-border">
+//           <p className="label">V</p>
+//           <p className="label">status</p>
+//         </div>
+//       </div>
+//     </div>
+//
+// </div>
+
   render() {
-    return <div className="page-container">
-        <div className="summary-container-main">
-          <p>Ratings:</p>
+    return (
+      <div className='page-container'>
+        <div className='summary-rating-container'>
+          <div className='rating-row solid-border'>
+              <p className='label bold goy-color'>Ratings</p>
+              <p className='label'>x</p>
+              <p className='label'>stars</p>
+              <p className='label status-bold'>Status</p>
+          </div>
+          <div className='rating-row slim-border row-right'>
+              <p className='label'>Environment</p>
+              <p className='label'>x</p>
+              <p className='label'>arrow</p>
+              <p className='label status-bold'>Incomplete</p>
+          </div>
+          <div className='rating-row slim-border row-right'>
+              <p className='label sub-row'>Resource</p>
+              <p className='label'>10/20</p>
+              <span style={{width:'10px'}}>
+                <MuiThemeProvider muiTheme={muiTheme}>
+                <RaisedButton
+                  containerElement={<Link to="/brandSummary" />}
+                  linkButton={true}
+                  style={style}
+                  primary={true}
+                  label="view"/>
+                </MuiThemeProvider>
+              </span>
+          </div>
+          <div className='rating-row slim-border row-right'>
+              <p className='label sub-row'>Climate change</p>
+              <p className='label'>16/20</p>
+              <span style={{width:'10px'}}>
+                <MuiThemeProvider muiTheme={muiTheme}>
+                <RaisedButton
+                  containerElement={<Link to="/brandSummary" />}
+                  linkButton={true}
+                  style={style}
+                  primary={true}
+                  label="view"/>
+                </MuiThemeProvider>
+              </span>
+          </div>
+          <div className='rating-row slim-border row-right'>
+              <p className='label sub-row'>Water</p>
+              <p className='label'>9/20</p>
+              <span style={{width:'10px'}}>
+                <MuiThemeProvider muiTheme={muiTheme}>
+                <RaisedButton
+                  containerElement={<Link to="/brandSummary" />}
+                  linkButton={true}
+                  style={style}
+                  primary={true}
+                  label="view"/>
+                </MuiThemeProvider>
+              </span>
+          </div>
+          <div className='rating-row slim-border row-right'>
+              <p className='label sub-row'>Chemicals</p>
+              <p className='label'>17/20</p>
+              <span style={{width:'10px'}}>
+                <MuiThemeProvider muiTheme={muiTheme}>
+                <RaisedButton
+                  containerElement={<Link to="/brandSummary" />}
+                  linkButton={true}
+                  style={style}
+                  primary={true}
+                  label="view"/>
+                </MuiThemeProvider>
+              </span>
+          </div>
+          <div className='rating-row slim-border row-right'>
+              <p className='label sub-row'>Positive citizenship</p>
+              <p className='label'>9/20</p>
+              <span style={{width:'10px'}}>
+                <MuiThemeProvider muiTheme={muiTheme}>
+                <RaisedButton
+                  containerElement={<Link to="/brandSummary" />}
+                  linkButton={true}
+                  style={style}
+                  primary={true}
+                  label="view"/>
+                </MuiThemeProvider>
+              </span>
+          </div>
+          <div className='rating-row slim-border row-right'>
+              <p className='label sub-row'>Negative citizenship</p>
+              <p className='label'>x</p>
+              <span style={{width:'10px'}}>
+                <MuiThemeProvider muiTheme={muiTheme}>
+                <RaisedButton
+                  containerElement={<Link to="/brandSummary" />}
+                  linkButton={true}
+                  style={style}
+                  primary={true}
+                  label="view"/>
+                </MuiThemeProvider>
+              </span>
+          </div>
+          <div className='rating-row slim-border row-right'>
+              <p className='label'>Environment</p>
+              <p className='label'>x</p>
+              <p className='label'>arrow</p>
+              <p className='label status-bold'>Good</p>
+          </div>
+          <div className='rating-row slim-border row-right'>
+              <p className='label'>Environment</p>
+              <p className='label'>x</p>
+              <p className='label'>arrow</p>
+              <p className='label status-bold'>Good</p>
+          </div>
         </div>
-      </div>
+    </div>
+    )
   }
 }
 
