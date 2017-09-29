@@ -126,6 +126,10 @@
     display: block;
 }
 
+.dropdown-content:hover {
+  background-color: lightgray;
+}
+
 
 
 
