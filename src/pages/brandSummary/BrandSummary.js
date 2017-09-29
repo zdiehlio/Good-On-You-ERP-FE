@@ -12,6 +12,7 @@ class BrandSummary extends Component {
     return (
       <div className='page-container'>
         <SummaryHeader currentBrand={this.props.currentBrand}/>
+        <SummaryRating currentBrand={this.props.currentBrand}/>
         <Brand name={this.props.currentBrand.name} url={this.props.currentBrand.url} category={this.props.currentBrand.category}/>
       </div>
     );

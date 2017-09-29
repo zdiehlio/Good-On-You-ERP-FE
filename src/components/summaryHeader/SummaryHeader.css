@@ -59,7 +59,7 @@
 
 .brand {
   font-size: 20px;
-  font-weight:bold;
+  font-weight: bold;
 }
 
 .status {
@@ -73,4 +73,10 @@
 
 .status-pagination{
   padding-bottom: .5rem 0;
+}
+
+.history {
+  display: flex;
+  justify-content: space-between;
+  flex-basis: 40%;
 }
