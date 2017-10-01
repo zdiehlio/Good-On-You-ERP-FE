@@ -3,7 +3,7 @@
   flex: 0 0 auto;
   justify-content: center;
   border-bottom: 1px solid #DEDEDE;
-  height: 4em;
+  height: 70px;
   background-color: #2D2D2F;
 }
 
@@ -78,7 +78,7 @@
 .logo-container{
   display: flex;
   justify-content: center;
-  padding-top: 0.9rem;
+  align-items: center;
 }
 
 .logo-img{
