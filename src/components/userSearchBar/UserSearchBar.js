@@ -4,6 +4,8 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {grey900} from 'material-ui/styles/colors';
 import "./UserSearchBar.css";
+import { fetchUsers } from '../../actions';
+import { connect } from 'react-redux'
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -24,12 +26,18 @@ class UserSearchBar extends Component {
 
     this.state = {
       search: '',
-      brand: '',
+      users: ''
     };
   }
 
-  handleSearch(event) {
-    // this.setState({...this.state, search: event});
+  handleSearch = (event) => {
+    this.props.fetchUsers()
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      users: event
+    })
   }
 
   render() {
@@ -37,14 +45,14 @@ class UserSearchBar extends Component {
       <MuiThemeProvider muiTheme={muiTheme}>
         <SearchBar
           value={this.state.search}
-          onKeyPress={this.handleSearch.bind(this)}
-          onRequestSearch={this.handleSearch.bind(this)}
+          onRequestSearch={this.handleSearch}
           style={this.style}
           placeholder="Search User"
+          onChange={this.handleChange}
         />
       </MuiThemeProvider>
     </div>
   }
 }
 
-export default UserSearchBar
+export default connect(null, { fetchUsers })(UserSearchBar)
