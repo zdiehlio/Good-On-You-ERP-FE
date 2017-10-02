@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Brand, BrandSearchBar, UserSearchBar, DetailedList } from '../../components';
 import './Landing.css';
 import { connect } from 'react-redux';
-import { fetchBrands } from '../../actions';
+import { fetchBrands, fetchUsers } from '../../actions';
 
 
 
@@ -78,21 +78,40 @@ class Landing extends Component {
           </Link></span>
           <UserSearchBar/>
         </div>
+
         <ul className="list-container">
-          {sampleBrands.map((brand, i) => {
-            return <Brand key={i} handleViewSummaryClick={this.props.handleViewSummaryClick} name={brand.name} url={brand.url} category={brand.category} territory={brand.description}/>
-          })}
+          {this.props.users ? (this.props.users.data.map((user, i) => {
+            return <Brand key={i} handleViewSummaryClick={this.props.handleViewSummaryClick} name={user.username}/>
+          })) : <div></div>}
         </ul>
+
+        <ul className="list-container">
+          {this.props.brands ? (this.props.brands.data.map((brand, i) => {
+            return <Brand key={i} handleViewSummaryClick={this.props.handleViewSummaryClick} name={brand.name} url={brand.url} category={brand.category} territory={brand.description}/>
+          })) : <div></div>}
+        </ul>
+
+
       </div>
     );
   }
 }
 
+
+
+
+
+
 function mapStateToProps(state) {
-  console.log(state);
+  console.log(state.search);
+  if (state.search) {
+    return state.search
+  }
+
   return {
 
   }
 }
 
-export default connect(mapStateToProps, { fetchBrands })( Landing )
+
+export default connect(mapStateToProps, null)( Landing )
