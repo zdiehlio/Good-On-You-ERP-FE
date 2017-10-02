@@ -10,17 +10,36 @@
   /*border: 1px solid black;*/
   /*padding: .2rem 0;*/
   flex-direction: column;
+  padding-top: 1.5rem;
 }
 
 .rating-row{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: flex-end;
-  height: 35px;
+  justify-content: flex-start;
+  height: 100%;
   padding: 5px;
   width: 100%;
 }
+
+.rating-row >:first-child {
+  flex-basis: 40%;
+}
+
+.rating-row :last-child {
+  flex-basis: 12%;
+}
+
+.rating-drop-down-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+
 
 .rating-row-left{
   width: 50%;
@@ -65,6 +84,16 @@
   font-weight: bold;
 }
 
+.flex-start {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.expand {
+  color: #6ac1bf;
+  cursor: pointer;
+}
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -77,6 +106,8 @@
   word-wrap: normal;
   white-space: nowrap;
   direction: ltr;
+  width: 30px;
+  height: 20px%;
 
   /* Support for all WebKit browsers. */
   -webkit-font-smoothing: antialiased;
@@ -88,4 +119,9 @@
 
   /* Support for IE. */
   font-feature-settings: 'liga';
+}
+
+.hidden {
+  opacity: 0;
+  height: 0;
 }
