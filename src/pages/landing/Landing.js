@@ -68,7 +68,6 @@ class Landing extends Component {
   render() {
     return (
       <div className="page-container">
-        <p>This is the landing page</p>
         <div className="button-container">
           <span><Link to='/createBrand' className="landingButton">
             Create Brand
