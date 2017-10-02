@@ -20,13 +20,13 @@ const Brand = (brand) => {
 
   return (
     <div className="page-container">
-      <div className="brand-row">
+      <div className="brand-row list-item">
         <a className="brand-url">{name}</a>
         <p className="brand-category">{category}</p>
         <MuiThemeProvider muiTheme={muiTheme}>
-        <FlatButton
-          containerElement={<Link to="/brandSummary" />}
-          label="view"/>
+          <FlatButton
+            containerElement={<Link to="/brandSummary" />}
+            label="view"/>
         </MuiThemeProvider>
       </div>
     </div>

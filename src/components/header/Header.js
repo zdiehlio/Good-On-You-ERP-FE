@@ -14,36 +14,38 @@ class Header extends Component {
     this.props.logout()
   }
   render() {
-    return <div className="header">
-      <div className="header-container">
-        <div className="logo-container">
-          <img className="logo-img" src={logo} alt='logo' />
-          <img className="logo-text" src={logoText} alt='logo text' />
-        </div>
+    return (
+      <div className="header">
+        <div className="header-container">
+          <div className="logo-container">
+            <img className="logo-img" src={logo} alt='logo' />
+            <img className="logo-text" src={logoText} alt='logo text' />
+          </div>
 
-        <div className="links-container-left">
-          <a href="/">Home</a>
-        </div>
+          <div className="links-container-left">
+            <a href="/">Home</a>
+          </div>
 
-        <div className="links-container-left">
-          <a href="/">Brand</a>
-        </div>
+          <div className="links-container-left">
+            <a href="/">Brand</a>
+          </div>
 
-        <div className="links-container-right">
+          <div className="links-container-right">
 
-          { this.props.email ? (
-            <div className="dropdown">
-              <h3 className="username">{this.props.email}</h3>
-              <div className="dropdown-content">
-                <p onClick={this.onLogout}>logout</p>
+            { this.props.email ? (
+              <div className="dropdown">
+                <h3 className="username">{this.props.email}</h3>
+                <div className="dropdown-content">
+                  <p onClick={this.onLogout}>logout</p>
+                </div>
               </div>
-            </div>
 
-          ) : <a href="/login">Login</a>
-          }
+            ) : <a href="/login">Login</a>
+            }
+          </div>
         </div>
       </div>
-    </div>
+    )
   }
 }
 
