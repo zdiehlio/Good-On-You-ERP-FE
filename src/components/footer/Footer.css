@@ -1,11 +1,14 @@
 .footer {
-  padding: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
   flex: 0 0 auto;
   position: relative;
   background-color: #2D2D2F;
-  height: 1.2em;
+  height: 50px;
   color: #939393;
   text-align: center;
+
 }
 
 .footer-links {

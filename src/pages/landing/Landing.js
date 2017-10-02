@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Brand, BrandSearchBar, UserSearchBar } from '../../components';
+import { Brand, BrandSearchBar, UserSearchBar, DetailedList } from '../../components';
 import './Landing.css';
+import { connect } from 'react-redux';
+import { fetchBrands } from '../../actions';
+
+
+
 
 const sampleBrands = [
   {
@@ -16,6 +21,42 @@ const sampleBrands = [
     'name': 'Zara',
     'status': 'scrapped'
   },
+  {
+    'name': 'Zara',
+    'status': 'scrapped'
+  },
+  {
+    'name': 'Zara',
+    'status': 'scrapped'
+  },
+  {
+    'name': 'Zara',
+    'status': 'scrapped'
+  },
+  {
+    'name': 'Zara',
+    'status': 'scrapped'
+  },
+  {
+    'name': 'Zara',
+    'status': 'scrapped'
+  },
+  {
+    'name': 'Zara',
+    'status': 'scrapped'
+  },
+  {
+    'name': 'Zara',
+    'status': 'scrapped'
+  },
+  {
+    'name': 'Zara',
+    'status': 'scrapped'
+  },
+  {
+    'name': 'Zara',
+    'status': 'scrapped'
+  }
 ];
 
 class Landing extends Component {
@@ -37,7 +78,7 @@ class Landing extends Component {
           </Link></span>
           <UserSearchBar/>
         </div>
-        <ul>
+        <ul className="list-container">
           {sampleBrands.map((brand, i) => {
             return <Brand key={i} handleViewSummaryClick={this.props.handleViewSummaryClick} name={brand.name} url={brand.url} category={brand.category} territory={brand.description}/>
           })}
@@ -47,4 +88,11 @@ class Landing extends Component {
   }
 }
 
-export default Landing;
+function mapStateToProps(state) {
+  console.log(state);
+  return {
+
+  }
+}
+
+export default connect(mapStateToProps, { fetchBrands })( Landing )
