@@ -22,32 +22,6 @@ class BrandSummaryRating extends Component {
     super(props);
   }
 
-//   <div className="page-container">
-//     <div className="summary-rating-container">
-//       <div className="rating-row">
-//         <div className="rating-row padding-right solid-border">
-//           <p className="label status-bold goy-color">Brand Overview</p>
-//           <p className="label">x</p>
-//         </div>
-//         <div className="rating-row padding-left solid-border">
-//           <p className="label">stars</p>
-//           <p className="label">status</p>
-//         </div>
-//       </div>
-//       <div className="rating-row">
-//         <div className="rating-row padding-right solid-border">
-//           <p className="label status-bold goy-color">General</p>
-//
-//         </div>
-//         <div className="rating-row padding-left solid-border">
-//           <p className="label">V</p>
-//           <p className="label">status</p>
-//         </div>
-//       </div>
-//     </div>
-//
-// </div>
-
   render() {
     return (
       <div className='page-container'>
@@ -61,7 +35,7 @@ class BrandSummaryRating extends Component {
           <div className='rating-row slim-border row-right'>
               <p className='label'>Environment</p>
               <p className='label'>x</p>
-              <p className='label'>arrow</p>
+              <i className="material-icons goy-color">expand_more</i>
               <p className='label status-bold'>Incomplete</p>
           </div>
           <div className='rating-row slim-border row-right'>
