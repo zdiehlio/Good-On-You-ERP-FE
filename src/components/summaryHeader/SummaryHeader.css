@@ -8,6 +8,7 @@
   width: 100%;
   justify-content: space-around;
   height: 10rem;
+  padding: 1rem 0;
 }
 
 .summary-container-left{
@@ -44,7 +45,6 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: .5rem 0;
 }
 
 .label{

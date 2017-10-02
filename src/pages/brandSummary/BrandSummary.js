@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Brand, SummaryHeader, SummaryRating } from '../../components';
+import { Brand, SummaryHeader, SummaryRating, SummaryQualitativeRating, SummarySupplementaryData } from '../../components';
 import './BrandSummary.css';
 
 class BrandSummary extends Component {
@@ -13,7 +13,8 @@ class BrandSummary extends Component {
       <div className='page-container'>
         <SummaryHeader currentBrand={this.props.currentBrand}/>
         <SummaryRating currentBrand={this.props.currentBrand}/>
-        <Brand name={this.props.currentBrand.name} url={this.props.currentBrand.url} category={this.props.currentBrand.category}/>
+        <SummaryQualitativeRating currentBrand={this.props.currentBrand}/>
+        <SummarySupplementaryData currentBrand={this.props.currentBrand}/>
       </div>
     );
   }
