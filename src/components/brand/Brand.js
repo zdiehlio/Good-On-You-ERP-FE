@@ -28,8 +28,6 @@ const Brand = (brand) => {
           containerElement={<Link to="/brandSummary" />}
           label="view"/>
         </MuiThemeProvider>
-
-
       </div>
     </div>
   )
