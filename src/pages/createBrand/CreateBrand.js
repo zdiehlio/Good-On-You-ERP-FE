@@ -40,6 +40,8 @@ const muiTheme = getMuiTheme({
 class CreateBrand extends Component {
 
   renderField(field) {
+    const { meta: { touched, error } } = field
+
     return (
       <div>
         <MuiThemeProvider>
@@ -49,6 +51,9 @@ class CreateBrand extends Component {
             {...field.input}
           />
         </MuiThemeProvider>
+        <div className="text-help">
+          {touched ? error : ""}
+        </div>
       </div>
     )
   }
@@ -92,6 +97,30 @@ class CreateBrand extends Component {
   }
 }
 
+function validate(values) {
+  // console.log(values) -> {title: 'dksajkd', categories: "dkjsad", content: "kdsjakdj"}
+  const errors = {};
+
+  console.log(values);
+
+  // // Validate the inputs from "values"
+  if (!values.name) {
+    errors.name = "Enter a name!"
+  }
+
+  if (!values.url) {
+    errors.url = "Enter a url!"
+  }
+
+  if (!values.email) {
+    errors.email = "Enter a email!"
+  }
+
+  // If errors is empty, the form is fine to submit
+  // If errors has *any* properties, redux form assumes form is invalid
+  return errors;
+}
+
 function mapStateToProps(state) {
   console.log(state);
   return { error: state.error }
@@ -99,5 +128,6 @@ function mapStateToProps(state) {
 
 
 export default reduxForm({
+  validate,
   form: "CreateBrandForm"
 })(connect(mapStateToProps, { createBrand })(CreateBrand))
