@@ -60,6 +60,7 @@ class CreateBrand extends Component {
 
   onSubmit(values) {
     this.props.createBrand(values);
+    this.props.history.push("/questionnaire")
     console.log(values);
   }
 
