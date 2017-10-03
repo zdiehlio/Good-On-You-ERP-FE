@@ -1,6 +1,7 @@
 .landingButton {
     background-color: #09b5ab;
     border: none;
+    border-radius: 3px;
     color: white;
     padding: 10px 32px;
     text-align: center;
@@ -11,6 +12,17 @@
     cursor: pointer;
     width: 200px;
     float: left;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    -webkit-transition: opacity .5s ease-in-out;
+    -moz-transition: opacity .5s ease-in-out;
+    -ms-transition: opacity .5s ease-in-out;
+    -o-transition: opacity .5s ease-in-out;
+    transition: opacity .5s ease-in-out;
+    opacity: 1;
+}
+
+.landingButton:hover  {
+    opacity: 0.5;
 }
 
 
@@ -19,7 +31,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 800px;
+  width: 80%;
 }
 
 .button-container{
@@ -33,6 +45,6 @@
   padding: 5px 15px;
 }
 
-.list-container :hover{
-  background-color: white !important;
+.list-container {
+  width: 80%;
 }

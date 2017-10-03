@@ -19,7 +19,7 @@ const Brand = (brand) => {
   const category = brand.category;
 
   return (
-    <div className="page-container">
+    <div className="brand-container">
       <div className="brand-row list-item">
         <a className="brand-url">{name}</a>
         <p className="brand-category">{category}</p>
