@@ -35,18 +35,18 @@ export function createBrand(values) {
   }
 }
 
-export function fetchUsers() {
+export function fetchUsers(value) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get("http://34.211.121.82:3030/users/")
+  const request = axios.get(`http://34.211.121.82:3030/users/?$search=${value}`)
   return {
     type: FETCH_USERS,
     payload: request
   }
 }
 
-export function fetchBrands() {
+export function fetchBrands(value) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get("http://34.211.121.82:3030/brands/")
+  const request = axios.get(`http://34.211.121.82:3030/brands?$search=${value}`)
   return {
     type: FETCH_BRANDS,
     payload: request

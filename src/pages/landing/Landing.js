@@ -6,59 +6,6 @@ import { connect } from 'react-redux';
 import { fetchBrands, fetchUsers } from '../../actions';
 
 
-
-
-const sampleBrands = [
-  {
-    'name': 'Asos',
-    'status': 'approved'
-  },
-  {
-    'name': 'Nike',
-    'status': 'rated'
-  },
-  {
-    'name': 'Zara',
-    'status': 'scrapped'
-  },
-  {
-    'name': 'Zara',
-    'status': 'scrapped'
-  },
-  {
-    'name': 'Zara',
-    'status': 'scrapped'
-  },
-  {
-    'name': 'Zara',
-    'status': 'scrapped'
-  },
-  {
-    'name': 'Zara',
-    'status': 'scrapped'
-  },
-  {
-    'name': 'Zara',
-    'status': 'scrapped'
-  },
-  {
-    'name': 'Zara',
-    'status': 'scrapped'
-  },
-  {
-    'name': 'Zara',
-    'status': 'scrapped'
-  },
-  {
-    'name': 'Zara',
-    'status': 'scrapped'
-  },
-  {
-    'name': 'Zara',
-    'status': 'scrapped'
-  }
-];
-
 class Landing extends Component {
 
   constructor(props) {

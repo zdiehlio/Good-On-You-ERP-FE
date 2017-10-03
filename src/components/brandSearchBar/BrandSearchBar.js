@@ -31,7 +31,7 @@ class BrandSearchBar extends Component {
   }
 
   handleSearch = (event) => {
-    this.props.fetchBrands()
+    this.props.fetchBrands(this.state.brand)
   }
 
   handleChange = (event) => {
