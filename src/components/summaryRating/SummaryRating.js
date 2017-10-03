@@ -236,65 +236,58 @@ class BrandSummaryRating extends Component {
       )
       case 1:
       return (
-        <div className='page-container'>
-          <div className='summary-rating-container'>
-            <div className='rating-row solid-border'>
-                <p className='label bold goy-color'>Ratings</p>
-                <span className='flex-start'></span>
-                <p className='label'>stars</p>
-            </div>
-
-              {this.state.categories.map((item, i) => {
-                const currentCategory = summaryData[item.category_id]
-                return (
-                  <div className='rating-drop-down-container'>
-                    <div className='rating-row slim-border row-right'>
-
-                      <p className='label'>{item.category_id}</p>
-                      {currentCategory.score ? (<p className='label'>{`${currentCategory.score}/${currentCategory.maxScore}`}</p>) : (<span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>)}
-                      <span className='flex-start'><i className="material-icons expand" onClick={ this.handleExpandClick.bind(this,i) } key={i} category={item.category}>{this.state.showTheme[i]? "expand_less" : "expand_more"}</i></span>
-                      <p className='label status-bold'>{currentCategory.label}</p>
-                    </div>
-
-                    { this.state.showTheme[i] ? (currentCategory.themes.map((theme, i) => {
-                      return (
-                        <div className='rating-drop-down-container'>
-                          <div className='rating-row slim-border row-right'>
-                            <p className='label sub-row'>{theme.name}</p>
-                            {theme.score ? (<p className='label'>{`${theme.score}/${theme.maxScore}`}</p>) : (<span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>)}
-
-                            <span style={{width:'10px'}}>
-                              <MuiThemeProvider muiTheme={muiTheme}>
-                              <RaisedButton
-                                containerElement={<Link to="/brandSummary" />}
-                                linkButton={true}
-                                style={style}
-                                primary={true}
-                                label="view"/>
-                              </MuiThemeProvider>
-                            </span>
-                            <div></div>
-                          </div>
-                        </div>
-                      )
-                    })) : <div/>}
-
-
-
-                  </div>
-                )
-              })}
-
-
+        <div className='summary-rating-container'>
+          <div className='rating-row solid-border'>
+            <p className='label bold goy-color'>Ratings</p>
+            <span className='flex-start'></span>
+            <p className='label'>stars</p>
           </div>
-      </div>
+
+            {this.state.categories.map((item, i) => {
+              const currentCategory = summaryData[item.category_id]
+              return (
+                <div className='rating-drop-down-container'>
+                  <div className='rating-row slim-border row-right'>
+                    <p className='label'>{item.category_id}</p>
+                    {currentCategory.score ? (<p className='label'>{`${currentCategory.score}/${currentCategory.maxScore}`}</p>) : (<span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>)}
+                    <span className='flex-start'><i className="material-icons expand" onClick={ this.handleExpandClick.bind(this,i) } key={i} category={item.category}>{this.state.showTheme[i]? "expand_less" : "expand_more"}</i></span>
+                    <p className='label status-bold'>{currentCategory.label}</p>
+                  </div>
+                  { this.state.showTheme[i] ? (currentCategory.themes.map((theme, i) => {
+                    return (
+                      <div className='rating-drop-down-container'>
+                        <div className='rating-row slim-border row-right'>
+                          <p className='label sub-row'>{theme.name}</p>
+                          {theme.score ? (<p className='label'>{`${theme.score}/${theme.maxScore}`}</p>) : (<span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>)}
+
+                          <span style={{width:'10px'}}>
+                            <MuiThemeProvider muiTheme={muiTheme}>
+                            <RaisedButton
+                              containerElement={<Link to="/brandSummary" />}
+                              linkButton={true}
+                              style={style}
+                              primary={true}
+                              label="view"/>
+                            </MuiThemeProvider>
+                          </span>
+                          <div></div>
+                        </div>
+                      </div>
+                    )
+                  }))
+                  :
+                  <div/>}
+                </div>
+              )
+            })}
+        </div>
       )
     }
   }
 
   render() {
     return (
-      <div>
+      <div className='page-container'>
         {this.renderPage()}
       </div>
     )
