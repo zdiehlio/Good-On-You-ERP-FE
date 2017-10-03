@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './Questionnaire.css'
 import axios from 'axios'
-import { Question, Answer, ProgressBar, Summary } from '../../components';
+import { Question, Answer, ProgressBar } from '../../components';
 
 class Questionnaire extends Component {
 
@@ -170,7 +170,7 @@ class Questionnaire extends Component {
       )
       case 2:
         return(
-          <div><Summary/></div>
+          <div>Summary</div>
         )
       default:
         return (<div></div>)
