@@ -31,7 +31,7 @@ class UserSearchBar extends Component {
   }
 
   handleSearch = (event) => {
-    this.props.fetchUsers()
+    this.props.fetchUsers(this.state.users)
   }
 
   handleChange = (event) => {
