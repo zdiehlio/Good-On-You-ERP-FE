@@ -12,3 +12,4 @@ export { default as SummaryRating } from './summaryRating/SummaryRating'
 export { default as SummaryQualitativeRating } from './summaryQualitativeRating/SummaryQualitativeRating'
 export { default as SummarySupplementaryData } from './summarySupplementaryData/SummarySupplementaryData'
 export { default as DetailedList } from './detailedList/DetailedList'
+// change folder name
