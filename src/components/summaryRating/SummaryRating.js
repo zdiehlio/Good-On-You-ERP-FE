@@ -259,8 +259,7 @@ class BrandSummaryRating extends Component {
                         <div className='rating-row slim-border row-right'>
                           <p className='label sub-row'>{theme.name}</p>
                           {theme.score ? (<p className='label'>{`${theme.score}/${theme.maxScore}`}</p>) : (<span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>)}
-
-                          <span style={{width:'10px'}}>
+                          <span style={{width:'20px'}}>
                             <MuiThemeProvider muiTheme={muiTheme}>
                             <RaisedButton
                               containerElement={<Link to="/brandSummary" />}

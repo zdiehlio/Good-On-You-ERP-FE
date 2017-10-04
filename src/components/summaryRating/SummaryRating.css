@@ -24,7 +24,7 @@
 }
 
 .rating-row >:first-child {
-  flex-basis: 40%;
+  flex-basis: 38%;
 }
 
 .rating-row :last-child {
@@ -38,8 +38,6 @@
   align-items: flex-start;
   width: 100%;
 }
-
-
 
 .rating-row-left{
   width: 50%;

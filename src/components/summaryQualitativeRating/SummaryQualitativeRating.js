@@ -12,7 +12,7 @@ const muiTheme = getMuiTheme({
   }
 });
 
-const raisedButtonStyle = {
+const style = {
   height: '20px'
 };
 
@@ -38,36 +38,36 @@ class BrandSummaryQualitativeRating extends Component {
           <div className='rating-row slim-border row-right'>
               <p className='label'>Causes</p>
               <span className='flex-start'><i className="material-icons" style={{color: 'green'}} >check</i></span>
-              <span className='flex-start'><i className="material-icons expand" onClick={() => this.setState({showEnvironment: !this.state.showEnvironment})}>{this.state.showEnvironment ? 'expand_less' : 'expand_more'}</i></span>
+              <MuiThemeProvider muiTheme={muiTheme}>
+              <RaisedButton
+                containerElement={<Link to="/brandSummary" />}
+                style={style}
+                primary={true}
+                label="view"/>
+              </MuiThemeProvider>
           </div>
-          {this.state.showEnvironment ?
-            <div className='rating-drop-down-container'>
-              <div className='rating-row slim-border row-right'>
-                  <p className='label sub-row'>Placeholder</p>
-                  <p className='label'>10/20</p>
-                  <span style={{width:'10px'}}>
-                    <MuiThemeProvider muiTheme={muiTheme}>
-                    <RaisedButton
-                      containerElement={<Link to="/brandSummary" />}
-                      linkButton={true}
-                      style={raisedButtonStyle}
-                      primary={true}
-                      label="view"/>
-                    </MuiThemeProvider>
-                  </span>
-              </div>
-            </div>
-            : <div/>
-          }
+
           <div className='rating-row slim-border row-right'>
             <p className='label'>Sentences</p>
             <span className='flex-start'><i className="material-icons" style={{color: 'green'}} >check</i></span>
-            <span className='flex-start'><i className="material-icons expand" onClick={() => this.setState({showSentences: !this.state.showSentences})}>{this.state.showSentences ? 'expand_less' : 'expand_more'}</i></span>
+            <MuiThemeProvider muiTheme={muiTheme}>
+            <RaisedButton
+              containerElement={<Link to="/brandSummary" />}
+              style={style}
+              primary={true}
+              label="view"/>
+            </MuiThemeProvider>
           </div>
           <div className='rating-row slim-border row-right'>
             <p className='label'>Summary</p>
             <span className='flex-start'><i className="material-icons" style={{color: 'green'}} >check</i></span>
-            <span className='flex-start'><i className="material-icons expand" onClick={() => this.setState({showSummary: !this.state.showSummary})}>{this.state.showSummary ? 'expand_less' : 'expand_more'}</i></span>
+            <MuiThemeProvider muiTheme={muiTheme}>
+            <RaisedButton
+              containerElement={<Link to="/brandSummary" />}
+              style={style}
+              primary={true}
+              label="view"/>
+            </MuiThemeProvider>
           </div>
         </div>
     </div>
