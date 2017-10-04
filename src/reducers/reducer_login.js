@@ -1,24 +1,34 @@
-import { LOG_IN, LOG_OUT } from '../actions'
+import { LOG_IN, LOG_OUT, FETCH_USER_INFO } from '../actions'
 import _ from 'lodash'
 import jwtDecode from 'jwt-decode'
+import axios from 'axios'
+
+
 
 
 export default function(state = {email: sessionStorage.email}, action) {
   switch (action.type) {
   case LOG_IN:
+    sessionStorage.clear()
+    console.log(action);
     if (!action.error) {
-      const email = {
-        email: JSON.parse(action.payload.config.data).email
-      }
-      sessionStorage.setItem("email", email.email)
-      sessionStorage.setItem("jwt", action.payload.data.accessToken)
 
-      return {...email}
+      console.log(action.payload.data);
+
+      sessionStorage.setItem("email", action.payload.data.data[0].email)
+      sessionStorage.setItem("jwt", action.payload.config.accessToken)
+
+      return {...action.payload.data.data[0]}
     }
     return {error: action.error}
   case LOG_OUT:
     sessionStorage.clear()
-    return {email: sessionStorage.email};
+    return null;
+  case FETCH_USER_INFO:
+    if (!action.error) {
+      return action.payload.data.data[0]
+    }
+    return {error: action.error}
   default:
     return state;
   }

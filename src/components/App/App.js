@@ -21,6 +21,7 @@ import request from "request"
 // <Route path=`/viewBrand/${this.state.currentBrand}` component={Summary} currentBrand={this.state.currentBrand} />
 
 
+
 class App extends Component {
 
   constructor(props) {

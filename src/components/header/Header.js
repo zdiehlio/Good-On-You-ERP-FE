@@ -31,7 +31,6 @@ class Header extends Component {
           </div>
 
           <div className="links-container-right">
-
             { this.props.email ? (
               <div className="dropdown">
                 <h3 className="username">{this.props.email}</h3>
@@ -40,7 +39,7 @@ class Header extends Component {
                 </div>
               </div>
 
-            ) : <a href="/login">Login</a>
+            ) : <div></div>
             }
           </div>
         </div>
@@ -50,7 +49,8 @@ class Header extends Component {
 }
 
 function mapStateToProps(state) {
-  return {email: state.login.email}
+  console.log(state);
+  return state.login
 }
 
-export default connect(mapStateToProps, { login, logout })(Header)
+export default connect(mapStateToProps, {logout})(Header)
