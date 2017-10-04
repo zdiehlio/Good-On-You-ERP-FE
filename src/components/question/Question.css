@@ -26,19 +26,54 @@
 }
 
 .button {
-    background-color: #09b5ab;
-    border: none;
-    color: white;
-    padding: 10px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    width: 100%
+  background-color: #09b5ab;
+  border: none;
+  color: white;
+  padding: 10px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 100%
 }
 
 .button:disabled {
   background-color: #666666;
+}
+
+.evidence-container{
+  padding: 10px;
+  border: 1px solid #6ac1bf;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.evidence-container-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.evidence-container-row > :first-child{
+  flex-basis: 25%;
+  color: #424242;
+}
+
+.evidence-container-row > :nth-child(2){
+  border: 1px solid #424242;
+  font-family: 'Roboto';
+  flex-basis: 75%;
+  resize: none;
+}
+
+.questionnaire-btn-container {
+  display: flex;
+  margin: 15px 0px;
+  padding: 0 50px;
+  flex-direction: row;
+  justify-content: space-around;
 }
