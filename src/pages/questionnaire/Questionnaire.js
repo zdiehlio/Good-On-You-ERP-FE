@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import './Questionnaire.css'
 import axios from 'axios'
 import { Question, Answer, ProgressBar } from '../../components';
+import { fetchAllQuestions } from '../../actions';
+import { Field, reduxForm } from 'redux-form'
+import { connect } from 'react-redux';
+
+
 
 class Questionnaire extends Component {
 
@@ -17,7 +22,8 @@ class Questionnaire extends Component {
       mappedQuestions: [],
       categories: [],
       subPage: 0,
-      subPageTotal: 0
+      subPageTotal: 0,
+      currentTheme: 0
     };
 
     // this.getData = this.getData.bind(this)
@@ -25,81 +31,86 @@ class Questionnaire extends Component {
 
   getData() {
     // get data from JSON
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
     axios.get("/spec.json")
       .then(res => {
         this.setState({
-          data: res.data.questions,
           categories: res.data.categories
         })
         this.mapQuestionTypes()
       })
   }
 
+// retrive list of question for theme in spec.json
   mapQuestionTypes() {
     var returnArray = []
+    var count = 0
+    var totalThemeCount = 0
+
     this.state.categories.forEach((category) => {
-      category.themes.forEach((theme) => {
-        var temp = this.state.data.filter((question) => {
-          return question.category_id == category.category_id && theme.theme_id == question.theme_id
-        })
-        if (temp.length > 0) {
-          returnArray.push(temp)
-        }
+      category.themes.forEach((theme, i) => {
+        totalThemeCount ++
       })
     })
-    this.setState({
-      mappedQuestions: returnArray,
-      page: 1
+
+    this.state.categories.forEach((category) => {
+      category.themes.forEach((theme, i) => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+        // console.log(theme.theme_id);
+        axios.get(`http://34.211.121.82:3030/questions?theme_id=${theme.theme_id}`)
+          .then(res => {
+            count ++
+            if(res.data.data.length > 0) {
+              var questions = this.state.mappedQuestions
+              questions.push(res.data.data)
+              this.setState({
+                mappedQuestions: questions
+              })
+            }
+
+            if (count >= totalThemeCount) {
+              console.log(this.state.mappedQuestions);
+              this.setState({
+                page: 1
+              })
+            }
+          })
+      })
     })
-    console.log(this.state.mappedQuestions);
   }
 
   componentWillMount(){
+    this.props.fetchAllQuestions();
     this.getData();
   }
 
-  handleSaveQuestion = () => {
-    var answeredData = this.state.answeredData
-    var selectedAnswer = []
-    this.state.selected.forEach((element) => {
-      selectedAnswer.push(this.state.data[this.state.currentQuestion].answers[element].text)
-    })
-    console.log(selectedAnswer);
+  handleSaveQuestion = (value) => {
+    const { currentTheme, currentQuestion, mappedQuestions } = this.state
+    console.log(value);
 
-    // subpage corresponds to chemicals, water, worker_policies
-    answeredData[this.state.subPage].push({
-      question: this.state.data[this.state.currentQuestion].text,
-      answers: selectedAnswer
-    })
-    this.setState({
-      answeredData: answeredData,
-      selected: [],
-      currentQuestion: this.state.currentQuestion + 1
-    })
-
-    var subPageTotal = 0
-    console.log(this.state.mappedQuestions[0].length);
-    for (var i = 0; i <= this.state.subPage; i++) {
-      subPageTotal += this.state.mappedQuestions[i].length
+    var answerObject = {
+     brand_id: "DxXvQiEE9MICosFv",
+     theme_id: mappedQuestions[currentTheme][currentQuestion].theme_id,
+     question_id: mappedQuestions[currentTheme][currentQuestion].question_id,
+     answer_ids: Object.keys(value)
     }
-    subPageTotal -=1
-    console.log(subPageTotal);
-    console.log(this.state.currentQuestion);
 
-    if (this.state.data.length-1 == this.state.currentQuestion) {
-      this.setState({
-        page: this.state.page += 1
-      })
-    } else if (subPageTotal <= this.state.currentQuestion) {
-      answeredData.push([])
-      this.setState({
-        subPage: this.state.subPage + 1,
-        answeredData: answeredData,
-        subPageTotal: subPageTotal
-      })
-    }
-    console.log(this.state.subPageTotal);
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+    axios.post(`http://34.211.121.82:3030/brand-answers`, answerObject);
 
+    // use api to save questions response
+    // call api to get all responses for the current theme to be displayed at the bottom
+      // http://34.211.121.82:3030/brand-answers?brand_id=DxXvQiEE9MICosFv&theme_id=water to get array of question id and array of asnwers id
+      // using the array of question id and aswer id to get the text description of the questions and answers
+
+
+
+      // console.log(theme.theme_id);
+      axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=DxXvQiEE9MICosFv&theme_id=${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].theme_id}`)
+        .then(res => {
+          console.log(res.data);
+        })
+    // change the state of the current question to display the next question
   }
 
   handleSelectionChange = (event) => {
@@ -132,7 +143,7 @@ class Questionnaire extends Component {
             <div className="App">
             <h2 className="category-text">
               {
-                `${this.state.data[this.state.currentQuestion].category_id} > ${this.state.data[this.state.currentQuestion].theme_id}`
+                // `${this.state.data[this.state.currentQuestion].category_id} > ${this.state.data[this.state.currentQuestion].theme_id}`
               }
             </h2>
               <ProgressBar
@@ -149,10 +160,10 @@ class Questionnaire extends Component {
               />
               <Question
                 question={
-                  this.state.data[this.state.currentQuestion].text
+                  this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion]
                 }
                 answers={
-                 this.state.data[this.state.currentQuestion].answers
+                 this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].answers
                 }
                 currentQuestion = {this.state.currentQuestion}
                 handleSaveQuestion = {this.handleSaveQuestion}
@@ -186,4 +197,13 @@ class Questionnaire extends Component {
   }
 }
 
-export default Questionnaire;
+
+function mapStateToProps(state) {
+  return { data: state.qa }
+}
+
+export default reduxForm({
+  form: "AnswerForm"
+})(
+  connect(mapStateToProps, { fetchAllQuestions })(Questionnaire)
+)

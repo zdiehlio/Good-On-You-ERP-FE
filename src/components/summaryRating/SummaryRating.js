@@ -39,6 +39,7 @@ class BrandSummaryRating extends Component {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
     axios.get(`http://34.211.121.82:3030/ratings/?brandId=k5mKrWygJ9RtQU0r`)
       .then(res => {
+        console.log(res.data.data[0]);
         this.setState({summaryData: res.data.data[0], state: 1})
       })
   }
