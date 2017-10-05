@@ -12,7 +12,8 @@ import {
   Login,
   ViewBrands,
   CreateBrands,
-  BrandSummary
+  BrandSummary,
+  CategoryQuestions
 } from '../../pages'
 import './App.css';
 import request from "request"
@@ -91,6 +92,7 @@ class App extends Component {
               <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
               <Route path='/brandSummary' component={props => <BrandSummary {...props} currentBrand={this.state.currentBrand} />}/>
               <Route path='/createBrand' component={CreateBrands} />
+              <Route path='/categoryQuestions' component={props => <CategoryQuestions {...props}/> }/>
             </Switch>
           </div>
           <Footer/>
