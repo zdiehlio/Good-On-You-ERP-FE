@@ -34,7 +34,6 @@ class CategoryQuestions extends Component {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
     axios.get(`http://34.211.121.82:3030/brand-answers?theme_id=resource&brand_id=k5mKrWygJ9RtQU0r`)
       .then(res => {
-        debugger
         this.setState({answersData: res.data, state: 1})
       })
   }

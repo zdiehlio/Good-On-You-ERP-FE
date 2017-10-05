@@ -7,7 +7,7 @@ export const CREATE_BRAND = 'create_brand'
 export const FETCH_USERS = 'fetch_users'
 export const FETCH_BRANDS = 'fetch_brands'
 export const FETCH_USER_INFO = 'fetch_user_info'
-
+export const FETCH_QUESTIONS = 'fetch_questions'
 // .then(response => {
 //   console.log(response);
 //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken;
@@ -77,6 +77,15 @@ export function submitAnswer(value) {
   const request = axios.get(`http://34.211.121.82:3030/brands?$search=${value}`)
   return {
     type: FETCH_BRANDS,
+    payload: request
+  }
+}
+
+export function fetchAllQuestions() {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`http://34.211.121.82:3030/questions?theme_id=energy`)
+  return {
+    type: FETCH_QUESTIONS,
     payload: request
   }
 }
