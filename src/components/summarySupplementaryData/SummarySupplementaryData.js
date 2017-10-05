@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import axios from 'axios'
 import './SummarySupplementaryData.css';
 
 const muiTheme = getMuiTheme({
@@ -28,6 +29,18 @@ class SummarySupplementaryData extends Component {
       showSimilarBrands: false,
       showPrice: false,
     }
+  }
+
+  getData() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+    axios.get(`http://34.211.121.82:3030/ratings/?brandId=k5mKrWygJ9RtQU0r`)
+      .then(res => {
+        this.setState({summaryData: res.data.data[0], state: 1})
+      })
+  }
+
+  componentWillMount(){
+    this.getData();
   }
 
   render() {
