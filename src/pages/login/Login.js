@@ -25,9 +25,13 @@ class Login extends Component {
     )
   }
 
+  // componentWillMount(){
+  //   console.log(this.props.data);
+  // }
+
+
   onSubmit(values) {
     this.props.login(values);
-    this.props.history.push("/")
   }
 
   render() {
@@ -59,8 +63,7 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state);
-  return { error: state.error }
+  return { data: state.login }
 }
 
 export default reduxForm({
