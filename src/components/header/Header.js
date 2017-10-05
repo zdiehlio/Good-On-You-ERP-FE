@@ -31,9 +31,9 @@ class Header extends Component {
           </div>
 
           <div className="links-container-right">
-            { this.props.email ? (
+            { this.props.user ? (
               <div className="dropdown">
-                <h3 className="username">{this.props.email}</h3>
+                <h3 className="username">{this.props.user.email}</h3>
                 <div className="dropdown-content">
                   <p onClick={this.onLogout}>logout</p>
                 </div>

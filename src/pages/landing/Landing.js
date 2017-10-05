@@ -34,9 +34,7 @@ class Landing extends Component {
 
   onSubmit(values) {
     this.props.login(values);
-    if (this.props.email) {
-      this.props.fetchUserInfo(this.props.email)
-    }
+
   }
 
 
@@ -64,7 +62,7 @@ class Landing extends Component {
         <h2>Loading...</h2>
       )
       case 1:
-        return (this.props.email ? (
+        return (this.props.user ? (
           <div className="page-container">
             <div className="button-container">
               <div className="button-and-search">
@@ -73,7 +71,7 @@ class Landing extends Component {
                 </Link></span>
                 <BrandSearchBar/>
               </div>
-              { this.props.role == "admin" ? (
+              { this.props.user.role == "admin" ? (
                 <div className="button-and-search">
                   <span>
                     <Link to='/createUser' className="landingButton">

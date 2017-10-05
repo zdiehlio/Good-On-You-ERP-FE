@@ -15,10 +15,10 @@ export default function(state = {email: sessionStorage.email}, action) {
 
       console.log(action.payload.data);
 
-      sessionStorage.setItem("email", action.payload.data.data[0].email)
-      sessionStorage.setItem("jwt", action.payload.config.accessToken)
+      sessionStorage.setItem("email", action.payload.data.user.email)
+      sessionStorage.setItem("jwt", action.payload.data.accessToken)
 
-      return {...action.payload.data.data[0]}
+      return {...action.payload.data}
     }
     return {error: action.error}
   case LOG_OUT:
@@ -26,7 +26,8 @@ export default function(state = {email: sessionStorage.email}, action) {
     return null;
   case FETCH_USER_INFO:
     if (!action.error) {
-      return action.payload.data.data[0]
+      console.log(action.payload);
+      return {user: action.payload.data.data[0]}
     }
     return {error: action.error}
   default:
