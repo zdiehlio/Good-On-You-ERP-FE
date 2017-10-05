@@ -71,3 +71,12 @@ export function fetchBrands(value) {
     payload: request
   }
 }
+
+export function submitAnswer(value) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`http://34.211.121.82:3030/brands?$search=${value}`)
+  return {
+    type: FETCH_BRANDS,
+    payload: request
+  }
+}
