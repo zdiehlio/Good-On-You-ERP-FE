@@ -150,6 +150,10 @@ class Questionnaire extends Component {
     }
   }
 
+  handleEditAnswer = (values) => {
+    console.log(values);
+  }
+
   renderPage = () => {
     switch (this.state.page) {
       case 0:
@@ -192,7 +196,7 @@ class Questionnaire extends Component {
                 selected = {this.state.selected}
               ></Question>
               {this.state.rawAnswerList.map((answer) => {
-              return <Answer rawAnswer={answer}/>
+              return <Answer rawAnswer={answer} handleEditAnswer={this.handleEditAnswer}/>
             })}
               <Answer/>
             </div>
