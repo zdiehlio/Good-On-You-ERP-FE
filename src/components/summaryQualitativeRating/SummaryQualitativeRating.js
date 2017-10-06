@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import axios from 'axios'
 import './SummaryQualitativeRating.css';
 
 const muiTheme = getMuiTheme({
@@ -22,15 +23,33 @@ class BrandSummaryQualitativeRating extends Component {
     super(props);
 
     this.state = {
+      state: 0,
       showCauses: false,
       showSentences: false,
       showSummary: false
     }
   }
 
-  render() {
-    return (
-      <div className='page-container'>
+  getData() {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+    axios.get(`http://34.211.121.82:3030/qualitative-ratings/?brandId=k5mKrWygJ9RtQU0r`)
+      .then(res => {
+        this.setState({summaryData: res.data.data[0], state: 1})
+      })
+  }
+
+  componentWillMount(){
+    this.getData();
+  }
+
+  renderPage = () => {
+    switch (this.state.state) {
+      case 0:
+      return(
+        <h2>Loading...</h2>
+      )
+      case 1:
+      return (
         <div className='summary-rating-container'>
           <div className='rating-row solid-border'>
               <p className='label bold goy-color'>Qualitative Ratings</p>
@@ -70,7 +89,16 @@ class BrandSummaryQualitativeRating extends Component {
             </MuiThemeProvider>
           </div>
         </div>
-    </div>
+      )
+    }
+  }
+
+
+  render() {
+    return (
+      <div className='page-container'>
+        {this.renderPage()}
+      </div>
     )
   }
 }
