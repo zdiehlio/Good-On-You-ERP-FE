@@ -163,7 +163,7 @@ class Questionnaire extends Component {
             <div className="App">
             <h2 className="category-text">
               {
-                // `${this.state.data[this.state.currentQuestion].category_id} > ${this.state.data[this.state.currentQuestion].theme_id}`
+                `${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].category_id} > ${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].theme_id}`
               }
             </h2>
               <ProgressBar
