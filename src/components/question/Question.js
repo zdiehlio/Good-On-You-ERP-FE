@@ -101,14 +101,15 @@ class Question extends Component {
     return (
       <div className="card">
         <div className="container">
+        <h4>{this.props.question.text}</h4>
         <form onSubmit={handleSubmit(this.props.handleSaveQuestion)}>
-        
+
         {this.props.answers.map((ele, i) =>
           <Field
             label={ele.text}
             name={ele.answer_id}
             type="checkbox"
-            elementKey={i}
+            key={i}
             component= {this.renderField}
           ></Field>
         )}

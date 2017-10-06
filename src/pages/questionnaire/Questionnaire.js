@@ -23,7 +23,8 @@ class Questionnaire extends Component {
       categories: [],
       subPage: 0,
       subPageTotal: 0,
-      currentTheme: 0
+      currentTheme: 0,
+      rawAnswerList: []
     };
 
     // this.getData = this.getData.bind(this)
@@ -85,18 +86,40 @@ class Questionnaire extends Component {
   }
 
   handleSaveQuestion = (value) => {
+    this.setState({
+      page: 0
+    })
     const { currentTheme, currentQuestion, mappedQuestions } = this.state
     console.log(value);
 
     var answerObject = {
-     brand_id: "DxXvQiEE9MICosFv",
+     brand_id: "M9RXOWnCcD2SnA06",
      theme_id: mappedQuestions[currentTheme][currentQuestion].theme_id,
      question_id: mappedQuestions[currentTheme][currentQuestion].question_id,
      answer_ids: Object.keys(value)
     }
 
+    // call apis tomsave answer for brand in the daatabase and get all the answers id for the currentTheme
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.post(`http://34.211.121.82:3030/brand-answers`, answerObject);
+    axios.post(`http://34.211.121.82:3030/brand-answers`, answerObject).then(res => {
+      axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=M9RXOWnCcD2SnA06&theme_id=${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].theme_id}`)
+        .then(res => {
+          const rawAnswerList = res.data.data
+          console.log(res.data.data);
+
+          if (this.state.mappedQuestions[this.state.currentTheme].length-1 == currentQuestion) {
+            this.props.history.push("/brandSummary")
+          }
+
+          this.setState({
+            currentQuestion: currentQuestion + 1,
+            page: 1,
+            rawAnswerList: rawAnswerList
+          })
+        })
+    });
+
+
 
     // use api to save questions response
     // call api to get all responses for the current theme to be displayed at the bottom
@@ -106,10 +129,7 @@ class Questionnaire extends Component {
 
 
       // console.log(theme.theme_id);
-      axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=DxXvQiEE9MICosFv&theme_id=${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].theme_id}`)
-        .then(res => {
-          console.log(res.data);
-        })
+
     // change the state of the current question to display the next question
   }
 
@@ -171,8 +191,8 @@ class Questionnaire extends Component {
                 disabled = {this.state.selected.length == 0}
                 selected = {this.state.selected}
               ></Question>
-              {this.state.answeredData[this.state.subPage].map((answer) => {
-              return <Answer answeredItem={answer}/>
+              {this.state.rawAnswerList.map((answer) => {
+              return <Answer rawAnswer={answer}/>
             })}
               <Answer/>
             </div>
