@@ -75,18 +75,15 @@ class Question extends Component {
   }
 
   renderField = (field) => {
-    // console.log(field.input.onChange);
-    // console.log(field);
-      return(
-        <MuiThemeProvider muiTheme={muiTheme}>
-          <Checkbox
-                label={field.label}
-                style={styles.checkbox}
-                checked={field.input.value ? true : false}
-                onCheck={field.input.onChange}/>
-        </MuiThemeProvider>
+    return(
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <Checkbox
+          label={field.label}
+          style={styles.checkbox}
+          checked={field.input.value ? true : false}
+          onCheck={field.input.onChange}/>
+      </MuiThemeProvider>
     )
-
   }
 
 
@@ -104,15 +101,18 @@ class Question extends Component {
         <h4>{this.props.question.text}</h4>
         <form onSubmit={handleSubmit(this.props.handleSaveQuestion)}>
 
-        {this.props.answers.map((ele, i) =>
-          <Field
-            label={ele.text}
-            name={ele.answer_id}
-            type="checkbox"
-            key={i}
-            component= {this.renderField}
-          ></Field>
-        )}
+        {this.props.answers.map((ele, i) => {
+          console.log(ele);
+          return (
+            <Field
+              label={ele.text}
+              name={ele.answer_id}
+              type="checkbox"
+              key={ele.answer_id}
+              component= {this.renderField}
+            ></Field>
+          )
+        })}
           <button className="button" style={{width: "100%", marginTop: "20px"}}>Save</button>
         </form>
         </div>

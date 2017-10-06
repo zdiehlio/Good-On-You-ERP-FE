@@ -150,6 +150,10 @@ class Questionnaire extends Component {
     }
   }
 
+  handleEditAnswer = (values) => {
+    console.log(values);
+  }
+
   renderPage = () => {
     switch (this.state.page) {
       case 0:
@@ -163,7 +167,7 @@ class Questionnaire extends Component {
             <div className="App">
             <h2 className="category-text">
               {
-                // `${this.state.data[this.state.currentQuestion].category_id} > ${this.state.data[this.state.currentQuestion].theme_id}`
+                `${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].category_id} > ${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].theme_id}`
               }
             </h2>
               <ProgressBar
@@ -192,7 +196,7 @@ class Questionnaire extends Component {
                 selected = {this.state.selected}
               ></Question>
               {this.state.rawAnswerList.map((answer) => {
-              return <Answer rawAnswer={answer}/>
+              return <Answer rawAnswer={answer} handleEditAnswer={this.handleEditAnswer}/>
             })}
               <Answer/>
             </div>
