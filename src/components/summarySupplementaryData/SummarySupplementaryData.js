@@ -23,6 +23,7 @@ class SummarySupplementaryData extends Component {
     super(props);
 
     this.state = {
+      state: 0,
       showGeneral: false,
       showCategories: false,
       showRetailers: false,
@@ -33,7 +34,7 @@ class SummarySupplementaryData extends Component {
 
   getData() {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/ratings/?brandId=k5mKrWygJ9RtQU0r`)
+    axios.get(`http://34.211.121.82:3030/qualitative-ratings/?brandId=k5mKrWygJ9RtQU0r`)
       .then(res => {
         this.setState({summaryData: res.data.data[0], state: 1})
       })
@@ -43,23 +44,28 @@ class SummarySupplementaryData extends Component {
     this.getData();
   }
 
-  render() {
-    return (
-      <div className='page-container'>
+  renderPage = () => {
+    switch (this.state.state) {
+      case 0:
+      return(
+        <h2>Loading...</h2>
+      )
+      case 1:
+      return (
         <div className='summary-rating-container'>
           <div className='rating-row solid-border'>
-              <p className='label bold goy-color'>Supplementary Data</p>
+            <p className='label bold goy-color'>Supplementary Data</p>
           </div>
           <div className='rating-row slim-border row-right'>
-              <p className='label'>General</p>
-              <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
-              <MuiThemeProvider muiTheme={muiTheme}>
-              <RaisedButton
-                containerElement={<Link to="/brandSummary" />}
-                style={style}
-                primary={true}
-                label="view"/>
-              </MuiThemeProvider>
+            <p className='label'>General</p>
+            <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
+            <MuiThemeProvider muiTheme={muiTheme}>
+            <RaisedButton
+              containerElement={<Link to="/brandSummary" />}
+              style={style}
+              primary={true}
+              label="view"/>
+            </MuiThemeProvider>
           </div>
 
           <div className='rating-row slim-border row-right'>
@@ -107,7 +113,15 @@ class SummarySupplementaryData extends Component {
             </MuiThemeProvider>
           </div>
         </div>
-    </div>
+      )
+    }
+  }
+
+  render() {
+    return (
+      <div className='page-container'>
+        {this.renderPage()}
+      </div>
     )
   }
 }
