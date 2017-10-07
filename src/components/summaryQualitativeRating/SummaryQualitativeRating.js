@@ -24,17 +24,33 @@ class BrandSummaryQualitativeRating extends Component {
 
     this.state = {
       state: 0,
+      summaryData:{},
       showCauses: false,
       showSentences: false,
-      showSummary: false
+      showSummary: false,
+      checkStyle: {}
     }
   }
 
   getData() {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/qualitative-ratings/?brandId=k5mKrWygJ9RtQU0r`)
+    axios.get(`http://34.211.121.82:3030/brands`)
       .then(res => {
-        this.setState({summaryData: res.data.data[0], state: 1})
+        var index = res.data.data.findIndex(element => {
+          return element.name == this.props.currentBrand.name
+        })
+
+        // user brandID to get qualitative rating of
+        var brandID = res.data.data[index]._id
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+        axios.get(`http://34.211.121.82:3030/qualitative-ratings/?brandId=${brandID}`)
+          .then(res => {
+            this.setState({
+              summaryData: res.data.data[0],
+              state: 1,
+              checkStyle: !res.data.data[0] ? {color: 'red'} : {color: 'green'}
+            })
+          })
       })
   }
 
@@ -43,6 +59,9 @@ class BrandSummaryQualitativeRating extends Component {
   }
 
   renderPage = () => {
+    var checkStyle = {}
+    !this.state.summaryData ? checkStyle={color: 'red'} : checkStyle={color: 'green'}
+
     switch (this.state.state) {
       case 0:
       return(
@@ -56,36 +75,36 @@ class BrandSummaryQualitativeRating extends Component {
           </div>
           <div className='rating-row slim-border row-right'>
               <p className='label'>Causes</p>
-              <span className='flex-start'><i className="material-icons" style={{color: 'green'}} >check</i></span>
+              <span className='flex-start'><i className="material-icons" style={checkStyle} >{!this.state.summaryData ? "close" : "check"}</i></span>
               <MuiThemeProvider muiTheme={muiTheme}>
               <RaisedButton
                 containerElement={<Link to="/brandSummary" />}
                 style={style}
                 primary={true}
-                label="view"/>
+                label={!this.state.summaryData ? "start" : "view"}/>
               </MuiThemeProvider>
           </div>
 
           <div className='rating-row slim-border row-right'>
             <p className='label'>Sentences</p>
-            <span className='flex-start'><i className="material-icons" style={{color: 'green'}} >check</i></span>
+            <span className='flex-start'><i className="material-icons" style={checkStyle} >{!this.state.summaryData ? "close" : "check"}</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
               containerElement={<Link to="/brandSummary" />}
               style={style}
               primary={true}
-              label="view"/>
+              label={!this.state.summaryData ? "start" : "view"}/>
             </MuiThemeProvider>
           </div>
           <div className='rating-row slim-border row-right'>
             <p className='label'>Summary</p>
-            <span className='flex-start'><i className="material-icons" style={{color: 'green'}} >check</i></span>
+            <span className='flex-start'><i className="material-icons" style={checkStyle} >{!this.state.summaryData ? "close" : "check"}</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
               containerElement={<Link to="/brandSummary" />}
               style={style}
               primary={true}
-              label="view"/>
+              label={!this.state.summaryData ? "start" : "view"}/>
             </MuiThemeProvider>
           </div>
         </div>

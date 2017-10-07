@@ -25,6 +25,7 @@ class SummarySupplementaryData extends Component {
     this.state = {
       state: 0,
       summaryData: {},
+      checkStyle: {},
       showGeneral: false,
       showCategories: false,
       showRetailers: false,
@@ -45,9 +46,13 @@ class SummarySupplementaryData extends Component {
         // user brandID to get qualitative rating of
         var brandID = res.data.data[index]._id
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-        axios.get(`http://34.211.121.82:3030/qualitative-ratings/?brandId=${brandID}`)
+        axios.get(`http://34.211.121.82:3030/suppdata/?brandId=/?brandId=${brandID}`)
           .then(res => {
-            this.setState({summaryData: res.data.data[0], state: 1})
+            this.setState({
+              summaryData: res.data.data[0],
+              state: 1,
+              checkStyle: !res.data.data[0] ? {color: 'red'} : {color: 'green'}
+            })
           })
       })
   }
@@ -73,7 +78,7 @@ class SummarySupplementaryData extends Component {
           </div>        {console.log(this.state.summaryData)}
           <div className='rating-row slim-border row-right'>
             <p className='label'>General</p>
-            <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
+            <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
               containerElement={<Link to="/brandSummary" />}
@@ -85,7 +90,7 @@ class SummarySupplementaryData extends Component {
 
           <div className='rating-row slim-border row-right'>
             <p className='label'>Categories</p>
-            <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
+            <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
               containerElement={<Link to="/brandSummary" />}
@@ -96,7 +101,7 @@ class SummarySupplementaryData extends Component {
           </div>
           <div className='rating-row slim-border row-right'>
             <p className='label'>Retailers</p>
-            <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
+            <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
               containerElement={<Link to="/brandSummary" />}
@@ -107,7 +112,7 @@ class SummarySupplementaryData extends Component {
           </div>
           <div className='rating-row slim-border row-right'>
             <p className='label'>Similar Brands</p>
-            <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
+            <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
               containerElement={<Link to="/brandSummary" />}
@@ -118,7 +123,7 @@ class SummarySupplementaryData extends Component {
           </div>
           <div className='rating-row slim-border row-right'>
             <p className='label'>Price</p>
-            <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
+            <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
               containerElement={<Link to="/brandSummary" />}
