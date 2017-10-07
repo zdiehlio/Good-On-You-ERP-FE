@@ -30,25 +30,15 @@ class BrandSummaryHeader extends Component {
   }
 
   getData() {
+    var brandID = this.props.currentBrand.id
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/brands`)
+    axios.get(`http://34.211.121.82:3030/brand/summary/?brandId=${brandID}`)
       .then(res => {
-        var index = res.data.data.findIndex(element => {
-          return element.name == this.props.currentBrand.name
+        this.setState({
+          summaryData: res.data.data[0],
+          state: 1,
+          checkStyle: !res.data.data[0] ? {color: 'red'} : {color: 'green'}
         })
-        console.log(index);
-
-        // user brandID to get qualitative rating of
-        var brandID = res.data.data[index]._id
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-        axios.get(`http://34.211.121.82:3030/brand/summary/?brandId=${brandID}`)
-          .then(res => {
-            this.setState({
-              summaryData: res.data.data[0],
-              state: 1,
-              checkStyle: !res.data.data[0] ? {color: 'red'} : {color: 'green'}
-            })
-          })
       })
   }
 
