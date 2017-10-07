@@ -38,25 +38,18 @@ class BrandSummaryRating extends Component {
         this.setState({categories: res.data.categories})
       })
 
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/brands`)
-      .then(res => {
-        var index = res.data.data.findIndex(element => {
-          return element.name == this.props.currentBrand.name
+      var brandID = this.props.currentBrand.id
+
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+      axios.get(`http://34.211.121.82:3030/ratings/?brandId=k5mKrWygJ9RtQU0r`)
+        .then(res => {
+          this.setState({
+            summaryData: res.data.data[0],
+            state: 1,
+            checkStyle: !res.data.data[0] ? {color: 'red'} : {color: 'green'}
+          })
         })
 
-        // user brandID to get qualitative rating of
-        var brandID = res.data.data[index]._id
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-        axios.get(`http://34.211.121.82:3030/ratings/?brandId=k5mKrWygJ9RtQU0r`)
-          .then(res => {
-            this.setState({
-              summaryData: res.data.data[0],
-              state: 1,
-              checkStyle: !res.data.data[0] ? {color: 'red'} : {color: 'green'}
-            })
-          })
-      })
   }
 
   componentWillMount(){
