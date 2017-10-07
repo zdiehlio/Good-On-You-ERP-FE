@@ -5,6 +5,7 @@ import { Question, Answer, ProgressBar } from '../../components';
 import { fetchAllQuestions } from '../../actions';
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
+import _ from 'lodash'
 
 
 
@@ -90,19 +91,24 @@ class Questionnaire extends Component {
       page: 0
     })
     const { currentTheme, currentQuestion, mappedQuestions } = this.state
-    console.log(value);
+    const mapAnswer = Object.keys(_.omit(value, ['url', 'comment']))
+
 
     var answerObject = {
-     brand_id: "M9RXOWnCcD2SnA06",
+     brand_id: "79nbn8kmbQZ9sapb",
      theme_id: mappedQuestions[currentTheme][currentQuestion].theme_id,
      question_id: mappedQuestions[currentTheme][currentQuestion].question_id,
-     answer_ids: Object.keys(value)
+     answer_ids: mapAnswer,
+     url: value.url,
+     comment: value.comment
     }
+
+    console.log(answerObject);
 
     // call apis tomsave answer for brand in the daatabase and get all the answers id for the currentTheme
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
     axios.post(`http://34.211.121.82:3030/brand-answers`, answerObject).then(res => {
-      axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=M9RXOWnCcD2SnA06&theme_id=${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].theme_id}`)
+      axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=79nbn8kmbQZ9sapb&theme_id=${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].theme_id}`)
         .then(res => {
           const rawAnswerList = res.data.data
           console.log(res.data.data);
