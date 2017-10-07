@@ -12,8 +12,7 @@ import {
   Login,
   ViewBrands,
   CreateBrands,
-  BrandSummary,
-  CategoryQuestions
+  BrandSummary
 } from '../../pages'
 import './App.css';
 import request from "request"
@@ -71,14 +70,13 @@ class App extends Component {
     request(options, callback);
   }
 
-  onViewSummaryClicked = (event) => {
-    console.log(event.target.name);
+  onViewSummaryClicked = (id, name) => {
     this.setState({
       currentBrand: {
-        'name': event.target.name
+        'name': name,
+        'id': id
       }
     })
-
   }
 
   render() {
@@ -93,7 +91,6 @@ class App extends Component {
               <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
               <Route path='/brandSummary' component={props => <BrandSummary {...props} currentBrand={this.state.currentBrand} />}/>
               <Route path='/createBrand' component={CreateBrands} />
-              <Route path='/categoryQuestions' component={props => <CategoryQuestions {...props}/> }/>
             </Switch>
           </div>
           <Footer/>

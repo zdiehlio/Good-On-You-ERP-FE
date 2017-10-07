@@ -59,7 +59,7 @@ class Answer extends Component {
         this.setState({
           question: res.data.text,
           selectedAnswers: this.getEditAnswersStringFromRawAnswers(res.data),
-          answers: this.getAnswersStringFromRawAnswers(res.data)
+          answers: this.getAnswersStringFromRawAnswers(res.data),
         })
       })
   }
@@ -72,11 +72,14 @@ class Answer extends Component {
 
 
 
+
+
   getEditAnswersStringFromRawAnswers = (data) => {
     return this.props.rawAnswer.answer_ids.map((answerId) => {
       var index = data.answers.findIndex(element => {
         return element.answer_id == answerId
       })
+
       return (
         <li key={answerId}>{data.answers[index].text}</li>
       )
@@ -108,6 +111,28 @@ class Answer extends Component {
     )
   }
 
+  renderInput = (field) => {
+    return(
+      <div className="evidence-container-row">
+        <label htmlFor="fname" style={{fontSize:'18px'}}>Source URL *</label>
+        <input type="text" id="fname" name="fname" style={{width:'100%', fontSize:'18px'}} {...field.input} {...{
+          url: "hi"
+        }}/>
+      </div>
+    )
+  }
+
+  renderTextArea = (field) => {
+    return(
+      <div className="evidence-container-row">
+        <label for="lname" style={{fontSize:'18px'}}>Comment *</label>
+        <textarea style={{width:'100%', fontSize:'18px'}} {...field.input}></textarea>
+      </div>
+    )
+  }
+
+
+
   render() {
 
     const { handleSubmit } = this.props;
@@ -118,7 +143,7 @@ class Answer extends Component {
           <div className="answer-result-container">
             <h4><b>{this.state.question}</b></h4>
             {this.state.editing ? (
-              <form onSubmit={handleSubmit(this.props.handleEditAnswer)}>
+              <form onSubmit={handleSubmit(this.props.handleEditAnswer)} initialValues={{ url: "US" }}>
                 {this.state.answers.map((ele, i) => {
                   console.log(ele);
                   return(
@@ -131,11 +156,17 @@ class Answer extends Component {
                     ></Field>
                   )
                 })}
+                <Field name="url" component={this.renderInput}/>
+                <Field name="comment" component={this.renderTextArea}></Field>
                 <button className="button" style={{width: "100%", marginTop: "20px"}}>Save</button>
               </form>
             ) : (
               <div>
                 <ul>{this.state.selectedAnswers}</ul>
+                <ul>
+                  <li>{`Source Url: ${this.props.rawAnswer.url ? this.props.rawAnswer.url : 'none'}`}</li>
+                  <li>{`Comment: ${this.props.rawAnswer.comment ? this.props.rawAnswer.comment : 'none'}`}</li>
+                </ul>
                 <span><input className="editButton" type="submit" value="Edit" onClick={this.toggleEditAnswer}/></span>
               </div>
             )}
@@ -149,5 +180,6 @@ class Answer extends Component {
 }
 
 export default reduxForm({
+  enableReinitialize: true,
   form: "EditForm"
 })(Answer)

@@ -86,6 +86,24 @@ class Question extends Component {
     )
   }
 
+  renderInput = (field) => {
+    return(
+      <div className="evidence-container-row">
+        <label htmlFor="fname" style={{fontSize:'18px'}}>Source URL *</label>
+        <input type="text" id="fname" name="fname" style={{width:'100%', fontSize:'18px'}} {...field.input}/>
+      </div>
+    )
+  }
+
+  renderTextArea = (field) => {
+    return(
+      <div className="evidence-container-row">
+        <label for="lname" style={{fontSize:'18px'}}>Comment *</label>
+        <textarea style={{width:'100%', fontSize:'18px'}} {...field.input}></textarea>
+      </div>
+    )
+  }
+
 
 
   render() {
@@ -102,7 +120,6 @@ class Question extends Component {
         <form onSubmit={handleSubmit(this.props.handleSaveQuestion)}>
 
         {this.props.answers.map((ele, i) => {
-          console.log(ele);
           return (
             <Field
               label={ele.text}
@@ -113,6 +130,8 @@ class Question extends Component {
             ></Field>
           )
         })}
+          <Field name="url" component={this.renderInput}/>
+          <Field name="comment" component={this.renderTextArea}></Field>
           <button className="button" style={{width: "100%", marginTop: "20px"}}>Save</button>
         </form>
         </div>
