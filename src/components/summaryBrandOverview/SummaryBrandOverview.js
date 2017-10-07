@@ -24,8 +24,10 @@ class SummaryBrandOverview extends Component {
 
     this.state = {
       state: 0,
+      summaryData: {},
       showImages: false,
       showContactDetails: false,
+      checkStyle: {}
     }
   }
 
@@ -33,7 +35,11 @@ class SummaryBrandOverview extends Component {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
     axios.get(`http://34.211.121.82:3030/brand/summary/?brandId=k5mKrWygJ9RtQU0r`)
       .then(res => {
-        this.setState({summaryData: res.data.data[0], state: 1})
+        this.setState({
+          summaryData: res.data.data[0],
+          state: 1,
+          checkStyle: !res.data.data[0] ? {color: 'red'} : {color: 'green'}
+        })
       })
   }
 
@@ -61,7 +67,7 @@ class SummaryBrandOverview extends Component {
               containerElement={<Link to="/brandSummary" />}
               style={style}
               primary={true}
-              label="view"/>
+              label={!this.state.summaryData ? "start" : "view"}/>
             </MuiThemeProvider>
           </div>
           <div className='rating-row slim-border row-right'>
@@ -72,7 +78,7 @@ class SummaryBrandOverview extends Component {
               containerElement={<Link to="/brandSummary" />}
               style={style}
               primary={true}
-              label="view"/>
+              label={!this.state.summaryData ? "start" : "view"}/>
             </MuiThemeProvider>
           </div>
         </div>

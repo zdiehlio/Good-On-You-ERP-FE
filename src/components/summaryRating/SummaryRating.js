@@ -27,7 +27,8 @@ class BrandSummaryRating extends Component {
       showTheme: [false, false, false],
       state: 0,
       categories: [],
-      summaryData: {}
+      summaryData: {},
+      checkStyle: {}
     }
   }
 
@@ -36,11 +37,25 @@ class BrandSummaryRating extends Component {
       .then(res => {
         this.setState({categories: res.data.categories})
       })
+
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/ratings/?brandId=k5mKrWygJ9RtQU0r`)
+    axios.get(`http://34.211.121.82:3030/brands`)
       .then(res => {
-        console.log(res.data.data[0]);
-        this.setState({summaryData: res.data.data[0], state: 1})
+        var index = res.data.data.findIndex(element => {
+          return element.name == this.props.currentBrand.name
+        })
+
+        // user brandID to get qualitative rating of
+        var brandID = res.data.data[index]._id
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+        axios.get(`http://34.211.121.82:3030/ratings/?brandId=k5mKrWygJ9RtQU0r`)
+          .then(res => {
+            this.setState({
+              summaryData: res.data.data[0],
+              state: 1,
+              checkStyle: !res.data.data[0] ? {color: 'red'} : {color: 'green'}
+            })
+          })
       })
   }
 
@@ -93,7 +108,7 @@ class BrandSummaryRating extends Component {
                               containerElement={<Link to="/categoryQuestions" params={{brandID: 'k5mKrWygJ9RtQU0r', theme_id: 'resource'}}/>}
                               style={style}
                               primary={true}
-                              label="view"/>
+                              label={theme.score ? "view" : "start"}/>
                             </MuiThemeProvider>
                           </span>
                           <div></div>

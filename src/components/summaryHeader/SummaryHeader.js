@@ -24,16 +24,30 @@ class BrandSummaryHeader extends Component {
     super(props);
 
     this.state = {
-      state: 0
+      state: 0,
+      summaryData:{}
     }
   }
 
-
   getData() {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/brand/summary/?brandId=k5mKrWygJ9RtQU0r`)
+    axios.get(`http://34.211.121.82:3030/brands`)
       .then(res => {
-        this.setState({summaryData: res.data.data[0], state: 1})
+        var index = res.data.data.findIndex(element => {
+          return element.name == this.props.currentBrand.name
+        })
+
+        // user brandID to get qualitative rating of
+        var brandID = res.data.data[index]._id
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+        axios.get(`http://34.211.121.82:3030/brand/summary/?brandId=${brandID}`)
+          .then(res => {
+            this.setState({
+              summaryData: res.data.data[0],
+              state: 1,
+              checkStyle: !res.data.data[0] ? {color: 'red'} : {color: 'green'}
+            })
+          })
       })
   }
 
@@ -49,6 +63,23 @@ class BrandSummaryHeader extends Component {
       )
       case 1:
       return (
+        !this.state.summaryData ?
+        <div className='page-container'>
+          <div className="summary-container-main flex-start">
+            <div className="summary-container-left-solo">
+              <div className="summary-header-row">
+                <p className="label">Brand summary for:</p>
+                <p className="value brand">{this.props.currentBrand.name}</p>
+              </div>
+              <div className="summary-header-row">
+                <p className="label">Url</p>
+                <p className="value">Value</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        :
         <div className='page-container'>
           <div className="summary-container-main">
             <div className="summary-container-left">
@@ -99,7 +130,7 @@ class BrandSummaryHeader extends Component {
           <div className="summary-container-footer">
             <div className="label status-pagination">
               <p ><span>Draft</span ><span className="goy-color arrow-head">>></span>
-              <span>Scrapped</span><span className="goy-color arrow-head">>></span>
+              <span className="status">Scrapped</span><span className="goy-color arrow-head">>></span>
               <span>Rated</span><span className="goy-color arrow-head">>></span>
               <span>Verified</span><span className="goy-color arrow-head">>></span>
               <span>Approved</span><span className="goy-color arrow-head">>></span>
