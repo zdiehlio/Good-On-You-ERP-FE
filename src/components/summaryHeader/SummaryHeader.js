@@ -36,6 +36,7 @@ class BrandSummaryHeader extends Component {
         var index = res.data.data.findIndex(element => {
           return element.name == this.props.currentBrand.name
         })
+        console.log(index);
 
         // user brandID to get qualitative rating of
         var brandID = res.data.data[index]._id
@@ -64,7 +65,7 @@ class BrandSummaryHeader extends Component {
       case 1:
       return (
         !this.state.summaryData ?
-        <div className='page-container'>
+        (<div className='page-container'>
           <div className="summary-container-main flex-start">
             <div className="summary-container-left-solo">
               <div className="summary-header-row">
@@ -77,10 +78,10 @@ class BrandSummaryHeader extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div>)
 
         :
-        <div className='page-container'>
+      (  <div className='page-container'>
           <div className="summary-container-main">
             <div className="summary-container-left">
               <div className="summary-header-row">
@@ -129,7 +130,7 @@ class BrandSummaryHeader extends Component {
           </div>
           <div className="summary-container-footer">
             <div className="label status-pagination">
-              <p ><span>Draft</span ><span className="goy-color arrow-head">>></span>
+              <p><span>Draft</span><span className="goy-color arrow-head">>></span>
               <span className="status">Scrapped</span><span className="goy-color arrow-head">>></span>
               <span>Rated</span><span className="goy-color arrow-head">>></span>
               <span>Verified</span><span className="goy-color arrow-head">>></span>
@@ -137,7 +138,7 @@ class BrandSummaryHeader extends Component {
               <span>Published</span></p>
             </div>
           </div>
-        </div>
+        </div>)
       )
     }
   }

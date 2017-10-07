@@ -91,7 +91,7 @@ class Landing extends Component {
             <ul className="list-container">
               {console.log(this.props.brands)}
               {this.props.brands ? (this.props.brands.data.map((brand, i) => {
-                return <Brand key={i} handleViewSummaryClick={this.props.handleViewSummaryClick} name={brand.name} url={brand.url} category={brand.category} territory={brand.description}/>
+                return <Brand key={i} handleViewSummaryClick={this.props.handleViewSummaryClick.bind(this, brand._id, brand.name)} name={brand.name} url={brand.url} category={brand.category} territory={brand.description}/>
               })) : <div></div>}
             </ul>
           </div>

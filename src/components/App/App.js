@@ -70,14 +70,13 @@ class App extends Component {
     request(options, callback);
   }
 
-  onViewSummaryClicked = (event) => {
-    console.log(event.target.getAttribute());
+  onViewSummaryClicked = (id, name) => {
     this.setState({
       currentBrand: {
-        'name': event.target.name
+        'name': name,
+        'id': id
       }
     })
-
   }
 
   render() {
