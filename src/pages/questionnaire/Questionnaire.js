@@ -77,16 +77,24 @@ class Questionnaire extends Component {
               })
             }
           })
+        })
       })
-    })
-  }
+    }
 
   componentWillMount(){
-    this.props.fetchAllQuestions();
-    this.getData();
+    const {brandId} = this.props.match.params
+    console.log(brandId);
+    if(!sessionStorage.userId || !brandId) {
+      this.props.history.push("/")
+    } else {
+      this.props.fetchAllQuestions();
+      this.getData();
+    }
   }
 
   handleSaveQuestion = (value) => {
+    const {brandId} = this.props.match.params
+
     this.setState({
       page: 0
     })
@@ -95,12 +103,13 @@ class Questionnaire extends Component {
 
 
     var answerObject = {
-     brand_id: "79nbn8kmbQZ9sapb",
+     brand_id: brandId,
      theme_id: mappedQuestions[currentTheme][currentQuestion].theme_id,
      question_id: mappedQuestions[currentTheme][currentQuestion].question_id,
      answer_ids: mapAnswer,
      url: value.url,
-     comment: value.comment
+     comment: value.comment,
+     user_id: sessionStorage.userId
     }
 
     console.log(answerObject);
@@ -108,7 +117,7 @@ class Questionnaire extends Component {
     // call apis tomsave answer for brand in the daatabase and get all the answers id for the currentTheme
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
     axios.post(`http://34.211.121.82:3030/brand-answers`, answerObject).then(res => {
-      axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=79nbn8kmbQZ9sapb&theme_id=${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].theme_id}`)
+      axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=${brandId}&theme_id=${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].theme_id}`)
         .then(res => {
           const rawAnswerList = res.data.data
           console.log(res.data.data);
@@ -156,8 +165,12 @@ class Questionnaire extends Component {
     }
   }
 
-  handleEditAnswer = (values) => {
-    console.log(values);
+  handleEditAnswer = (values, id, event) => {
+    event.preventDefault()
+
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+    axios.patch(`http://34.211.121.82:3030/brand-answers/${id}`, values)
+
   }
 
   renderPage = () => {
@@ -201,8 +214,8 @@ class Questionnaire extends Component {
                 disabled = {this.state.selected.length == 0}
                 selected = {this.state.selected}
               ></Question>
-              {this.state.rawAnswerList.map((answer) => {
-              return <Answer rawAnswer={answer} handleEditAnswer={this.handleEditAnswer}/>
+              {this.state.rawAnswerList.map((answer,i) => {
+              return <Answer key={i} rawAnswer={answer} handleEditAnswer={this.handleEditAnswer}/>
             })}
               <Answer/>
             </div>
@@ -228,7 +241,7 @@ class Questionnaire extends Component {
 }
 
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return { data: state.qa }
 }
 
