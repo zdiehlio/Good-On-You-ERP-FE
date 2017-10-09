@@ -38,7 +38,8 @@ class Questionnaire extends Component {
       subPage: 0,
       subPageTotal: 0,
       currentTheme: 0,
-      rawAnswerList: []
+      rawAnswerList: [],
+      errr: {message: null}
     };
 
     // this.getData = this.getData.bind(this)
@@ -66,6 +67,7 @@ class Questionnaire extends Component {
           this.setState({
             mappedQuestions: res.data.data
           })
+          console.log(this.state.mappedQuestions);
 
           axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=${brandId}&theme_id=${themeId}`)
             .then(response => {
@@ -107,14 +109,23 @@ class Questionnaire extends Component {
     }
   }
 
+
   handleSaveQuestion = (value) => {
     const {brandId} = this.props.match.params
+
+
+    const { currentTheme, currentQuestion, mappedQuestions } = this.state
+    const mapAnswer = Object.keys(_.omit(value, ['url', 'comment']))
+
+    if (mapAnswer.length > 0) {
+      if (!value.url && !value.comment) {
+          return
+      }
+    }
 
     this.setState({
       page: 0
     })
-    const { currentTheme, currentQuestion, mappedQuestions } = this.state
-    const mapAnswer = Object.keys(_.omit(value, ['url', 'comment']))
 
 
     var answerObject = {
@@ -254,7 +265,7 @@ class Questionnaire extends Component {
                     this.state.mappedQuestions[this.state.currentQuestion]
                   }
                   answers={
-                   this.state.mappedQuestions[this.state.currentQuestion].answers
+                   [].concat(this.state.mappedQuestions[this.state.currentQuestion].answers)
                   }
                   currentQuestion = {this.state.currentQuestion}
                   handleSaveQuestion = {this.handleSaveQuestion}
@@ -314,6 +325,23 @@ class Questionnaire extends Component {
     )
   }
 }
+
+// function validate(values){
+//   // console.log(values) -> {title: 'dksajkd', categories: "dkjsad", content: "kdsjakdj"}
+//
+//   const errors = {}
+//   const mapAnswer = Object.keys(_.omit(values, ['url', 'comment']))
+//   console.log(mapAnswer.length);
+//   if (mapAnswer.length > 0) {
+//     if (!values.url && !values.comment) {
+//         errors.message = "error"
+//     }
+//   }
+//   return errors
+// }
+
+
+
 
 
 function mapStateToProps(state, ownProps) {
