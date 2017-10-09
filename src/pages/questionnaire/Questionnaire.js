@@ -113,11 +113,19 @@ class Questionnaire extends Component {
   handleSaveQuestion = (value) => {
     const {brandId} = this.props.match.params
 
+
+    const { currentTheme, currentQuestion, mappedQuestions } = this.state
+    const mapAnswer = Object.keys(_.omit(value, ['url', 'comment']))
+
+    if (mapAnswer.length > 0) {
+      if (!value.url && !value.comment) {
+          return
+      }
+    }
+
     this.setState({
       page: 0
     })
-    const { currentTheme, currentQuestion, mappedQuestions } = this.state
-    const mapAnswer = Object.keys(_.omit(value, ['url', 'comment']))
 
 
     var answerObject = {
@@ -307,19 +315,19 @@ class Questionnaire extends Component {
   }
 }
 
-function validate(values){
-  // console.log(values) -> {title: 'dksajkd', categories: "dkjsad", content: "kdsjakdj"}
-
-  const errors = {}
-  const mapAnswer = Object.keys(_.omit(values, ['url', 'comment']))
-  console.log(mapAnswer.length);
-  if (mapAnswer.length > 0) {
-    if (!values.url && !values.comment) {
-        errors.message = "error"
-    }
-  }
-  return errors
-}
+// function validate(values){
+//   // console.log(values) -> {title: 'dksajkd', categories: "dkjsad", content: "kdsjakdj"}
+//
+//   const errors = {}
+//   const mapAnswer = Object.keys(_.omit(values, ['url', 'comment']))
+//   console.log(mapAnswer.length);
+//   if (mapAnswer.length > 0) {
+//     if (!values.url && !values.comment) {
+//         errors.message = "error"
+//     }
+//   }
+//   return errors
+// }
 
 
 
@@ -330,7 +338,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default reduxForm({
-  validate,
   form: "AnswerForm"
 })(
   connect(mapStateToProps, { fetchAllQuestions })(Questionnaire)
