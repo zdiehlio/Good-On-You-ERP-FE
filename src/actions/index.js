@@ -45,9 +45,10 @@ export function logout() {
   }
 }
 
-export function createBrand(values) {
+export function createBrand(values, callback) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.post("http://34.211.121.82:3030/brands/", {...values})
+    .then((res) => callback(res))
   return {
     type: CREATE_BRAND,
     payload: request
