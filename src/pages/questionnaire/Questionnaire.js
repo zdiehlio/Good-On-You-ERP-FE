@@ -75,13 +75,28 @@ class Questionnaire extends Component {
 
           axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=${brandId}&theme_id=${themeId}`)
             .then(response => {
+              console.log(response);
               this.setState({
                 rawAnswerList: response.data.data,
-                currentQuestion: (res.data.total < response.data.data.length) ? res.data.total - 1: (response.data.data.length > 0) ? response.data.data.length - 1 : 0,
+                currentQuestion: (res.data.total < response.data.data.length) ? res.data.total - 1: (response.data.data.length > 0) ? response.data.data.length : 0,
                 finished: res.data.total <= response.data.data.length,
-                total: res.data.total,
-                page: 1
+                total: res.data.total
               })
+
+              axios.get(`http://34.211.121.82:3030/questions`)
+                .then(response => {
+                  this.setState({
+                    questionSum: response.data.total
+                  })
+
+                  axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=${brandId}`)
+                    .then(response => {
+                      this.setState({
+                        totalAnswered: response.data.total,
+                        page: 1
+                      })
+                    })
+                })
             })
 
         } else {
@@ -145,7 +160,7 @@ class Questionnaire extends Component {
     }
 
     this.setState({
-      page: 0,
+      page: 0
     })
 
 
@@ -176,9 +191,17 @@ class Questionnaire extends Component {
           this.setState({
             currentQuestion: this.state.total <= res.data.data.length ? this.state.total - 1 : this.state.currentQuestion + 1,
             finished: this.state.total <= res.data.data.length ? true : false,
-            page: 1,
             rawAnswerList: rawAnswerList
           })
+
+          axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=${this.props.match.params.brandId}`)
+            .then(response => {
+              this.setState({
+                totalAnswered: response.data.total,
+                page: 1
+              })
+            })
+
         })
     });
 
@@ -290,8 +313,8 @@ class Questionnaire extends Component {
               }
             </h2>
               <ProgressBar
-                total = {this.state.data.length}
-                currentQuestion = {this.state.currentQuestion}
+                total = {this.state.questionSum}
+                currentQuestion = {this.state.totalAnswered}
                 desc = "Total"
                 color = "green"
               />
