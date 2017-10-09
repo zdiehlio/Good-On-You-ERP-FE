@@ -7,6 +7,7 @@ import './CreateBrand.css';
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
 import { createBrand } from '../../actions';
+import axios from 'axios'
 
 
 const muiTheme = getMuiTheme({
@@ -60,10 +61,23 @@ class CreateBrand extends Component {
 
   onSubmit(values) {
     console.log(values);
-    this.props.createBrand(values, (res) => {
-      this.props.history.push(`questionnaire/${res.data._id}`)
+    this.props.createBrand(values, (response) => {
+      this.getCategories(response)
     });
 
+  }
+
+  getCategories(response) {
+      // get data from JSON
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+      axios.get("/spec.json")
+        .then(res => {
+          this.setState({
+            categories: res.data.categories
+          })
+
+          this.props.history.push(`questionnaire/brands/${response.data._id}/themes/${this.state.categories[0].themes[0].theme_id}`)
+        })
   }
 
   render() {
