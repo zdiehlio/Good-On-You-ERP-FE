@@ -119,7 +119,7 @@ class Questionnaire extends Component {
 
     if (mapAnswer.length > 0) {
       if (!value.url && !value.comment) {
-          return
+        return
       }
     }
 
