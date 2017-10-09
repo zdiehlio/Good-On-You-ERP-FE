@@ -165,13 +165,7 @@ class Questionnaire extends Component {
     }
   }
 
-  handleEditAnswer = (values, id, event) => {
-    event.preventDefault()
 
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.patch(`http://34.211.121.82:3030/brand-answers/${id}`, values)
-
-  }
 
   renderPage = () => {
     switch (this.state.page) {
