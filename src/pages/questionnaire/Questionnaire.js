@@ -78,7 +78,7 @@ class Questionnaire extends Component {
               console.log(response);
               this.setState({
                 rawAnswerList: response.data.data,
-                currentQuestion: (res.data.total < response.data.data.length) ? res.data.total - 1: (response.data.data.length > 0) ? response.data.data.length : 0,
+                currentQuestion: (res.data.total <= response.data.data.length) ? res.data.total - 1: (response.data.data.length > 0) ? response.data.data.length : 0,
                 finished: res.data.total <= response.data.data.length,
                 total: res.data.total
               })
@@ -308,13 +308,14 @@ class Questionnaire extends Component {
           <div className="container-body">
             <div className="App">
             <h2 className="category-text">
+
               {
                 `${this.state.mappedQuestions[this.state.currentQuestion].category_id} > ${this.state.mappedQuestions[this.state.currentQuestion].theme_id}`
               }
             </h2>
               <ProgressBar
-                total = {this.state.questionSum}
-                currentQuestion = {this.state.totalAnswered}
+                total = {this.state.questionSum - 1}
+                currentQuestion = {this.state.totalAnswered + 1}
                 desc = "Total"
                 color = "green"
               />

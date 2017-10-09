@@ -76,7 +76,7 @@ class CreateBrand extends Component {
             categories: res.data.categories
           })
 
-          this.props.history.push(`questionnaire/brands/${response.data._id}/themes/${this.state.categories[0].themes[0].theme_id}`)
+          this.props.history.push(`brandSummary/${response.data._id}`)
         })
   }
 

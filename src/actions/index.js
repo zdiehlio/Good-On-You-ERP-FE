@@ -30,7 +30,7 @@ export function login(values) {
 
 export function fetchUserInfo(email) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`https://34.211.121.82/users?email=${email}`)
+  const request = axios.get(`http://34.211.121.82:3030/users?email=${email}`)
 
   return {
     type: FETCH_USER_INFO,
