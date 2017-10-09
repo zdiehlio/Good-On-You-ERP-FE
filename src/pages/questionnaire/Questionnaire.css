@@ -41,3 +41,12 @@
 .category-text {
   color: #09b5ab;
 }
+
+.brand-summary-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 20px;
+}

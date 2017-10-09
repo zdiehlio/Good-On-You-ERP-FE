@@ -131,7 +131,7 @@ class SummarySupplementaryData extends Component {
           <div className="submit-button-container">
           <MuiThemeProvider muiTheme={muiTheme}>
           <RaisedButton
-            containerElement={<Link to="/brandSummary" />}
+            containerElement={<Link to="/" />}
             style={submitButtonStyle}
             primary={true}
             label={!this.props.currentBrand.summaryHeaderData ? "Complete Rating" : "Submit"}/>
