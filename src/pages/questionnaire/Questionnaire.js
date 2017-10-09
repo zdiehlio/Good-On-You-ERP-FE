@@ -9,6 +9,8 @@ import { Question, Answer, ProgressBar } from '../../components';
 import { fetchAllQuestions } from '../../actions';
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
 import _ from 'lodash'
 
 const submitButtonStyle = {
@@ -17,7 +19,7 @@ const submitButtonStyle = {
 
 const muiTheme = getMuiTheme({
   palette: {
-    textColor: '#45058e',
+    textColor: '#004D40',
     primary1Color: '#09b5ab'
   }
 });
@@ -39,6 +41,8 @@ class Questionnaire extends Component {
       subPageTotal: 0,
       currentTheme: 0,
       rawAnswerList: [],
+      open: false,
+      openEvidenceDialog: false,
       errr: {message: null}
     };
 
@@ -57,7 +61,7 @@ class Questionnaire extends Component {
       })
   }
 
-// retrive list of question for theme in spec.json
+  // retrive list of question for theme in spec.json
   mapQuestionTypes(brandId, themeId) {
 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
@@ -109,6 +113,21 @@ class Questionnaire extends Component {
     }
   }
 
+  handleOpen = () => {
+     this.setState({open: true});
+   };
+
+  handleSaveQuestionActionClose = () => {
+    this.setState({openEvidenceDialog: false});
+  };
+
+  handleClose = () => {
+    this.setState({open: false});
+  };
+
+  handleDiscard = () => {
+    this.props.history.push(`/brandsummary/${this.props.match.params.brandId}`)
+  };
 
   handleSaveQuestion = (value) => {
     const {brandId} = this.props.match.params
@@ -119,12 +138,14 @@ class Questionnaire extends Component {
 
     if (mapAnswer.length > 0) {
       if (!value.url && !value.comment) {
-          return
+        // display message alert
+        this.setState({openEvidenceDialog: true});
+        return
       }
     }
 
     this.setState({
-      page: 0
+      page: 0,
     })
 
 
@@ -196,6 +217,27 @@ class Questionnaire extends Component {
 
   renderPage = () => {
 
+    const saveQuestionAction = [
+        <FlatButton
+          label="OK"
+          primary={true}
+          onClick={this.handleSaveQuestionActionClose}
+        />
+      ];
+
+    const actions = [
+        <FlatButton
+          label="Cancel"
+          primary={true}
+          onClick={this.handleClose}
+        />,
+        <FlatButton
+          label="Discard"
+          primary={true}
+          onClick={this.handleDiscard}
+        />,
+      ];
+
     switch (this.state.page) {
       case 0:
       return(
@@ -231,9 +273,9 @@ class Questionnaire extends Component {
           <div className="brand-summary-button-container">
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
-              containerElement={<Link to={`/brandSummary/${this.props.match.params.brandId}`} />}
               style={submitButtonStyle}
               primary={true}
+              onClick={this.handleOpen}
               label="Go To Brand Summary"/>
             </MuiThemeProvider>
           </div>
@@ -272,8 +314,30 @@ class Questionnaire extends Component {
                   handleSelectionChange = {this.handleSelectionChange}
                   disabled = {this.state.selected.length == 0}
                   selected = {this.state.selected}
-                ></Question>)
+                ></Question>
+                )
               }
+
+              <MuiThemeProvider muiTheme={muiTheme}>
+                <Dialog
+                  actions={actions}
+                  modal={false}
+                  open={this.state.open}
+                  onRequestClose={this.handleClose}
+                >
+                  Go back to Brand Summary and discard changes?
+                </Dialog>
+              </MuiThemeProvider>
+              <MuiThemeProvider muiTheme={muiTheme}>
+                <Dialog
+                  title="Missing Evidence"
+                  actions={saveQuestionAction}
+                  modal={true}
+                  open={this.state.openEvidenceDialog}
+                >
+                  Please provide a source URL or comment as evidence.
+                </Dialog>
+              </MuiThemeProvider>
 
               {this.state.rawAnswerList.map((answer,i) => {
               return <Answer key={i} rawAnswer={answer} handleEditAnswer={this.handleEditAnswer}/>
