@@ -15,6 +15,7 @@ import {
   BrandSummary
 } from '../../pages'
 import './App.css';
+import axios from 'axios'
 import request from "request"
 
 
@@ -30,14 +31,7 @@ class App extends Component {
     this.state = {
       currentBrand: {
         'name': 'Nike',
-        'url': 'www.nike.com/us/en_us/',
-        'category': 'sports',
-        'territory': {
-          asia: true,
-          europe: true,
-          oceana: false,
-          america: true,
-        }
+        'url': 'www.nike.com/us/en_us/'
       }
     };
 
@@ -77,6 +71,18 @@ class App extends Component {
         'id': id
       }
     })
+
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+    axios.get(`http://34.211.121.82:3030/brand/summary/?brandId=${id}`)
+      .then(res => {
+        this.setState({
+          currentBrand: {
+            'name': name,
+            'id': id,
+            summaryHeaderData: res.data.data[0]
+          }
+        })
+      })
   }
 
   render() {
