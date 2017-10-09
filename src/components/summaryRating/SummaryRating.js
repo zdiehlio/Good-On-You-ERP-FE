@@ -90,6 +90,7 @@ class BrandSummaryRating extends Component {
                     <p className='label status-bold'>{currentCategory.label}</p>
                   </div>
                   { this.state.showTheme[i] ? (currentCategory.themes.map((theme, i) => {
+                    console.log(theme);
                     return (
                       <div key={i} className='rating-drop-down-container'>
                         <div className='rating-row slim-border row-right'>
@@ -98,7 +99,7 @@ class BrandSummaryRating extends Component {
                           <span style={{width:'20px'}}>
                             <MuiThemeProvider muiTheme={muiTheme}>
                             <RaisedButton
-                              containerElement={<Link to="/categoryQuestions" params={{brandID: 'k5mKrWygJ9RtQU0r', theme_id: 'resource'}}/>}
+                              containerElement={<Link to={`/questionnaire/brands/${this.props.brandId}/themes/${theme.name.toLowerCase()}`} params={{brandID: 'k5mKrWygJ9RtQU0r', theme_id: 'resource'}}/>}
                               style={style}
                               primary={true}
                               label={theme.score ? "view" : "start"}/>

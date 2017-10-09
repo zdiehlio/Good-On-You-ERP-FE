@@ -89,7 +89,7 @@ class App extends Component {
               <Route exact path='/' component={props => <Landing {...props} handleViewSummaryClick={this.onViewSummaryClicked}/>}/>
               <Route path='/questionnaire/brands/:brandId/themes/:themeId' component={Questionnaire}/>
               <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
-              <Route path='/brandSummary' component={props => <BrandSummary {...props} currentBrand={this.state.currentBrand} />}/>
+              <Route path='/brandSummary/:brandId' component={props => <BrandSummary {...props} currentBrand={this.state.currentBrand} />}/>
               <Route path='/createBrand' component={CreateBrands} />
             </Switch>
           </div>

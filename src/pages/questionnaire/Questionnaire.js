@@ -53,18 +53,25 @@ class Questionnaire extends Component {
           this.setState({
             mappedQuestions: res.data.data
           })
+
+          axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=${brandId}&theme_id=${themeId}`)
+            .then(response => {
+              this.setState({
+                rawAnswerList: response.data.data,
+                currentQuestion: (res.data.total < response.data.data.length) ? res.data.total - 1: (response.data.data.length > 0) ? response.data.data.length - 1 : 0,
+                finished: res.data.total <= response.data.data.length,
+                total: res.data.total,
+                page: 1
+              })
+            })
+
+        } else {
+          this.setState({
+            page: 2
+          })
         }
 
-        axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=${brandId}&theme_id=${themeId}`)
-          .then(response => {
-            this.setState({
-              rawAnswerList: response.data.data,
-              currentQuestion: (res.data.total < response.data.data.length) ? res.data.total - 1: (response.data.data.length > 0) ? response.data.data.length - 1 : 0,
-              finished: res.data.total <= response.data.data.length,
-              total: res.data.total,
-              page: 1
-            })
-          })
+
       })
     }
 
@@ -209,7 +216,7 @@ class Questionnaire extends Component {
       )
       case 2:
         return(
-          <div>Summary</div>
+          <div>No questions for this theme</div>
         )
       default:
         return (<div></div>)
