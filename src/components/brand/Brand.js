@@ -11,7 +11,7 @@ const Brand = (brand) => {
       <div className="brand-row list-item">
         <a className="brand-url">{name}</a>
         <p className="brand-category">{category}</p>
-        <Link name={brand.name} onClick={brand.handleViewSummaryClick} to='/brandSummary' className='landingButton' style={{width: "100px", height:"40px"}}>view</Link>
+        <Link name={brand.name} onClick={brand.handleViewSummaryClick} to={`/brandSummary/${brand.brandId}`} className='landingButton' style={{width: "100px", height:"40px"}}>view</Link>
       </div>
     </div>
   )

@@ -13,7 +13,7 @@ class BrandSummary extends Component {
       <div className='page-container'>
         <SummaryHeader currentBrand={this.props.currentBrand}/>
         <SummaryBrandOverview currentBrand={this.props.currentBrand}/>
-        <SummaryRating currentBrand={this.props.currentBrand}/>
+        <SummaryRating currentBrand={this.props.currentBrand} brandId={this.props.match.params.brandId}/>
         <SummaryQualitativeRating currentBrand={this.props.currentBrand}/>
         <SummarySupplementaryData currentBrand={this.props.currentBrand}/>
       </div>
