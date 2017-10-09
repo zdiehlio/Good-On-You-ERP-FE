@@ -30,7 +30,7 @@ class BrandSummaryHeader extends Component {
   }
 
   getData() {
-    var brandID = this.props.currentBrand.id
+    var brandID = this.props.brandId
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
     axios.get(`http://34.211.121.82:3030/brand/summary/?brandId=${brandID}`)
       .then(res => {
@@ -39,6 +39,15 @@ class BrandSummaryHeader extends Component {
           state: 1,
           checkStyle: !res.data.data[0] ? {color: 'red'} : {color: 'green'}
         })
+
+        axios.get(`http://34.211.121.82:3030/brands/${brandID}`)
+          .then(res => {
+            this.setState({
+              url: res.data.url,
+              name: res.data.name
+            })
+          })
+
       })
   }
 
@@ -60,11 +69,11 @@ class BrandSummaryHeader extends Component {
             <div className="summary-container-left-solo">
               <div className="summary-header-row">
                 <p className="label">Brand summary for:</p>
-                <p className="value brand">{this.props.currentBrand.name}</p>
+                <p className="value brand">{this.state.name}</p>
               </div>
               <div className="summary-header-row">
                 <p className="label">Url</p>
-                <p className="value">Value</p>
+                <p className="value">{this.state.url}</p>
               </div>
             </div>
           </div>
