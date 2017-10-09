@@ -8,6 +8,7 @@
 
 .editButton {
     background-color: #09b5ab;
+    border-radius: 3px;
     border: none;
     color: white;
     padding: 10px 32px;
@@ -19,6 +20,17 @@
     cursor: pointer;
     width: 30%;
     float: right;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    -webkit-transition: opacity .2s ease-in-out;
+    -moz-transition: opacity .2s ease-in-out;
+    -ms-transition: opacity .2s ease-in-out;
+    -o-transition: opacity .2s ease-in-out;
+    transition: opacity .2s ease-in-out;
+    opacity: 1;
+}
+
+.editButton:hover {
+  opacity: 0.5;
 }
 
 .clear {

@@ -18,7 +18,7 @@ const submitButtonStyle = {
 const muiTheme = getMuiTheme({
   palette: {
     textColor: '#45058e',
-    primary1Color: '#6ac1bf'
+    primary1Color: '#09b5ab'
   }
 });
 
