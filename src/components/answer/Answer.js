@@ -59,7 +59,6 @@ class Answer extends Component {
       .then(res => {
         this.setState({
           question: res.data.text,
-          selectedAnswers: this.getEditAnswersStringFromRawAnswers(res.data),
           answers: this.getAnswersStringFromRawAnswers(res.data),
           answer_id: this.props.rawAnswer ? this.props.rawAnswer._id : "",
           editFormData : {
@@ -68,7 +67,7 @@ class Answer extends Component {
             answer_ids: []
           }
         })
-        this.getEditFormData(this.state.answer_id)
+        this.getEditFormData(this.state.answer_id, res.data)
       })
   }
 
@@ -78,13 +77,21 @@ class Answer extends Component {
     }
   }
 
-  getEditFormData = (id) => {
+  getEditFormData = (id, data) => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
     axios.get(`http://34.211.121.82:3030/brand-answers/${this.state.answer_id}`)
     .then(res => {
-      this.setState(
-        {editFormData: res.data}
+      this.setState({
+          editFormData: {
+            url: res.data.url,
+            comment: res.data.comment,
+            answer_ids: res.data.answer_ids
+          }
+        }
       )
+      this.setState({
+        selectedAnswers: this.getEditAnswersStringFromRawAnswers(data)
+      })
     })
   }
 
@@ -93,7 +100,8 @@ class Answer extends Component {
 
 
   getEditAnswersStringFromRawAnswers = (data) => {
-    return this.props.rawAnswer.answer_ids.map((answerId) => {
+    console.log(this.state.an);
+    return this.state.editFormData.answer_ids.map((answerId) => {
       var index = data.answers.findIndex(element => {
         return element.answer_id == answerId
       })
@@ -142,6 +150,7 @@ class Answer extends Component {
     this.setState({
       editFormData: stateCopy
     })
+    console.log(this.state.editFormData);
    }
 
    onInputChange = (event) => {
@@ -172,9 +181,10 @@ class Answer extends Component {
 
   handleEditAnswer = (values, id, event) => {
     event.preventDefault()
+    console.log(values);
     var valueCopy = values
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    valueCopy["uer_id"] = sessionStorage.userId
+    valueCopy["user_id"] = sessionStorage.userId
 
     axios.patch(`http://34.211.121.82:3030/brand-answers/${id}`, valueCopy).then(() => {
       this.getQuestionAndAnswersString()
