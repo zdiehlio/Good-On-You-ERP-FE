@@ -18,7 +18,7 @@ const submitButtonStyle = {
 const muiTheme = getMuiTheme({
   palette: {
     textColor: '#45058e',
-    primary1Color: '#6ac1bf'
+    primary1Color: '#09b5ab'
   }
 });
 
@@ -220,7 +220,7 @@ class Questionnaire extends Component {
           <div className="brand-summary-button-container">
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
-              containerElement={<Link to="/brandSummary" />}
+              containerElement={<Link to={`/brandSummary/${this.props.match.params.brandId}`} />}
               style={submitButtonStyle}
               primary={true}
               label="Go To Brand Summary"/>
@@ -274,21 +274,32 @@ class Questionnaire extends Component {
       )
       case 2:
         return(
-          <div>
             <div className="summary-container-main flex-start">
-              <div className="summary-container-left-solo">
-                <div className="summary-header-row">
-                  <p className="label">Brand summary for:</p>
-                  <p className="value brand">{this.state.brandName}</p>
+              <div className="questionare-header-container flex-start">
+                <div className="summary-container-left-solo">
+                  <div className="summary-header-row">
+                    <p className="label">Brand summary for:</p>
+                    <p className="value brand">{this.state.brandName}</p>
+                  </div>
+                  <div className="summary-header-row">
+                    <p className="label">Url</p>
+                    <p className="value">{this.state.brandUrl}</p>
+                  </div>
                 </div>
-                <div className="summary-header-row">
-                  <p className="label">Url</p>
-                  <p className="value">{this.state.brandUrl}</p>
+                <div className="brand-summary-button-container add-margin">
+                  <MuiThemeProvider muiTheme={muiTheme}>
+                  <RaisedButton
+                    containerElement={<Link to={`/brandSummary/${this.props.match.params.brandId}`} />}
+                    style={submitButtonStyle}
+                    primary={true}
+                    label="Go To Brand Summary"/>
+                  </MuiThemeProvider>
                 </div>
+                <p>No questions for the current theme</p>
               </div>
+
             </div>
-            <p>No questions for the current theme</p>
-          </div>
+
         )
       default:
         return (<div></div>)

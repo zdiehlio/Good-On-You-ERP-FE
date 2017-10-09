@@ -49,3 +49,15 @@
   justify-content: flex-start;
   width: 100%;
 }
+
+.questionare-header-container{
+  display: flex;
+  min-width: 600px;
+  justify-content: space-between;
+  height: 10rem;
+  flex-direction: column;
+}
+
+.add-margin{
+  margin: 60px 0px;
+}
