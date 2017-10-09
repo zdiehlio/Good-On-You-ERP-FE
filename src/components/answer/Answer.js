@@ -7,6 +7,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {teal900} from 'material-ui/styles/colors';
 import Checkbox from 'material-ui/Checkbox';
 import { connect } from 'react-redux';
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
+import _ from 'lodash'
 
 
 // <h4><b>{this.state.question}</b></h4>
@@ -49,7 +52,8 @@ class Answer extends Component {
       editFormData: {},
       answers: [],
       question: "",
-      editing: false
+      editing: false,
+      openEvidenceDialog: false
     }
   }
 
@@ -94,10 +98,6 @@ class Answer extends Component {
       })
     })
   }
-
-
-
-
 
   getEditAnswersStringFromRawAnswers = (data) => {
     console.log(data);
@@ -187,6 +187,16 @@ class Answer extends Component {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
     valueCopy["user_id"] = sessionStorage.userId
 
+    const mapAnswer = Object.keys(_.omit(values, ['url', 'comment']))
+
+    if (mapAnswer.length > 0) {
+      if (!values.url && !values.comment) {
+        // display message alert
+        this.setState({openEvidenceDialog: true});
+        return
+      }
+    }
+
     axios.patch(`http://34.211.121.82:3030/brand-answers/${id}`, valueCopy).then(() => {
       this.getQuestionAndAnswersString()
       this.setState(
@@ -207,9 +217,21 @@ class Answer extends Component {
     )
   }
 
+  handleSaveQuestionActionClose = () => {
+    this.setState({openEvidenceDialog: false});
+  };
+
 
 
   render() {
+
+    const saveQuestionAction = [
+        <FlatButton
+          label="OK"
+          primary={true}
+          onClick={this.handleSaveQuestionActionClose}
+        />
+      ];
 
     const { handleSubmit } = this.props;
 
@@ -237,6 +259,16 @@ class Answer extends Component {
                 <Field name="url" component={this.renderInput} initValue={this.state.editFormData.url} onChange = {this.onInputChange}/>
                 <Field name="comment" component={this.renderTextArea} initValue={this.state.editFormData.comment} onChange = {this.onTextAreaChange}></Field>
                 <button className="button" style={{width: "100%", marginTop: "20px"}}>Save</button>
+                <MuiThemeProvider muiTheme={muiTheme}>
+                  <Dialog
+                    title="Missing Evidence"
+                    actions={saveQuestionAction}
+                    modal={true}
+                    open={this.state.openEvidenceDialog}
+                  >
+                    Please provide a source URL or comment as evidence.
+                  </Dialog>
+                </MuiThemeProvider>
               </form>
             ) : (
               <div>

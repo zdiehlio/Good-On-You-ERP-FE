@@ -27,6 +27,7 @@
 
 .button {
   background-color: #09b5ab;
+  border-radius: 3px;
   border: none;
   color: white;
   padding: 10px 32px;
@@ -36,11 +37,26 @@
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-  width: 100%
+  width: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  -webkit-transition: opacity .2s ease-in-out;
+  -moz-transition: opacity .2s ease-in-out;
+  -ms-transition: opacity .2s ease-in-out;
+  -o-transition: opacity .2s ease-in-out;
+  transition: opacity .2s ease-in-out;
+  opacity: 1;
 }
 
 .button:disabled {
   background-color: #666666;
+}
+
+.button:hover {
+  opacity: 0.5;
+}
+
+.inline {
+  display:inline-block;
 }
 
 .evidence-container{
