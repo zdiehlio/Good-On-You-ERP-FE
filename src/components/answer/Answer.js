@@ -100,14 +100,15 @@ class Answer extends Component {
 
 
   getEditAnswersStringFromRawAnswers = (data) => {
-    console.log(this.state.an);
+    console.log(data);
+    var cleanAnswers = [].concat(data.answers)
     return this.state.editFormData.answer_ids.map((answerId) => {
-      var index = data.answers.findIndex(element => {
+      var index = cleanAnswers.findIndex(element => {
         return element.answer_id == answerId
       })
 
       return (
-        <li key={answerId}>{data.answers[index].text}</li>
+        <li key={answerId}>{cleanAnswers[index].text}</li>
       )
     })
   }
