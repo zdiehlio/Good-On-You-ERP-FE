@@ -9,6 +9,8 @@ import { Question, Answer, ProgressBar } from '../../components';
 import { fetchAllQuestions } from '../../actions';
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
 import _ from 'lodash'
 
 const submitButtonStyle = {
@@ -17,7 +19,7 @@ const submitButtonStyle = {
 
 const muiTheme = getMuiTheme({
   palette: {
-    textColor: '#45058e',
+    textColor: '#004D40',
     primary1Color: '#09b5ab'
   }
 });
@@ -38,7 +40,8 @@ class Questionnaire extends Component {
       subPage: 0,
       subPageTotal: 0,
       currentTheme: 0,
-      rawAnswerList: []
+      rawAnswerList: [],
+      open: true
     };
 
     // this.getData = this.getData.bind(this)
@@ -56,7 +59,7 @@ class Questionnaire extends Component {
       })
   }
 
-// retrive list of question for theme in spec.json
+  // retrive list of question for theme in spec.json
   mapQuestionTypes(brandId, themeId) {
 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
@@ -107,11 +110,16 @@ class Questionnaire extends Component {
     }
   }
 
+  handleClose = () => {
+    this.setState({open: false});
+  };
+
   handleSaveQuestion = (value) => {
     const {brandId} = this.props.match.params
 
     this.setState({
-      page: 0
+      page: 0,
+      open: true
     })
     const { currentTheme, currentQuestion, mappedQuestions } = this.state
     const mapAnswer = Object.keys(_.omit(value, ['url', 'comment']))
@@ -184,6 +192,19 @@ class Questionnaire extends Component {
 
 
   renderPage = () => {
+
+    const actions = [
+        <FlatButton
+          label="Cancel"
+          primary={true}
+          onClick={this.handleClose}
+        />,
+        <FlatButton
+          label="Discard"
+          primary={true}
+          onClick={this.handleClose}
+        />,
+      ];
 
     switch (this.state.page) {
       case 0:
@@ -261,8 +282,20 @@ class Questionnaire extends Component {
                   handleSelectionChange = {this.handleSelectionChange}
                   disabled = {this.state.selected.length == 0}
                   selected = {this.state.selected}
-                ></Question>)
+                ></Question>
+                )
               }
+
+              <MuiThemeProvider muiTheme={muiTheme}>
+                <Dialog
+                  actions={actions}
+                  modal={false}
+                  open={this.state.open}
+                  onRequestClose={this.handleClose}
+                >
+                  Discard draft?
+                </Dialog>
+              </MuiThemeProvider>
 
               {this.state.rawAnswerList.map((answer,i) => {
               return <Answer key={i} rawAnswer={answer} handleEditAnswer={this.handleEditAnswer}/>
