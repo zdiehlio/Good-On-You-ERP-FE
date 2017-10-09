@@ -17,6 +17,10 @@ const style = {
   height: '20px'
 };
 
+const submitButtonStyle = {
+  margin: 12
+};
+
 class SummarySupplementaryData extends Component {
 
   constructor(props) {
@@ -123,7 +127,15 @@ class SummarySupplementaryData extends Component {
               primary={true}
               label={!this.state.summaryData ? "start" : "view"}/>
             </MuiThemeProvider>
-
+          </div>
+          <div className="submit-button-container">
+          <MuiThemeProvider muiTheme={muiTheme}>
+          <RaisedButton
+            containerElement={<Link to="/" />}
+            style={submitButtonStyle}
+            primary={true}
+            label={!this.props.currentBrand.summaryHeaderData ? "Complete Rating" : "Submit"}/>
+          </MuiThemeProvider>
           </div>
         </div>
       )

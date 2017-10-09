@@ -1,13 +1,26 @@
 import React, { Component } from 'react'
 import './Questionnaire.css'
 import axios from 'axios'
+import { Link } from 'react-router-dom';
+import RaisedButton from 'material-ui/RaisedButton';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Question, Answer, ProgressBar } from '../../components';
 import { fetchAllQuestions } from '../../actions';
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
 import _ from 'lodash'
 
+const submitButtonStyle = {
+  margin: 12
+};
 
+const muiTheme = getMuiTheme({
+  palette: {
+    textColor: '#45058e',
+    primary1Color: '#6ac1bf'
+  }
+});
 
 class Questionnaire extends Component {
 
@@ -71,6 +84,14 @@ class Questionnaire extends Component {
           })
         }
 
+        axios.get(`http://34.211.121.82:3030/brands/${brandId}`)
+          .then(response => {
+            console.log(response);
+            this.setState({
+              brandName: response.data.name,
+              brandUrl: response.data.url
+            })
+          })
 
       })
     }
@@ -163,6 +184,7 @@ class Questionnaire extends Component {
 
 
   renderPage = () => {
+
     switch (this.state.page) {
       case 0:
       return(
@@ -171,6 +193,42 @@ class Questionnaire extends Component {
       case 1:
       return (
         <div>
+          <div className="summary-container-main flex-start">
+            <div className="summary-container-left-solo">
+              <div className="summary-header-row">
+                <p className="label">Brand summary for:</p>
+                <p className="value brand">{this.state.brandName}</p>
+              </div>
+              <div className="summary-header-row">
+                <p className="label">Url</p>
+                <p className="value">{this.state.brandUrl}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="summary-container-footer">
+            <div className="label status-pagination">
+              <p>
+                <span>Brand Overview</span><span className="goy-color arrow-head">>></span>
+                <span className="goy-color">Rating</span><span className="goy-color arrow-head">>></span>
+                <span>Qualitative Ratings</span><span className="goy-color arrow-head">>></span>
+                <span>Supplementary Data</span>
+              </p>
+            </div>
+          </div>
+
+          <div className="brand-summary-button-container">
+            <MuiThemeProvider muiTheme={muiTheme}>
+            <RaisedButton
+              containerElement={<Link to="/brandSummary" />}
+              style={submitButtonStyle}
+              primary={true}
+              label="Go To Brand Summary"/>
+            </MuiThemeProvider>
+          </div>
+
+
+
           <div className="container-body">
             <div className="App">
             <h2 className="category-text">
@@ -216,7 +274,21 @@ class Questionnaire extends Component {
       )
       case 2:
         return(
-          <div>No questions for this theme</div>
+          <div>
+            <div className="summary-container-main flex-start">
+              <div className="summary-container-left-solo">
+                <div className="summary-header-row">
+                  <p className="label">Brand summary for:</p>
+                  <p className="value brand">{this.state.brandName}</p>
+                </div>
+                <div className="summary-header-row">
+                  <p className="label">Url</p>
+                  <p className="value">{this.state.brandUrl}</p>
+                </div>
+              </div>
+            </div>
+            <p>No questions for the current theme</p>
+          </div>
         )
       default:
         return (<div></div>)
