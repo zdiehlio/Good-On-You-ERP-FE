@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
 import './Answer.css';
 import axios from 'axios'
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, formValueSelector } from 'redux-form'
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {teal900} from 'material-ui/styles/colors';
 import Checkbox from 'material-ui/Checkbox';
+import { connect } from 'react-redux';
 
 
 // <h4><b>{this.state.question}</b></h4>
@@ -45,6 +46,7 @@ class Answer extends Component {
 
     this.state = {
       selectedAnswers: [],
+      editFormData: {},
       answers: [],
       question: "",
       editing: false
@@ -55,12 +57,18 @@ class Answer extends Component {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
     axios.get(`http://34.211.121.82:3030/questions/${this.props.rawAnswer.question_id}`)
       .then(res => {
-        console.log(res.data);
         this.setState({
           question: res.data.text,
           selectedAnswers: this.getEditAnswersStringFromRawAnswers(res.data),
           answers: this.getAnswersStringFromRawAnswers(res.data),
+          answer_id: this.props.rawAnswer ? this.props.rawAnswer._id : "",
+          editFormData : {
+            url: "",
+            comment: "",
+            answer_ids: []
+          }
         })
+        this.getEditFormData(this.state.answer_id)
       })
   }
 
@@ -68,6 +76,16 @@ class Answer extends Component {
     if (this.props.rawAnswer) {
       this.getQuestionAndAnswersString()
     }
+  }
+
+  getEditFormData = (id) => {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+    axios.get(`http://34.211.121.82:3030/brand-answers/${this.state.answer_id}`)
+    .then(res => {
+      this.setState(
+        {editFormData: res.data}
+      )
+    })
   }
 
 
@@ -100,33 +118,80 @@ class Answer extends Component {
 
 
   renderField = (field) => {
+    console.log(field.fieldId);
     return(
       <MuiThemeProvider muiTheme={muiTheme}>
         <Checkbox
           label={field.label}
           style={styles.checkbox}
-          checked={field.input.value ? true : false}
+          checked={field.initValue ? true : false}
           onCheck={field.input.onChange}/>
       </MuiThemeProvider>
     )
   }
 
+  onCheckboxChange = (id, target) => {
+
+    var stateCopy = this.state.editFormData
+    var index = stateCopy.answer_ids.findIndex(element => element == id)
+    if (index > -1) {
+      stateCopy.answer_ids.splice(index, 1)
+    } else {
+      stateCopy.answer_ids.push(id)
+    }
+    this.setState({
+      editFormData: stateCopy
+    })
+   }
+
+   onInputChange = (event) => {
+     var stateCopy = this.state.editFormData
+     stateCopy.url = event.target.value
+     this.setState({
+       editFormData: stateCopy
+     })
+   }
+
   renderInput = (field) => {
+    console.log(field.input);
     return(
       <div className="evidence-container-row">
         <label htmlFor="fname" style={{fontSize:'18px'}}>Source URL *</label>
-        <input type="text" id="fname" name="fname" style={{width:'100%', fontSize:'18px'}} {...field.input} {...{
-          url: "hi"
-        }}/>
+        <input type="text" id="fname" name="fname" style={{width:'100%', fontSize:'18px'}} {...field.input} value={field.initValue}/>
       </div>
     )
+  }
+
+  onTextAreaChange = (event) => {
+    var stateCopy = this.state.editFormData
+    stateCopy.comment = event.target.value
+    this.setState({
+      editFormData: stateCopy
+    })
+  }
+
+  handleEditAnswer = (values, id, event) => {
+    event.preventDefault()
+    var valueCopy = values
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+    valueCopy["uer_id"] = sessionStorage.userId
+
+    axios.patch(`http://34.211.121.82:3030/brand-answers/${id}`, valueCopy).then(() => {
+      this.getQuestionAndAnswersString()
+      this.setState(
+        {
+          editing: false
+        }
+      )
+    })
+
   }
 
   renderTextArea = (field) => {
     return(
       <div className="evidence-container-row">
         <label for="lname" style={{fontSize:'18px'}}>Comment *</label>
-        <textarea style={{width:'100%', fontSize:'18px'}} {...field.input}></textarea>
+        <textarea style={{width:'100%', fontSize:'18px'}} {...field.input} value={field.initValue}></textarea>
       </div>
     )
   }
@@ -143,9 +208,8 @@ class Answer extends Component {
           <div className="answer-result-container">
             <h4><b>{this.state.question}</b></h4>
             {this.state.editing ? (
-              <form onSubmit={handleSubmit(this.props.handleEditAnswer)} initialValues={{ url: "US" }}>
+              <form onSubmit={this.handleEditAnswer.bind(this, this.state.editFormData, this.state.answer_id)}>
                 {this.state.answers.map((ele, i) => {
-                  console.log(ele);
                   return(
                     <Field
                       label={ele.text}
@@ -153,19 +217,22 @@ class Answer extends Component {
                       type="checkbox"
                       key={i}
                       component= {this.renderField}
+                      initValue = {this.state.editFormData.answer_ids.some(element => (element == ele.answer_id))}
+                      fieldId = {ele.answer_id}
+                      onChange = {this.onCheckboxChange.bind(this, ele.answer_id)}
                     ></Field>
                   )
                 })}
-                <Field name="url" component={this.renderInput}/>
-                <Field name="comment" component={this.renderTextArea}></Field>
+                <Field name="url" component={this.renderInput} initValue={this.state.editFormData.url} onChange = {this.onInputChange}/>
+                <Field name="comment" component={this.renderTextArea} initValue={this.state.editFormData.comment} onChange = {this.onTextAreaChange}></Field>
                 <button className="button" style={{width: "100%", marginTop: "20px"}}>Save</button>
               </form>
             ) : (
               <div>
                 <ul>{this.state.selectedAnswers}</ul>
                 <ul>
-                  <li>{`Source Url: ${this.props.rawAnswer.url ? this.props.rawAnswer.url : 'none'}`}</li>
-                  <li>{`Comment: ${this.props.rawAnswer.comment ? this.props.rawAnswer.comment : 'none'}`}</li>
+                  <li>{`Source Url: ${this.state.editFormData.url ? this.state.editFormData.url : "none"}`}</li>
+                  <li>{`Comment: ${this.state.editFormData.comment ? this.state.editFormData.comment : "none"}`}</li>
                 </ul>
                 <span><input className="editButton" type="submit" value="Edit" onClick={this.toggleEditAnswer}/></span>
               </div>
@@ -179,7 +246,35 @@ class Answer extends Component {
   }
 }
 
-export default reduxForm({
-  enableReinitialize: true,
-  form: "EditForm"
+// const mapFormToProps = {
+//   form: "EditForm"
+// };
+//
+// const mapStateToProps = (state, ownProps) => {
+//   console.log(ownProps.rawAnswer);
+//   return {
+//       initialValues: {
+//         url: ownProps.rawAnswer.url
+//       }
+//     }
+// };
+
+Answer = reduxForm({
+  form: `EditForm`,
+  enableReinitialize: true
 })(Answer)
+
+
+const selector = formValueSelector('EditForm')
+
+Answer = connect(
+  (state, ownProps, c) => {
+    return(
+      {
+
+      }
+    )
+  }, null
+)(Answer)
+
+export default Answer

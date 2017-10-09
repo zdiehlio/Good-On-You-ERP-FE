@@ -16,6 +16,7 @@ export default function(state = {email: sessionStorage.email}, action) {
       console.log(action.payload.data);
 
       sessionStorage.setItem("email", action.payload.data.user.email)
+      sessionStorage.setItem("userId", action.payload.data.user._id)
       sessionStorage.setItem("jwt", action.payload.data.accessToken)
 
       return {...action.payload.data}
