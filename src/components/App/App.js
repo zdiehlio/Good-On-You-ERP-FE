@@ -87,7 +87,7 @@ class App extends Component {
           <div className="container-body">
             <Switch>
               <Route exact path='/' component={props => <Landing {...props} handleViewSummaryClick={this.onViewSummaryClicked}/>}/>
-              <Route path='/questionnaire/:brandId' component={Questionnaire}/>
+              <Route path='/questionnaire/brands/:brandId/themes/:themeId' component={Questionnaire}/>
               <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
               <Route path='/brandSummary' component={props => <BrandSummary {...props} currentBrand={this.state.currentBrand} />}/>
               <Route path='/createBrand' component={CreateBrands} />

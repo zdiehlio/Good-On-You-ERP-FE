@@ -31,7 +31,7 @@ class Questionnaire extends Component {
     // this.getData = this.getData.bind(this)
   }
 
-  getData() {
+  getData(brandId, themeId) {
     // get data from JSON
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
     axios.get("/spec.json")
@@ -39,56 +39,43 @@ class Questionnaire extends Component {
         this.setState({
           categories: res.data.categories
         })
-        this.mapQuestionTypes()
+        this.mapQuestionTypes(brandId, themeId)
       })
   }
 
 // retrive list of question for theme in spec.json
-  mapQuestionTypes() {
-    var returnArray = []
-    var count = 0
-    var totalThemeCount = 0
+  mapQuestionTypes(brandId, themeId) {
 
-    this.state.categories.forEach((category) => {
-      category.themes.forEach((theme, i) => {
-        totalThemeCount ++
-      })
-    })
-
-    this.state.categories.forEach((category) => {
-      category.themes.forEach((theme, i) => {
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-        // console.log(theme.theme_id);
-        axios.get(`http://34.211.121.82:3030/questions?theme_id=${theme.theme_id}`)
-          .then(res => {
-            count ++
-            if(res.data.data.length > 0) {
-              var questions = this.state.mappedQuestions
-              questions.push(res.data.data)
-              this.setState({
-                mappedQuestions: questions
-              })
-            }
-
-            if (count >= totalThemeCount) {
-              console.log(this.state.mappedQuestions);
-              this.setState({
-                page: 1
-              })
-            }
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+    axios.get(`http://34.211.121.82:3030/questions?theme_id=${themeId}`)
+      .then(res => {
+        if(res.data.data.length > 0) {
+          this.setState({
+            mappedQuestions: res.data.data
           })
-        })
+        }
+
+        axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=${brandId}&theme_id=${themeId}`)
+          .then(response => {
+            this.setState({
+              rawAnswerList: response.data.data,
+              currentQuestion: (res.data.total < response.data.data.length) ? res.data.total - 1: (response.data.data.length > 0) ? response.data.data.length - 1 : 0,
+              finished: res.data.total <= response.data.data.length,
+              total: res.data.total,
+              page: 1
+            })
+          })
       })
     }
 
   componentWillMount(){
-    const {brandId} = this.props.match.params
+    const {brandId, themeId} = this.props.match.params
     console.log(brandId);
     if(!sessionStorage.userId || !brandId) {
       this.props.history.push("/")
     } else {
-      this.props.fetchAllQuestions();
-      this.getData();
+      // this.props.fetchAllQuestions();
+      this.getData(brandId,themeId);
     }
   }
 
@@ -104,8 +91,8 @@ class Questionnaire extends Component {
 
     var answerObject = {
      brand_id: brandId,
-     theme_id: mappedQuestions[currentTheme][currentQuestion].theme_id,
-     question_id: mappedQuestions[currentTheme][currentQuestion].question_id,
+     theme_id: mappedQuestions[currentQuestion].theme_id,
+     question_id: mappedQuestions[currentQuestion].question_id,
      answer_ids: mapAnswer,
      url: value.url,
      comment: value.comment,
@@ -117,17 +104,18 @@ class Questionnaire extends Component {
     // call apis tomsave answer for brand in the daatabase and get all the answers id for the currentTheme
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
     axios.post(`http://34.211.121.82:3030/brand-answers`, answerObject).then(res => {
-      axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=${brandId}&theme_id=${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].theme_id}`)
+      axios.get(`http://34.211.121.82:3030/brand-answers?brand_id=${brandId}&theme_id=${this.state.mappedQuestions[this.state.currentQuestion].theme_id}`)
         .then(res => {
           const rawAnswerList = res.data.data
           console.log(res.data.data);
 
-          if (this.state.mappedQuestions[this.state.currentTheme].length-1 == currentQuestion) {
-            this.props.history.push("/brandSummary")
-          }
+          // if (this.state.mappedQuestions[this.state.currentTheme].length-1 == currentQuestion) {
+          //   this.props.history.push("/brandSummary")
+          // }
 
           this.setState({
-            currentQuestion: currentQuestion + 1,
+            currentQuestion: this.state.total <= res.data.data.length ? this.state.total - 1 : this.state.currentQuestion + 1,
+            finished: this.state.total <= res.data.data.length ? true : false,
             page: 1,
             rawAnswerList: rawAnswerList
           })
@@ -180,7 +168,7 @@ class Questionnaire extends Component {
             <div className="App">
             <h2 className="category-text">
               {
-                `${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].category_id} > ${this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].theme_id}`
+                `${this.state.mappedQuestions[this.state.currentQuestion].category_id} > ${this.state.mappedQuestions[this.state.currentQuestion].theme_id}`
               }
             </h2>
               <ProgressBar
@@ -190,24 +178,27 @@ class Questionnaire extends Component {
                 color = "green"
               />
               <ProgressBar
-                total = {this.state.mappedQuestions[this.state.subPage].length}
-                currentQuestion = {this.state.currentQuestion - this.state.subPageTotal}
+                total = {this.state.mappedQuestions.length}
+                currentQuestion = {this.state.currentQuestion + 1}
                 desc = "Current"
 
               />
-              <Question
-                question={
-                  this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion]
-                }
-                answers={
-                 this.state.mappedQuestions[this.state.currentTheme][this.state.currentQuestion].answers
-                }
-                currentQuestion = {this.state.currentQuestion}
-                handleSaveQuestion = {this.handleSaveQuestion}
-                handleSelectionChange = {this.handleSelectionChange}
-                disabled = {this.state.selected.length == 0}
-                selected = {this.state.selected}
-              ></Question>
+              {this.state.finished ? (<div></div>) :
+                (<Question
+                  question={
+                    this.state.mappedQuestions[this.state.currentQuestion]
+                  }
+                  answers={
+                   this.state.mappedQuestions[this.state.currentQuestion].answers
+                  }
+                  currentQuestion = {this.state.currentQuestion}
+                  handleSaveQuestion = {this.handleSaveQuestion}
+                  handleSelectionChange = {this.handleSelectionChange}
+                  disabled = {this.state.selected.length == 0}
+                  selected = {this.state.selected}
+                ></Question>)
+              }
+
               {this.state.rawAnswerList.map((answer,i) => {
               return <Answer key={i} rawAnswer={answer} handleEditAnswer={this.handleEditAnswer}/>
             })}
