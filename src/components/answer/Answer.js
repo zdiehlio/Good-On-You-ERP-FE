@@ -120,6 +120,7 @@ class Answer extends Component {
 
 
   toggleEditAnswer = (event) => {
+    this.props.activateBackToSummaryPageDialog()
     this.setState({
       editing: true
     })

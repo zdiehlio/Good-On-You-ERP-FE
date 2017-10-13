@@ -43,7 +43,8 @@ class Questionnaire extends Component {
       rawAnswerList: [],
       open: false,
       openEvidenceDialog: false,
-      errr: {message: null}
+      errr: {message: null},
+      isBacktoSummaryPageDialogActivated: false
     };
 
     // this.getData = this.getData.bind(this)
@@ -113,9 +114,18 @@ class Questionnaire extends Component {
     }
   }
 
+  activateBackToSummaryPageDialog = () => {
+    this.setState({isBacktoSummaryPageDialogActivated: true});
+  };
+
   handleOpen = () => {
-     this.setState({open: true});
-   };
+    debugger
+    if (this.state.isBacktoSummaryPageDialogActivated){
+      this.setState({open: true});
+    } else {
+      this.props.history.push(`/brandsummary/${this.props.match.params.brandId}`)
+    }
+  };
 
   handleSaveQuestionActionClose = () => {
     this.setState({openEvidenceDialog: false});
@@ -244,6 +254,7 @@ class Questionnaire extends Component {
         <h2>Loading...</h2>
       )
       case 1:
+      console.log("isBacktoSummaryPageDialogActivated",this.state.isBacktoSummaryPageDialogActivated)
       return (
         <div>
           <div className="summary-container-main flex-start">
@@ -340,7 +351,7 @@ class Questionnaire extends Component {
               </MuiThemeProvider>
 
               {this.state.rawAnswerList.map((answer,i) => {
-              return <Answer key={i} rawAnswer={answer} handleEditAnswer={this.handleEditAnswer}/>
+              return <Answer key={i} rawAnswer={answer} activateBackToSummaryPageDialog={this.activateBackToSummaryPageDialog} handleEditAnswer={this.handleEditAnswer}/>
             })}
               <Answer/>
             </div>
