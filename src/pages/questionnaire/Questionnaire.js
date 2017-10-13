@@ -118,8 +118,11 @@ class Questionnaire extends Component {
     this.setState({isBacktoSummaryPageDialogActivated: true});
   };
 
+  deactivateBackToSummaryPageDialog = () => {
+    this.setState({isBacktoSummaryPageDialogActivated: false});
+  };
+
   handleOpen = () => {
-    debugger
     if (this.state.isBacktoSummaryPageDialogActivated){
       this.setState({open: true});
     } else {
@@ -254,7 +257,6 @@ class Questionnaire extends Component {
         <h2>Loading...</h2>
       )
       case 1:
-      console.log("isBacktoSummaryPageDialogActivated",this.state.isBacktoSummaryPageDialogActivated)
       return (
         <div>
           <div className="summary-container-main flex-start">
@@ -351,7 +353,12 @@ class Questionnaire extends Component {
               </MuiThemeProvider>
 
               {this.state.rawAnswerList.map((answer,i) => {
-              return <Answer key={i} rawAnswer={answer} activateBackToSummaryPageDialog={this.activateBackToSummaryPageDialog} handleEditAnswer={this.handleEditAnswer}/>
+              return <Answer
+                  key={i} rawAnswer={answer}
+                  activateBackToSummaryPageDialog={this.activateBackToSummaryPageDialog}
+                  deactivateBackToSummaryPageDialog={this.deactivateBackToSummaryPageDialog} 
+                  handleEditAnswer={this.handleEditAnswer}
+                />
             })}
               <Answer/>
             </div>
