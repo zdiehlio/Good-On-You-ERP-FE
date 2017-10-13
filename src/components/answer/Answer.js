@@ -53,7 +53,8 @@ class Answer extends Component {
       answers: [],
       question: "",
       editing: false,
-      openEvidenceDialog: false
+      openEvidenceDialog: false,
+      originalAnswers: {}
     }
   }
 
@@ -90,11 +91,16 @@ class Answer extends Component {
             url: res.data.url,
             comment: res.data.comment,
             answer_ids: res.data.answer_ids
+          },
+          originalAnswers: {
+            url: res.data.url,
+            comment: res.data.comment,
+            answer_ids: res.data.answer_ids
           }
         }
       )
       this.setState({
-        selectedAnswers: this.getEditAnswersStringFromRawAnswers(data)
+        selectedAnswers: this.getEditAnswersStringFromRawAnswers(data),
       })
     })
   }
@@ -140,6 +146,7 @@ class Answer extends Component {
   }
 
   onCheckboxChange = (id, target) => {
+    console.log(this.state.editFormData, this.state.originalAnswers);
 
     var stateCopy = this.state.editFormData
     var index = stateCopy.answer_ids.findIndex(element => element == id)
@@ -151,7 +158,6 @@ class Answer extends Component {
     this.setState({
       editFormData: stateCopy
     })
-    console.log(this.state.editFormData);
    }
 
    onInputChange = (event) => {
@@ -221,6 +227,15 @@ class Answer extends Component {
     this.setState({openEvidenceDialog: false});
   };
 
+  handleCancel = () => {
+    // console.log(this.state.editFormData, this.state.originalAnswers);
+    // this.props.reset()
+    this.setState({
+      // editFormData: this.state.originalAnswers,
+      editing: false
+    })
+  }
+
 
 
   render() {
@@ -258,7 +273,10 @@ class Answer extends Component {
                 })}
                 <Field name="url" component={this.renderInput} initValue={this.state.editFormData.url} onChange = {this.onInputChange}/>
                 <Field name="comment" component={this.renderTextArea} initValue={this.state.editFormData.comment} onChange = {this.onTextAreaChange}></Field>
-                <button className="button" style={{width: "100%", marginTop: "20px"}}>Save</button>
+                <div className="col-flex">
+                  <button className="button" type="button" onClick={this.handleCancel}>Cancel</button>
+                  <button className="button">Save</button>
+                </div>
                 <MuiThemeProvider muiTheme={muiTheme}>
                   <Dialog
                     title="Missing Evidence"

@@ -145,6 +145,7 @@ class Questionnaire extends Component {
   };
 
   handleSaveQuestion = (value) => {
+    console.log(value);
     const {brandId} = this.props.match.params
 
 
@@ -152,7 +153,7 @@ class Questionnaire extends Component {
     const mapAnswer = Object.keys(_.omit(value, ['url', 'comment']))
 
     if (mapAnswer.length > 0) {
-      if (!value.url && !value.comment) {
+      if (!value.url || !value.comment) {
         // display message alert
         this.setState({openEvidenceDialog: true});
         return
@@ -359,7 +360,7 @@ class Questionnaire extends Component {
                   modal={true}
                   open={this.state.openEvidenceDialog}
                 >
-                  Please provide a source URL or comment as evidence.
+                  Please provide a source URL and comment as evidence.
                 </Dialog>
               </MuiThemeProvider>
 
