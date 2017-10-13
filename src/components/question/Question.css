@@ -93,3 +93,8 @@
   flex-direction: row;
   justify-content: space-around;
 }
+
+.col-flex {
+  display: flex;
+  flex-direction: row;
+}

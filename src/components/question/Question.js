@@ -104,6 +104,10 @@ class Question extends Component {
     )
   }
 
+  handleCancel = (event) => {
+    this.props.reset()
+  }
+
 
 
   render() {
@@ -132,7 +136,10 @@ class Question extends Component {
         })}
           <Field name="url" component={this.renderInput}/>
           <Field name="comment" component={this.renderTextArea}></Field>
-          <button className="button" style={{width: "100%", marginTop: "20px"}}>Save</button>
+          <div className="col-flex">
+            <button className="button" type="button" onClick={this.handleCancel}>Reset</button>
+            <button className="button">Save</button>
+          </div>
         </form>
         </div>
       </div>
