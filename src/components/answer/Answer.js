@@ -234,6 +234,7 @@ class Answer extends Component {
   handleCancel = () => {
     // console.log(this.state.editFormData, this.state.originalAnswers);
     // this.props.reset()
+    this.props.deactivateBackToSummaryPageDialog()
     this.setState({
       // editFormData: this.state.originalAnswers,
       editing: false
