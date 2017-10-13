@@ -43,7 +43,8 @@ class Questionnaire extends Component {
       rawAnswerList: [],
       open: false,
       openEvidenceDialog: false,
-      errr: {message: null}
+      errr: {message: null},
+      isBacktoSummaryPageDialogActivated: false
     };
 
     // this.getData = this.getData.bind(this)
@@ -128,9 +129,21 @@ class Questionnaire extends Component {
     }
   }
 
+  activateBackToSummaryPageDialog = () => {
+    this.setState({isBacktoSummaryPageDialogActivated: true});
+  };
+
+  deactivateBackToSummaryPageDialog = () => {
+    this.setState({isBacktoSummaryPageDialogActivated: false});
+  };
+
   handleOpen = () => {
-     this.setState({open: true});
-   };
+    if (this.state.isBacktoSummaryPageDialogActivated){
+      this.setState({open: true});
+    } else {
+      this.props.history.push(`/brandsummary/${this.props.match.params.brandId}`)
+    }
+  };
 
   handleSaveQuestionActionClose = () => {
     this.setState({openEvidenceDialog: false});
@@ -364,7 +377,12 @@ class Questionnaire extends Component {
               </MuiThemeProvider>
 
               {this.state.rawAnswerList.map((answer,i) => {
-              return <Answer key={i} rawAnswer={answer} handleEditAnswer={this.handleEditAnswer}/>
+              return <Answer
+                  key={i} rawAnswer={answer}
+                  activateBackToSummaryPageDialog={this.activateBackToSummaryPageDialog}
+                  deactivateBackToSummaryPageDialog={this.deactivateBackToSummaryPageDialog} 
+                  handleEditAnswer={this.handleEditAnswer}
+                />
             })}
               <Answer/>
             </div>

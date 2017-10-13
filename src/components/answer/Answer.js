@@ -120,6 +120,7 @@ class Answer extends Component {
 
 
   toggleEditAnswer = (event) => {
+    this.props.activateBackToSummaryPageDialog()
     this.setState({
       editing: true
     })
@@ -196,6 +197,9 @@ class Answer extends Component {
         return
       }
     }
+    this.props.deactivateBackToSummaryPageDialog()
+
+
 
     axios.patch(`http://34.211.121.82:3030/brand-answers/${id}`, valueCopy).then(() => {
       this.getQuestionAndAnswersString()

@@ -64,16 +64,13 @@ class SummarySupplementaryData extends Component {
         <h2>Loading...</h2>
       )
       case 1:
-      console.log("sumdata",this.state.summaryData)
       return (
-
-
         <div className='summary-rating-container'>
           <div className='rating-row solid-border'>
             <p className='label bold goy-color'>Supplementary Data</p>
-          </div>        {console.log(this.state.summaryData)}
+          </div>
           <div className='rating-row slim-border row-right'>
-            <p className='label'>General</p>
+            <p className='label'>Images {!this.state.summaryData ? "*" : ""}</p>
             <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
@@ -85,7 +82,7 @@ class SummarySupplementaryData extends Component {
           </div>
 
           <div className='rating-row slim-border row-right'>
-            <p className='label'>Categories</p>
+            <p className='label'>Categories {!this.state.summaryData ? "*" : ""}</p>
             <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
@@ -107,7 +104,7 @@ class SummarySupplementaryData extends Component {
             </MuiThemeProvider>
           </div>
           <div className='rating-row slim-border row-right'>
-            <p className='label'>Similar Brands</p>
+            <p className='label'>Similar Brands {!this.state.summaryData ? "*" : ""}</p>
             <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
@@ -118,7 +115,7 @@ class SummarySupplementaryData extends Component {
             </MuiThemeProvider>
           </div>
           <div className='rating-row slim-border row-right'>
-            <p className='label'>Price</p>
+            <p className='label'>Price {!this.state.summaryData ? "*" : ""}</p>
             <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
