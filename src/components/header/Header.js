@@ -3,7 +3,7 @@ import logo from '../../assets/good-on-you-logo.png';
 import logoText from '../../assets/good-on-you-logo-text.png';
 import './Header.css';
 import { connect } from 'react-redux';
-import { login,logout } from '../../actions';
+import { login,logout,clearSearch } from '../../actions';
 
 // { this.props.login ? <h3>{this.props.user.email}</h3> : <a href="/login">Login</a>}
 
@@ -11,6 +11,7 @@ import { login,logout } from '../../actions';
 class Header extends Component {
 
   onLogout = () => {
+    this.props.clearSearch()
     this.props.logout()
   }
   render() {
@@ -52,4 +53,4 @@ function mapStateToProps(state) {
   return state.login
 }
 
-export default connect(mapStateToProps, {logout})(Header)
+export default connect(mapStateToProps, {logout, clearSearch})(Header)

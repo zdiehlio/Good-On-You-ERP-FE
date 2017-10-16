@@ -158,8 +158,8 @@ class Landing extends Component {
 
 
 function mapStateToProps(state) {
-  console.log(state);
-  return {...state.search, ...state.login}
+  console.log({...(state.login ? state.search : {search:{}}), ...state.login});
+  return {...(state.login ? state.search : {search:{}}), ...state.login}
 }
 
 export default reduxForm({
