@@ -352,6 +352,8 @@ class Questionnaire extends Component {
                   handleSelectionChange = {this.handleSelectionChange}
                   disabled = {this.state.selected.length == 0}
                   selected = {this.state.selected}
+                  activateBackToSummaryPageDialog={this.activateBackToSummaryPageDialog}
+                  deactivateBackToSummaryPageDialog={this.deactivateBackToSummaryPageDialog}
                 ></Question>
                 )
               }
@@ -381,7 +383,7 @@ class Questionnaire extends Component {
               return <Answer
                   key={i} rawAnswer={answer}
                   activateBackToSummaryPageDialog={this.activateBackToSummaryPageDialog}
-                  deactivateBackToSummaryPageDialog={this.deactivateBackToSummaryPageDialog} 
+                  deactivateBackToSummaryPageDialog={this.deactivateBackToSummaryPageDialog}
                   handleEditAnswer={this.handleEditAnswer}
                 />
             })}
