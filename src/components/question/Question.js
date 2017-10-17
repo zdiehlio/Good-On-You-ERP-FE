@@ -111,7 +111,13 @@ class Question extends Component {
   }
 
   handleCancel = (event) => {
+    this.setState({
+      checked: [],
+      url: "",
+      comments: ""
+    }, this.checkValid)
     this.props.reset()
+
   }
 
   handleCheckboxChange = (event, i) => {
