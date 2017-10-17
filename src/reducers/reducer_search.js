@@ -1,4 +1,4 @@
-import { FETCH_BRANDS, FETCH_USERS } from '../actions'
+import { FETCH_BRANDS, FETCH_USERS, CLEAR_SEARCH } from '../actions'
 import _ from 'lodash'
 // import jwtDecode from 'jwt-decode'
 
@@ -16,6 +16,8 @@ export default function(state = null, action) {
       return {users: action.payload.data}
     }
     return {error: action.error}
+  case CLEAR_SEARCH:
+    return null
   default:
     return state;
   }

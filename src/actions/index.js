@@ -8,6 +8,7 @@ export const FETCH_USERS = 'fetch_users'
 export const FETCH_BRANDS = 'fetch_brands'
 export const FETCH_USER_INFO = 'fetch_user_info'
 export const FETCH_QUESTIONS = 'fetch_questions'
+export const CLEAR_SEARCH = "clear_search"
 // .then(response => {
 //   console.log(response);
 //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken;
@@ -88,5 +89,12 @@ export function fetchAllQuestions() {
   return {
     type: FETCH_QUESTIONS,
     payload: request
+  }
+}
+
+export function clearSearch() {
+  return {
+    type: CLEAR_SEARCH,
+    payload: {}
   }
 }

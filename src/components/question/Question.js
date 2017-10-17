@@ -72,6 +72,12 @@ class Question extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      checked: [],
+      url: "",
+      comments: ""
+    }
+
   }
 
   renderField = (field) => {
@@ -108,6 +114,42 @@ class Question extends Component {
     this.props.reset()
   }
 
+  handleCheckboxChange = (event, i) => {
+    var stateCopy = this.state.checked
+    if (!!i) {
+      stateCopy.push(!!i)
+      this.setState({
+        checked: stateCopy
+      },this.checkValid)
+    } else {
+      stateCopy.pop()
+      this.setState({
+        checked: stateCopy
+      },this.checkValid)
+    }
+
+  }
+
+  handleUrlChange = (event, i) => {
+
+    this.setState({
+      url: i
+    }, this.checkValid)
+  }
+
+  handleCommentsChange = (event, i) => {
+    this.setState({
+      comments: i
+    }, this.checkValid)
+  }
+
+  checkValid = () => {
+    if (this.state.checked.length || this.state.url || this.state.comments) {
+      this.props.activateBackToSummaryPageDialog()
+    } else {
+      this.props.deactivateBackToSummaryPageDialog()
+    }
+  }
 
 
   render() {
@@ -131,11 +173,12 @@ class Question extends Component {
               type="checkbox"
               key={ele.answer_id}
               component= {this.renderField}
+              onChange={this.handleCheckboxChange}
             ></Field>
           )
         })}
-          <Field name="url" component={this.renderInput}/>
-          <Field name="comment" component={this.renderTextArea}></Field>
+          <Field name="url" component={this.renderInput} onChange={this.handleUrlChange}/>
+          <Field name="comment" component={this.renderTextArea} onChange={this.handleCommentsChange}></Field>
           <div className="col-flex">
             <button className="button" type="button" onClick={this.handleCancel}>Reset</button>
             <button className="button">Save</button>
@@ -145,8 +188,10 @@ class Question extends Component {
       </div>
     );
   }
-
 }
+
+
+
 
 export default reduxForm({
   form: "AnswerForm"
