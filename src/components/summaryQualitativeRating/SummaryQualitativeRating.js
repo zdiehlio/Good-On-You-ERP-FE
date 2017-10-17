@@ -67,7 +67,7 @@ class BrandSummaryQualitativeRating extends Component {
               <p className='label bold goy-color'>Qualitative Ratings</p>
           </div>
           <div className='rating-row slim-border row-right'>
-              <p className='label'>Causes {!this.state.summaryData ? "*" : ""}</p>
+              <p className='label'>Causes *</p>
               <span className='flex-start'><i className="material-icons" style={checkStyle} >{!this.state.summaryData ? "close" : "check"}</i></span>
               <MuiThemeProvider muiTheme={muiTheme}>
               <RaisedButton

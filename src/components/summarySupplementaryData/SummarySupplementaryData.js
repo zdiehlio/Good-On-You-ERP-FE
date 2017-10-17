@@ -70,7 +70,7 @@ class SummarySupplementaryData extends Component {
             <p className='label bold goy-color'>Supplementary Data</p>
           </div>
           <div className='rating-row slim-border row-right'>
-            <p className='label'>Images {!this.state.summaryData ? "*" : ""}</p>
+            <p className='label'>Images *</p>
             <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
@@ -82,7 +82,7 @@ class SummarySupplementaryData extends Component {
           </div>
 
           <div className='rating-row slim-border row-right'>
-            <p className='label'>Categories {!this.state.summaryData ? "*" : ""}</p>
+            <p className='label'>Categories *</p>
             <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
@@ -93,7 +93,7 @@ class SummarySupplementaryData extends Component {
             </MuiThemeProvider>
           </div>
           <div className='rating-row slim-border row-right'>
-            <p className='label'>Retailers</p>
+            <p className='label'>Retailers *</p>
             <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
@@ -104,7 +104,7 @@ class SummarySupplementaryData extends Component {
             </MuiThemeProvider>
           </div>
           <div className='rating-row slim-border row-right'>
-            <p className='label'>Similar Brands {!this.state.summaryData ? "*" : ""}</p>
+            <p className='label'>Similar Brands</p>
             <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
@@ -115,7 +115,7 @@ class SummarySupplementaryData extends Component {
             </MuiThemeProvider>
           </div>
           <div className='rating-row slim-border row-right'>
-            <p className='label'>Price {!this.state.summaryData ? "*" : ""}</p>
+            <p className='label'>Price *</p>
             <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton

@@ -60,7 +60,7 @@ class SummaryBrandOverview extends Component {
             <p className='label bold goy-color'>Brand Overview</p>
           </div>
           <div className='rating-row slim-border row-right'>
-            <p className='label'>General {!this.state.summaryData ? "*" : ""}</p>
+            <p className='label'>General *</p>
             <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
@@ -71,7 +71,7 @@ class SummaryBrandOverview extends Component {
             </MuiThemeProvider>
           </div>
           <div className='rating-row slim-border row-right'>
-            <p className='label'>Contact Details {!this.state.summaryData ? "*" : ""}</p>
+            <p className='label'>Contact Details *</p>
             <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton

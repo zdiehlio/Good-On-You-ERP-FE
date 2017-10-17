@@ -84,7 +84,7 @@ class BrandSummaryRating extends Component {
               return (
                 <div key={i} className='rating-drop-down-container'>
                   <div className='rating-row slim-border row-right'>
-                    <p className='label'>{item.category_id} *</p>
+                    <p className='label'>{item.category_id.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();})} *</p>
                     {currentCategory.score ? (<p className='label'>{`${currentCategory.score}/${currentCategory.maxScore}`}</p>) : (<span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>)}
                     <span className='flex-start'><i className="material-icons expand" onClick={ this.handleExpandClick.bind(this,i) } key={i}>{this.state.showTheme[i]? "expand_less" : "expand_more"}</i></span>
                     <p className='label status-bold'>{currentCategory.label}</p>
