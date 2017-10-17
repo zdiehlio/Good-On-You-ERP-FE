@@ -214,6 +214,7 @@ class Questionnaire extends Component {
                 totalAnswered: response.data.total,
                 page: 1
               })
+              this.deactivateBackToSummaryPageDialog()
             })
 
         })
