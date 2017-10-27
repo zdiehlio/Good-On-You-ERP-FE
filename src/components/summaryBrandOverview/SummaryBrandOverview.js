@@ -40,6 +40,7 @@ class SummaryBrandOverview extends Component {
           state: 1,
           checkStyle: !res.data.data[0] ? {color: 'red'} : {color: 'green'}
         })
+        console.log('getdata', this.state);
       })
   }
 
@@ -64,7 +65,7 @@ class SummaryBrandOverview extends Component {
             <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
-              containerElement={<Link to="/brandSummary" />}
+              containerElement={<Link to="/brandGeneral" />}
               style={style}
               primary={true}
               label={!this.state.summaryData ? "start" : "view"}/>
@@ -75,7 +76,7 @@ class SummaryBrandOverview extends Component {
             <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
-              containerElement={<Link to="/brandSummary" />}
+              containerElement={<Link to="/brandContact" />}
               style={style}
               primary={true}
               label={!this.state.summaryData ? "start" : "view"}/>

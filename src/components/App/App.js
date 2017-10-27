@@ -14,6 +14,8 @@ import {
   CreateBrands,
   BrandSummary
 } from '../../pages'
+import BrandGeneral from '../../pages/brandGeneral'
+import BrandContact from '../../pages/brandContact'
 import './App.css';
 import axios from 'axios'
 import request from "request"
@@ -96,7 +98,9 @@ class App extends Component {
               <Route path='/questionnaire/brands/:brandId/themes/:themeId' component={Questionnaire}/>
               <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
               <Route path='/brandSummary/:brandId' component={props => <BrandSummary {...props} currentBrand={this.state.currentBrand} />}/>
+              <Route path='/brandGeneral' component={BrandGeneral}/>
               <Route path='/createBrand' component={CreateBrands} />
+              <Route path='/brandContact' component={BrandContact} />
             </Switch>
           </div>
           <Footer/>
