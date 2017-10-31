@@ -9,6 +9,7 @@ export const FETCH_BRANDS = 'fetch_brands'
 export const FETCH_USER_INFO = 'fetch_user_info'
 export const FETCH_QUESTIONS = 'fetch_questions'
 export const CLEAR_SEARCH = "clear_search"
+export const UPDATE_ANSWER = 'update_answer'
 // .then(response => {
 //   console.log(response);
 //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken;
@@ -86,9 +87,17 @@ export function submitAnswer(value) {
 export function fetchAllQuestions() {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.get(`http://34.211.121.82:3030/questions?theme_id=energy`)
+  console.log(request);
   return {
     type: FETCH_QUESTIONS,
     payload: request
+  }
+}
+
+export function updateAnswer(values) {
+  return {
+    type: UPDATE_ANSWER,
+    payload: values
   }
 }
 

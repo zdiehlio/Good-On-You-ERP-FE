@@ -71,7 +71,7 @@ class BrandSummaryQualitativeRating extends Component {
               <span className='flex-start'><i className="material-icons" style={checkStyle} >{!this.state.summaryData ? "close" : "check"}</i></span>
               <MuiThemeProvider muiTheme={muiTheme}>
               <RaisedButton
-                containerElement={<Link to="/brandSummary" />}
+                containerElement={<Link to="/brandCauses" />}
                 style={style}
                 primary={true}
                 label={!this.state.summaryData ? "start" : "view"}/>

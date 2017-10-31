@@ -8,6 +8,7 @@ import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux';
 import { submitAnswer } from '../../actions';
 import { Answer } from '../../components';
+import {fetchAllQuestions} from '../../actions'
 import axios from 'axios'
 
 
@@ -57,7 +58,9 @@ class CategoryQuestions extends Component {
     console.log(this.state.mappedQuestions);
   }
   componentWillMount(){
+    this.props.fetchAllQuestions();
     this.getData();
+    console.log(this.props);
   }
 
   onSubmit(values) {
@@ -65,29 +68,29 @@ class CategoryQuestions extends Component {
     this.props.history.push("/")
   }
 
-  renderPage = () => {
-    const { handleSubmit } = this.props;
-
-    switch (this.state.page) {
-      case 0:
-      return(
-        <h2>Loading...</h2>
-      )
-      case 1:
-      return (
-        <div>
-          {this.state.answeredData[this.state.subPage].map((answer) => {
-            return <Answer answeredItem={answer}/>
-          })}
-        </div>
-      )
-    }
-  }
+  // renderPage = () => {
+  //   const { handleSubmit } = this.props;
+  //
+  //   switch (this.state.page) {
+  //     case 0:
+  //     return(
+  //       <h2>Loading...</h2>
+  //     )
+  //     case 1:
+  //     return (
+  //       <div>
+  //         {this.state.answeredData[this.state.subPage].map((answer) => {
+  //           return <Answer answeredItem={answer}/>
+  //         })}
+  //       </div>
+  //     )
+  //   }
+  // }
 
   render() {
     return (
       <div>
-          {this.renderPage()}
+
       </div>
     )
   }
@@ -101,5 +104,5 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: "CategoryRatingForm"
 })(
-  connect(mapStateToProps, { submitAnswer })(CategoryQuestions)
+  connect(mapStateToProps, { submitAnswer, fetchAllQuestions })(CategoryQuestions)
 )

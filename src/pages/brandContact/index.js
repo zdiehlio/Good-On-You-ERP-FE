@@ -1,4 +1,8 @@
 import React, {Component} from 'react'
+import { Field, reduxForm } from 'redux-form'
+import { connect } from 'react-redux'
+import { updateAnswer } from '../../actions'
+
 
 import './brandContact.css'
 
@@ -15,8 +19,20 @@ class BrandContact extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleChange(event){
-    this.setState({[event.target.name]: event.target.value});
+
+  renderField(field) {
+    return(
+      <div>
+        <h6>{field.label}</h6>
+        <input
+          placeholder={field.label}
+          {...field.input}
+        />
+      </div>
+    )
+  }
+  handleChange(values){
+    this.props.updateAnswer(values);
   }
   handleSubmit(event){
     event.preventDefault();
@@ -25,30 +41,31 @@ class BrandContact extends Component {
   render() {
     return(
       <form className='contact-form'>
-        <h6>Brand Name</h6>
-        <input
-          placeholder='contact name'
+        <Field
           name='contactName'
-          value={this.state.contactName}
+          label='Contact Name'
           onChange={this.handleChange}
+          component={this.renderField}
         />
-        <h6>Brand Name</h6>
-        <input
-          placeholder='name of brand'
+        <Field
           name='contactEmail'
-          value={this.state.contactEmail}
+          label='Contact Email'
           onChange={this.handleChange}
+          component={this.renderField}
         />
-        <h6>Brand Name</h6>
-        <input
-          placeholder='name of brand'
+        <Field
           name='goyManager'
-          value={this.state.goyManager}
+          label='Good On You Manager'
           onChange={this.handleChange}
+          component={this.renderField}
         />
       </form>
     )
   }
 }
 
-export default BrandContact
+export default reduxForm({
+  form: 'ContactForm'
+})(
+  connect(null,{ updateAnswer })(BrandContact)
+)

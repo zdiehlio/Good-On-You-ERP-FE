@@ -12,10 +12,12 @@ import {
   Login,
   ViewBrands,
   CreateBrands,
-  BrandSummary
+  BrandSummary,
+  CategoryQuestions
 } from '../../pages'
 import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
+import BrandCauses from '../../pages/brandCauses'
 import './App.css';
 import axios from 'axios'
 import request from "request"
@@ -101,6 +103,7 @@ class App extends Component {
               <Route path='/brandGeneral' component={BrandGeneral}/>
               <Route path='/createBrand' component={CreateBrands} />
               <Route path='/brandContact' component={BrandContact} />
+              <Route path='/brandCauses' component={BrandCauses} />
             </Switch>
           </div>
           <Footer/>
