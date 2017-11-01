@@ -13,7 +13,13 @@ import {
   ViewBrands,
   CreateBrands,
   BrandSummary,
-  CategoryQuestions
+  CategoryQuestions,
+  SuppDataCategory,
+  SuppDataStyles,
+  SuppDataRetailers,
+  SuppDataPrice,
+  SuppDataGender,
+  SuppDataSimilarBrands
 } from '../../pages'
 import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
@@ -104,6 +110,12 @@ class App extends Component {
               <Route path='/createBrand' component={CreateBrands} />
               <Route path='/brandContact' component={BrandContact} />
               <Route path='/brandCauses' component={BrandCauses} />
+              <Route path='/suppDataCategory' component={SuppDataCategory} />
+              <Route path='/suppDataStyles' component={SuppDataStyles} />
+              <Route path='/suppDataRetailers' component={SuppDataRetailers} />
+              <Route path='/suppDataPrice' component={SuppDataPrice} />
+              <Route path='/suppDataGender' component={SuppDataGender} />
+              <Route path='/suppDataSimilarBrands' component={SuppDataSimilarBrands} />
             </Switch>
           </div>
           <Footer/>
