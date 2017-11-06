@@ -12,7 +12,8 @@ class BrandCauses extends Component {
     super(props)
 
     this.state = {
-      isEditing1: false,
+      isEditing: false,
+      question: []
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -24,7 +25,7 @@ class BrandCauses extends Component {
 
 //toggles if clause that enables user to edit the answer
   handleEdit(event) {
-    this.setState({isEditing: true})
+    this.setState({isEditing: true, question: [event]})
   }
 //toggles if clause hiding user's ability to edit answer
   handleCancel(event) {
@@ -41,12 +42,13 @@ class BrandCauses extends Component {
   }
 
   render() {
-    const isEditing = this.state.isEditing
+    const { isEditing } = this.props.state.isEditing
+    const question = this.state.question
     return(
       <div className='form-container'>
         <FormsHeader />
         <form className='brand-form'>
-        {isEditing ? (
+        {{isEditing} ? (
           <div className='editing'>
             <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
               <ul>
