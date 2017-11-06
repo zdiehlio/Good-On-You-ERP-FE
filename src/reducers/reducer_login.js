@@ -6,7 +6,7 @@ import axios from 'axios'
 
 
 
-export default function(state = {email: sessionStorage.email}, action) {
+export default function(state = {accessToken: sessionStorage.accessToken}, action) {
   switch (action.type) {
   case LOG_IN:
     sessionStorage.clear()
@@ -18,7 +18,7 @@ export default function(state = {email: sessionStorage.email}, action) {
       sessionStorage.setItem("email", action.payload.data.user.email)
       sessionStorage.setItem("userId", action.payload.data.user._id)
       sessionStorage.setItem("jwt", action.payload.data.accessToken)
-      
+
 
       return {...action.payload.data}
     }
@@ -28,7 +28,7 @@ export default function(state = {email: sessionStorage.email}, action) {
     return null;
   case FETCH_USER_INFO:
     if (!action.error) {
-      console.log(action.payload);
+      console.log('fetch user', action.payload);
       return {user: action.payload.data.data[0]}
     }
     return {error: action.error}

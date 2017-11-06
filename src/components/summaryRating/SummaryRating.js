@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { ROOT_URL } from '../../actions'
+
 import './SummaryRating.css';
 import { SummaryRatingItem } from '../';
 import axios from 'axios'
@@ -41,7 +43,7 @@ class BrandSummaryRating extends Component {
       var brandID = this.props.currentBrand.id
 
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-      axios.get(`http://34.211.121.82:3030/ratings/?brandId=k5mKrWygJ9RtQU0r`)
+      axios.get(`${ROOT_URL}/ratings/?brandId=k5mKrWygJ9RtQU0r`)
         .then(res => {
           this.setState({
             summaryData: res.data.data[0],

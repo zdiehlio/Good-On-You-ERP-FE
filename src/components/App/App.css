@@ -16,6 +16,22 @@
   }
 }
 
+button {
+  margin: 1em;
+  padding: 0.5em 1em;
+  font-size: 1.3em;
+  border:none;
+  color: white;
+  background-color: #17CABE;
+  border-radius: 40px;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: #2D2D2F;
+  color: #17CABE;
+}
+
 
 /*Common classNames*/
 .goy-color {
@@ -30,4 +46,17 @@
 .bold {
   font-size: 18px;
   font-weight: bold;
+}
+
+.brand-form {
+  margin-top: 2em;
+  float:left;
+}
+.brand-form li {
+  list-style-type: none;
+  margin:0.5em;
+}
+
+.form-container {
+  width:80%;
 }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux'
-import { updateAnswer } from '../../actions'
+import { updateAnswer, getCauses } from '../../actions'
 import { Field, reduxForm } from 'redux-form'
 
 import './brandGeneral.css'
@@ -17,11 +17,14 @@ class BrandGeneral extends Component {
       brandSize: '',
       brandSizeCriteria: '',
       parentCompany: '',
-      isChecked: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+  }
+  componentDidMount() {
+    const { id } = this.props.match.params
+    console.log('id', id);
+    this.props.getCauses(id)
   }
     handleChange(event){
       this.props.updateAnswer()
@@ -43,86 +46,52 @@ class BrandGeneral extends Component {
     handleSubmit(event){
       event.preventDefault();
     }
-    handleCheckboxChange(){
-      if({isChecked: true}){
-        this.setState({isChecked: false})
-      } else {
-        this.setState({isChecked: true})
-      }
-      console.log(this.state.isChecked);
-    }
+
   render() {
     return(
       <div>
         <form className='brand-general'>
           <h5>What is the Brand Name and Website</h5>
-          <Field
-            label='name of brand'
-            name='brandName'
-            onChange={this.props.updateAnswer}
+          <Field label='name of brand' name='brandName' onChange={this.props.updateAnswer}
             component={this.renderField}
           />
           <h6>Brand Website</h6>
-          <input
-            placeholder='url'
-            name='website'
-            onChange={this.props.updateAnswer}
+          <input placeholder='url' name='website' onChange={this.props.updateAnswer}
             component={this.renderField}
           />
           <h5>Which Month Does the Brand release its sustainability report</h5>
           <h6>Brand Name</h6>
-          <input
-            placeholder='MM/DD/YYYY'
-            name='reportDate'
-            onChange={this.props.updateAnswer}
+          <input placeholder='MM/DD/YYYY' name='reportDate' onChange={this.props.updateAnswer}
             component={this.renderField}
           />
           <h5>Which Month Does Good On You need to review the brand?</h5>
           <h6>Brand Review Date</h6>
-          <input
-            placeholder='MM/DD/YYYY'
-            name='reviewDate'
-            onChange={this.props.updateAnswer}
+          <input placeholder='MM/DD/YYYY' name='reviewDate' onChange={this.props.updateAnswer}
             component={this.renderField}
           />
           <h5>What is the Size of the Brand?</h5>
           <h6>Brand Size</h6>
           <h6>Brand Criteria</h6>
-          <input
-          type='checkbox'
-          onChange={this.props.updateAnswer}
-          component={this.renderField}
+          <input type='checkbox' onChange={this.props.updateAnswer}
+            component={this.renderField}
           />Listed Company
-          <input
-          type='checkbox'
-          onChange={this.props.updateAnswer}
-          component={this.renderField}
+          <input type='checkbox' onChange={this.props.updateAnswer}
+            component={this.renderField}
           />Subsidiary Company
-          <input
-          type='checkbox'
-          onChange={this.props.updateAnswer}
-          component={this.renderField}
+          <input type='checkbox' onChange={this.props.updateAnswer}
+            component={this.renderField}
           />Alexa > 200k
-          <input
-          type='checkbox'
-          onChange={this.props.updateAnswer}
-          component={this.renderField}
+          <input type='checkbox' onChange={this.props.updateAnswer}
+            component={this.renderField}
           />FaceBook + Instagram > 75k
-          <input
-          type='checkbox'
-          onChange={this.props.updateAnswer}
-          component={this.renderField}
+          <input type='checkbox' onChange={this.props.updateAnswer}
+            component={this.renderField}
           />LinkedIn Employees > 50
-          <input
-          type='checkbox'
-          onChange={this.props.updateAnswer}
-          component={this.renderField}
+          <input type='checkbox' onChange={this.props.updateAnswer}
+            component={this.renderField}
           />Manual Override after company provided data satisfying Good On You criteria
           <h6>Parent Company</h6>
-          <input
-            placeholder='Parent Company Name'
-            name='reviewDate'
-            onChange={this.props.updateAnswer}
+          <input placeholder='Parent Company Name' name='reviewDate' onChange={this.props.updateAnswer}
             component={this.renderField}
           />
         </form>
@@ -134,5 +103,5 @@ class BrandGeneral extends Component {
 export default reduxForm({
   form: 'BrandGeneralForm'
 })(
-  connect(null, { updateAnswer })(BrandGeneral)
+  connect(null, { updateAnswer, getCauses })(BrandGeneral)
 )

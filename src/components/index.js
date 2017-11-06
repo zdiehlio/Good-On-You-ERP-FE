@@ -11,4 +11,5 @@ export { default as SummaryBrandOverview } from './summaryBrandOverview/SummaryB
 export { default as SummaryRating } from './summaryRating/SummaryRating'
 export { default as SummaryQualitativeRating } from './summaryQualitativeRating/SummaryQualitativeRating'
 export { default as SummarySupplementaryData } from './summarySupplementaryData/SummarySupplementaryData'
-export { default as DetailedList } from './detailedList/DetailedList'
+// export { default as DetailedList } from './detailedList/DetailedList'
+export { default as FormsHeader } from './formsHeader'

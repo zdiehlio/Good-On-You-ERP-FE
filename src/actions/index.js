@@ -1,6 +1,9 @@
 import axios from 'axios'
 import _ from 'lodash'
 
+export const ROOT_URL = 'http://34.212.110.48:3000'
+// const ROOT_URL = 'http://34.211.121.82:3030'
+
 export const LOG_IN = 'log_in';
 export const LOG_OUT = 'log_out';
 export const CREATE_BRAND = 'create_brand'
@@ -10,6 +13,7 @@ export const FETCH_USER_INFO = 'fetch_user_info'
 export const FETCH_QUESTIONS = 'fetch_questions'
 export const CLEAR_SEARCH = "clear_search"
 export const UPDATE_ANSWER = 'update_answer'
+export const GET_CAUSES = 'get_causes'
 // .then(response => {
 //   console.log(response);
 //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken;
@@ -23,7 +27,7 @@ export function login(values) {
     strategy: "local"
   }
 
-  const request = axios.post("http://34.211.121.82:3030/authentication/", {...values, ...strategy})
+  const request = axios.post(`${ROOT_URL}/authentication/`, {...values, ...strategy})
   return {
     type: LOG_IN,
     payload: request
@@ -32,7 +36,7 @@ export function login(values) {
 
 export function fetchUserInfo(email) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`http://34.211.121.82:3030/users?email=${email}`)
+  const request = axios.get(`${ROOT_URL}/users?email=${email}`)
 
   return {
     type: FETCH_USER_INFO,
@@ -49,7 +53,7 @@ export function logout() {
 
 export function createBrand(values, callback) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.post("http://34.211.121.82:3030/brands/", {...values})
+  const request = axios.post(`${ROOT_URL}/brands/`, {...values})
     .then((res) => callback(res))
   return {
     type: CREATE_BRAND,
@@ -59,7 +63,7 @@ export function createBrand(values, callback) {
 
 export function fetchUsers(value) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`http://34.211.121.82:3030/users?$search=${value}`)
+  const request = axios.get(`${ROOT_URL}/users?$search=${value}`)
   return {
     type: FETCH_USERS,
     payload: request
@@ -68,7 +72,7 @@ export function fetchUsers(value) {
 
 export function fetchBrands(value) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`http://34.211.121.82:3030/brands?$search=${value}`)
+  const request = axios.get(`${ROOT_URL}/brands?name=${value}`)
   return {
     type: FETCH_BRANDS,
     payload: request
@@ -77,7 +81,7 @@ export function fetchBrands(value) {
 
 export function submitAnswer(value) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`http://34.211.121.82:3030/brands?$search=${value}`)
+  const request = axios.get(`${ROOT_URL}/brands?name=${value}`)
   return {
     type: FETCH_BRANDS,
     payload: request
@@ -86,10 +90,20 @@ export function submitAnswer(value) {
 
 export function fetchAllQuestions() {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`http://34.211.121.82:3030/questions?theme_id=energy`)
+  const request = axios.get(`${ROOT_URL}/questions?theme_id=energy`)
   console.log(request);
   return {
     type: FETCH_QUESTIONS,
+    payload: request
+  }
+}
+
+export function getCauses() {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/users`)
+  console.log('get causes', request);
+  return {
+    type: GET_CAUSES,
     payload: request
   }
 }

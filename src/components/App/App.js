@@ -5,6 +5,8 @@ import {
   Route,
 } from 'react-router-dom';
 
+import { ROOT_URL } from '../../actions'
+
 import { Header, Footer } from '../index'
 import {
   Landing,
@@ -19,7 +21,8 @@ import {
   SuppDataRetailers,
   SuppDataPrice,
   SuppDataGender,
-  SuppDataSimilarBrands
+  SuppDataSimilarBrands,
+  BrandFormContainer
 } from '../../pages'
 import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
@@ -57,7 +60,7 @@ class App extends Component {
     var dataString = '{ "strategy": "local", "email": "me@goodonyou.eco", "password": "myPassword" }';
 
     var options = {
-      url: 'http://34.211.121.82:3030/authentication/',
+      url: `${ROOT_URL}/authentication/`,
       method: 'POST',
       headers: headers,
       body: dataString
@@ -83,7 +86,7 @@ class App extends Component {
     })
 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/brand/summary/?brandId=${id}`)
+    axios.get(`${ROOT_URL}/brands-general-info/?brand=${id}`)
       .then(res => {
         this.setState({
           currentBrand: {
@@ -105,9 +108,9 @@ class App extends Component {
               <Route exact path='/' component={props => <Landing {...props} handleViewSummaryClick={this.onViewSummaryClicked}/>}/>
               <Route path='/questionnaire/brands/:brandId/themes/:themeId' component={Questionnaire}/>
               <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
-              <Route path='/brandSummary/:brandId' component={props => <BrandSummary {...props} currentBrand={this.state.currentBrand} />}/>
-              <Route path='/brandGeneral' component={BrandGeneral}/>
+              <Route path='/brandSummary/:brand' component={props => <BrandSummary {...props} currentBrand={this.state.currentBrand} />}/>
               <Route path='/createBrand' component={CreateBrands} />
+              <Route path='/brandGeneral/:brandId' component={BrandGeneral}/>
               <Route path='/brandContact' component={BrandContact} />
               <Route path='/brandCauses' component={BrandCauses} />
               <Route path='/suppDataCategory' component={SuppDataCategory} />

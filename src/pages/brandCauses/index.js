@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
+import {RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import { updateAnswer } from '../../actions'
+import { FormsHeader } from '../../components'
 
 import './brandCauses.css'
 
@@ -20,7 +22,7 @@ class BrandCauses extends Component {
   renderField(field) {
     return(
       <div>
-        <h6>{field.label}</h6>
+        <h4>{field.label}</h4>
         <input
           placeholder={field.label}
           type={field.type}
@@ -29,6 +31,15 @@ class BrandCauses extends Component {
       </div>
     )
   }
+
+  renderRadioGroup({ input, ...rest }){
+    return(
+      <fieldset {...input} {...rest}
+        valueSelected={input.value}
+        onChange={(event, value) => input.onChange(value)}/>
+    )
+}
+
   handleChange(event){
     console.log(this.props.state);
   }
@@ -38,171 +49,74 @@ class BrandCauses extends Component {
 
   render() {
     return(
-      <form className='contact-form'>
-        <form>
-        <h6>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h6>
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />Australia
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />Canada
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />New Zealand
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />USA
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />None of the Above
+      <div className='form-container'>
+        <FormsHeader />
+        <form className='brand-form'>
+          <div>
+          <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
+            <ul>
+              <li><Field type='radio' name='productOrigin' component='input' value="Australia"/>Australia</li>
+              <li><Field type='radio' name='productOrigin' component='input' value="Canada"/>Canada</li>
+              <li><Field type='radio' name='productOrigin' component='input' value="New Zealand"/>New Zealand</li>
+              <li><Field type='radio' name='productOrigin' component='input' value="USA"/>USA</li>
+              <li><Field type='radio' name='productOrigin' component='input' value="None of the Above"/>None of the Above</li>
+            </ul>
+          </div>
+          <div>
+          <h4>Is the Brand Certified B-Corp?</h4>
+            <ul>
+              <li><Field type='radio' name='bCorp' component='input' value="Yes"/>Yes</li>
+              <li><Field type='radio' name='bCorp' component='input' value="No"/>No</li>
+            </ul>
+          </div>
+          <div>
+          <h4>Is the brand a social enterprise that provides employment for people from a disadvantaged background?</h4>
+            <ul>
+              <li><Field type='radio' name='socialEnterprise' component='input' value="Yes"/>Yes</li>
+              <li><Field type='radio' name='socialEnterprise' component='input' value="No"/>No</li>
+            </ul>
+          </div>
+          <div>
+          <h4>Does the brand have a 1 for 1 model?</h4>
+            <ul>
+              <li><Field type='radio' name='1for1' component='input' value="Yes"/>Yes</li>
+              <li><Field type='radio' name='1for1' component='input' value="No"/>No</li>
+            </ul>
+          </div>
+          <div>
+          <h4>Is the brand Vegan?</h4>
+            <ul>
+              <li><Field type='radio' name='vegan' component='input' value="Yes"/>Yes</li>
+              <li><Field type='radio' name='vegan' component='input' value="No"/>No</li>
+            </ul>
+          </div>
+          <div>
+          <h4>What Percentage of the brands products are certified Fair Trade?</h4>
+            <ul>
+              <li><Field type='radio' name='fairTrade' component='input' value="100%"/>100%</li>
+              <li><Field type='radio' name='fairTrade' component='input' value="50%"/>&#60;&#61; 50%</li>
+              <li><Field type='radio' name='fairTrade' component='input' value="None"/>There is no evidence of any/many products being certified Fair Trade</li>
+            </ul>
+          </div>
+          <div>
+          <h4>What percentage of products are made from certified Organic materials?</h4>
+            <ul>
+              <li><Field type='radio' name='organic' component='input' value="100%"/>100%</li>
+              <li><Field type='radio' name='organic' component='input' value="50%"/>&#60;&#61; 50%</li>
+              <li><Field type='radio' name='organic' component='input' value="None"/>There is no evidence of any/many products being made from certified Organic Materials</li>
+            </ul>
+          </div>
+          <div>
+          <h4>What percentage of products are made from a substantial proportion(-50%) of recycled/upcycled materials?</h4>
+            <ul>
+              <li><Field type='radio' name='recycled' component='input' value="100%"/>100%</li>
+              <li><Field type='radio' name='recycled' component='input' value="50%"/>&#60;&#61; 50%</li>
+              <li><Field type='radio' name='recycled' component='input' value="None"/>There is no evidence of any/many products being made from a substantial proportion of recycled/upcycled materials</li>
+            </ul>
+          </div>
+          <button>Save</button>
         </form>
-        <form>
-        <h6>Is the Brand Certified B-Corp?</h6>
-        <h6>B-Corp</h6>
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />Is certified B-Corp
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />Is not certified B-corp
-        </form>
-        <form>
-        <h6>Is the brand a social enterprise that provides employment for people from a disadvantaged background?</h6>
-        <h6>Social Enterprise</h6>
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />Brand is a social enterprise that provides employment for people from a disadvantaged background
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />Brand is not a social enterprise that provides employment for people from a disadvantaged background
-        </form>
-        <form>
-        <h6>Does the brand have a 1 for 1 model?</h6>
-        <h6>1 for 1 *</h6>
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />Brand has a 1 for 1 model
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />Brand does not have a 1 for 1 model
-        </form>
-        <form>
-        <h6>Is the brand Vegan?</h6>
-        <h6>Vegan *</h6>
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />Brand is 100% Vegan
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />Brand is not Vegan
-        </form>
-        <form>
-        <h6>Are 100% of products certified Fair Trade?</h6>
-        <h6>Fair Trade *</h6>
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />100% of products are certified Fair Trade
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />-50% of products are certified Fair Trade
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />There is no evidence of any/many products being certified Fair Trade
-        </form>
-        <form>
-        <h6>Are 100% of products made from certified Organic materials?</h6>
-        <h6>Organic Materials *</h6>
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />100% of products are made from certified Organic materials
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />-50% of products are made from certified Organic materials
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />There is no evidence of any/many products are made from certified Organic materials
-        </form>
-        <form>
-        <h6>Are 100% of products made from a substantial proportion(-50%) of recycled/upcycled materials?</h6>
-        <h6>Recycled *</h6>
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />100% of products are made from as substantial proportion recycled/upcycled materials
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />-50% of products are made from as substantial proportion recycled/upcycled materials
-          <Field
-            type= 'radio'
-            name='brandOrigin'
-            onChange={this.handleChange}
-            component={this.renderField}
-          />There is no evidence that any/many products are made from as substantial proportion recycled/upcycled materials
-        </form>
-      </form>
+      </div>
     )
   }
 }

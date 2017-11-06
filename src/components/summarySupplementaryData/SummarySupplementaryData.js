@@ -4,6 +4,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import axios from 'axios'
+import { ROOT_URL } from '../../actions'
+
 import './SummarySupplementaryData.css';
 
 const muiTheme = getMuiTheme({
@@ -43,7 +45,7 @@ class SummarySupplementaryData extends Component {
     var brandID = this.props.currentBrand.id
 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/suppdata/?brandId=/?brandId=${brandID}`)
+    axios.get(`${ROOT_URL}/suppdata/?brandId=/?brandId=${brandID}`)
       .then(res => {
         this.setState({
           summaryData: res.data.data[0],

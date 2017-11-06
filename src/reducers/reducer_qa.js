@@ -1,4 +1,4 @@
-import { FETCH_QUESTIONS, UPDATE_ANSWER } from '../actions'
+import { FETCH_QUESTIONS, UPDATE_ANSWER, GET_CAUSES } from '../actions'
 import _ from 'lodash'
 // import jwtDecode from 'jwt-decode'
 
@@ -11,6 +11,8 @@ export default function(state = {}, action) {
       return {}
     }
     return {error: action.error}
+  case GET_CAUSES:
+    console.log(action.payload);
   case UPDATE_ANSWER:
     console.log(action.payload);
     return {...state, [action.payload.values]: action.payload.values}

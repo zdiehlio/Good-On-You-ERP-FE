@@ -72,6 +72,7 @@ class CreateBrand extends Component {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
       axios.get("/spec.json")
         .then(res => {
+          console.log('get categories', res);
           this.setState({
             categories: res.data.categories
           })
