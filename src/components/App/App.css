@@ -60,3 +60,12 @@ button:hover {
 .form-container {
   width:80%;
 }
+
+.editing {
+  background-color: white;
+}
+
+.not-editing {
+  background-color: #F2F2F2;
+  padding: 2em;
+}
