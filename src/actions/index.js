@@ -90,7 +90,7 @@ export function submitAnswer(value) {
 
 export function fetchAllQuestions() {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/questions?theme_id=energy`)
+  const request = axios.get(`${ROOT_URL}/qual-ratings-questions?section=causes`)
   console.log(request);
   return {
     type: FETCH_QUESTIONS,

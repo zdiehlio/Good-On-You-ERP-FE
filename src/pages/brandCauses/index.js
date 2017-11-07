@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import {RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
-import { updateAnswer } from '../../actions'
+import { fetchAllQuestions } from '../../actions'
 import { FormsHeader } from '../../components'
+import _ from 'lodash'
 
 import './brandCauses.css'
 
@@ -12,8 +13,7 @@ class BrandCauses extends Component {
     super(props)
 
     this.state = {
-      isEditing: false,
-      question: []
+      isEditing: null
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -23,16 +23,30 @@ class BrandCauses extends Component {
     this.handleSave = this.handleSave.bind(this)
   }
 
-//toggles if clause that enables user to edit the answer
+componentDidMount() {
+  this.props.fetchAllQuestions()
+}
+
+renderQuestions() {
+  return _.map(this.props.qa, question => {
+    return(
+      <li key={question.id}>
+        {question.text}
+      </li>
+    )
+  })
+}
+//toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
-    this.setState({isEditing: true, question: [event]})
+    this.setState({isEditing: event.target.value})
+    console.log('edit', this.state);
   }
-//toggles if clause hiding user's ability to edit answer
+//toggles if clause assigning state to null and hiding user's ability to edit answer
   handleCancel(event) {
-    this.setState({isEditing: false})
+    this.setState({isEditing: null})
   }
   handleSave(event) {
-    this.setState({isEditing: false})
+    this.setState({isEditing: null})
   }
   handleChange(event){
     console.log(this.props.state)
@@ -40,15 +54,18 @@ class BrandCauses extends Component {
   handleSubmit(event){
     event.preventDefault()
   }
-
+//conditional statement run of isEditing state and render if the state matches the elements particular value
   render() {
-    const { isEditing } = this.props.state.isEditing
-    const question = this.state.question
+    console.log('props', this.props.qa);
+    const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
         <FormsHeader />
+        <ul>
+          {this.renderQuestions()}
+        </ul>
         <form className='brand-form'>
-        {{isEditing} ? (
+        {isEditing === '1' ? (
           <div className='editing'>
             <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
               <ul>
@@ -63,10 +80,10 @@ class BrandCauses extends Component {
           </div>) : (
           <div className='not-editing'>
             <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
-            <button onClick={this.handleEdit}>Edit</button>
+            <button onClick={this.handleEdit} value='1'>Edit</button>
           </div>
             )}
-        {isEditing ? (
+        {isEditing === '2' ? (
           <div>
           <h4>Is the Brand Certified B-Corp?</h4>
             <ul>
@@ -78,11 +95,11 @@ class BrandCauses extends Component {
           </div>) : (
           <div className='not-editing'>
           <h4>Is the Brand Certified B-Corp?</h4>
-            <button onClick={this.handleEdit}>Edit</button>
+            <button onClick={this.handleEdit} value='2'>Edit</button>
           </div>
         )}
 
-        {isEditing ? (
+        {isEditing === '3'? (
           <div>
           <h4>Is the brand a social enterprise that provides employment for people from a disadvantaged background?</h4>
             <ul>
@@ -94,11 +111,11 @@ class BrandCauses extends Component {
           </div>) : (
           <div className='not-editing'>
           <h4>Is the brand a social enterprise that provides employment for people from a disadvantaged background?</h4>
-            <button onClick={this.handleEdit}>Edit</button>
+            <button onClick={this.handleEdit} value='3'>Edit</button>
           </div>
           )}
 
-        {isEditing ? (
+        {isEditing === '4' ? (
           <div>
           <h4>Does the brand have a 1 for 1 model?</h4>
             <ul>
@@ -110,11 +127,11 @@ class BrandCauses extends Component {
           </div>) : (
           <div className='not-editing'>
           <h4>Does the brand have a 1 for 1 model?</h4>
-            <button onClick={this.handleEdit}>Edit</button>
+            <button onClick={this.handleEdit} value='4'>Edit</button>
           </div>
           )}
 
-        {isEditing ? (
+        {isEditing === '5' ? (
           <div>
           <h4>Is the brand Vegan?</h4>
             <ul>
@@ -126,11 +143,11 @@ class BrandCauses extends Component {
           </div>) : (
           <div className='not-editing'>
           <h4>Is the brand Vegan?</h4>
-            <button onClick={this.handleEdit}>Edit</button>
+            <button onClick={this.handleEdit} value='5'>Edit</button>
           </div>
           )}
 
-        {isEditing ? (
+        {isEditing === '6' ? (
           <div>
           <h4>What Percentage of the brands products are certified Fair Trade?</h4>
             <ul>
@@ -143,11 +160,11 @@ class BrandCauses extends Component {
           </div>) : (
           <div className='not-editing'>
           <h4>What Percentage of the brands products are certified Fair Trade?</h4>
-            <button onClick={this.handleEdit}>Edit</button>
+            <button onClick={this.handleEdit} value='6'>Edit</button>
           </div>
           )}
 
-        {isEditing ? (
+        {isEditing === '7' ? (
           <div>
           <h4>What percentage of products are made from certified Organic materials?</h4>
             <ul>
@@ -160,10 +177,10 @@ class BrandCauses extends Component {
           </div>) : (
           <div className='not-editing'>
           <h4>What percentage of products are made from certified Organic materials?</h4>
-            <button onClick={this.handleEdit}>Edit</button>
+            <button onClick={this.handleEdit} value='7'>Edit</button>
           </div>
           )}
-        {isEditing ? (
+        {isEditing === '8' ? (
           <div>
           <h4>What percentage of products are made from a substantial proportion(-50%) of recycled/upcycled materials?</h4>
             <ul>
@@ -176,7 +193,7 @@ class BrandCauses extends Component {
           </div>) : (
           <div className='not-editing'>
           <h4>What percentage of products are made from a substantial proportion(-50%) of recycled/upcycled materials?</h4>
-            <button onClick={this.handleEdit}>Edit</button>
+            <button onClick={this.handleEdit} value='8'>Edit</button>
           </div>
           )}
           <button>Submit</button>
@@ -186,8 +203,12 @@ class BrandCauses extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {qa: state.qa}
+}
+
 export default reduxForm({
   form: 'BrandCausesForm'
 })(
-  connect(null, { updateAnswer })(BrandCauses)
+  connect(mapStateToProps, { fetchAllQuestions })(BrandCauses)
 )
