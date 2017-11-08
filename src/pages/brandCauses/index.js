@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import {RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import { fetchAllQuestions } from '../../actions'
 import { FormsHeader } from '../../components'
+import { updateAnswer } from '../../actions'
 import _ from 'lodash'
 
 import './brandCauses.css'
@@ -13,7 +14,8 @@ class BrandCauses extends Component {
     super(props)
 
     this.state = {
-      isEditing: null
+      isEditing: null,
+      productOrigin: '1'
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -46,14 +48,21 @@ renderQuestions() {
     this.setState({isEditing: null})
   }
   handleSave(event) {
+    const { id } = this.props.match.params
+    updateAnswer(1, 1, {answer: event.target.value})
     this.setState({isEditing: null})
+    console.log('save', this.state);
   }
   handleChange(event){
-    console.log(this.props.state)
+    this.setState({[event.target.name]: event.target.value})
+    console.log('change', this.state);
   }
   handleSubmit(event){
     event.preventDefault()
   }
+  // <ul>
+  // {this.renderQuestions()}
+  // </ul>
 //conditional statement run of isEditing state and render if the state matches the elements particular value
   render() {
     console.log('props', this.props.qa);
@@ -61,21 +70,23 @@ renderQuestions() {
     return(
       <div className='form-container'>
         <FormsHeader />
-        <ul>
-          {this.renderQuestions()}
-        </ul>
         <form className='brand-form'>
         {isEditing === '1' ? (
           <div className='editing'>
             <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
               <ul>
-                <li><Field type='radio' name='productOrigin' component='input' value="Australia"/>Australia</li>
-                <li><Field type='radio' name='productOrigin' component='input' value="Canada"/>Canada</li>
-                <li><Field type='radio' name='productOrigin' component='input' value="New Zealand"/>New Zealand</li>
-                <li><Field type='radio' name='productOrigin' component='input' value="USA"/>USA</li>
-                <li><Field type='radio' name='productOrigin' component='input' value="None of the Above"/>None of the Above</li>
+                <li><Field type='radio' onChange={this.handleChange} checked={this.state.productOrigin==='1'}
+                name='productOrigin' component='input' value='1'/>Australia</li>
+                <li><Field type='radio' onChange={this.handleChange}
+                name='productOrigin' component='input' value='2'/>Canada</li>
+                <li><Field type='radio' onChange={this.handleChange}
+                name='productOrigin' component='input' value='3'/>New Zealand</li>
+                <li><Field type='radio' onChange={this.handleChange}
+                name='productOrigin' component='input' value='4'/>USA</li>
+                <li><Field type='radio' onChange={this.handleChange}
+                name='productOrigin' component='input' value='5'/>None of the Above</li>
                 <button onClick={this.handleCancel}>Cancel</button>
-                <button onClick={this.handleSave}>Save</button>
+                <button onClick={this.handleSave} value={this.state.productOrigin}>Save</button>
               </ul>
           </div>) : (
           <div className='not-editing'>
@@ -210,5 +221,5 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'BrandCausesForm'
 })(
-  connect(mapStateToProps, { fetchAllQuestions })(BrandCauses)
+  connect(mapStateToProps, { fetchAllQuestions, updateAnswer })(BrandCauses)
 )

@@ -90,7 +90,7 @@ export function submitAnswer(value) {
 
 export function fetchAllQuestions() {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/brands-causes`)
+  const request = axios.get(`${ROOT_URL}/brands-causes?brand=1&question=1`)
   console.log(request);
   return {
     type: FETCH_QUESTIONS,
@@ -108,10 +108,11 @@ export function getCauses() {
   }
 }
 
-export function updateAnswer(values) {
+export function updateAnswer(id, quest, values) {
+  const request = axios.patch(`${ROOT_URL}/brands-causes?brand=${id}&question=${quest}`, values)
   return {
     type: UPDATE_ANSWER,
-    payload: values
+    payload: request
   }
 }
 

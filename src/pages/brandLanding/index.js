@@ -5,17 +5,11 @@ import { Field, reduxForm } from 'redux-form'
 
 class BrandLanding extends Component {
 
-
-  handleChange(event){
-    console.log(this.props.state);
-  }
-  handleSubmit(event){
-    event.preventDefault();
-  }
   render() {
+    const  id   = this.props.match.params.id
     return(
       <div>
-        <Link to='/brandCauses/:id'>Brand Causes</Link>
+        <Link to={`/brandCauses/${id}`}>Brand Causes</Link>
       </div>
     )
   }
