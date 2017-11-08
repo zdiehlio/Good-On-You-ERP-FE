@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "axios": "^0.16.2",
-    "material-ui": "^0.19.2"
+    "material-ui": "^0.19.2",
+    "redux-thunk": "^2.2.0"
   }
 }

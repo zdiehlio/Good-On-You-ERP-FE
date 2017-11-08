@@ -88,13 +88,13 @@ export function submitAnswer(value) {
   }
 }
 
-export function fetchAllQuestions() {
+export function fetchQuestions(id, quest) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/brands-causes?brand=1&question=1`)
-  console.log(request);
-  return {
-    type: FETCH_QUESTIONS,
-    payload: request
+  const request = axios.get(`${ROOT_URL}/brands-causes?brand=${id}&question=${quest}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_QUESTIONS, payload: data})
+    })
   }
 }
 
