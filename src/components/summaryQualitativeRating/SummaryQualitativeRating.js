@@ -37,10 +37,10 @@ class BrandSummaryQualitativeRating extends Component {
   getData() {
 
     var brandID = this.props.currentBrand.id
-
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`${ROOT_URL}/qualitative-ratings/?brandId=${brandID}`)
+    axios.get(`${ROOT_URL}/qualitative-ratings/?id=${brandID}`)
       .then(res => {
+        console.log('res', res);
         this.setState({
           summaryData: res.data.data[0],
           state: 1,

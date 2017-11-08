@@ -7,8 +7,7 @@ export default function(state = {}, action) {
   switch (action.type) {
   case FETCH_QUESTIONS:
     if (!action.error) {
-      console.log('action', _.map(action.payload.data.data, 'text'))
-      return _.mapKeys(action.payload.data.data)
+      return _.mapKeys(action.payload.data.data, 'brand')
     }
     return {error: action.error}
   case GET_CAUSES:

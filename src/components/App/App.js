@@ -22,7 +22,8 @@ import {
   SuppDataPrice,
   SuppDataGender,
   SuppDataSimilarBrands,
-  BrandFormContainer
+  BrandFormContainer,
+  BrandLanding
 } from '../../pages'
 import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
@@ -86,8 +87,9 @@ class App extends Component {
     })
 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`${ROOT_URL}/brands-general-info/?brand=${id}`)
+    axios.get(`${ROOT_URL}/brands/?id=${id}`)
       .then(res => {
+        console.log('res', res);
         this.setState({
           currentBrand: {
             'name': name,
@@ -95,6 +97,7 @@ class App extends Component {
             summaryHeaderData: res.data.data[0]
           }
         })
+        console.log('login state', this.state);
       })
   }
 
@@ -108,11 +111,12 @@ class App extends Component {
               <Route exact path='/' component={props => <Landing {...props} handleViewSummaryClick={this.onViewSummaryClicked}/>}/>
               <Route path='/questionnaire/brands/:brandId/themes/:themeId' component={Questionnaire}/>
               <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
+              <Route path='/brandLanding/:id' component={BrandLanding} />
               <Route path='/brandSummary/:brand' component={props => <BrandSummary {...props} currentBrand={this.state.currentBrand} />}/>
               <Route path='/createBrand' component={CreateBrands} />
               <Route path='/brandGeneral/:brandId' component={BrandGeneral}/>
               <Route path='/brandContact' component={BrandContact} />
-              <Route path='/brandCauses' component={BrandCauses} />
+              <Route path='/brandCauses/:id' component={BrandCauses} />
               <Route path='/suppDataCategory' component={SuppDataCategory} />
               <Route path='/suppDataStyles' component={SuppDataStyles} />
               <Route path='/suppDataRetailers' component={SuppDataRetailers} />

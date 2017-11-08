@@ -89,9 +89,9 @@ class Landing extends Component {
             </ul>
 
             <ul className="list-container">
-              {console.log('bands', this.props.brands)}
-              {this.props.brands ? (this.props.brands.data.map((brand, i) => {
-                return <Brand key={i} handleViewSummaryClick={this.props.handleViewSummaryClick.bind(this, brand._id, brand.name)} name={brand.name} url={brand.url} category={brand.category} territory={brand.description} brandId={brand._id}/>
+              {console.log('brands', this.props.brands)}
+              {this.props.brands ? (this.props.brands.data.map((brand) => {
+                return <li key={brand.id}> <Link to={`/brandLanding/${brand.id}`}>{brand.name} </Link></li>
               })) : <div></div>}
             </ul>
           </div>
@@ -158,7 +158,7 @@ class Landing extends Component {
 
 
 function mapStateToProps(state) {
-  console.log('state', {...(state.login ? state.search : {search:{}}), ...state.login});
+  console.log(state);
   return {...(state.login ? state.search : {search:{}}), ...state.login}
 }
 

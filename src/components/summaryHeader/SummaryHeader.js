@@ -31,10 +31,10 @@ class BrandSummaryHeader extends Component {
   }
 
   getData(id) {
-    console.log('brand id', this.props);
-    var brandID = this.props.brandId
+    console.log('brand id', this.props.currentBrand.id);
+    var brandID = this.props.currentBrand.id
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`${ROOT_URL}/brands-general-info/?brand=${id}`)
+    axios.get(`${ROOT_URL}/brands/?id=${id}`)
       .then(res => {
         this.setState({
           summaryData: res.data.data[0],
