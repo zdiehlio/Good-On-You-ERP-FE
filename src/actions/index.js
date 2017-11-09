@@ -14,6 +14,7 @@ export const FETCH_QUESTIONS = 'fetch_questions'
 export const CLEAR_SEARCH = "clear_search"
 export const UPDATE_ANSWER = 'update_answer'
 export const GET_CAUSES = 'get_causes'
+export const CREATE_ANSWER = 'create_answer'
 // .then(response => {
 //   console.log(response);
 //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken;
@@ -88,9 +89,10 @@ export function submitAnswer(value) {
   }
 }
 
-export function fetchQuestions(id, quest) {
+export function fetchQuestions(id) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/brands-causes?brand=${id}&question=${quest}`)
+  const request = axios.get(`${ROOT_URL}/brands-causes?brand=${id}`)
+  console.log('fetch', request);
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: FETCH_QUESTIONS, payload: data})
@@ -104,6 +106,16 @@ export function getCauses() {
   console.log('get causes', request);
   return {
     type: GET_CAUSES,
+    payload: request
+  }
+}
+
+export function createAnswer(values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.post(`${ROOT_URL}/brands-causes`, values)
+  console.log('post', request);
+  return {
+    type: CREATE_ANSWER,
     payload: request
   }
 }
