@@ -7,7 +7,7 @@ export default function(state = {}, action) {
   switch (action.type) {
   case FETCH_QUESTIONS:
     if (!action.error) {
-      // return _.mapValues(action.payload.data.data, function(o){return o.question})
+      console.log('action', action.payload);
       return _.mapKeys(action.payload.data.data, 'question')
     }
     return {error: action.error}

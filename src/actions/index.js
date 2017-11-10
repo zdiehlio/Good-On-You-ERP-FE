@@ -92,7 +92,6 @@ export function submitAnswer(value) {
 export function fetchQuestions(id) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.get(`${ROOT_URL}/brands-causes?brand=${id}`)
-  console.log('fetch', request);
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: FETCH_QUESTIONS, payload: data})

@@ -14,7 +14,6 @@ class BrandCauses extends Component {
     super(props)
 
     this.state = {
-      questions: [],
       isEditing: null,
       currentAnswer: null,
       productOrigin: '1'
@@ -29,15 +28,21 @@ class BrandCauses extends Component {
   }
 
 componentWillMount() {
-  const { id }  = this.props.match.params
+  const id  = this.props.match.params.id
   this.props.fetchQuestions(id)
+}
+componentDidMount() {
+  const id  = this.props.match.params.id
+  if(!this.props.qa) {
+    this.props.createAnswer({brand: id, question: 'made-in', answer: 1})
+}
 }
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     const { id }  = this.props.match.params
     _.map(this.props.qa, quest => {
-      this.setState({[`question${quest.question}`]: `${quest.answer}`})
+      this.setState({[event.target.name]: `${quest.answer}`})
     })
     console.log(this.state);
     this.setState({isEditing: event.target.value})
@@ -49,7 +54,7 @@ componentWillMount() {
   handleSave(event) {
     const { id }  = this.props.match.params
     const isEditing = this.state.isEditing
-    this.props.updateAnswer(id, isEditing, {answer: this.state.currentAnswer})
+    this.props.updateAnswer(id, event.target.name, {answer: this.state.currentAnswer})
     this.setState({isEditing: null})
     console.log('save', this.state);
   }
@@ -74,6 +79,7 @@ componentWillMount() {
   render() {
     console.log('props', this.props.qa);
     console.log('state', this.state);
+    console.log('id', this.props.match.params.id);
     const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
@@ -83,23 +89,23 @@ componentWillMount() {
           <div className='editing'>
             <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
               <ul>
-                <li><Field type='radio' onChange={this.handleChange} checked={this.state.question1==='1'}
-                name='question1' component='input' value='1'/>Australia</li>
-                <li><Field type='radio' onChange={this.handleChange} checked={this.state.question1==='2'}
-                name='question1' component='input' value='2'/>Canada</li>
-                <li><Field type='radio' onChange={this.handleChange} checked={this.state.question1==='3'}
-                name='question1' component='input' value='3'/>New Zealand</li>
-                <li><Field type='radio' onChange={this.handleChange} checked={this.state.question1==='4'}
-                name='question1' component='input' value='4'/>USA</li>
-                <li><Field type='radio' onChange={this.handleChange} checked={this.state.question1==='5'}
-                name='question1' component='input' value='5'/>None of the Above</li>
+                <li><Field type='radio' onChange={this.handleChange} checked={this.state['made-in']==='1'}
+                name='made-in' component='input' value='1'/>Australia</li>
+                <li><Field type='radio' onChange={this.handleChange} checked={this.state['made-in']==='2'}
+                name='made-in' component='input' value='2'/>Canada</li>
+                <li><Field type='radio' onChange={this.handleChange} checked={this.state['made-in']==='3'}
+                name='made-in' component='input' value='3'/>New Zealand</li>
+                <li><Field type='radio' onChange={this.handleChange} checked={this.state['made-in']==='4'}
+                name='made-in' component='input' value='4'/>USA</li>
+                <li><Field type='radio' onChange={this.handleChange} checked={this.state['made-in']==='5'}
+                name='made-in' component='input' value='5'/>None of the Above</li>
                 <button onClick={this.handleCancel}>Cancel</button>
-                <button onClick={this.handleSave} value='1'>Save</button>
+                <button onClick={this.handleSave} name='made-in' value='1'>Save</button>
               </ul>
           </div>) : (
           <div className='not-editing'>
             <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
-            <button name='productOrigin' onClick={this.handleEdit} value={this.state.productOrigin}>Edit</button>
+            <button name='made-in' onClick={this.handleEdit} value={this.state.productOrigin}>Edit</button>
           </div>
             )}
         {isEditing === '2' ? (
