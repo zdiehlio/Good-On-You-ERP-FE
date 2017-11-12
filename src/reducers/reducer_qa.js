@@ -15,7 +15,7 @@ export default function(state = {}, action) {
     console.log(action.payload)
   case UPDATE_ANSWER:
     if (!action.error) {
-    console.log('update answer', action.payload.data[0])
+    console.log('update answer', action.payload.data)
     return {...state, [action.payload.data]: action.payload.data}
   }
   return {error: action.error}
