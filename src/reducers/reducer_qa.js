@@ -7,15 +7,18 @@ export default function(state = {}, action) {
   switch (action.type) {
   case FETCH_QUESTIONS:
     if (!action.error) {
-      console.log('action', action.payload);
+      console.log('fetch, questions', action.payload);
       return _.mapKeys(action.payload.data.data, 'question')
     }
     return {error: action.error}
   case GET_CAUSES:
     console.log(action.payload)
   case UPDATE_ANSWER:
-    console.log(action.payload)
-    return {...state, [action.payload.values]: action.payload.values}
+    if (!action.error) {
+    console.log('update answer', action.payload.data[0])
+    return {...state, [action.payload.data]: action.payload.data}
+  }
+  return {error: action.error}
   default:
     return state
   }

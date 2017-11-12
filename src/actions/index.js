@@ -2,7 +2,6 @@ import axios from 'axios'
 import _ from 'lodash'
 
 export const ROOT_URL = 'http://34.212.110.48:3000'
-// const ROOT_URL = 'http://34.211.121.82:3030'
 
 export const LOG_IN = 'log_in';
 export const LOG_OUT = 'log_out';
@@ -113,19 +112,22 @@ export function createAnswer(values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.post(`${ROOT_URL}/brands-causes`, values)
   console.log('post', request);
-  return {
-    type: CREATE_ANSWER,
-    payload: request
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: CREATE_ANSWER, payload: data})
+    })
   }
 }
 
 export function updateAnswer(id, quest, values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.patch(`${ROOT_URL}/brands-causes?brand=${id}&question=${quest}`, values)
   return {
     type: UPDATE_ANSWER,
     payload: request
   }
 }
+
 
 export function clearSearch() {
   return {
