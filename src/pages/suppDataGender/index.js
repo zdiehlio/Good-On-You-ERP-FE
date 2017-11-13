@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { updateAnswer } from '../../actions'
+import { updateCause } from '../../actions'
 
 class SuppDataGender extends Component {
   renderField(field) {
@@ -36,5 +36,5 @@ class SuppDataGender extends Component {
 export default reduxForm({
   form: 'SuppDataGenderForm'
 })(
-  connect(null, { updateAnswer })(SuppDataGender)
+  connect(null, { updateCause })(SuppDataGender)
 )

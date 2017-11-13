@@ -23,7 +23,8 @@ import {
   SuppDataGender,
   SuppDataSimilarBrands,
   BrandFormContainer,
-  BrandLanding
+  BrandLanding,
+  BrandSentences
 } from '../../pages'
 import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
@@ -111,12 +112,13 @@ class App extends Component {
               <Route exact path='/' component={props => <Landing {...props} handleViewSummaryClick={this.onViewSummaryClicked}/>}/>
               <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
               <Route path='/brandLanding/:id' component={BrandLanding} />
-              <Route path='/brandSummary/:brand' component={props => <BrandSummary {...props} currentBrand={this.state.currentBrand} />}/>
+              <Route path='/brandSummary/:id' component={BrandSummary}/>
               <Route path='/createBrand' component={CreateBrands} />
               <Route path='/brandGeneral/:brandId' component={BrandGeneral}/>
               <Route path='/brandContact' component={BrandContact} />
               <Route path='/brandCauses/:id' component={BrandCauses} />
-              <Route path='/suppDataCategory' component={SuppDataCategory} />
+              <Route path='/brandSentences/:id' component={BrandSentences} />
+              <Route path='/suppDataCategory/:id' component={SuppDataCategory} />
               <Route path='/suppDataStyles' component={SuppDataStyles} />
               <Route path='/suppDataRetailers' component={SuppDataRetailers} />
               <Route path='/suppDataPrice' component={SuppDataPrice} />

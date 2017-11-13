@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Field, Fields, reduxForm } from 'redux-form'
 import { SelectList } from 'react-widgets'
-import { updateAnswer } from '../../actions'
+import { updateCause } from '../../actions'
 
 class SuppDataStyles extends Component {
   renderField(field) {
@@ -89,5 +89,5 @@ class SuppDataStyles extends Component {
 export default reduxForm({
   form: 'SuppDataStylesForm'
 })(
-  connect(null, { updateAnswer })(SuppDataStyles)
+  connect(null, { updateCause })(SuppDataStyles)
 )

@@ -101,13 +101,6 @@ class CreateBrand extends Component {
               type="text"
               component={this.renderField}
             ></Field>
-            <Field
-              label="Brand Email"
-              name="email"
-              type="email"
-              component={this.renderField}
-            ></Field>
-            <button className="button">Submit</button>
           </form>
         </div>
       </div>
@@ -128,10 +121,6 @@ function validate(values) {
 
   if (!values.url) {
     errors.url = "Enter a url!"
-  }
-
-  if (!values.email) {
-    errors.email = "Enter a email!"
   }
 
   // If errors is empty, the form is fine to submit

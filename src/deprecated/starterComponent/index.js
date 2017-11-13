@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { updateAnswer } from '../../actions'
+import { updateCause } from '../../actions'
 
 class SuppDataImage extends Component {
   renderField(field) {

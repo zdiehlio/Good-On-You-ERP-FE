@@ -1,13 +1,12 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
-import {RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
-import { fetchQuestions, createAnswer, updateAnswer } from '../../actions'
+import { fetchCause, createCause, updateCause } from '../../actions'
 import { FormsHeader } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
-import './brandCauses.css'
+const ENDPOINT = '/brands-causes'
 
 
 class BrandCauses extends Component {
@@ -26,10 +25,9 @@ class BrandCauses extends Component {
     this.handleSave = this.handleSave.bind(this)
     // this.handleDelete = this.handleDelete.bind(this)
   }
-
 componentWillMount() {
   const id  = this.props.match.params.id
-  this.props.fetchQuestions(id)
+  this.props.fetchCause(ENDPOINT, id)
 }
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
@@ -49,7 +47,7 @@ componentWillMount() {
     }
     //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
     else {
-      this.props.createAnswer({brand: id, question: event.target.name, answer: event.target.value})
+      this.props.createCause(ENDPOINT, {brand: id, question: event.target.name, answer: event.target.value})
       this.setState({isEditing: event.target.value})
       console.log('post');
     }
@@ -61,7 +59,7 @@ componentWillMount() {
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     const { id }  = this.props.match.params
-    this.props.updateAnswer(id, event.target.name, {answer: this.state.currentAnswer})
+    this.props.updateCause(ENDPOINT, id, event.target.name, {answer: this.state.currentAnswer})
     this.setState({isEditing: null, [event.target.name]: this.state.currentAnswer, [event.target.value]: event.target.name})
     console.log('save', this.state);
   }
@@ -74,7 +72,7 @@ componentWillMount() {
 //   handleDelete(event) {
 //     event.preventDefault()
 //     const { id }  = this.props.match.params
-//     axios.delete(`http://34.212.110.48:3000/brands-causes?brand=${id}&question=${event.target.name}`)
+//     axios.delete(`http://34.212.110.48:3000/${ENDPOINT}brand=${id}&question=${event.target.name}`)
 // }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
@@ -393,5 +391,5 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'BrandCausesForm'
 })(
-  connect(mapStateToProps, { fetchQuestions, updateAnswer, createAnswer })(BrandCauses)
+  connect(mapStateToProps, { fetchCause, updateCause, createCause })(BrandCauses)
 )

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { updateAnswer } from '../../actions'
+import { updateCause } from '../../actions'
 
 class SuppDataSimilarBrands extends Component {
   renderField(field) {
@@ -34,5 +34,5 @@ class SuppDataSimilarBrands extends Component {
 export default reduxForm({
   form: 'SuppDataSimilarBrandsForm'
 })(
-  connect(null, { updateAnswer })(SuppDataSimilarBrands)
+  connect(null, { updateCause })(SuppDataSimilarBrands)
 )

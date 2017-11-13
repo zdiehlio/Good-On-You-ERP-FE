@@ -6,8 +6,7 @@ import { FormsHeader } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
-
-class SuppDataCategory extends Component {
+class BrandSentences extends Component {
   constructor(props){
     super(props)
 
@@ -15,22 +14,12 @@ class SuppDataCategory extends Component {
       isEditing: null,
       currentAnswer: null,
       finalAnswer: null,
-      input: null,
-      jeans: 'chip',
-      tshirts: 'chip',
-      shirts: 'chip',
-      dresses: 'chip',
-      handbags: 'chip',
-      undergarments: 'chip',
-      pantyhose: 'chip',
-      swimwear: 'chip',
-      kids: 'chip',
-      shoes: 'chip',
-      jewelry: 'chip'
+      input: null
     }
 
 
-    this.handleChange = this.handleChange.bind(this)
+    this.handleRadio = this.handleRadio.bind(this)
+    this.handleInput = this.handleInput.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
@@ -88,14 +77,14 @@ componentDidMount() {
     console.log('save', this.state);
   }
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
-  handleChange(event){
-    event.preventDefault()
-    if(this.state[event.target.name] === 'chip-selected') {
-      this.setState({[event.target.name]: 'chip'})
-    } else {
-      this.setState({[event.target.name]: 'chip-selected'})
-    }
+  handleRadio(event){
+    this.setState({finalAnswer: event.target.name, currentAnswer: event.target.value})
   }
+  //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
+  handleInput(event) {
+    this.setState({finalAnswer: event.target.value, currentAnswer: event.target.name, input: event.target.value})
+  }
+
 
 //For development purposes for testing post requests, will delete record according to specific name of question and current brand
 //If using, ensure to uncomment bind function in constructor above
@@ -116,41 +105,32 @@ componentDidMount() {
         <form className='brand-form'>
         {isEditing === '1' ? (
           <div className='editing'>
-          <h5>What are the categories?</h5>
+          <h5>What is the one sentence that describes the brand best?</h5>
+          <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p>
             <ul>
-              <button className={this.state.jeans} name='jeans' onClick={this.handleChange}>
-                Jeans {this.state.jeans === 'chip-selected' ? 'x' : '+'}
-              </button>
-              <button className={this.state.tshirts} name='tshirts' onClick={this.handleChange}>
-                T-Shirts {this.state.tshirts ? 'x' : '+'}
-              </button>
-              <button className={this.state.shirts} name='shirts' onClick={this.handleChange}>
-                Shirts {this.state.shirts ? 'x' : '+'}
-              </button>
-              <button className={this.state.dresses} name='dresses' onClick={this.handleChange}>
-                Dresses {this.state.dresses ? 'x' : '+'}
-              </button>
-              <button className={this.state.handbags} name='handbags' onClick={this.handleChange}>
-                Handbags {this.state.handbags ? 'x' : '+'}
-              </button>
-              <button className={this.state.undergarments} name='undergarments' onClick={this.handleChange}>
-                Undergarments {this.state.undergarments ? 'x' : '+'}
-              </button>
-              <button className={this.state.pantyhose} name='pantyhose' onClick={this.handleChange}>
-                Pantyhose {this.state.pantyhose ? 'x' : '+'}
-              </button>
-              <button className={this.state.swimwear} name='swimwear' onClick={this.handleChange}>
-                Swimwear {this.state.swimwear ? 'x' : '+'}
-              </button>
-              <button className={this.state.kids} name='kids' onClick={this.handleChange}>
-                Kids {this.state.kids ? 'x' : '+'}
-              </button>
-              <button className={this.state.shoes} name='shoes' onClick={this.handleChange}>
-                Shoes {this.state.shoes ? 'x' : '+'}
-              </button>
-              <button className={this.state.jewelry} name='jewelry' onClick={this.handleChange}>
-                Jewelry {this.state.jewelry ? 'x' : '+'}
-              </button>
+              <li><Field
+                type='radio'
+                onChange={this.handleRadio}
+                checked={this.state.currentAnswer==='6'}
+                name='New Zealands premium casual lifestyle brand for women and men'
+                component='input'
+                value='6'/> New Zealands premium casual lifestyle brand for women and men
+              </li>
+              <li><Field
+                type='radio'
+                onChange={this.handleRadio}
+                checked={this.state.currentAnswer==='7'}
+                name='New Zealands premium casual lifestyle brand for women and men'
+                component='input'
+                value='7'/> New Zealands luxury lifestyle brand for sustainable and organic fashion for womens and men
+              </li>
+              <li><Field
+                placeholder='Create or Edit Description'
+                onFocus={this.handleInput}
+                onChange={this.handleInput}
+                name='8'
+                component='textarea' /> {this.state.input}
+              </li>
             </ul>
             <button onClick={this.handleCancel}>Cancel</button>
             <button onClick={this.handleSave} name='1' value='1'>Save</button>
@@ -160,28 +140,6 @@ componentDidMount() {
             <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
           </div>
           )}
-          {isEditing === '2' ? (
-            <div className='editing'>
-            <h5>What is the one sentence that describes the brand best?</h5>
-            <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p>
-              <ul>
-                <li><Field
-                  type='radio'
-                  onChange={this.handleRadio}
-                  checked={this.state.currentAnswer==='6'}
-                  name='New Zealands premium casual lifestyle brand for women and men'
-                  component='input'
-                  value='6'/> New Zealands premium casual lifestyle brand for women and men
-                </li>
-              </ul>
-              <button onClick={this.handleCancel}>Cancel</button>
-              <button onClick={this.handleSave} name='2' value='2'>Save</button>
-            </div>) : (
-            <div className='not-editing'>
-              <h5>What is the one sentence that describes the brand best?</h5>
-              <button name='2' onClick={this.handleEdit} value='2'>Edit</button>
-            </div>
-            )}
         </form>
       </div>
     )
@@ -193,7 +151,7 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-  form: 'SuppDataCategoryForm'
+  form: 'BrandSentenceForm'
 })(
-  connect(mapStateToProps, { updateSentence, fetchSentence, createSentence })(SuppDataCategory)
+  connect(mapStateToProps, { updateSentence, fetchSentence, createSentence })(BrandSentences)
 )

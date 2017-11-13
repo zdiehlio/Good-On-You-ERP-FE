@@ -9,11 +9,18 @@ export const CREATE_BRAND = 'create_brand'
 export const FETCH_USERS = 'fetch_users'
 export const FETCH_BRANDS = 'fetch_brands'
 export const FETCH_USER_INFO = 'fetch_user_info'
-export const FETCH_QUESTIONS = 'fetch_questions'
+export const FETCH_CAUSE = 'fetch_cause'
 export const CLEAR_SEARCH = "clear_search"
-export const UPDATE_ANSWER = 'update_answer'
-export const GET_CAUSES = 'get_causes'
-export const CREATE_ANSWER = 'create_answer'
+export const UPDATE_CAUSE = 'update_cause'
+// export const GET_CAUSES = 'get_causes'
+export const CREATE_CAUSE = 'create_cause'
+export const FETCH_SENTENCE = 'fetch_sentence'
+export const CREATE_SENTENCE = 'create_sentence'
+export const UPDATE_SENTENCE = 'update_sentence'
+export const FETCH_SUMMARY = 'fetch_summary'
+export const CREATE_SUMMARY = 'create_summary'
+export const UPDATE_SUMMARY = 'update_sumary'
+
 // .then(response => {
 //   console.log(response);
 //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken;
@@ -79,51 +86,92 @@ export function fetchBrands(value) {
   }
 }
 
-export function submitAnswer(value) {
+export function fetchCause(endpoint, id) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/brands?name=${value}`)
-  return {
-    type: FETCH_BRANDS,
-    payload: request
-  }
-}
-
-export function fetchQuestions(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/brands-causes?brand=${id}`)
+  const request = axios.get(`${ROOT_URL}${endpoint}?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
-      dispatch({type: FETCH_QUESTIONS, payload: data})
+      dispatch({type: FETCH_CAUSE, payload: data})
     })
   }
 }
 
-export function getCauses() {
+export function createCause(endpoint, values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/users`)
-  console.log('get causes', request);
-  return {
-    type: GET_CAUSES,
-    payload: request
-  }
-}
-
-export function createAnswer(values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.post(`${ROOT_URL}/brands-causes`, values)
+  const request = axios.post(`${ROOT_URL}${endpoint}`, values)
   console.log('post', request);
   return (dispatch) => {
     request.then((data) => {
-      dispatch({type: CREATE_ANSWER, payload: data})
+      dispatch({type: CREATE_CAUSE, payload: data})
     })
   }
 }
 
-export function updateAnswer(id, quest, values) {
+export function updateCause(endpoint, id, quest, values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.patch(`${ROOT_URL}/brands-causes?brand=${id}&question=${quest}`, values)
+  const request = axios.patch(`${ROOT_URL}${endpoint}?brand=${id}&question=${quest}`, values)
   return {
-    type: UPDATE_ANSWER,
+    type: UPDATE_CAUSE,
+    payload: request
+  }
+}
+
+export function fetchSentence(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-sentences?brand=${id}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_SENTENCE, payload: data})
+    })
+  }
+}
+
+export function createSentence(values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.post(`${ROOT_URL}/brands-sentences`, values)
+  console.log('post', request);
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: CREATE_SENTENCE, payload: data})
+    })
+  }
+}
+
+export function updateSentence(id, sent, values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.patch(`${ROOT_URL}/brands-sentences?brand=${id}&id=${sent}`, values)
+  return {
+    type: UPDATE_SENTENCE,
+    payload: request
+  }
+}
+
+export function fetchSummary(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-summaries?brand=${id}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_SUMMARY, payload: data})
+    })
+  }
+}
+
+export function createSummary(values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.post(`${ROOT_URL}/brands-summaries`, values)
+  console.log('post', request);
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: CREATE_SUMMARY, payload: data})
+    })
+  }
+}
+
+export function updateSummary(id, values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.patch(`${ROOT_URL}/brands-summaries?brand=${id}`, values)
+  return {
+    type: UPDATE_SUMMARY,
     payload: request
   }
 }
