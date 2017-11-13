@@ -20,6 +20,7 @@ export const UPDATE_SENTENCE = 'update_sentence'
 export const FETCH_SUMMARY = 'fetch_summary'
 export const CREATE_SUMMARY = 'create_summary'
 export const UPDATE_SUMMARY = 'update_sumary'
+export const FETCHALL_CATEGORY = 'fetchall_category'
 
 // .then(response => {
 //   console.log(response);
@@ -60,7 +61,7 @@ export function logout() {
 
 export function createBrand(values, callback) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.post(`${ROOT_URL}/brands/`, {...values})
+  const request = axios.post(`${ROOT_URL}/brands`, {...values})
     .then((res) => callback(res))
   return {
     type: CREATE_BRAND,
@@ -173,6 +174,46 @@ export function updateSummary(id, values) {
   return {
     type: UPDATE_SUMMARY,
     payload: request
+  }
+}
+
+export function fetchAllCategory(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/categories`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCHALL_CATEGORY, payload: data})
+    })
+  }
+}
+
+export function fetchBrandCategory(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-summaries?brand=${id}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_SUMMARY, payload: data})
+    })
+  }
+}
+
+export function updateBrandCategory(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-summaries?brand=${id}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_SUMMARY, payload: data})
+    })
+  }
+}
+
+export function createBrandCategory(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-summaries?brand=${id}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_SUMMARY, payload: data})
+    })
   }
 }
 

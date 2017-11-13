@@ -16,28 +16,6 @@ const muiTheme = getMuiTheme({
   }
 });
 
-// <MuiThemeProvider muiTheme={muiTheme}>
-// <TextField
-//   hintText="brand name"
-//   floatingLabelText="Brand Name"
-// /></MuiThemeProvider>
-//
-// <MuiThemeProvider muiTheme={muiTheme}>
-// <TextField
-//   hintText="http://www.brand.url"
-//   floatingLabelText="Brand URL"
-// /></MuiThemeProvider>
-//
-// <MuiThemeProvider muiTheme={muiTheme}>
-// <TextField
-//   hintText="abc@email.com"
-//   floatingLabelText="Contact Email"
-// /></MuiThemeProvider>
-// <br />
-// <button className="button"><span>GO</span></button>
-
-
-
 class CreateBrand extends Component {
 
   renderField(field) {
@@ -60,11 +38,11 @@ class CreateBrand extends Component {
   }
 
   onSubmit(values) {
-    console.log(values);
+    console.log('values', values);
     this.props.createBrand(values, (response) => {
       this.getCategories(response)
     });
-
+    console.log('submit');
   }
 
   getCategories(response) {
@@ -97,10 +75,11 @@ class CreateBrand extends Component {
             ></Field>
             <Field
               label="Brand URL"
-              name="url"
+              name="website"
               type="text"
               component={this.renderField}
             ></Field>
+            <button type='submit'>Submit</button>
           </form>
         </div>
       </div>

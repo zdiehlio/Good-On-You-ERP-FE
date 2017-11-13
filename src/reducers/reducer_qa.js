@@ -1,4 +1,4 @@
-import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY } from '../actions'
+import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY, FETCHALL_CATEGORY } from '../actions'
 import _ from 'lodash'
 // import jwtDecode from 'jwt-decode'
 
@@ -35,9 +35,14 @@ export default function(state = {}, action) {
     return {error: action.error}
   case UPDATE_SUMMARY:
     if (!action.error) {
-    console.log('update summary', action.payload.data)
+    console.log('update category', action.payload.data)
     return {...state, [action.payload.data]: action.payload.data}
   }
+  case FETCHALL_CATEGORY:
+    if (!action.error) {
+      console.log('fetch, categories', action.payload.data);
+      return _.mapKeys(action.payload.data.data, 'name')
+    }
   return {error: action.error}
   default:
     return state

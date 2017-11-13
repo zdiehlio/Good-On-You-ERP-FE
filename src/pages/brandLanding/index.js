@@ -9,17 +9,21 @@ class BrandLanding extends Component {
     const  id   = this.props.match.params.id
     return(
       <div>
-        <div>
-          <Link to={`/brandCauses/${id}`}>Brand Causes</Link>
+        <div className='summary-view'>
+          Brand Causes
+          <Link to={`/brandCauses/${id}`}><button>Start</button></Link>
         </div>
-        <div>
-          <Link to={`/brandSentences/${id}`}>Brand Sentences</Link>
+        <div className='summary-view'>
+          Brand Sentences
+          <Link to={`/brandSentences/${id}`}><button>Start</button></Link>
         </div>
-        <div>
-          <Link to={`/brandSummary/${id}`}>Brand Summary</Link>
+        <div className='summary-view'>
+          Brand Summary
+          <Link to={`/brandSummary/${id}`}><button>Start</button></Link>
         </div>
-        <div>
-          <Link to={`/suppDataCategory/${id}`}>Brand Categories</Link>
+        <div className='summary-view'>
+          Brand Categories
+          <Link to={`/suppDataCategory/${id}`}><button>Start</button></Link>
         </div>
       </div>
     )

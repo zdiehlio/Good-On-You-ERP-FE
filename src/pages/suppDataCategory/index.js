@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
-import { fetchSentence, createSentence, updateSentence } from '../../actions'
+import { fetchBrandCategory, createBrandCategory, updateBrandCategory, fetchAllCategory } from '../../actions'
 import { FormsHeader } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
@@ -38,29 +38,17 @@ class SuppDataCategory extends Component {
   }
 componentWillMount() {
   const { id } = this.props.match.params
-  this.props.fetchSentence(id)
-}
-
-componentDidMount() {
-  _.map(this.props.qa, ident => {
-    if(ident.is_selected)
-      console.log('ident', ident.is_selected);
-      this.setState({currentAnswer: ident.id})
-})
+  this.props.fetchAllCategory()
 }
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state.currentAnswer) {
-      console.log('current answer');
-    } else if(this.props.qa) {
+    if(this.props.qa) {
       //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
-      _.map(this.props.qa, ident => {
-        if(ident.is_selected === true)
-          this.setState({currentAnswer: `${ident.id}`, input: ident.text})
-          console.log('ident', ident);
+      _.map(this.props.qa, cat => {
+          this.setState({[cat.name]: 'chip'})
     })
       //if state of target 'name' does not yet exist, will pull value of answer off props and set state to that answer and also toggle editing
     }
@@ -75,6 +63,16 @@ componentDidMount() {
       console.log('post');
     }
     this.setState({isEditing: '1'})
+  }
+
+  renderCategories() {
+    _.map(this.props.qa, cat => {
+        return(
+          <button key={cat.id} className={cat.name} name={cat.name} onClick={this.handleChange}>
+            {cat.name} {cat.name === 'chip-selected' ? 'x' : '+'}
+          </button>
+        )
+      })
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
@@ -118,38 +116,39 @@ componentDidMount() {
           <div className='editing'>
           <h5>What are the categories?</h5>
             <ul>
+              {this.renderCategories()}
               <button className={this.state.jeans} name='jeans' onClick={this.handleChange}>
                 Jeans {this.state.jeans === 'chip-selected' ? 'x' : '+'}
               </button>
               <button className={this.state.tshirts} name='tshirts' onClick={this.handleChange}>
-                T-Shirts {this.state.tshirts ? 'x' : '+'}
+                T-Shirts {this.state.tshirts === 'chip-selected' ? 'x' : '+'}
               </button>
               <button className={this.state.shirts} name='shirts' onClick={this.handleChange}>
-                Shirts {this.state.shirts ? 'x' : '+'}
+                Shirts {this.state.shirts === 'chip-selected' ? 'x' : '+'}
               </button>
               <button className={this.state.dresses} name='dresses' onClick={this.handleChange}>
-                Dresses {this.state.dresses ? 'x' : '+'}
+                Dresses {this.state.dresses === 'chip-selected' ? 'x' : '+'}
               </button>
               <button className={this.state.handbags} name='handbags' onClick={this.handleChange}>
-                Handbags {this.state.handbags ? 'x' : '+'}
+                Handbags {this.state.handbags === 'chip-selected' ? 'x' : '+'}
               </button>
               <button className={this.state.undergarments} name='undergarments' onClick={this.handleChange}>
-                Undergarments {this.state.undergarments ? 'x' : '+'}
+                Undergarments {this.state.undergarments === 'chip-selected' ? 'x' : '+'}
               </button>
               <button className={this.state.pantyhose} name='pantyhose' onClick={this.handleChange}>
-                Pantyhose {this.state.pantyhose ? 'x' : '+'}
+                Pantyhose {this.state.pantyhose === 'chip-selected' ? 'x' : '+'}
               </button>
               <button className={this.state.swimwear} name='swimwear' onClick={this.handleChange}>
-                Swimwear {this.state.swimwear ? 'x' : '+'}
+                Swimwear {this.state.swimwear === 'chip-selected' ? 'x' : '+'}
               </button>
               <button className={this.state.kids} name='kids' onClick={this.handleChange}>
-                Kids {this.state.kids ? 'x' : '+'}
+                Kids {this.state.kids === 'chip-selected' ? 'x' : '+'}
               </button>
               <button className={this.state.shoes} name='shoes' onClick={this.handleChange}>
-                Shoes {this.state.shoes ? 'x' : '+'}
+                Shoes {this.state.shoes === 'chip-selected' ? 'x' : '+'}
               </button>
               <button className={this.state.jewelry} name='jewelry' onClick={this.handleChange}>
-                Jewelry {this.state.jewelry ? 'x' : '+'}
+                Jewelry {this.state.jewelry === 'chip-selected' ? 'x' : '+'}
               </button>
             </ul>
             <button onClick={this.handleCancel}>Cancel</button>
@@ -195,5 +194,5 @@ function mapStateToProps(state) {
 export default reduxForm({
   form: 'SuppDataCategoryForm'
 })(
-  connect(mapStateToProps, { updateSentence, fetchSentence, createSentence })(SuppDataCategory)
+  connect(mapStateToProps, { fetchBrandCategory, createBrandCategory, updateBrandCategory, fetchAllCategory })(SuppDataCategory)
 )

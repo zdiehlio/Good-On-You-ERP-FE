@@ -90,3 +90,9 @@ button:hover {
     border-radius: 25px;
     background-color: green;
 }
+
+.summary-view {
+  width: 100%;
+  border: 1px;
+  padding: 1em;
+}
