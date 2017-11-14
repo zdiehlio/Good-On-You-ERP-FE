@@ -19,8 +19,13 @@ export const CREATE_SENTENCE = 'create_sentence'
 export const UPDATE_SENTENCE = 'update_sentence'
 export const FETCH_SUMMARY = 'fetch_summary'
 export const CREATE_SUMMARY = 'create_summary'
-export const UPDATE_SUMMARY = 'update_sumary'
+export const UPDATE_SUMMARY = 'update_summary'
 export const FETCHALL_CATEGORY = 'fetchall_category'
+export const FETCH_CATEGORY = 'fetch_category'
+export const CREATE_CATEGORY = 'fetch_category'
+export const UPDATE_CATEGORY = 'update_category'
+export const DELETE_CATEGORY = 'delete_category'
+
 
 // .then(response => {
 //   console.log(response);
@@ -189,30 +194,40 @@ export function fetchAllCategory(id) {
 
 export function fetchBrandCategory(id) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/brands-summaries?brand=${id}`)
+  const request = axios.get(`${ROOT_URL}/brands-categories?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
-      dispatch({type: FETCH_SUMMARY, payload: data})
+      dispatch({type: FETCH_CATEGORY, payload: data})
     })
   }
 }
 
 export function updateBrandCategory(id) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/brands-summaries?brand=${id}`)
+  const request = axios.patch(`${ROOT_URL}/brands-categories?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
-      dispatch({type: FETCH_SUMMARY, payload: data})
+      dispatch({type: UPDATE_CATEGORY, payload: data})
     })
   }
 }
 
-export function createBrandCategory(id) {
+export function createBrandCategory(values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/brands-summaries?brand=${id}`)
+  const request = axios.post(`${ROOT_URL}/brands-categories`, values)
   return (dispatch) => {
     request.then((data) => {
-      dispatch({type: FETCH_SUMMARY, payload: data})
+      dispatch({type: CREATE_CATEGORY, payload: data})
+    })
+  }
+}
+
+export function deleteBrandCategory(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.delete(`${ROOT_URL}/brands-categories?brand=${id}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: DELETE_CATEGORY, payload: data})
     })
   }
 }
