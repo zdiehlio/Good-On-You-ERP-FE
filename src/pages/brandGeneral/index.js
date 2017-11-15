@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { Link } from 'react-router-dom'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { fetchGeneral, updateGeneral, createBrandSize, deleteBrandSize } from '../../actions'
@@ -107,9 +108,23 @@ componentWillMount() {
     console.log('props', this.props.qa);
     console.log('state', this.state);
     const isEditing = this.state.isEditing
+    const { id }  = this.props.match.params
     return(
       <div className='form-container'>
-        <FormsHeader />
+        <div className='forms-header'>
+          <div>Brand Overview</div>
+          <div>>></div>
+          <div>Rating</div>
+          <div>>></div>
+          <div>Qualitative Ratings</div>
+          <div>>></div>
+          <div>Supplementary Data</div>
+          <span className='form-navigation'>
+            <div><button className='previous'>Previous</button></div>
+            <div><h3>Brand General</h3></div>
+            <div><Link to={`/brandContact/${id}`}><button className='next'>Next</button></Link></div>
+          </span>
+        </div>
         <form className='brand-form'>
         {isEditing === '1' ? (
           <div className='editing'>

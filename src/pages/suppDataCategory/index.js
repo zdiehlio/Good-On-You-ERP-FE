@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchBrandCategory, createBrandCategory, updateBrandCategory, fetchAllCategory } from '../../actions'
 import { FormsHeader } from '../../components'
@@ -84,9 +85,23 @@ componentWillMount() {
     console.log('props', this.props.qa);
     console.log('state', this.state);
     const isEditing = this.state.isEditing
+    const { id }  = this.props.match.params
     return(
       <div className='form-container'>
-        <FormsHeader />
+        <div className='forms-header'>
+          <div>Brand Overview</div>
+          <div>>></div>
+          <div>Rating</div>
+          <div>>></div>
+          <div>Qualitative Ratings</div>
+          <div>>></div>
+          <div>Supplementary Data</div>
+          <span className='form-navigation'>
+            <div><Link to={`/brandSummary/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><h3>Brand Categories</h3></div>
+            <div><button className='next'>Next</button></div>
+          </span>
+        </div>
         <form className='brand-form'>
         {isEditing === '1' ? (
           <div className='editing'>

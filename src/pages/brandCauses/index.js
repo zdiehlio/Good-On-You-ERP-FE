@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchCause, createCause, updateCause } from '../../actions'
 import { FormsHeader } from '../../components'
@@ -79,11 +80,24 @@ componentWillMount() {
   render() {
     console.log('props', this.props.qa);
     console.log('state', this.state);
-
+    const { id }  = this.props.match.params
     const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
-        <FormsHeader />
+        <div className='forms-header'>
+          <div>Brand Overview</div>
+          <div>>></div>
+          <div>Rating</div>
+          <div>>></div>
+          <div>Qualitative Ratings</div>
+          <div>>></div>
+          <div>Supplementary Data</div>
+          <span className='form-navigation'>
+            <div><Link to={`/brandContact/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><h3>Brand Causes</h3></div>
+            <div><Link to={`/brandSentences/${id}`}><button className='next'>Next</button></Link></div>
+          </span>
+        </div>
         <form className='brand-form'>
         {isEditing === '1' ? (
           <div className='editing'>

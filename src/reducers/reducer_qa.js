@@ -1,4 +1,4 @@
-import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY, FETCHALL_CATEGORY, FETCH_CATEGORY, FETCH_GENERAL, UPDATE_GENERAL, DELETE_SIZE, CREATE_SIZE} from '../actions'
+import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY, FETCHALL_CATEGORY, FETCH_CATEGORY, FETCH_GENERAL, UPDATE_GENERAL, DELETE_SIZE, CREATE_SIZE, FETCH_CONTACT, UPDATE_CONTACT} from '../actions'
 import _ from 'lodash'
 // import jwtDecode from 'jwt-decode'
 
@@ -20,6 +20,18 @@ export default function(state = {}, action) {
     case DELETE_SIZE:
       if (!action.error) {
         console.log('delete, size', action.payload.data);
+        return action.payload.data
+      }
+      return {error: action.error}
+    case FETCH_CONTACT:
+      if (!action.error) {
+        console.log('fetch, contact', action.payload.data.data);
+        return _.mapValues(action.payload.data.data[0])
+      }
+      return {error: action.error}
+    case UPDATE_CONTACT:
+      if (!action.error) {
+        console.log('update, contact', action.payload.data);
         return action.payload.data
       }
       return {error: action.error}
