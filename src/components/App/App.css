@@ -16,6 +16,22 @@
   }
 }
 
+button {
+  margin: 1em;
+  padding: 0.5em 1em;
+  font-size: 1.3em;
+  border:none;
+  color: white;
+  background-color: #17CABE;
+  border-radius: 40px;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: #2D2D2F;
+  color: #17CABE;
+}
+
 
 /*Common classNames*/
 .goy-color {
@@ -30,4 +46,53 @@
 .bold {
   font-size: 18px;
   font-weight: bold;
+}
+
+.brand-form {
+  margin-top: 2em;
+  float:left;
+}
+.brand-form li {
+  list-style-type: none;
+  margin:0.5em;
+}
+
+.form-container {
+  width:80%;
+}
+
+.editing {
+  background-color: white;
+}
+
+.not-editing {
+  background-color: #F2F2F2;
+  padding: 2em;
+}
+
+.chip {
+    display: inline-block;
+    color: black;
+    padding: 0 25px;
+    height: 30px;
+    font-size: 16px;
+    line-height: 30px;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+}
+.chip-selected {
+    display: inline-block;
+    color: black;
+    padding: 0 25px;
+    height: 30px;
+    font-size: 16px;
+    line-height: 30px;
+    border-radius: 25px;
+    background-color: green;
+}
+
+.summary-view {
+  width: 100%;
+  border: 1px;
+  padding: 1em;
 }

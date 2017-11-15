@@ -5,6 +5,8 @@ import {
   Route,
 } from 'react-router-dom';
 
+import { ROOT_URL } from '../../actions'
+
 import { Header, Footer } from '../index'
 import {
   Landing,
@@ -13,7 +15,16 @@ import {
   ViewBrands,
   CreateBrands,
   BrandSummary,
-  CategoryQuestions
+  CategoryQuestions,
+  SuppDataCategory,
+  SuppDataStyles,
+  SuppDataRetailers,
+  SuppDataPrice,
+  SuppDataGender,
+  SuppDataSimilarBrands,
+  BrandFormContainer,
+  BrandLanding,
+  BrandSentences
 } from '../../pages'
 import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
@@ -51,7 +62,7 @@ class App extends Component {
     var dataString = '{ "strategy": "local", "email": "me@goodonyou.eco", "password": "myPassword" }';
 
     var options = {
-      url: 'http://34.211.121.82:3030/authentication/',
+      url: `${ROOT_URL}/authentication/`,
       method: 'POST',
       headers: headers,
       body: dataString
@@ -77,8 +88,9 @@ class App extends Component {
     })
 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/brand/summary/?brandId=${id}`)
+    axios.get(`${ROOT_URL}/brands/?id=${id}`)
       .then(res => {
+        console.log('res', res);
         this.setState({
           currentBrand: {
             'name': name,
@@ -86,6 +98,7 @@ class App extends Component {
             summaryHeaderData: res.data.data[0]
           }
         })
+        console.log('login state', this.state);
       })
   }
 
@@ -97,13 +110,20 @@ class App extends Component {
           <div className="container-body">
             <Switch>
               <Route exact path='/' component={props => <Landing {...props} handleViewSummaryClick={this.onViewSummaryClicked}/>}/>
-              <Route path='/questionnaire/brands/:brandId/themes/:themeId' component={Questionnaire}/>
               <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
-              <Route path='/brandSummary/:brandId' component={props => <BrandSummary {...props} currentBrand={this.state.currentBrand} />}/>
-              <Route path='/brandGeneral' component={BrandGeneral}/>
+              <Route path='/brandLanding/:id' component={BrandLanding} />
+              <Route path='/brandSummary/:id' component={BrandSummary}/>
               <Route path='/createBrand' component={CreateBrands} />
+              <Route path='/brandGeneral/:id' component={BrandGeneral}/>
               <Route path='/brandContact' component={BrandContact} />
-              <Route path='/brandCauses' component={BrandCauses} />
+              <Route path='/brandCauses/:id' component={BrandCauses} />
+              <Route path='/brandSentences/:id' component={BrandSentences} />
+              <Route path='/suppDataCategory/:id' component={SuppDataCategory} />
+              <Route path='/suppDataStyles' component={SuppDataStyles} />
+              <Route path='/suppDataRetailers' component={SuppDataRetailers} />
+              <Route path='/suppDataPrice' component={SuppDataPrice} />
+              <Route path='/suppDataGender' component={SuppDataGender} />
+              <Route path='/suppDataSimilarBrands' component={SuppDataSimilarBrands} />
             </Switch>
           </div>
           <Footer/>

@@ -1,10 +1,13 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
-import { updateAnswer } from '../../actions'
+import {RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
+import { fetchCause, createCause, updateCause } from '../../actions'
+import { FormsHeader } from '../../components'
+import _ from 'lodash'
+import axios from 'axios'
 
-
-import './brandContact.css'
+const ENDPOINT = '/brands-causes'
 
 class BrandContact extends Component {
   constructor(props){
@@ -32,7 +35,7 @@ class BrandContact extends Component {
     )
   }
   handleChange(values){
-    this.props.updateAnswer(values);
+    this.props.updateCause(values);
   }
   handleSubmit(event){
     event.preventDefault();
@@ -67,5 +70,5 @@ class BrandContact extends Component {
 export default reduxForm({
   form: 'ContactForm'
 })(
-  connect(null,{ updateAnswer })(BrandContact)
+  connect(null,{ updateCause })(BrandContact)
 )
