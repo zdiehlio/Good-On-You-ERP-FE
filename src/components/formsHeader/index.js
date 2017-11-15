@@ -14,11 +14,6 @@ class FormsHeader extends Component {
         <div>Qualitative Ratings</div>
         <div>>></div>
         <div>Supplementary Data</div>
-        <span className='form-navigation'>
-          <div><button className='previous'>Previous</button></div>
-          <div><h3>Causes</h3></div>
-          <div><button className='next'>Next</button></div>
-        </span>
       </div>
     )
   }

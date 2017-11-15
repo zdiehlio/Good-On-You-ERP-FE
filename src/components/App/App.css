@@ -96,3 +96,33 @@ button:hover {
   border: 1px;
   padding: 1em;
 }
+
+.forms-header {
+  margin-top: 3em;
+  width:100%;
+}
+
+.forms-header div {
+  float: left;
+  width: calc(100%/7);
+  color: #17CABE;
+  font-weight: bold;
+  text-align: center;
+}
+
+.form-navigation div{
+  margin-top: 1em;
+  width: calc(100%/3);
+}
+.form-navigation h3 {
+  text-align: center;
+  padding: 1em;
+}
+
+.previous {
+  float:left;
+}
+
+.next {
+  float:right;
+}

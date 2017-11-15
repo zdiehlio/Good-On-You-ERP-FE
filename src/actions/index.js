@@ -27,6 +27,12 @@ export const UPDATE_CATEGORY = 'update_category'
 export const DELETE_CATEGORY = 'delete_category'
 export const FETCH_GENERAL = 'fetch_general'
 export const UPDATE_GENERAL = 'update_general'
+export const CREATE_SIZE = 'create_size'
+export const DELETE_SIZE = 'delete_size'
+export const FETCH_CONTACT = 'fetch_contact'
+export const CREATE_CONTACT = 'create_contact'
+export const UPDATE_CONTACT = 'update_contact'
+
 
 
 
@@ -120,20 +126,47 @@ export function updateGeneral(id, values) {
   }
 }
 
-export function createBrandSize(id, values) {
+export function createBrandSize(values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.post(`${ROOT_URL}/brands-sizes`, values)
   return {
-    type: UPDATE_GENERAL,
+    type: CREATE_SIZE,
     payload: request
   }
 }
 
 export function deleteBrandSize(id, values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.delete(`${ROOT_URL}/brands-sizes`, values)
+  const request = axios.delete(`${ROOT_URL}/brands-sizes?brand=${id}&criteria=${values}`)
   return {
-    type: UPDATE_GENERAL,
+    type: DELETE_SIZE,
+    payload: request
+  }
+}
+
+export function fetchContact(id, values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-contacts?brand=${id}`)
+  return {
+    type: FETCH_CONTACT,
+    payload: request
+  }
+}
+
+export function createContact(values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.post(`${ROOT_URL}/brands-contacts`, values)
+  return {
+    type: FETCH_GENERAL,
+    payload: request
+  }
+}
+
+export function updateContact(id, values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.patch(`${ROOT_URL}/brands-contacts?brand=${id}`, values)
+  return {
+    type: FETCH_GENERAL,
     payload: request
   }
 }
