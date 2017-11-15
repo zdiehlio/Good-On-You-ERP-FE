@@ -17,6 +17,7 @@ class BrandGeneral extends Component {
       sustainability_report_date: this.props.qa.sustainability_report_date,
       review_date: this.props.qa.review_date,
       parent_company: this.props.qa.parent_company,
+      is_large: this.props.qa.is_large,
       input: null
     }
 
@@ -26,6 +27,8 @@ class BrandGeneral extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
+    this.handleSubmitSize = this.handleSubmitSize.bind(this)
+    this.handleCheckbox = this.handleCheckbox.bind(this)
     // this.handleDelete = this.handleDelete.bind(this)
   }
 componentWillMount() {
@@ -54,13 +57,26 @@ componentDidMount() {
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     const { id }  = this.props.match.params
-    this.props.updateGeneral(id, {name: this.state.name, sustainability_report_date: this.state.sustainability_report_date, review_date: this.state.review_date, parent_company: this.state.parent_company})
+    this.props.updateGeneral(id, {name: this.state.name, sustainability_report_date: this.state.sustainability_report_date, review_date: this.state.review_date, parent_company: this.state.parent_company, is_large:this.state.is_large})
     this.setState({isEditing: null})
     console.log('save', this.state);
   }
+
+  handleSubmitSize(event) {
+    const { id }  = this.props.match.params
+    this.props.createBrandSize({brand: id})
+  }
+
+  handleCheckbox(event) {
+    const { id }  = this.props.match.params
+    this.setState({[event.target.name]: event.target.value})
+  }
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
   handleRadio(event){
-    this.setState({finalAnswer: event.target.name, currentAnswer: event.target.value})
+    if(event.target.name==='small')
+      this.setState({is_large: false})
+    if(event.target.name==='large')
+      this.setState({is_large: true})
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
@@ -150,12 +166,14 @@ componentDidMount() {
                         type='radio'
                         onChange={this.handleRadio}
                         name='small'
+                        checked={this.state.is_large === false}
                         component='input' />Small
                       </li>
                       <li> <Field
                         type='radio'
                         onChange={this.handleRadio}
                         name='large'
+                        checked={this.state.is_large === true}
                         component='input' />Large
                       </li>
                     </ul>
@@ -163,37 +181,37 @@ componentDidMount() {
                       <h5>Does the Brand meet at least one of the following large brand criteria?</h5>
                         <li> <Field
                           type='checkbox'
-                          onChange={this.handleRadio}
+                          onChange={this.handleCheckbox}
                           name='listed'
                           component='input' />Listed Company
                         </li>
                         <li> <Field
                           type='checkbox'
-                          onChange={this.handleRadio}
+                          onChange={this.handleCheckbox}
                           name='subsidiary'
                           component='input' />Subsidiary Company
                         </li>
                         <li> <Field
                           type='checkbox'
-                          onChange={this.handleRadio}
+                          onChange={this.handleCheckbox}
                           name='alexa'
                           component='input' />Alexa &#60; 200k
                         </li>
                         <li> <Field
                           type='checkbox'
-                          onChange={this.handleRadio}
+                          onChange={this.handleCheckbox}
                           name='insta'
                           component='input' />Insta + FB &#62; 75k
                         </li>
                         <li> <Field
                           type='checkbox'
-                          onChange={this.handleRadio}
+                          onChange={this.handleCheckbox}
                           name='linkedin'
                           component='input' />Linkedin employees &#62; 50
                         </li>
                         <li> <Field
                           type='checkbox'
-                          onChange={this.handleRadio}
+                          onChange={this.handleCheckbox}
                           name='override'
                           component='input' />Manual override after company provided data satisfying Good On You criteria
                         </li>

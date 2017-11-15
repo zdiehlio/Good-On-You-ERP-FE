@@ -2,11 +2,12 @@
   "name": "goy_hack",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://good-on-you-77bce.firebaseapp.com/",
   "dependencies": {
     "jquery": "^3.2.1",
     "jwt-decode": "^2.2.0",
     "material-design-icons": "^3.0.1",
-    "material-ui": "^0.19.1",
+    "material-ui": "^0.19.2",
     "material-ui-search-bar": "^0.4.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -22,6 +23,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "npm run build && firebase deploy",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
