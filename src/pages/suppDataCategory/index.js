@@ -27,7 +27,7 @@ class SuppDataCategory extends Component {
 componentWillMount() {
   const { id } = this.props.match.params
   this.props.fetchAllCategory()
-  this.props.fetchBrandCategory(id)
+  // this.props.fetchBrandCategory(id)
 }
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
@@ -64,7 +64,8 @@ componentWillMount() {
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     const { id }  = this.props.match.params
-    this.props.createBrandCategory({id: this.state.finalAnswer})
+    this.props.deleteBrandCategory(id)
+    this.props.createBrandCategory({brand: id})
     this.setState({isEditing: null})
     console.log('save', this.state);
   }
@@ -72,9 +73,9 @@ componentWillMount() {
   handleChange(event){
     event.preventDefault()
     if(this.state[event.target.name] === 'chip-selected') {
-      this.setState({[event.target.name]: 'chip'})
+      this.setState({[event.target.name]: 'chip', currentAnswer: this.currenAnswer.slice()})
     } else {
-      this.setState({[event.target.name]: 'chip-selected'})
+      this.setState({[event.target.name]: 'chip-selected', currentAnswer: [...this.state.currenAnswer, event.target.name]})
     }
   }
 

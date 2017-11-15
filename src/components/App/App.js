@@ -114,7 +114,7 @@ class App extends Component {
               <Route path='/brandLanding/:id' component={BrandLanding} />
               <Route path='/brandSummary/:id' component={BrandSummary}/>
               <Route path='/createBrand' component={CreateBrands} />
-              <Route path='/brandGeneral/:brandId' component={BrandGeneral}/>
+              <Route path='/brandGeneral/:id' component={BrandGeneral}/>
               <Route path='/brandContact' component={BrandContact} />
               <Route path='/brandCauses/:id' component={BrandCauses} />
               <Route path='/brandSentences/:id' component={BrandSentences} />

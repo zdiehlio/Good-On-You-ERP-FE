@@ -10,6 +10,10 @@ class BrandLanding extends Component {
     return(
       <div>
         <div className='summary-view'>
+          Brand Overview
+          <Link to={`/brandGeneral/${id}`}><button>Start</button></Link>
+        </div>
+        <div className='summary-view'>
           Brand Causes
           <Link to={`/brandCauses/${id}`}><button>Start</button></Link>
         </div>

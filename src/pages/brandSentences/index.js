@@ -122,7 +122,7 @@ componentDidMount() {
                 checked={this.state.currentAnswer==='7'}
                 name='New Zealands premium casual lifestyle brand for women and men'
                 component='input'
-                value='7'/> New Zealands luxury lifestyle brand for sustainable and organic fashion for womens and men
+                value='7'/> New Zealands luxury lifestyle brand for sustainable and organic fashion for women and men
               </li>
               <li><Field
                 placeholder='Create or Edit Description'
