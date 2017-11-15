@@ -27,6 +27,8 @@ export const UPDATE_CATEGORY = 'update_category'
 export const DELETE_CATEGORY = 'delete_category'
 export const FETCH_GENERAL = 'fetch_general'
 export const UPDATE_GENERAL = 'update_general'
+export const CREATE_SIZE = 'create_size'
+export const DELETE_SIZE = 'delete_size'
 
 
 
@@ -120,20 +122,20 @@ export function updateGeneral(id, values) {
   }
 }
 
-export function createBrandSize(id, values) {
+export function createBrandSize(values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.post(`${ROOT_URL}/brands-sizes`, values)
   return {
-    type: UPDATE_GENERAL,
+    type: CREATE_SIZE,
     payload: request
   }
 }
 
 export function deleteBrandSize(id, values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.delete(`${ROOT_URL}/brands-sizes`, values)
+  const request = axios.delete(`${ROOT_URL}/brands-sizes?brand=${id}&criteria=${values}`)
   return {
-    type: UPDATE_GENERAL,
+    type: DELETE_SIZE,
     payload: request
   }
 }

@@ -14,6 +14,7 @@ class BrandGeneral extends Component {
       isEditing: null,
       currentAnswer: '',
       sizeValues: [],
+      sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'manual', 'subsidiary', 'listed'],
       input: null
     }
 
@@ -42,6 +43,9 @@ componentWillMount() {
       this.setState({is_large: this.props.qa.is_large, isEditing: event.target.value})
       console.log('return');
     }
+    _.mapValues(this.props.qa.size, crit => {
+      this.setState({[crit.criteria]: crit.criteria})
+    })
 }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
@@ -56,22 +60,30 @@ componentWillMount() {
   }
 
   handleSubmitSize(event) {
+    event.preventDefault()
     const { id }  = this.props.match.params
+    _.map(this.state.sizeOptions, options => {
+        this.props.deleteBrandSize(id, options)
+
+    })
     _.map(this.state.sizeValues, size => {
-      if(this.props.qa.size) {
-        console.log(size);
+      if(!this.props.qa.size) {
+        this.props.createBrandSize({brand: id, criteria: size})
       }
     })
-    this.props.createBrandSize({brand: id})
+    this.setState({isEditing: null})
   }
 
   handleCheckbox(event) {
     const { id }  = this.props.match.params
+    if(this.state[event.target.name] === event.target.name) {
+      this.setState({[event.target.name]: null})
+    }
     if(this.state.sizeValues.includes(event.target.name)) {
       this.state.sizeValues.splice(this.state.sizeValues.indexOf(event.target.name), 1)
       console.log(this.state.sizeValues);
     } else {
-      this.setState({sizeValues: [...this.state.sizeValues, event.target.name]})
+      this.setState({sizeValues: [...this.state.sizeValues, event.target.name], [event.target.name]: event.target.name})
       console.log(this.state.sizeValues);
     }
   }
@@ -93,7 +105,7 @@ componentWillMount() {
 
   render() {
     console.log('props', this.props.qa);
-    console.log('state', this.state.sizeValues);
+    console.log('state', this.state);
     const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
@@ -189,36 +201,42 @@ componentWillMount() {
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
+                          checked={this.state.listed}
                           name='listed'
                           component='input' />Listed Company
                         </li>
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
+                          checked={this.state.subsidiary}
                           name='subsidiary'
                           component='input' />Subsidiary Company
                         </li>
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
+                          checked={this.state.alexa}
                           name='alexa'
                           component='input' />Alexa &#60; 200k
                         </li>
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
+                          checked={this.state['insta-fb']}
                           name='insta-fb'
                           component='input' />Insta + FB &#62; 75k
                         </li>
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
+                          checked={this.state['linked-in']}
                           name='linked-in'
                           component='input' />Linkedin employees &#62; 50
                         </li>
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
+                          checked={this.state.manual}
                           name='manual'
                           component='input' />Manual override after company provided data satisfying Good On You criteria
                         </li>
@@ -234,7 +252,7 @@ componentWillMount() {
                         </li>
                       </ul>
                     <button onClick={this.handleCancel}>Cancel</button>
-                    <button onClick={this.handleSave} name='5' value='5'>Save</button>
+                    <button onClick={this.handleSubmitSize} name='5' value='5'>Save</button>
                   </div>) : (
                   <div className='not-editing'>
                     <h5>What is the size of the Brand?</h5>
