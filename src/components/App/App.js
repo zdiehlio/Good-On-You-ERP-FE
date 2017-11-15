@@ -56,14 +56,15 @@ class App extends Component {
   handleLogin = () => {
 
     var headers = {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     };
 
     var dataString = '{ "strategy": "local", "email": "me@goodonyou.eco", "password": "myPassword" }';
 
     var options = {
-      url: `${ROOT_URL}/authentication/`,
+      url: `${ROOT_URL}`,
       method: 'POST',
+      path: '/authentication/',
       headers: headers,
       body: dataString
     };

@@ -37,6 +37,13 @@ export const UPDATE_GENERAL = 'update_general'
 //   return _.assignIn(axios.get(`http://34.211.121.82:3030/users?email=${email}`, response.data))
 //
 // })
+//
+// const Agent = new https.Agent({
+//   rejectUnauthorized: false
+// })
+//
+// const instance = axios.create()
+// instance.defaults.httpsAgent = Agent
 
 export function login(values) {
   const strategy = {
