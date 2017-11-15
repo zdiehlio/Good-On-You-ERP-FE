@@ -1,0 +1,36 @@
+[
+  {
+    "issueNumber": 1.1,
+    "question": "Which of the following standards systems is the brand compliant with?",
+    "answers":
+    [
+      "Cradle to Cradle Platinum",
+      "Cradle to Cradle Gold",
+      "Cradle to Cradle Silver",
+      "Cradle to Cradle Bronze",
+      "Cradle to Cradle Basic",
+      "GOTS",
+      "Bluesign System",
+      "STeP by Oeko-Tex",
+      "Carbon Trust (water, waste, carbon)",
+      "Global Recycle Standard",
+      "The EU Ecolabel",
+      "Fair Trade - Small Producers",
+      "Carbon Trust (carbon)",
+      "Carbon Trust (water)",
+      "Carbon Trust (waste)",
+      "Fair Trade - Hired Labour",
+      "Leather Working Group",
+      "Oeko-Tex Standard 100",
+      "Better Cotton Initiative",
+      "Carbon Disclosure Project",
+      "ISO 14001:2004",
+      "Naturtextil Best",
+      "Nordic Swan",
+      "Blue Angel",
+      "SCAP Sustainable Clothing Action Plan"
+    ],
+    "appliesTo": "All",
+    "chooseAllThatApply": true
+  }
+]
