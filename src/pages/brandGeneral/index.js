@@ -13,11 +13,7 @@ class BrandGeneral extends Component {
     this.state = {
       isEditing: null,
       currentAnswer: '',
-      name: this.props.qa.name,
-      sustainability_report_date: this.props.qa.sustainability_report_date,
-      review_date: this.props.qa.review_date,
-      parent_company: this.props.qa.parent_company,
-      is_large: this.props.qa.is_large,
+      sizeValues: [],
       input: null
     }
 
@@ -36,19 +32,16 @@ componentWillMount() {
   this.props.fetchGeneral(id, 'general')
 }
 
-componentDidMount() {
-  _.map(this.props.qa, ident => {
-    if(ident.is_selected)
-      console.log('ident', ident.is_selected);
-      this.setState({currentAnswer: ident.id})
-})
-}
-
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.setState({isEditing: event.target.value})
+    if(this.state.is_large === true || this.state.is_large === false) {
+      this.setState({isEditing: event.target.value})
+    } else {
+      this.setState({is_large: this.props.qa.is_large, isEditing: event.target.value})
+      console.log('return');
+    }
 }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
@@ -64,19 +57,33 @@ componentDidMount() {
 
   handleSubmitSize(event) {
     const { id }  = this.props.match.params
+    _.map(this.state.sizeValues, size => {
+      if(this.props.qa.size) {
+        console.log(size);
+      }
+    })
     this.props.createBrandSize({brand: id})
   }
 
   handleCheckbox(event) {
     const { id }  = this.props.match.params
-    this.setState({[event.target.name]: event.target.value})
+    if(this.state.sizeValues.includes(event.target.name)) {
+      this.state.sizeValues.splice(this.state.sizeValues.indexOf(event.target.name), 1)
+      console.log(this.state.sizeValues);
+    } else {
+      this.setState({sizeValues: [...this.state.sizeValues, event.target.name]})
+      console.log(this.state.sizeValues);
+    }
   }
+
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
   handleRadio(event){
-    if(event.target.name==='small')
+    if(event.target.name ==='small') {
       this.setState({is_large: false})
-    if(event.target.name==='large')
+    }
+    if(event.target.name === 'large') {
       this.setState({is_large: true})
+    }
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
@@ -86,7 +93,7 @@ componentDidMount() {
 
   render() {
     console.log('props', this.props.qa);
-    console.log('state', this.state);
+    console.log('state', this.state.sizeValues);
     const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
@@ -200,19 +207,19 @@ componentDidMount() {
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
-                          name='insta'
+                          name='insta-fb'
                           component='input' />Insta + FB &#62; 75k
                         </li>
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
-                          name='linkedin'
+                          name='linked-in'
                           component='input' />Linkedin employees &#62; 50
                         </li>
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
-                          name='override'
+                          name='manual'
                           component='input' />Manual override after company provided data satisfying Good On You criteria
                         </li>
                       </ul>

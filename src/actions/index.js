@@ -1,7 +1,7 @@
 import axios from 'axios'
 import _ from 'lodash'
 
-export const ROOT_URL = 'https://34.212.110.48:3000'
+export const ROOT_URL = 'http://34.212.110.48:3000'
 
 export const LOG_IN = 'log_in';
 export const LOG_OUT = 'log_out';
@@ -37,6 +37,13 @@ export const UPDATE_GENERAL = 'update_general'
 //   return _.assignIn(axios.get(`http://34.211.121.82:3030/users?email=${email}`, response.data))
 //
 // })
+//
+// const Agent = new https.Agent({
+//   rejectUnauthorized: false
+// })
+//
+// const instance = axios.create()
+// instance.defaults.httpsAgent = Agent
 
 export function login(values) {
   const strategy = {
