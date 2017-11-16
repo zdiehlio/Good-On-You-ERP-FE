@@ -32,24 +32,10 @@ export const DELETE_SIZE = 'delete_size'
 export const FETCH_CONTACT = 'fetch_contact'
 export const CREATE_CONTACT = 'create_contact'
 export const UPDATE_CONTACT = 'update_contact'
+export const FETCH_TYPE = 'fetch_type'
+export const CREATE_TYPE = 'create_type'
+export const DELETE_TYPE = 'delete_type'
 
-
-
-
-// .then(response => {
-//   console.log(response);
-//   axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.accessToken;
-//   var email = JSON.parse(response.config.data).email
-//   return _.assignIn(axios.get(`http://34.211.121.82:3030/users?email=${email}`, response.data))
-//
-// })
-//
-// const Agent = new https.Agent({
-//   rejectUnauthorized: false
-// })
-//
-// const instance = axios.create()
-// instance.defaults.httpsAgent = Agent
 
 export function login(values) {
   const strategy = {
@@ -307,6 +293,36 @@ export function deleteBrandCategory(id) {
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: DELETE_CATEGORY, payload: data})
+    })
+  }
+}
+
+export function fetchType(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-product-types?brand=${id}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_TYPE, payload: data})
+    })
+  }
+}
+
+export function createType(values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.post(`${ROOT_URL}/brands-product-types`, values)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: CREATE_TYPE, payload: data})
+    })
+  }
+}
+
+export function deleteType(id, values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.delete(`${ROOT_URL}/brands-product-types?brand=${id}&product=${values}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: DELETE_TYPE, payload: data})
     })
   }
 }

@@ -1,4 +1,4 @@
-import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY, FETCHALL_CATEGORY, FETCH_CATEGORY, FETCH_GENERAL, UPDATE_GENERAL, DELETE_SIZE, CREATE_SIZE, FETCH_CONTACT, UPDATE_CONTACT} from '../actions'
+import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY, FETCHALL_CATEGORY, FETCH_CATEGORY, FETCH_GENERAL, UPDATE_GENERAL, DELETE_SIZE, CREATE_SIZE, FETCH_CONTACT, UPDATE_CONTACT, FETCH_TYPE, CREATE_TYPE, DELETE_TYPE } from '../actions'
 import _ from 'lodash'
 // import jwtDecode from 'jwt-decode'
 
@@ -79,9 +79,14 @@ export default function(state = {}, action) {
       console.log('fetch, categories', action.payload.data);
       return _.mapKeys(action.payload.data.data, 'name')
     }
-  case FETCH_CATEGORY:
+  case FETCH_TYPE:
     if (!action.error) {
-      console.log('fetch, brand category', action.payload.data);
+      console.log('fetch, type', action.payload.data.data);
+      return _.mapKeys(action.payload.data.data, 'product')
+    }
+  case DELETE_TYPE:
+    if (!action.error) {
+      console.log('delete, type', action.payload.data);
       return _.mapKeys(action.payload.data, 'category_id')
     }
   return {error: action.error}

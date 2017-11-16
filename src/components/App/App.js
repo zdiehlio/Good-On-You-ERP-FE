@@ -24,7 +24,8 @@ import {
   SuppDataSimilarBrands,
   BrandFormContainer,
   BrandLanding,
-  BrandSentences
+  BrandSentences,
+  SuppDataTypes
 } from '../../pages'
 import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
@@ -120,11 +121,12 @@ class App extends Component {
               <Route path='/brandCauses/:id' component={BrandCauses} />
               <Route path='/brandSentences/:id' component={BrandSentences} />
               <Route path='/suppDataCategory/:id' component={SuppDataCategory} />
-              <Route path='/suppDataStyles' component={SuppDataStyles} />
-              <Route path='/suppDataRetailers' component={SuppDataRetailers} />
-              <Route path='/suppDataPrice' component={SuppDataPrice} />
-              <Route path='/suppDataGender' component={SuppDataGender} />
-              <Route path='/suppDataSimilarBrands' component={SuppDataSimilarBrands} />
+              <Route path='/suppDataStyles/:id' component={SuppDataStyles} />
+              <Route path='/suppDataRetailers/:id' component={SuppDataRetailers} />
+              <Route path='/suppDataPrice/:id' component={SuppDataPrice} />
+              <Route path='/suppDataGender/:id' component={SuppDataGender} />
+              <Route path='/suppDataSimilarBrands/:id' component={SuppDataSimilarBrands} />
+              <Route path='/suppDataTypes/:id' component={SuppDataTypes} />
             </Switch>
           </div>
           <Footer/>
