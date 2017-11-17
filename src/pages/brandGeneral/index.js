@@ -63,29 +63,19 @@ componentWillMount() {
   handleSubmitSize(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    _.map(this.state.sizeOptions, options => {
-        this.props.deleteBrandSize(id, options)
-
-    })
-    _.map(this.state.sizeValues, size => {
-      if(!this.props.qa.size) {
-        this.props.createBrandSize({brand: id, criteria: size})
-      }
-    })
     this.setState({isEditing: null})
   }
 
   handleCheckbox(event) {
     const { id }  = this.props.match.params
-    if(this.state[event.target.name] === event.target.name) {
+    if(this.state[event.target.name]) {
+      this.props.deleteBrandSize(id, event.target.name)
       this.setState({[event.target.name]: null})
-    }
-    if(this.state.sizeValues.includes(event.target.name)) {
-      this.state.sizeValues.splice(this.state.sizeValues.indexOf(event.target.name), 1)
-      console.log(this.state.sizeValues);
+      console.log('delete');
     } else {
-      this.setState({sizeValues: [...this.state.sizeValues, event.target.name], [event.target.name]: event.target.name})
-      console.log(this.state.sizeValues);
+      this.props.createBrandSize({brand: id, criteria: event.target.name})
+      this.setState({[event.target.name]: event.target.name})
+      console.log('create');
     }
   }
 
