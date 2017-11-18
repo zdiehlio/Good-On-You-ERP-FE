@@ -44,14 +44,6 @@ componentWillMount() {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    // _.map(this.state.typeOptions, options => {
-    //     this.props.deleteType(id, options)
-    //     this.setState({submitted: true})
-    // })
-    // if(!this.props.qa.data) {
-    //   this.props.createType([this.state.activewear, this.state.casualwear, this.state.eveningwear, this.state.smartcasual, this.state.workwear])
-    // }
-
     this.setState({isEditing: null})
   }
 
@@ -66,18 +58,6 @@ componentWillMount() {
       this.setState({[event.target.name]: event.target.name})
       console.log('post');
     }
-    // this.state.typeValues.find(type => {
-    //   type.product === event.target.name
-    //   console.log('find', type.product);
-    //   if(type.product === event.target.name) {
-    //     this.state.typeValues.filter(prod => { return prod.product === event.target.name})
-    //     console.log('splice', this.state.typeValues);
-    //   } else {
-    //     //ask Ali if it can be switched to just an object instead of an array
-    //     this.setState({typeValues: [...this.state.typeValues, {brand: id, product: event.target.name}], [event.target.name]: event.target.name})
-    //     console.log('push', this.state.typeValues);
-    //   }
-    // })
   }
 
   render() {

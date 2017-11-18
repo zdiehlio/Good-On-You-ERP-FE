@@ -1,4 +1,4 @@
-import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY, FETCHALL_CATEGORY, FETCH_CATEGORY, FETCH_GENERAL, UPDATE_GENERAL, DELETE_SIZE, CREATE_SIZE, FETCH_CONTACT, UPDATE_CONTACT, FETCH_TYPE, CREATE_TYPE, DELETE_TYPE } from '../actions'
+import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY, FETCHALL_CATEGORY, FETCH_CATEGORY, FETCH_GENERAL, UPDATE_GENERAL, DELETE_SIZE, CREATE_SIZE, FETCH_CONTACT, UPDATE_CONTACT, FETCH_TYPE, CREATE_TYPE, DELETE_TYPE, FETCH_ALIAS, DELETE_ALIAS, CREATE_ALIAS } from '../actions'
 import _ from 'lodash'
 // import jwtDecode from 'jwt-decode'
 
@@ -88,6 +88,21 @@ export default function(state = {}, action) {
     if (!action.error) {
       console.log('delete, type', action.payload.data);
       return _.mapKeys(action.payload.data, 'category_id')
+    }
+  case FETCH_ALIAS:
+    if (!action.error) {
+      console.log('fetch, alias', action.payload.data);
+      return _.mapKeys(action.payload.data.data, 'alias')
+    }
+  // case CREATE_ALIAS:
+  //   if (!action.error) {
+  //     console.log('create, alias', action.payload.data);
+  //     return _.mapKeys(action.payload.data.data, 'alias')
+  //   }
+  case DELETE_ALIAS:
+    if (!action.error) {
+      console.log('delete, alias', action.payload.data);
+      return {...state, [action.payload.data.data]: action.payload.data.data}
     }
   return {error: action.error}
   default:
