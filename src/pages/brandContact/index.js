@@ -56,6 +56,8 @@ render() {
   console.log('state', this.state);
   const isEditing = this.state.isEditing
   const { id }  = this.props.match.params
+  const state = this.state
+  const props = this.props.qa
   return(
     <div className='form-container'>
       <div className='forms-header'>
@@ -78,19 +80,19 @@ render() {
         <ul>
           <h5>Brand Contact Name: </h5>
             <Field
-              placeholder={this.props.qa.name}
+              placeholder={props.name}
               onChange={this.handleInput}
               name='name'
               component='input'/>
           <h5>Brand Contact Email: </h5>
             <Field
-              placeholder={this.props.qa.email}
+              placeholder={props.email}
               onChange={this.handleInput}
               name='email'
               component='input'/>
             <h5>Brand GOY Relationship Manager: </h5>
               <Field
-                placeholder={this.props.qa.relationship_manager}
+                placeholder={props.relationship_manager}
                 onChange={this.handleInput}
                 name='relationship_manager'
                 component='input'/>
@@ -100,6 +102,9 @@ render() {
         </div>) : (
         <div className='not-editing'>
           <h5>Brand Contact Information</h5>
+          <p>Contact Name: {state.name ? state.name : props.name}</p>
+          <p>Email: {state.email ? state.email : props.email}</p>
+          <p>Relationship Manager: {state.relationship_manager ? state.relationship_manager : props.relationship_manager}</p>
           <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
         </div>
         )}

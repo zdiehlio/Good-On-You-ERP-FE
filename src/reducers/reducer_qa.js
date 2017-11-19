@@ -20,7 +20,7 @@ export default function(state = {}, action) {
     case DELETE_SIZE:
       if (!action.error) {
         console.log('delete, size', action.payload.data);
-        return action.payload.data
+        return _.omit(state, action.payload.data)
       }
       return {error: action.error}
     case FETCH_CONTACT:

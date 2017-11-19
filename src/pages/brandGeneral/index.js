@@ -6,6 +6,7 @@ import { fetchGeneral, updateGeneral, createBrandSize, deleteBrandSize } from '.
 import { FormsHeader } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
+import moment from 'moment'
 
 class BrandGeneral extends Component {
   constructor(props){
@@ -15,6 +16,7 @@ class BrandGeneral extends Component {
       isEditing: null,
       currentAnswer: '',
       sizeValues: [],
+      currentValues: [],
       sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'manual', 'subsidiary', 'listed'],
       input: null
     }
@@ -38,15 +40,10 @@ componentWillMount() {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state.is_large === true || this.state.is_large === false) {
-      this.setState({isEditing: event.target.value})
-    } else {
-      this.setState({is_large: this.props.qa.is_large, isEditing: event.target.value})
-      console.log('return');
-    }
     _.mapValues(this.props.qa.size, crit => {
-      this.setState({[crit.criteria]: crit.criteria})
+      this.setState({sizeValues: [...this.state.sizeValues, crit], [crit.criteria]: crit.criteria})
     })
+    this.setState({isEditing: event.target.value})
 }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
@@ -54,9 +51,11 @@ componentWillMount() {
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
+    event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.updateGeneral(id, {name: this.state.name, sustainability_report_date: this.state.sustainability_report_date, review_date: this.state.review_date, parent_company: this.state.parent_company, is_large:this.state.is_large})
+    this.props.updateGeneral(id, {name: this.state.name, sustainability_report_date: this.state.sustainability_report_date, review_date: this.state.review_date, parent_company: this.state.parent_company, is_large: this.state.is_large})
     this.setState({isEditing: null})
+    this.props.fetchGeneral(id, 'general')
     console.log('save', this.state);
   }
 
@@ -71,13 +70,21 @@ componentWillMount() {
     if(this.state[event.target.name]) {
       this.props.deleteBrandSize(id, event.target.name)
       this.setState({[event.target.name]: null})
-      console.log('delete');
     } else {
       this.props.createBrandSize({brand: id, criteria: event.target.name})
       this.setState({[event.target.name]: event.target.name})
-      console.log('create');
     }
   }
+
+  renderCriteria() {
+      return _.map(this.props.qa.size, crit => {
+        return (
+          <li key={crit.criteria}>
+            {crit.criteria}
+          </li>
+        )
+      })
+    }
 
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
   handleRadio(event){
@@ -98,7 +105,10 @@ componentWillMount() {
     console.log('props', this.props.qa);
     console.log('state', this.state);
     const isEditing = this.state.isEditing
+    const state = this.state
+    const props = this.props.qa
     const { id }  = this.props.match.params
+    const moments = date => moment(new Date(date)).format('MM/DD/YYYY')
     return(
       <div className='form-container'>
         <div className='forms-header'>
@@ -121,32 +131,34 @@ componentWillMount() {
           <h5>What is the Brand Name and Website?</h5>
             <ul>
               <li>Brand Name: <Field
-                placeholder={this.props.qa.name}
+                placeholder={props.name}
                 onChange={this.handleInput}
                 name='name'
                 component='input' />
               </li>
-              <div> Brand Website: </div><div>{this.props.qa.website}</div>
+              <div> Brand Website: </div><div>{props.website}</div>
             </ul>
             <button onClick={this.handleCancel}>Cancel</button>
             <button onClick={this.handleSave} name='1' value='1'>Save</button>
           </div>) : (
           <div className='not-editing'>
             <h5>What is the Brand Name and Website?</h5>
+            <p>Name: {state.name ? state.name : props.name}</p>
+            <p>Website: {props.website}</p>
             <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
           </div>
           )}
             <div className='not-editing'>
               <h5>What is the rating date and verification date</h5>
-              <div>Rating Date: {this.props.qa.rating_date ? this.props.qa.rating_date : 'MM/DD/YYYY'}</div>
-              <div>Verification Date: {this.props.qa.verification_date ? this.props.qa.verification_date : 'MM/DD/YYYY'}</div>
+              <div>Rating Date: {props.rating_date ? moments(props.rating_date) : 'MM/DD/YYYY'}</div>
+              <div>Verification Date: {props.verification_date ? moments(props.verification_date) : 'MM/DD/YYYY'}</div>
             </div>
             {isEditing === '3' ? (
               <div className='editing'>
               <h5>Which month does the brand release its sustainability report?</h5>
                 <ul>
                   <li>Sustainability Report Date: <Field
-                    placeholder={this.props.qa.sustainability_report_date ? this.props.qa.sustainability_report_date : 'DD/MM/YYYY'}
+                    placeholder={props.sustainability_report_date ? moments(props.sustainability_report_date) : 'DD/MM/YYYY'}
                     onFocus={this.handleInput}
                     onChange={this.handleInput}
                     name='sustainability_report_date'
@@ -158,6 +170,7 @@ componentWillMount() {
               </div>) : (
               <div className='not-editing'>
                 <h5>Which month does the brand release its sustainability report?</h5>
+                <p>Report Date: {state.sustainability_report_date ? state.sustainability_report_date : moments(props.sustainability_report_date)}</p>
                 <button name='3' onClick={this.handleEdit} value='3'>Edit</button>
               </div>
               )}
@@ -166,7 +179,7 @@ componentWillMount() {
                 <h5>Which month does Good On You need to review the Brand?</h5>
                   <ul>
                     <li>Brand Review Date: <Field
-                      placeholder={this.props.qa.review_date ? this.props.qa.review_date : 'DD/MM/YYYY'}
+                      placeholder={props.review_date ? moments(props.review_date) : 'DD/MM/YYYY'}
                       onFocus={this.handleInput}
                       onChange={this.handleInput}
                       name='review_date'
@@ -178,6 +191,7 @@ componentWillMount() {
                 </div>) : (
                 <div className='not-editing'>
                   <h5>Which month does Good On You need to review the Brand?</h5>
+                  <p>Review Date: {state.review_date? state.review_date : moments(props.review_date)}</p>
                   <button name='4' onClick={this.handleEdit} value='4'>Edit</button>
                 </div>
                 )}
@@ -190,14 +204,14 @@ componentWillMount() {
                         type='radio'
                         onChange={this.handleRadio}
                         name='small'
-                        checked={this.state.is_large === false}
+                        checked={props.is_large === false}
                         component='input' />Small
                       </li>
                       <li> <Field
                         type='radio'
                         onChange={this.handleRadio}
                         name='large'
-                        checked={this.state.is_large === true}
+                        checked={props.is_large === true}
                         component='input' />Large
                       </li>
                     </ul>
@@ -206,42 +220,42 @@ componentWillMount() {
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
-                          checked={this.state.listed}
+                          checked={state.listed}
                           name='listed'
                           component='input' />Listed Company
                         </li>
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
-                          checked={this.state.subsidiary}
+                          checked={state.subsidiary}
                           name='subsidiary'
                           component='input' />Subsidiary Company
                         </li>
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
-                          checked={this.state.alexa}
+                          checked={state.alexa}
                           name='alexa'
                           component='input' />Alexa &#60; 200k
                         </li>
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
-                          checked={this.state['insta-fb']}
+                          checked={state['insta-fb']}
                           name='insta-fb'
                           component='input' />Insta + FB &#62; 75k
                         </li>
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
-                          checked={this.state['linked-in']}
+                          checked={state['linked-in']}
                           name='linked-in'
                           component='input' />Linkedin employees &#62; 50
                         </li>
                         <li> <Field
                           type='checkbox'
                           onChange={this.handleCheckbox}
-                          checked={this.state.manual}
+                          checked={state.manual}
                           name='manual'
                           component='input' />Manual override after company provided data satisfying Good On You criteria
                         </li>
@@ -249,7 +263,7 @@ componentWillMount() {
                       <ul>
                       <h5>Parent Company Name: </h5>
                         <li> <Field
-                          placeholder={this.props.qa.parent_company}
+                          placeholder={props.parent_company}
                           onFocus={this.handleInput}
                           onChange={this.handleInput}
                           name='parent_company'
@@ -257,10 +271,14 @@ componentWillMount() {
                         </li>
                       </ul>
                     <button onClick={this.handleCancel}>Cancel</button>
-                    <button onClick={this.handleSubmitSize} name='5' value='5'>Save</button>
+                    <button onClick={this.handleSave} name='5' value='5'>Save</button>
                   </div>) : (
                   <div className='not-editing'>
                     <h5>What is the size of the Brand?</h5>
+                    <p>Size of Brand: {props.is_large === true ? 'Large' : 'Small'}</p>
+                    <p>Criteria: </p>
+                      <ul>{this.renderCriteria()}</ul>
+                    <p>Parent Company: {state.parent_company ? state.parent_company : props.parent_company}</p>
                     <button name='5' onClick={this.handleEdit} value='5'>Edit</button>
                   </div>
                   )}
