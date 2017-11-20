@@ -54,7 +54,7 @@ export default function(state = {}, action) {
   }
   case FETCH_SENTENCE:
     if (!action.error) {
-      console.log('fetch, sentence', action.payload);
+      console.log('fetch, sentence', action.payload.data.data);
       return _.mapKeys(action.payload.data.data, 'id')
     }
     return {error: action.error}

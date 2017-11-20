@@ -92,9 +92,15 @@ button:hover {
 }
 
 .summary-view {
+  margin-top: 3em;
   width: 100%;
   border: 1px;
   padding: 1em;
+  background-color: lightgrey;
+}
+
+.summary-view button {
+  text-align: right;
 }
 
 .forms-header {

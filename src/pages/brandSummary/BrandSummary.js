@@ -52,14 +52,11 @@ componentWillReceiveProps() {
     if(this.props.qa) {
       //if a summary already exists, will set state of same target name to the current answer value and also toggle editing
       _.map(this.props.qa, summary=> {
-        this.setState({currentAnswer: summary.text, isEditing: '1'})
+        this.setState({currentAnswer: summary.text, isEditing: event.target.value})
       })
-      console.log('set state', this.state);
-    }
-    //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
-    else {
+    } else {
       this.props.createSummary({brand: id, text: 'option 1'})
-      this.setState({isEditing: '1'})
+      this.setState({isEditing: event.target.value})
       console.log('post');
     }
   }
@@ -89,19 +86,9 @@ componentWillReceiveProps() {
     })
   }
 
-
-
-//For development purposes for testing post requests, will delete record according to specific name of question and current brand
-//If using, ensure to uncomment bind function in constructor above
-//   handleDelete(event) {
-//     event.preventDefault()
-//     const { id }  = this.props.match.params
-//     axios.delete(`http://34.212.110.48:3000/brand=${id}&question=${event.target.name}`)
-// }
-
 //render contains conditional statements based on state of isEditing as described in functions above.
 render() {
-  console.log('props', this.props.qa[3]);
+  console.log('props', this.props.qa);
   console.log('state', this.state);
   const isEditing = this.state.isEditing
   const { id }  = this.props.match.params

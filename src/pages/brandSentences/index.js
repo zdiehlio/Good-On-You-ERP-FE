@@ -45,7 +45,7 @@ componentDidMount() {
     const { id }  = this.props.match.params
     if(this.state.currentAnswer) {
       console.log('current answer');
-    } else if(this.props.qa) {
+    } else if(this.props.qa.id) {
       //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
       _.map(this.props.qa, ident => {
         if(ident.is_selected === true)
@@ -73,7 +73,7 @@ componentDidMount() {
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     const { id }  = this.props.match.params
-    this.props.updateSentence(id, this.state.currentAnswer, {text: this.state.finalAnswer, is_selected: true})
+    this.props.updateSentence(id, this.state.currentAnswer, {text: this.state.finalAnswer})
     this.setState({isEditing: null})
     console.log('save', this.state);
   }
@@ -101,6 +101,8 @@ componentDidMount() {
     console.log('state', this.state);
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
+    const state = this.state
+    const props = this.props.qa
     return(
       <div className='form-container'>
         <div className='forms-header'>

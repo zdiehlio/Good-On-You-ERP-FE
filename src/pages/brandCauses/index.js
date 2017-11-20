@@ -59,6 +59,7 @@ componentWillMount() {
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
+    event.preventDefault()
     const { id }  = this.props.match.params
     this.props.updateCause(ENDPOINT, id, event.target.name, {answer: this.state.currentAnswer})
     this.setState({isEditing: null, [event.target.name]: this.state.currentAnswer, [event.target.value]: event.target.name})
@@ -82,6 +83,8 @@ componentWillMount() {
     console.log('state', this.state);
     const { id }  = this.props.match.params
     const isEditing = this.state.isEditing
+    const state = this.state
+    const props = this.props.qa
     return(
       <div className='form-container'>
         <div className='forms-header'>
@@ -150,6 +153,7 @@ componentWillMount() {
           <div className='not-editing'>
             <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
             <h5>{this.state['1']}</h5>
+            <p>{state['made-in'] ? state['made-in'] : props['made-in']}</p>
             <button name='made-in' onClick={this.handleEdit} value='1'>Edit</button>
 
           </div>
