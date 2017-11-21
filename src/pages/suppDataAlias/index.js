@@ -25,6 +25,7 @@ class SuppDataAlias extends Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleAdd = this.handleAdd.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
@@ -36,8 +37,11 @@ componentWillUpdate(nextProps, nextState) {
   if (nextState.save == true && this.state.save == false) {
     this.props.fetchAlias(id)
   }
-  if (nextState.delete == true && this.state.delete == false) {
-    this.props.fetchAlias(id)
+}
+
+componentDidUpdate() {
+  if(this.state.save === true) {
+    this.setState({save: false})
   }
 }
 
@@ -58,8 +62,6 @@ componentWillUpdate(nextProps, nextState) {
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
-    const { id }  = this.props.match.params
-    this.props.createAlias({brand: id, alias: this.state.currentAnswer})
     this.setState({isEditing: null, renderCurrent: this.state.currentAnswer, save: true})
     console.log('save', this.state);
   }
@@ -71,16 +73,23 @@ componentWillUpdate(nextProps, nextState) {
   handleDelete(event) {
     event.preventDefault()
     this.props.deleteAlias(event.target.name)
-    this.setState({delete: true})
+    this.setState({save: true})
+  }
+
+  handleAdd(event) {
+    event.preventDefault()
+    const { id }  = this.props.match.params
+    this.props.createAlias({brand: id, alias: this.state.currentAnswer})
+    this.setState({save: true})
   }
 
   renderAlias() {
+    // <button onClick={this.handleDelete} name={name.id} className='remove-list-item'>Delete</button>
     return _.map(this.props.qa, name => {
       if(name) {
         return(
           <li key={name.alias} >
             {name.alias}
-            <button onClick={this.handleDelete} name={name.id} className='remove-list-item'>Delete</button>
           </li>
         )
       }
@@ -95,14 +104,9 @@ render() {
   const { id }  = this.props.match.params
   return(
     <div className='form-container'>
+      <FormsHeader />
+      <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
       <div className='forms-header'>
-        <div>Brand Overview</div>
-        <div>>></div>
-        <div>Rating</div>
-        <div>>></div>
-        <div>Qualitative Ratings</div>
-        <div>>></div>
-        <div>Supplementary Data</div>
         <span className='form-navigation'>
           <div><Link to={`/suppDataTypes/${id}`}><button className='previous'>Previous</button></Link></div>
           <div><h3>Brand Summary</h3></div>
@@ -118,6 +122,7 @@ render() {
             onChange={this.handleInput}
             name='summary'
             component='textarea'/>
+          <button onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button>
           <button onClick={this.handleCancel}>Cancel</button>
           <button onClick={this.handleSave} name='1' value='1'>Save</button>
         </div>) : (

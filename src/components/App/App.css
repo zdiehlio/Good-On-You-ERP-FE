@@ -103,17 +103,9 @@ button:hover {
   text-align: right;
 }
 
-.forms-header {
-  margin-top: 3em;
-  width:100%;
-}
-
-.forms-header div {
-  float: left;
-  width: calc(100%/7);
-  color: #17CABE;
-  font-weight: bold;
-  text-align: center;
+.summary-button {
+  width: 100%;
+  text-align: left
 }
 
 .form-navigation div{

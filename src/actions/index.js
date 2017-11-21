@@ -38,6 +38,10 @@ export const DELETE_TYPE = 'delete_type'
 export const DELETE_ALIAS = 'delete_alias'
 export const CREATE_ALIAS = 'create_alias'
 export const FETCH_ALIAS = 'fetch_alias'
+export const FETCHALL_STYLES = 'fetchall_styles'
+export const FETCH_STYLES = 'fetch_styles'
+export const CREATE_STYLES = 'create_styles'
+export const UPDATE_STYLES = 'update_styles'
 
 
 
@@ -191,6 +195,47 @@ export function updateCause(endpoint, id, quest, values) {
   }
 }
 
+export function fetchAllStyles() {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/styles`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCHALL_STYLES, payload: data})
+    })
+  }
+}
+
+
+export function fetchStyles(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-styles?brand=${id}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_STYLES, payload: data})
+    })
+  }
+}
+
+export function createStyles(values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-styles`, values)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: CREATE_STYLES, payload: data})
+    })
+  }
+}
+
+export function updateStyles(id, tag) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-styles?brand=${id}&style=${tag}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: UPDATE_STYLES, payload: data})
+    })
+  }
+}
+
 export function fetchSentence(id) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.get(`${ROOT_URL}/brands-sentences?brand=${id}`)
@@ -251,7 +296,7 @@ export function updateSummary(id, values) {
   }
 }
 
-export function fetchAllCategory(id) {
+export function fetchAllCategory() {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.get(`${ROOT_URL}/categories`)
   return (dispatch) => {
@@ -281,22 +326,13 @@ export function updateBrandCategory(id) {
   }
 }
 
-export function createBrandCategory(values) {
+export function createBrandCategory(id, values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.post(`${ROOT_URL}/brands-categories`, values)
+  const request = axios.delete(`${ROOT_URL}/brands-categories?brand=${id}`).then(axios.post(`${ROOT_URL}/brands-categories`, values))
+  // const request = axios.post(`${ROOT_URL}/brands-categories`, values)
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: CREATE_CATEGORY, payload: data})
-    })
-  }
-}
-
-export function deleteBrandCategory(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.delete(`${ROOT_URL}/brands-categories?brand=${id}`)
-  return (dispatch) => {
-    request.then((data) => {
-      dispatch({type: DELETE_CATEGORY, payload: data})
     })
   }
 }

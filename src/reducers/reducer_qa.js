@@ -1,4 +1,4 @@
-import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY, FETCHALL_CATEGORY, FETCH_CATEGORY, FETCH_GENERAL, UPDATE_GENERAL, DELETE_SIZE, CREATE_SIZE, FETCH_CONTACT, UPDATE_CONTACT, FETCH_TYPE, CREATE_TYPE, DELETE_TYPE, FETCH_ALIAS, DELETE_ALIAS, CREATE_ALIAS } from '../actions'
+import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY, FETCHALL_CATEGORY, FETCH_CATEGORY, FETCH_GENERAL, UPDATE_GENERAL, DELETE_SIZE, CREATE_SIZE, FETCH_CONTACT, UPDATE_CONTACT, FETCH_TYPE, CREATE_TYPE, DELETE_TYPE, FETCH_ALIAS, DELETE_ALIAS, CREATE_ALIAS, FETCHALL_STYLES, FETCH_STYLES, UPDATE_STYLES } from '../actions'
 import _ from 'lodash'
 // import jwtDecode from 'jwt-decode'
 
@@ -79,6 +79,11 @@ export default function(state = {}, action) {
       console.log('fetch, categories', action.payload.data);
       return _.mapKeys(action.payload.data.data, 'name')
     }
+  case FETCH_CATEGORY:
+    if (!action.error) {
+      console.log('fetch id, categories', action.payload.data);
+      return _.mapKeys(action.payload.data.data, 'category_id')
+    }
   case FETCH_TYPE:
     if (!action.error) {
       console.log('fetch, type', action.payload.data.data);
@@ -87,21 +92,31 @@ export default function(state = {}, action) {
   case DELETE_TYPE:
     if (!action.error) {
       console.log('delete, type', action.payload.data);
-      return _.mapKeys(action.payload.data, 'category_id')
+      return _.mapKeys(action.payload.data, 'product')
     }
   case FETCH_ALIAS:
     if (!action.error) {
       console.log('fetch, alias', action.payload.data);
       return _.mapKeys(action.payload.data.data, 'alias')
     }
-  // case CREATE_ALIAS:
-  //   if (!action.error) {
-  //     console.log('create, alias', action.payload.data);
-  //     return _.mapKeys(action.payload.data.data, 'alias')
-  //   }
   case DELETE_ALIAS:
     if (!action.error) {
       console.log('delete, alias', action.payload.data);
+      return {...state, [action.payload.data.data]: action.payload.data.data}
+    }
+  case FETCHALL_STYLES:
+    if (!action.error) {
+      console.log('fetch all, styles', action.payload.data);
+      return _.mapKeys(action.payload.data.data, 'question')
+    }
+  case FETCH_STYLES:
+    if (!action.error) {
+      console.log('fetch, styles', action.payload.data);
+      return {...state, [action.payload.data.data]: action.payload.data.data}
+    }
+  case UPDATE_STYLES:
+    if (!action.error) {
+      console.log('update, styles', action.payload.data);
       return {...state, [action.payload.data.data]: action.payload.data.data}
     }
   return {error: action.error}

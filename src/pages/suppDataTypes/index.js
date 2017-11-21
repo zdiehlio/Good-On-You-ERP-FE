@@ -14,7 +14,8 @@ class SuppDataTypes extends Component {
     this.state = {
       isEditing: null,
       typeValues: [],
-      typeOptions: ['activewear', 'casualwear', 'eveningwear', 'smartcasual', 'workwear']
+      typeOptions: ['activewear', 'casualwear', 'eveningwear', 'smartcasual', 'workwear'],
+      save: false
     }
 
     this.handleEdit = this.handleEdit.bind(this)
@@ -27,6 +28,13 @@ componentWillMount() {
   this.props.fetchType(id)
 }
 
+componentWillUpdate(nextProps, nextState) {
+  const { id } = this.props.match.params
+  if (nextState.save == true && this.state.save == false) {
+    this.props.fetchType(id)
+  }
+}
+
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
@@ -34,7 +42,7 @@ componentWillMount() {
     _.mapValues(this.props.qa, type => {
       this.setState({[type.product]: {type}})
     })
-    this.setState({isEditing: event.target.name})
+    this.setState({isEditing: event.target.name, save: false})
 }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
@@ -44,7 +52,7 @@ componentWillMount() {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.setState({isEditing: null})
+    this.setState({isEditing: null, save: true})
   }
 
   handleCheckbox(event) {
@@ -60,6 +68,16 @@ componentWillMount() {
     }
   }
 
+  renderTypes() {
+    return _.map(this.props.qa, type => {
+      return(
+        <li key={type.id}>
+          {type.product}
+        </li>
+      )
+    })
+  }
+
   render() {
     console.log('props', this.props.qa);
     console.log('state', this.state);
@@ -67,14 +85,9 @@ componentWillMount() {
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
+        <FormsHeader />
+        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
-          <div>Brand Overview</div>
-          <div>>></div>
-          <div>Rating</div>
-          <div>>></div>
-          <div>Qualitative Ratings</div>
-          <div>>></div>
-          <div>Supplementary Data</div>
           <span className='form-navigation'>
             <div><button className='previous'>Previous</button></div>
             <div><h3>Product Types</h3></div>
@@ -129,6 +142,8 @@ componentWillMount() {
             </div>) : (
             <div className='not-editing'>
               <h5>What is the size of the Brand?</h5>
+              <p>Current sizes:</p>
+              <p>{this.renderTypes()}</p>
               <button name='1' onClick={this.handleEdit}>Edit</button>
             </div>
             )}

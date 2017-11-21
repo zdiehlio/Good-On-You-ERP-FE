@@ -86,15 +86,6 @@ componentDidMount() {
     this.setState({finalAnswer: event.target.value, currentAnswer: event.target.name, input: event.target.value})
   }
 
-
-//For development purposes for testing post requests, will delete record according to specific name of question and current brand
-//If using, ensure to uncomment bind function in constructor above
-//   handleDelete(event) {
-//     event.preventDefault()
-//     const { id }  = this.props.match.params
-//     axios.delete(`http://34.212.110.48:3000/brand=${id}&question=${event.target.name}`)
-// }
-
 //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.qa);
@@ -105,14 +96,9 @@ componentDidMount() {
     const props = this.props.qa
     return(
       <div className='form-container'>
+        <FormsHeader />
+        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
-          <div>Brand Overview</div>
-          <div>>></div>
-          <div>Rating</div>
-          <div>>></div>
-          <div>Qualitative Ratings</div>
-          <div>>></div>
-          <div>Supplementary Data</div>
           <span className='form-navigation'>
             <div><Link to={`/brandCauses/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Brand Sentences</h3></div>
@@ -128,24 +114,24 @@ componentDidMount() {
               <li><Field
                 type='radio'
                 onChange={this.handleRadio}
-                checked={this.state.currentAnswer==='6'}
+                checked={props[1]==='1'}
                 name='New Zealands premium casual lifestyle brand for women and men'
                 component='input'
-                value='6'/> New Zealands premium casual lifestyle brand for women and men
+                value='1'/> New Zealands premium casual lifestyle brand for women and men
               </li>
               <li><Field
                 type='radio'
                 onChange={this.handleRadio}
-                checked={this.state.currentAnswer==='7'}
+                checked={this.state.currentAnswer==='2'}
                 name='New Zealands premium casual lifestyle brand for women and men'
                 component='input'
-                value='7'/> New Zealands luxury lifestyle brand for sustainable and organic fashion for women and men
+                value='2'/> New Zealands luxury lifestyle brand for sustainable and organic fashion for women and men
               </li>
               <li><Field
                 placeholder='Create or Edit Description'
                 onFocus={this.handleInput}
                 onChange={this.handleInput}
-                name='8'
+                name='3'
                 component='textarea' /> {this.state.input}
               </li>
             </ul>

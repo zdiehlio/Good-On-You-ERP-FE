@@ -60,14 +60,9 @@ render() {
   const props = this.props.qa
   return(
     <div className='form-container'>
+      <FormsHeader />
+      <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
       <div className='forms-header'>
-        <div>Brand Overview</div>
-        <div>>></div>
-        <div>Rating</div>
-        <div>>></div>
-        <div>Qualitative Ratings</div>
-        <div>>></div>
-        <div>Supplementary Data</div>
         <span className='form-navigation'>
           <div><Link to={`/brandGeneral/${id}`}><button className='previous'>Previous</button></Link></div>
           <div><h3>Brand Contact</h3></div>

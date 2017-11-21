@@ -1,30 +1,17 @@
 
 .forms-header {
-  margin-top: 3em;
   width:100%;
 }
 
+.forms-header button {
+  margin-top: 2em;
+}
+
 .forms-header div {
+  margin-top: 1em;
   float: left;
   width: calc(100%/7);
   color: #17CABE;
   font-weight: bold;
   text-align: center;
 }
-
-/*.previous {
-  float:left;
-}
-
-.next {
-  float:right;
-}
-
-.form-navigation div {
-  margin-top: 1em;
-  width: calc(100%/3);
-}
-.form-navigation h3 {
-  text-align: center;
-  padding: 1em;
-}*/

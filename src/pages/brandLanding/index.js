@@ -34,6 +34,10 @@ class BrandLanding extends Component {
           <Link to={`/suppDataCategory/${id}`}><button>Start</button></Link>
         </div>
         <div className='summary-view'>
+          Brand Styles
+          <Link to={`/suppDataStyles/${id}`}><button>Start</button></Link>
+        </div>
+        <div className='summary-view'>
           Product Types
           <Link to={`/suppDataTypes/${id}`}><button>Start</button></Link>
         </div>

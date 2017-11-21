@@ -14,7 +14,8 @@ class SuppDataCategory extends Component {
 
     this.state = {
       isEditing: null,
-      currentAnswer: null,
+      currentAnswer: [],
+      catOptions: [],
       finalAnswer: null,
       input: null
     }
@@ -65,18 +66,18 @@ componentWillMount() {
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     const { id }  = this.props.match.params
-    this.props.deleteBrandCategory(id)
-    this.props.createBrandCategory({brand: id})
+    this.props.createBrandCategory(id, this.state.currentAnswer)
     this.setState({isEditing: null})
     console.log('save', this.state);
   }
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
   handleChange(event){
     event.preventDefault()
+    const { id }  = this.props.match.params
     if(this.state[event.target.name] === 'chip-selected') {
       this.setState({[event.target.name]: 'chip', currentAnswer: this.currenAnswer.slice()})
     } else {
-      this.setState({[event.target.name]: 'chip-selected', currentAnswer: [...this.state.currenAnswer, event.target.name]})
+      this.setState({[event.target.name]: 'chip-selected', currentAnswer: [...this.state.currentAnswer, {brand: id, category_id: this.props.qa[event.target.name].id}]})
     }
   }
 
@@ -88,14 +89,9 @@ componentWillMount() {
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
+        <FormsHeader />
+        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
-          <div>Brand Overview</div>
-          <div>>></div>
-          <div>Rating</div>
-          <div>>></div>
-          <div>Qualitative Ratings</div>
-          <div>>></div>
-          <div>Supplementary Data</div>
           <span className='form-navigation'>
             <div><Link to={`/brandSummary/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Brand Categories</h3></div>
@@ -119,23 +115,15 @@ componentWillMount() {
           )}
           {isEditing === '2' ? (
             <div className='editing'>
-            <h5>What is the one sentence that describes the brand best?</h5>
+            <h5>What is the Brands dominant category?</h5>
             <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p>
               <ul>
-                <li><Field
-                  type='radio'
-                  onChange={this.handleRadio}
-                  checked={this.state.currentAnswer==='6'}
-                  name='New Zealands premium casual lifestyle brand for women and men'
-                  component='input'
-                  value='6'/> New Zealands premium casual lifestyle brand for women and men
-                </li>
               </ul>
               <button onClick={this.handleCancel}>Cancel</button>
               <button onClick={this.handleSave} name='2' value='2'>Save</button>
             </div>) : (
             <div className='not-editing'>
-              <h5>What is the one sentence that describes the brand best?</h5>
+              <h5>What is the Brands dominant category?</h5>
               <button name='2' onClick={this.handleEdit} value='2'>Edit</button>
             </div>
             )}

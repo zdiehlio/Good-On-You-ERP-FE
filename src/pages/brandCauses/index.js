@@ -16,7 +16,7 @@ class BrandCauses extends Component {
 
     this.state = {
       isEditing: null,
-      currentAnswer: null
+      currentAnswer: null,
     }
 
 
@@ -24,12 +24,12 @@ class BrandCauses extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
-    // this.handleDelete = this.handleDelete.bind(this)
   }
 componentWillMount() {
   const id  = this.props.match.params.id
   this.props.fetchCause(ENDPOINT, id)
 }
+
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
@@ -69,17 +69,9 @@ componentWillMount() {
     this.setState({[event.target.name]: event.target.value, currentAnswer: event.target.value})
   }
 
-//For development purposes for testing post requests, will delete record according to specific name of question and current brand
-//If using, ensure to uncomment bind function in constructor above
-//   handleDelete(event) {
-//     event.preventDefault()
-//     const { id }  = this.props.match.params
-//     axios.delete(`http://34.212.110.48:3000/${ENDPOINT}brand=${id}&question=${event.target.name}`)
-// }
-
 //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.qa);
+    console.log('props', this.props.qa['made-in']);
     console.log('state', this.state);
     const { id }  = this.props.match.params
     const isEditing = this.state.isEditing
@@ -87,14 +79,9 @@ componentWillMount() {
     const props = this.props.qa
     return(
       <div className='form-container'>
+        <FormsHeader />
+        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
-          <div>Brand Overview</div>
-          <div>>></div>
-          <div>Rating</div>
-          <div>>></div>
-          <div>Qualitative Ratings</div>
-          <div>>></div>
-          <div>Supplementary Data</div>
           <span className='form-navigation'>
             <div><Link to={`/brandContact/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Brand Causes</h3></div>
@@ -153,7 +140,6 @@ componentWillMount() {
           <div className='not-editing'>
             <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
             <h5>{this.state['1']}</h5>
-            <p>{state['made-in'] ? state['made-in'] : props['made-in']}</p>
             <button name='made-in' onClick={this.handleEdit} value='1'>Edit</button>
 
           </div>
