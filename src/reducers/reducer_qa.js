@@ -111,8 +111,8 @@ export default function(state = {}, action) {
     }
   case FETCH_STYLES:
     if (!action.error) {
-      console.log('fetch, styles', action.payload.data);
-      return {...state, [action.payload.data.data]: action.payload.data.data}
+      console.log('fetch, styles', action.payload.data.data);
+      return action.payload.data.data
     }
   case UPDATE_STYLES:
     if (!action.error) {

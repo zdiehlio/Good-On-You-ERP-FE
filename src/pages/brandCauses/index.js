@@ -7,16 +7,13 @@ import { FormsHeader } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
-const ENDPOINT = '/brands-causes'
-
-
 class BrandCauses extends Component {
   constructor(props){
     super(props)
 
     this.state = {
       isEditing: null,
-      currentAnswer: null,
+      currentAnswer: null
     }
 
 
@@ -27,7 +24,7 @@ class BrandCauses extends Component {
   }
 componentWillMount() {
   const id  = this.props.match.params.id
-  this.props.fetchCause(ENDPOINT, id)
+  this.props.fetchCause(id)
 }
 
 
@@ -48,7 +45,7 @@ componentWillMount() {
     }
     //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
     else {
-      this.props.createCause(ENDPOINT, {brand: id, question: event.target.name, answer: event.target.value})
+      this.props.createCause({brand: id, question: event.target.name, answer: event.target.value})
       this.setState({isEditing: event.target.value})
       console.log('post');
     }
@@ -61,7 +58,7 @@ componentWillMount() {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.updateCause(ENDPOINT, id, event.target.name, {answer: this.state.currentAnswer})
+    this.props.updateCause(id, event.target.name, {answer: this.state.currentAnswer, is_selected: this.state.is_selected})
     this.setState({isEditing: null, [event.target.name]: this.state.currentAnswer, [event.target.value]: event.target.name})
     console.log('save', this.state);
   }

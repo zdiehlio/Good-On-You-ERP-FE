@@ -67,20 +67,12 @@ componentWillUpdate(nextProps, nextState) {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state[event.target.name] === event.target.name) {
-      this.props.createStyles({brand: id, style: this.state[event.target.name]})
-    } else {
-      this.props.createStyles({brand: id, style: ''})
-    }
+    this.props.createStyles({brand: id, style: this.state.currentAnswer})
     this.setState({isEditing: null, save: true})
     console.log('save', this.state);
   }
   handleChange(event){
-    if(this.state[event.target.name] !== event.target.name) {
-      this.setState({[event.target.name]: event.target.name})
-    } else {
-      this.setState( {[event.target.name]: null})
-    }
+    this.setState({currentAnswer: event.target.name})
   }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
@@ -110,18 +102,16 @@ componentWillUpdate(nextProps, nextState) {
                 <li><Field
                   type='radio'
                   onChange={this.handleChange}
-                  checked={state.kids}
+                  checked={state.currentAnswer ? state.currentAnswer === 'kids' : props.kids}
                   name='kids'
-                  component='input'
-                  value={state.value}/> Yes
+                  component='input'/> Yes
                 </li>
                 <li><Field
                   type='radio'
                   onChange={this.handleChange}
-                  checked={!state.kids}
-                  name='kids'
-                  component='input'
-                  value={state.value}/> No
+                  checked={state.currentAnswer ? state.currentAnswer === 'no-kids' : props['no-kids']}
+                  name='no-kids'
+                  component='input'/> No
                 </li>
               </ul>
               <button onClick={this.handleCancel}>Cancel</button>
