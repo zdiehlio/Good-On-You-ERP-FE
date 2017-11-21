@@ -218,7 +218,7 @@ export function fetchStyles(id) {
 
 export function createStyles(values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/brands-styles`, values)
+  const request = axios.post(`${ROOT_URL}/brands-styles`, values)
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: CREATE_STYLES, payload: data})
@@ -228,7 +228,7 @@ export function createStyles(values) {
 
 export function updateStyles(id, tag) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/brands-styles?brand=${id}&style=${tag}`)
+  const request = axios.patch(`${ROOT_URL}/brands-styles?brand=${id}&style=${tag}`)
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: UPDATE_STYLES, payload: data})
