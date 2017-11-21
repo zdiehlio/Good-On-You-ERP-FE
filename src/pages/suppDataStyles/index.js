@@ -14,6 +14,7 @@ class SuppDataStyles extends Component {
     this.state = {
       isEditing: null,
       currentAnswer: null,
+      save: false
     }
 
 
@@ -23,8 +24,15 @@ class SuppDataStyles extends Component {
     this.handleSave = this.handleSave.bind(this)
   }
 componentWillMount() {
-  const id  = this.props.match.params.id
-  this.props.fetchAllStyles()
+  const { id } = this.props.match.params
+  this.props.fetchStyles(id)
+}
+
+componentWillUpdate(nextProps, nextState) {
+  const { id } = this.props.match.params
+  if (nextState.save == true && this.state.save == false) {
+    this.props.fetchStyles(id)
+  }
 }
 
 
@@ -32,23 +40,23 @@ componentWillMount() {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.props.qa[event.target.name] || this.state[event.target.name]){
-      //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
-      if(this.state[event.target.name]){
-        this.setState({[event.target.name]: this.state[event.target.name], isEditing: event.target.value})
-        console.log('state answer');
-      //if state of target 'name' does not yet exist, will pull value of answer off props and set state to that answer and also toggle editing
-      } else {
-        this.setState({[event.target.name]: `${this.props.qa[event.target.name].answer}`, currentAnswer: `${this.props.qa[event.target.name].answer}`, isEditing: event.target.value})
-        console.log('props answer');
-      }
-    }
-    //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
-    else {
-      this.props.createStyles({brand: id, question: event.target.name, answer: event.target.value})
-      this.setState({isEditing: event.target.value})
+    // if(this.props.qa[event.target.name] || this.state[event.target.name]){
+    //   //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
+    //   if(this.state[event.target.name]){
+    //     this.setState({[event.target.name]: this.state[event.target.name], isEditing: event.target.value})
+    //     console.log('state answer');
+    //   //if state of target 'name' does not yet exist, will pull value of answer off props and set state to that answer and also toggle editing
+    //   } else {
+    //     this.setState({[event.target.name]: `${this.props.qa[event.target.name].answer}`, currentAnswer: `${this.props.qa[event.target.name].answer}`, isEditing: event.target.value})
+    //     console.log('props answer');
+    //   }
+    // }
+    // //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
+    // else {
+    //   this.props.createStyles({brand: id, question: event.target.name, answer: event.target.value})
+      this.setState({isEditing: event.target.value, save: false})
       console.log('post');
-    }
+    // }
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
@@ -58,12 +66,18 @@ componentWillMount() {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.updateStyles(id, event.target.name, {answer: this.state.currentAnswer})
-    this.setState({isEditing: null, [event.target.name]: this.state.currentAnswer, [event.target.value]: event.target.name})
+    if(this.state[event.target.name]) {
+      this.props.createStyles({brand: id, style: this.state[event.target.name]})
+    }
+    this.setState({isEditing: null, save: true})
     console.log('save', this.state);
   }
   handleChange(event){
-    this.setState({[event.target.name]: event.target.value, currentAnswer: event.target.value})
+    if(this.state[event.target.name] !== event.target.name) {
+      this.setState({[event.target.name]: event.target.name})
+    } else {
+      this.setState( {[event.target.name]: null})
+    }
   }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
@@ -93,7 +107,7 @@ componentWillMount() {
                 <li><Field
                   type='radio'
                   onChange={this.handleChange}
-                  checked={state ==='1'}
+                  checked={state.kids}
                   name='kids'
                   component='input'
                   value='1'/> Yes
@@ -101,7 +115,7 @@ componentWillMount() {
                 <li><Field
                   type='radio'
                   onChange={this.handleChange}
-                  checked={state ==='2'}
+                  checked={!state.kids}
                   name='kids'
                   component='input'
                   value='2'/> No
