@@ -14,6 +14,7 @@ class FormsHeader extends Component {
         <div>Qualitative Ratings</div>
         <div>>></div>
         <div>Supplementary Data</div>
+        <p className='divider'></p>
       </div>
     )
   }

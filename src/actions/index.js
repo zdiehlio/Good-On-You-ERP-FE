@@ -165,7 +165,7 @@ export function updateContact(id, values) {
   }
 }
 
-export function fetchCause(endpoint, id) {
+export function fetchCause(id) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.get(`${ROOT_URL}/brands-causes?brand=${id}`)
   return (dispatch) => {
@@ -175,7 +175,7 @@ export function fetchCause(endpoint, id) {
   }
 }
 
-export function createCause(endpoint, values) {
+export function createCause(values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.post(`${ROOT_URL}/brands-causes`, values)
   console.log('post', request);
@@ -186,7 +186,7 @@ export function createCause(endpoint, values) {
   }
 }
 
-export function updateCause(endpoint, id, quest, values) {
+export function updateCause(id, quest, values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.patch(`${ROOT_URL}/brands-causes?brand=${id}&question=${quest}`, values)
   return {

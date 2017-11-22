@@ -13,7 +13,8 @@ class BrandCauses extends Component {
 
     this.state = {
       isEditing: null,
-      currentAnswer: null
+      currentAnswer: null,
+      save: false
     }
 
 
@@ -27,6 +28,18 @@ componentWillMount() {
   this.props.fetchCause(id)
 }
 
+componentWillUpdate(nextProps, nextState) {
+  const { id } = this.props.match.params
+  if (nextState.save == true && this.state.save == false) {
+    this.props.fetchCause(id)
+  }
+}
+
+// componentDidUpdate() {
+//   if(this.state.save === true) {
+//     this.setState({save: false})
+//   }
+// }
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
@@ -49,6 +62,7 @@ componentWillMount() {
       this.setState({isEditing: event.target.value})
       console.log('post');
     }
+    this.setState({save: false})
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
@@ -59,16 +73,26 @@ componentWillMount() {
     event.preventDefault()
     const { id }  = this.props.match.params
     this.props.updateCause(id, event.target.name, {answer: this.state.currentAnswer, is_selected: this.state.is_selected})
-    this.setState({isEditing: null, [event.target.name]: this.state.currentAnswer, [event.target.value]: event.target.name})
+    this.setState({isEditing: null, [event.target.name]: this.state.currentAnswer, [event.target.value]: event.target.name, save: true})
     console.log('save', this.state);
   }
   handleChange(event){
     this.setState({[event.target.name]: event.target.value, currentAnswer: event.target.value})
   }
 
+  renderAnswer(value) {
+    return _.map(this.props.qa, key => {
+      if(value === key.question) {
+      return(
+        <h6 key={key.answer}>{key.cause.text}</h6>
+      )
+    }
+    })
+  }
+
 //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.qa['made-in']);
+    console.log('props', this.props.qa);
     console.log('state', this.state);
     const { id }  = this.props.match.params
     const isEditing = this.state.isEditing
@@ -136,7 +160,8 @@ componentWillMount() {
           </div>) : (
           <div className='not-editing'>
             <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
-            <h5>{this.state['1']}</h5>
+            <h5>Current Answer: </h5>
+            {this.renderAnswer('made-in')}
             <button name='made-in' onClick={this.handleEdit} value='1'>Edit</button>
 
           </div>
@@ -167,7 +192,8 @@ componentWillMount() {
           </div>) : (
           <div className='not-editing'>
             <h4>Is the Brand Certified B-Corp?</h4>
-            <h5>{this.state['6']}</h5>
+            <h5>Current Answer: </h5>
+            {this.renderAnswer('b-corp')}
             <button name='b-corp' onClick={this.handleEdit} value='6'>Edit</button>
           </div>
         )}
@@ -198,7 +224,8 @@ componentWillMount() {
           </div>) : (
           <div className='not-editing'>
             <h4>Is the brand a social enterprise that provides employment for people from a disadvantaged background?</h4>
-            <h5>{this.state['8']}</h5>
+            <h5>Current Answer: </h5>
+            {this.renderAnswer('social-enterprise')}
             <button name='social-enterprise' onClick={this.handleEdit} value='8'>Edit</button>
           </div>
           )}
@@ -229,7 +256,8 @@ componentWillMount() {
           </div>) : (
           <div className='not-editing'>
             <h4>Does the brand have a 1 for 1 model?</h4>
-            <h5>{this.state['10']}</h5>
+            <h5>Current Answer: </h5>
+            {this.renderAnswer('1-for-1')}
             <button name='1-for-1' onClick={this.handleEdit} value='10'>Edit</button>
           </div>
           )}
@@ -260,7 +288,8 @@ componentWillMount() {
           </div>) : (
           <div className='not-editing'>
             <h4>Is the brand Vegan?</h4>
-            <h5>{this.state['12']}</h5>
+            <h5>Current Answer: </h5>
+            {this.renderAnswer('vegan')}
             <button name='vegan' onClick={this.handleEdit} value='12'>Edit</button>
           </div>
           )}
@@ -299,7 +328,8 @@ componentWillMount() {
           </div>) : (
           <div className='not-editing'>
             <h4>What Percentage of the brands products are certified Fair Trade?</h4>
-            <h5>{this.state['14']}</h5>
+            <h5>Current Answer: </h5>
+            {this.renderAnswer('fair-trade')}
             <button name='fair-trade' onClick={this.handleEdit} value='14'>Edit</button>
           </div>
           )}
@@ -337,7 +367,8 @@ componentWillMount() {
           </div>) : (
           <div className='not-editing'>
             <h4>What percentage of products are made from certified Organic materials?</h4>
-            <h5>{this.state['16']}</h5>
+            <h5>Current Answer: </h5>
+            {this.renderAnswer('organic')}
             <button name='organic' onClick={this.handleEdit} value='16'>Edit</button>
           </div>
           )}
@@ -375,7 +406,8 @@ componentWillMount() {
           </div>) : (
           <div className='not-editing'>
             <h4>What percentage of products are made from a substantial proportion(-50%) of recycled/upcycled materials?</h4>
-            <h5>{this.state['18']}</h5>
+            <h5>Current Answer: </h5>
+            {this.renderAnswer('recycled')}
             <button name='recycled' onClick={this.handleEdit} value='18'>Edit</button>
           </div>
           )}

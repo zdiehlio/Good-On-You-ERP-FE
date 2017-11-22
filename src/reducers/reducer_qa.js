@@ -43,7 +43,7 @@ export default function(state = {}, action) {
     return {error: action.error}
   case FETCH_CAUSE:
     if (!action.error) {
-      console.log('fetch, questions', action.payload);
+      console.log('fetch, questions', action.payload.data.data);
       return _.mapKeys(action.payload.data.data, 'question')
     }
     return {error: action.error}
