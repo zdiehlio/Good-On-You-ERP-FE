@@ -45,7 +45,7 @@ componentDidMount() {
     const { id }  = this.props.match.params
     if(this.state.currentAnswer) {
       console.log('current answer');
-    } else if(this.props.qa.id) {
+    } else if(this.props.qa) {
       //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
       _.map(this.props.qa, ident => {
         if(ident.is_selected === true)
@@ -54,10 +54,6 @@ componentDidMount() {
     })
       //if state of target 'name' does not yet exist, will pull value of answer off props and set state to that answer and also toggle editing
     }
-    // else {
-    //     this.setState({[event.target.name]: `${this.props.qa[event.target.name].id}`, currentAnswer: `${this.props.qa[event.target.name].id}`, isEditing: event.target.value})
-    //     console.log('props answer');
-    //   }
     //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
     else {
       this.props.createSentence({brand: id, text: 'option 1'})
@@ -73,7 +69,7 @@ componentDidMount() {
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     const { id }  = this.props.match.params
-    this.props.updateSentence(id, this.state.currentAnswer, {text: this.state.finalAnswer})
+    this.props.updateSentence(id, this.state.currentAnswer, {text: this.state.finalAnswer, is_selected: true})
     this.setState({isEditing: null})
     console.log('save', this.state);
   }
@@ -114,7 +110,7 @@ componentDidMount() {
               <li><Field
                 type='radio'
                 onChange={this.handleRadio}
-                checked={props[1]==='1'}
+                checked={state.currentAnswer==='1'}
                 name='New Zealands premium casual lifestyle brand for women and men'
                 component='input'
                 value='1'/> New Zealands premium casual lifestyle brand for women and men
@@ -122,17 +118,18 @@ componentDidMount() {
               <li><Field
                 type='radio'
                 onChange={this.handleRadio}
-                checked={this.state.currentAnswer==='2'}
-                name='New Zealands premium casual lifestyle brand for women and men'
+                checked={state.currentAnswer==='2'}
+                name='New Zealands luxury lifestyle brand for sustainable and organic fashion for women and men'
                 component='input'
                 value='2'/> New Zealands luxury lifestyle brand for sustainable and organic fashion for women and men
               </li>
+              <h5>Edit the one you chose or write a new one</h5>
               <li><Field
-                placeholder='Create or Edit Description'
+                placeholder={state.currentAnswer ? state.input : state.finalAnswer}
                 onFocus={this.handleInput}
                 onChange={this.handleInput}
                 name='3'
-                component='textarea' /> {this.state.input}
+                component='textarea' />
               </li>
             </ul>
             <button onClick={this.handleCancel}>Cancel</button>

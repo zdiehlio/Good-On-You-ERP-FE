@@ -84,7 +84,7 @@ componentWillUpdate(nextProps, nextState) {
     return _.map(this.props.qa, key => {
       if(value === key.question) {
       return(
-        <h6 key={key.answer}>{key.cause.text}</h6>
+        <h5 key={key.answer}>{key.cause.text}</h5>
       )
     }
     })

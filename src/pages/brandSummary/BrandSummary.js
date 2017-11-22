@@ -15,6 +15,7 @@ class BrandSummary extends Component {
       isEditing: null,
       currentAnswer: null,
       renderSummary: null,
+      save: false
     }
 
 
@@ -22,43 +23,40 @@ class BrandSummary extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
-    // this.handleDelete = this.handleDelete.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
   this.props.fetchSummary(id)
-  _.map(this.props.qa, summary=> {
-    this.setState({renderSummary: summary.text})
-  })
-
 }
 
-componentDidMount() {
-  _.map(this.props.qa, summary=> {
-    this.setState({renderSummary: summary.text})
-  })
+componentWillUpdate(nextProps, nextState) {
+  const { id } = this.props.match.params
+  if (nextState.save == true && this.state.save == false) {
+    this.props.fetchSummary(id)
+  }
 }
 
-componentWillReceiveProps() {
-  _.map(this.props.qa, summary=> {
-    this.setState({renderSummary: summary.text})
-  })
+componentDidUpdate() {
+  if(this.state.save === true) {
+    this.setState({save: false})
+  }
 }
+
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.props.qa) {
+    if(this.props.qa[0]) {
       //if a summary already exists, will set state of same target name to the current answer value and also toggle editing
       _.map(this.props.qa, summary=> {
-        this.setState({currentAnswer: summary.text, isEditing: event.target.value})
+        this.setState({renderSummary: summary.text, currentAnswer: summary.text})
       })
     } else {
       this.props.createSummary({brand: id, text: 'option 1'})
-      this.setState({isEditing: event.target.value})
       console.log('post');
     }
+    this.setState({isEditing: event.target.value})
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
@@ -66,9 +64,10 @@ componentWillReceiveProps() {
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
+    event.preventDefault()
     const { id }  = this.props.match.params
     this.props.updateSummary(id, {text: this.state.currentAnswer})
-    this.setState({isEditing: null, renderSummary: this.state.currentAnswer})
+    this.setState({isEditing: null, renderSummary: this.state.currentAnswer, save: true})
     console.log('save', this.state);
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
@@ -76,15 +75,15 @@ componentWillReceiveProps() {
     this.setState({currentAnswer: event.target.value})
   }
 
-  renderSummary() {
-    return _.map(this.props.qa, summary => {
-      return(
-        <li key={summary.id}>
-          {summary.text}
-        </li>
-      )
-    })
-  }
+  // renderSummary() {
+  //   return _.map(this.props.qa, summary => {
+  //     return(
+  //       <li key={summary.id}>
+  //         {summary.text}
+  //       </li>
+  //     )
+  //   })
+  // }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
 render() {
@@ -123,10 +122,7 @@ render() {
         )}
         <h4>Current Brand Summary</h4>
         <ul>
-        {this.state.currentAnswer ? (
-          this.state.currentAnswer) : (
-          this.renderSummary()
-        )}
+          {this.state.renderSummary}
         </ul>
       </form>
     </div>
