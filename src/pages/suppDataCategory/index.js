@@ -39,7 +39,7 @@ componentWillMount() {
     if(this.props.qa) {
       //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
       _.map(this.props.qa, cat => {
-          this.setState({[cat.name]: 'chip'})
+          this.setState({[cat.name]: 'chip', isEditing: event.target.value})
     })
       //if state of target 'name' does not yet exist, will pull value of answer off props and set state to that answer and also toggle editing
     }
@@ -47,13 +47,12 @@ componentWillMount() {
     else {
       console.log('post');
     }
-    this.setState({isEditing: event.target.value})
   }
 
   renderCategories() {
     return _.map(this.props.qa, cat => {
         return(
-            <button key={cat.id} className={this.state[cat.name]} name={cat.name} onClick={this.handleChange}>
+            <button key={cat.id} value={cat.id} className={this.state[cat.name]} name={cat.name} onClick={this.handleChange}>
               {cat.name} {this.state[cat.name] === 'chip-selected' ? 'x' : '+'}
             </button>
         )
@@ -75,7 +74,15 @@ componentWillMount() {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(this.state[event.target.name] === 'chip-selected') {
-      this.setState({[event.target.name]: 'chip', currentAnswer: this.currenAnswer.slice()})
+      // _.map(this.state.currentAnswer, remove => {
+        // if(event.target.value === remove.category_id) {
+          this.setState({[event.target.name]: 'chip', currentAnswer: this.state.currentAnswer.splice(this.state.currentAnswer.indexOf({category_id: event.target.value}), 1)})
+          if(this.state.currentAnswer.length < 1) {
+            this.state.currentAnswer.delete()
+          }
+        // }
+        console.log('value', event.target.value);
+      // })
     } else {
       this.setState({[event.target.name]: 'chip-selected', currentAnswer: [...this.state.currentAnswer, {brand: id, category_id: this.props.qa[event.target.name].id}]})
     }
@@ -84,6 +91,7 @@ componentWillMount() {
 //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.qa);
+    console.log('remove', _.map(this.state.currentAnswer, remove => remove.category_id));
     console.log('state', this.state);
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params

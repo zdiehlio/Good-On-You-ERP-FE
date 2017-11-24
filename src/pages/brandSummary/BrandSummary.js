@@ -75,15 +75,14 @@ componentDidUpdate() {
     this.setState({currentAnswer: event.target.value})
   }
 
-  // renderSummary() {
-  //   return _.map(this.props.qa, summary => {
-  //     return(
-  //       <li key={summary.id}>
-  //         {summary.text}
-  //       </li>
-  //     )
-  //   })
-  // }
+  renderSummary() {
+    return _.map(this.props.qa, summary => {
+      if(summary.id === 1)
+      return(
+        <li key={summary.id}>{summary.text}</li>
+      )
+    })
+  }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
 render() {
@@ -122,7 +121,7 @@ render() {
         )}
         <h4>Current Brand Summary</h4>
         <ul>
-          {this.state.renderSummary}
+        {this.renderSummary()}
         </ul>
       </form>
     </div>
