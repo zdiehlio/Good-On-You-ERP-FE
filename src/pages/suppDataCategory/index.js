@@ -59,8 +59,13 @@ componentDidUpdate() {
     }
     axios.get(`${ROOT_URL}/brands-categories?brand=${id}`)
     .then(res => {
+      this.state.currentAnswer.map(ans => this.setState({catOptions: [...this.state.catOptions, ans.category_id]}))
       res.data.data.map(check => {
-        this.setState({[check.category.name]: 'chip-selected', currentAnswer: [...this.state.currentAnswer, {brand: id, category_id: check.category_id}], save: true})
+        if(this.state.catOptions.includes(check.category_id)) {
+          this.setState({[check.category.name]: 'chip-selected'})
+        } else {
+          this.setState({[check.category.name]: 'chip-selected', currentAnswer: [...this.state.currentAnswer, {brand: id, category_id: check.category_id}]})
+        }
       })
     })
   }
