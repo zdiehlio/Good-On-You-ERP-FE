@@ -79,11 +79,11 @@ export default function(state = {}, action) {
       console.log('fetch, categories', action.payload.data);
       return _.mapKeys(action.payload.data.data, 'name')
     }
-  case FETCH_CATEGORY:
-    if (!action.error) {
-      console.log('fetch id, categories', action.payload.data);
-      return _.mapKeys(action.payload.data.data, 'category_id')
-    }
+  // case FETCH_CATEGORY:
+  //   if (!action.error) {
+  //     console.log('fetch id, categories', action.payload.data);
+  //     return _.mapKeys(action.payload.data.data, 'category_id')
+  //   }
   case FETCH_TYPE:
     if (!action.error) {
       console.log('fetch, type', action.payload.data.data);

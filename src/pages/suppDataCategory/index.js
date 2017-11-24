@@ -7,6 +7,8 @@ import { FormsHeader } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
+const ROOT_URL = 'http://34.212.110.48:3000'
+
 
 class SuppDataCategory extends Component {
   constructor(props){
@@ -17,7 +19,8 @@ class SuppDataCategory extends Component {
       currentAnswer: [],
       catOptions: [],
       finalAnswer: null,
-      input: null
+      input: null,
+      save: false
     }
 
 
@@ -29,7 +32,19 @@ class SuppDataCategory extends Component {
 componentWillMount() {
   const { id } = this.props.match.params
   this.props.fetchAllCategory()
-  // this.props.fetchBrandCategory(id)
+}
+
+componentWillUpdate(nextProps, nextState) {
+  const { id } = this.props.match.params
+  if (nextState.save == true && this.state.save == false) {
+    return
+  }
+}
+
+componentDidUpdate() {
+  if(this.state.save === true) {
+    this.setState({save: false, currentAnswer: []})
+  }
 }
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
@@ -40,13 +55,14 @@ componentWillMount() {
       //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
       _.map(this.props.qa, cat => {
           this.setState({[cat.name]: 'chip', isEditing: event.target.value})
+        })
+    }
+    axios.get(`${ROOT_URL}/brands-categories?brand=${id}`)
+    .then(res => {
+      res.data.data.map(check => {
+        this.setState({[check.category.name]: 'chip-selected', currentAnswer: [...this.state.currentAnswer, {brand: id, category_id: check.category_id}], save: true})
+      })
     })
-      //if state of target 'name' does not yet exist, will pull value of answer off props and set state to that answer and also toggle editing
-    }
-    //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
-    else {
-      console.log('post');
-    }
   }
 
   renderCategories() {
@@ -74,15 +90,8 @@ componentWillMount() {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(this.state[event.target.name] === 'chip-selected') {
-      // _.map(this.state.currentAnswer, remove => {
-        // if(event.target.value === remove.category_id) {
-          this.setState({[event.target.name]: 'chip', currentAnswer: this.state.currentAnswer.splice(this.state.currentAnswer.indexOf({category_id: event.target.value}), 1)})
-          if(this.state.currentAnswer.length < 1) {
-            this.state.currentAnswer.delete()
-          }
-        // }
-        console.log('value', event.target.value);
-      // })
+      this.setState({[event.target.name]: 'chip', currentAnswer: this.state.currentAnswer.filter(cat => {return cat.category_id != event.target.value})})
+      console.log('value', event.target.value);
     } else {
       this.setState({[event.target.name]: 'chip-selected', currentAnswer: [...this.state.currentAnswer, {brand: id, category_id: this.props.qa[event.target.name].id}]})
     }
