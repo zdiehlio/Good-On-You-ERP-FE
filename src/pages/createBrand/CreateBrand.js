@@ -40,7 +40,7 @@ class CreateBrand extends Component {
   onSubmit(values) {
     console.log('values', values);
     this.props.createBrand(values, (response) => {
-      this.getCategories(response)
+      this.props.history.push(`/brandLanding/${response.data.id}`)
     });
     console.log('submit');
   }
