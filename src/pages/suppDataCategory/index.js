@@ -20,14 +20,19 @@ class SuppDataCategory extends Component {
       catOptions: [],
       finalAnswer: null,
       input: null,
-      save: false
+      save: false,
+      dominantOptions: [],
+      dominant_id: [],
+      dominant: []
     }
 
 
-    this.handleChange = this.handleChange.bind(this)
+    this.handleCateChange = this.handleCateChange.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
-    this.handleSave = this.handleSave.bind(this)
+    this.handleCatSave = this.handleCatSave.bind(this)
+    this.handleDominantEdit = this.handleDominantEdit.bind(this)
+    this.handleDominantChange = this.handleDominantChange.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
@@ -69,11 +74,37 @@ componentDidUpdate() {
       })
     })
   }
+  handleDominantEdit(event) {
+    event.preventDefault()
+    const { id }  = this.props.match.params
+    axios.get(`${ROOT_URL}/brands-categories?brand=${id}`)
+    .then(res => {
+      res.data.data.map(check => {
+        if(this.state.dominant_id.includes(check.category_id)) {
+          console.log('return');
+          return
+        } else {
+          this.setState({dominantOptions: [...this.state.dominantOptions, check], dominant_id: [...this.state.dominant_id, check.category_id]})
+        }
+      })
+    })
+    this.setState({isEditing: event.target.name})
+  }
+
+  renderDominant() {
+    return _.map(this.state.dominantOptions, dom => {
+      return(
+        <button key={dom.category.name} value={dom.category_id} className={dom.dominant === false ? 'chip' : 'chip-selected'} name={dom.category.name} onClick={this.handleDominantChange}>
+          {dom.category.name}
+        </button>
+      )
+    })
+  }
 
   renderCategories() {
     return _.map(this.props.qa, cat => {
         return(
-            <button key={cat.id} value={cat.id} className={this.state[cat.name]} name={cat.name} onClick={this.handleChange}>
+            <button key={cat.id} value={cat.id} className={this.state[cat.name]} name={cat.name} onClick={this.handleCateChange}>
               {cat.name} {this.state[cat.name] === 'chip-selected' ? 'x' : '+'}
             </button>
         )
@@ -84,14 +115,17 @@ componentDidUpdate() {
     this.setState({isEditing: null})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
-  handleSave(event) {
+  handleCatSave(event) {
     const { id }  = this.props.match.params
-    this.props.createBrandCategory(id, this.state.currentAnswer)
+    if(event.target.name === '1') {
+      this.props.createBrandCategory(id, this.state.currentAnswer)
+    } else if(event.target.name === '2') {
+      this.props.updateBrandCategory(id, this.state.dominant)
+    }
     this.setState({isEditing: null})
-    console.log('save', this.state);
   }
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
-  handleChange(event){
+  handleCateChange(event){
     event.preventDefault()
     const { id }  = this.props.match.params
     if(this.state[event.target.name] === 'chip-selected') {
@@ -102,10 +136,15 @@ componentDidUpdate() {
     }
   }
 
+  handleDominantChange(event) {
+    event.preventDefault()
+    const { id }  = this.props.match.params
+    this.setState({dominant: [{category_id: parseInt(event.target.value), dominant: true}]})
+  }
+
 //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.qa);
-    console.log('remove', _.map(this.state.currentAnswer, remove => remove.category_id));
     console.log('state', this.state);
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
@@ -128,25 +167,25 @@ componentDidUpdate() {
               {this.renderCategories()}
             </ul>
             <button onClick={this.handleCancel}>Cancel</button>
-            <button onClick={this.handleSave} name='1' value='1'>Save</button>
+            <button onClick={this.handleCatSave} name='1' value='1'>Save</button>
           </div>) : (
           <div className='not-editing'>
-            <h5>What is the one sentence that describes the brand best?</h5>
+          <h5>What are the categories?</h5>
             <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
           </div>
           )}
           {isEditing === '2' ? (
             <div className='editing'>
             <h5>What is the Brands dominant category?</h5>
-            <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p>
               <ul>
+              {this.renderDominant()}
               </ul>
               <button onClick={this.handleCancel}>Cancel</button>
-              <button onClick={this.handleSave} name='2' value='2'>Save</button>
+              <button onClick={this.handleCatSave} name='2' value='2'>Save</button>
             </div>) : (
             <div className='not-editing'>
               <h5>What is the Brands dominant category?</h5>
-              <button name='2' onClick={this.handleEdit} value='2'>Edit</button>
+              <button name='2' onClick={this.handleDominantEdit} value='2'>Edit</button>
             </div>
             )}
         </form>

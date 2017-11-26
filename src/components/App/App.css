@@ -20,7 +20,7 @@ button {
   margin: 1em;
   padding: 0.5em 1em;
   font-size: 1.3em;
-  border:none;
+  border: none;
   color: white;
   background-color: #17CABE;
   border-radius: 40px;
@@ -88,7 +88,7 @@ button:hover {
     font-size: 16px;
     line-height: 30px;
     border-radius: 25px;
-    background-color: green;
+    background-color: #17CABE;
 }
 
 .summary-view {
