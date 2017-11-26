@@ -89,9 +89,9 @@ componentWillUpdate(nextProps, nextState) {
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><button className='previous'>Previous</button></div>
+            <div><Link to={`/suppDataStyles/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Product Types</h3></div>
-            <div><button className='next'>Next</button></div>
+            <div><Link to={`/suppDataAlias/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
         <form className='brand-form'>

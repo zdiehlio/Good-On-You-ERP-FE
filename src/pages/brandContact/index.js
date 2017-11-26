@@ -7,6 +7,8 @@ import { FormsHeader } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
+import './brandContact.css'
+
 class BrandContact extends Component {
   constructor(props){
     super(props)

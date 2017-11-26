@@ -2,52 +2,88 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
+import { fetchGeneral } from '../../actions'
+
+import './brandLanding.css'
 
 class BrandLanding extends Component {
 
+  componentWillMount() {
+    const { id } = this.props.match.params
+    this.props.fetchGeneral(id, 'general')
+  }
+
+
   render() {
     const  id   = this.props.match.params.id
+    const props = this.props.qa
+    console.log(this.props.qa);
     return(
-      <div>
+      <div className='summary-container'>
+        <div className='summary-heading'>Create a brand for: <h1>{props.name}</h1></div>
+        <p className='small-divider'></p>
+        <div className='summary-heading'>URL: <h5>{props.website}</h5></div>
+        <p className='small-divider'></p>
+        <div className='summary-heading'><h1>Brand Overview</h1></div>
+        <p className='divider'></p>
         <div className='summary-view'>
-          Brand Overview
-          <Link to={`/brandGeneral/${id}`}><button>Start</button></Link>
+          <div>General</div>
+          <div><Link to={`/brandGeneral/${id}`}><button>Start</button></Link></div>
         </div>
+        <p className='small-divider'></p>
         <div className='summary-view'>
-          Brand Contact
-          <Link to={`/brandContact/${id}`}><button>Start</button></Link>
+          <div>Contact Details</div>
+          <div><Link to={`/brandContact/${id}`}><button>Start</button></Link></div>
         </div>
+        <p className='small-divider'></p>
+
+        <div className='summary-heading'><h1>Qualitative Ratings</h1></div>
+        <p className='divider'></p>
         <div className='summary-view'>
-          Brand Causes
-          <Link to={`/brandCauses/${id}`}><button>Start</button></Link>
+          <div>Causes</div>
+          <div><Link to={`/brandCauses/${id}`}><button>Start</button></Link></div>
         </div>
+        <p className='small-divider'></p>
         <div className='summary-view'>
-          Brand Sentences
-          <Link to={`/brandSentences/${id}`}><button>Start</button></Link>
+          <div>Sentence</div>
+          <div><Link to={`/brandSentences/${id}`}><button>Start</button></Link></div>
         </div>
+        <p className='small-divider'></p>
         <div className='summary-view'>
-          Brand Summary
-          <Link to={`/brandSummary/${id}`}><button>Start</button></Link>
+          <div>Summary</div>
+          <div><Link to={`/brandSummary/${id}`}><button>Start</button></Link></div>
         </div>
+        <p className='small-divider'></p>
+
+        <div className='summary-heading'><h1>Supplementary Data</h1></div>
+        <p className='divider'></p>
         <div className='summary-view'>
-          Brand Categories
-          <Link to={`/suppDataCategory/${id}`}><button>Start</button></Link>
+          <div>Categories</div>
+          <div><Link to={`/suppDataCategory/${id}`}><button>Start</button></Link></div>
         </div>
+        <p className='small-divider'></p>
         <div className='summary-view'>
-          Brand Styles
-          <Link to={`/suppDataStyles/${id}`}><button>Start</button></Link>
+          <div>Styles - (Under Development)</div>
+          <div><Link to={`/suppDataStyles/${id}`}><button>Start</button></Link></div>
         </div>
+        <p className='small-divider'></p>
         <div className='summary-view'>
-          Product Types
-          <Link to={`/suppDataTypes/${id}`}><button>Start</button></Link>
+          <div>Product Types</div>
+          <div><Link to={`/suppDataTypes/${id}`}><button>Start</button></Link></div>
         </div>
+        <p className='small-divider'></p>
         <div className='summary-view'>
-          Brand Alias
-        <Link to={`/suppDataAlias/${id}`}><button>Start</button></Link>
+          <div>Brand Alias</div>
+          <div><Link to={`/suppDataAlias/${id}`}><button>Start</button></Link></div>
         </div>
+        <p className='small-divider'></p>
       </div>
     )
   }
 }
 
-export default BrandLanding
+function mapStateToProps(state) {
+  return {qa: state.qa}
+}
+
+export default connect(mapStateToProps, { fetchGeneral })(BrandLanding)

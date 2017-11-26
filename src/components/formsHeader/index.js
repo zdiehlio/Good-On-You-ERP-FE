@@ -7,13 +7,13 @@ class FormsHeader extends Component {
   render() {
     return(
       <div className='forms-header'>
-        <div>Brand Overview</div>
+        <div className='overview-header'>Brand Overview</div>
         <div>>></div>
-        <div>Rating</div>
+        <div className='rating-header'>Rating</div>
         <div>>></div>
-        <div>Qualitative Ratings</div>
+        <div className='qualitative-header'>Qualitative Ratings</div>
         <div>>></div>
-        <div>Supplementary Data</div>
+        <div className='suppData-header'>Supplementary Data</div>
         <p className='divider'></p>
       </div>
     )

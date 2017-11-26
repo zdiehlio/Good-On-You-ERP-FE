@@ -91,17 +91,6 @@ button:hover {
     background-color: #17CABE;
 }
 
-.summary-view {
-  margin-top: 3em;
-  width: 100%;
-  border: 1px;
-  padding: 1em;
-  background-color: lightgrey;
-}
-
-.summary-view button {
-  text-align: right;
-}
 
 .summary-button {
   width: 100%;
@@ -123,4 +112,20 @@ button:hover {
 
 .next {
   float:right;
+}
+
+.divider {
+  width: 100%;
+  height: 0.2em;
+  margin-top: 1em;
+  display: inline-block;
+  background-color: #17CABE;
+}
+
+.small-divider {
+    width: 100%;
+    height: 0.1em;
+    margin-top: 1em;
+    display: inline-block;
+    background-color: #17CABE;
 }

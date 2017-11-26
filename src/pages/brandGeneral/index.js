@@ -8,6 +8,8 @@ import _ from 'lodash'
 import axios from 'axios'
 import moment from 'moment'
 
+import './brandGeneral.css'
+
 class BrandGeneral extends Component {
   constructor(props){
     super(props)

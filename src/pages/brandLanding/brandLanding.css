@@ -1,0 +1,33 @@
+
+.summary-view {
+  width: 100%;
+  padding-left: 2em;
+}
+
+.summary-view div {
+  display: inline-block;
+  width: calc(80%/2);
+}
+
+.summary-view button {
+  text-align: right;
+}
+
+.summary-heading {
+  margin-top: 0.5em;
+  color: #17CABE;
+}
+
+.summary-heading h1 {
+  display: inline-block;
+  margin-left: 1em;
+}
+
+.summary-heading h5 {
+  display: inline-block;
+  margin-left: 1em;
+}
+
+.summary-container {
+  width: 80%;
+}

@@ -7,7 +7,7 @@ import { FormsHeader } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
-const ROOT_URL = 'http://34.212.110.48:3000'
+const ROOT_URL = 'https://goy-ed-2079.nodechef.com'
 
 
 class SuppDataCategory extends Component {
@@ -156,7 +156,7 @@ componentDidUpdate() {
           <span className='form-navigation'>
             <div><Link to={`/brandSummary/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Brand Categories</h3></div>
-            <div><button className='next'>Next</button></div>
+            <div><Link to={`/suppDataStyles/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
         <form className='brand-form'>

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import _ from 'lodash'
 
-export const ROOT_URL = 'http://34.212.110.48:3000'
+export const ROOT_URL = 'https://goy-ed-2079.nodechef.com'
 
 export const LOG_IN = 'log_in';
 export const LOG_OUT = 'log_out';

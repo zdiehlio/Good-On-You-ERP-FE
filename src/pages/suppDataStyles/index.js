@@ -40,11 +40,12 @@ handleKidsEdit(event) {
   event.preventDefault()
   const { id }  = this.props.match.params
   _.map(this.props.qa, check => {
-    if(check.style_qa.question === 'kids') {
+    if(check.style_qa.question === event.target.name) {
       console.log('kids', check.style_qa.answer);
-      this.setState({isEditing: event.target.name})
+      this.setState({[event.target.name]: check.style_qa.answer})
     }
   })
+  this.setState({isEditing: event.target.name})
 }
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
@@ -101,7 +102,7 @@ handleKidsEdit(event) {
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><Link to={`/suppDataCategory/${id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Brand Causes</h3></div>
+            <div><h3>Brand Styles</h3></div>
             <div><Link to={`/suppDataTypes/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
@@ -113,14 +114,14 @@ handleKidsEdit(event) {
                 <li><Field
                   type='radio'
                   onChange={this.handleChange}
-                  checked={props[1]}
+                  checked={state.kids === 'yes'}
                   name='kids'
                   component='input'/> Yes
                 </li>
                 <li><Field
                   type='radio'
                   onChange={this.handleChange}
-                  checked={props[2]}
+                  checked={state.kids === 'no'}
                   name='no-kids'
                   component='input'/> No
                 </li>

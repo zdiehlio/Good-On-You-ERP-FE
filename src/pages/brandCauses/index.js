@@ -7,6 +7,8 @@ import { FormsHeader } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
+import './brandCauses.css'
+
 class BrandCauses extends Component {
   constructor(props){
     super(props)
@@ -24,7 +26,7 @@ class BrandCauses extends Component {
     this.handleSave = this.handleSave.bind(this)
   }
 componentWillMount() {
-  const id  = this.props.match.params.id
+  const { id }  = this.props.match.params
   this.props.fetchCause(id)
 }
 
