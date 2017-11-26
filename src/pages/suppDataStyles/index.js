@@ -22,6 +22,7 @@ class SuppDataStyles extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
+    this.handleKidsEdit = this.handleKidsEdit.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
@@ -35,6 +36,16 @@ componentWillUpdate(nextProps, nextState) {
   }
 }
 
+handleKidsEdit(event) {
+  event.preventDefault()
+  const { id }  = this.props.match.params
+  _.map(this.props.qa, check => {
+    if(check.style_qa.question === 'kids') {
+      console.log('kids', check.style_qa.answer);
+      this.setState({isEditing: event.target.name})
+    }
+  })
+}
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
@@ -95,32 +106,32 @@ componentWillUpdate(nextProps, nextState) {
           </span>
         </div>
         <form className='brand-form'>
-        {isEditing === '1' ? (
+        {isEditing === 'kids' ? (
           <div className='editing'>
             <h4>Does the Brand sell Clothes for kids?</h4>
               <ul>
                 <li><Field
                   type='radio'
                   onChange={this.handleChange}
-                  checked={state.currentAnswer ? state.currentAnswer === 'kids' : props.kids}
+                  checked={props[1]}
                   name='kids'
                   component='input'/> Yes
                 </li>
                 <li><Field
                   type='radio'
                   onChange={this.handleChange}
-                  checked={state.currentAnswer ? state.currentAnswer === 'no-kids' : props['no-kids']}
+                  checked={props[2]}
                   name='no-kids'
                   component='input'/> No
                 </li>
               </ul>
               <button onClick={this.handleCancel}>Cancel</button>
-              <button onClick={this.handleSave} name='kids' value='1'>Save</button>
+              <button onClick={this.handleSave} name='kids'>Save</button>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the Brand sell Clothes for kids?</h4>
             <h5>{state['1']}</h5>
-            <button name='kids' onClick={this.handleEdit} value='1'>Edit</button>
+            <button name='kids' onClick={this.handleKidsEdit}>Edit</button>
 
           </div>
             )}

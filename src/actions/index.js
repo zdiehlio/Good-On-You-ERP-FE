@@ -316,9 +316,9 @@ export function fetchBrandCategory(id) {
   }
 }
 
-export function updateBrandCategory(id, values) {
+export function updateBrandCategory(id, cat, values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.patch(`${ROOT_URL}/brands-categories?brand=${id}`, values)
+  const request = axios.patch(`${ROOT_URL}/brands-categories?brand=${id}&category_id=${cat}`, values)
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: UPDATE_CATEGORY, payload: data})

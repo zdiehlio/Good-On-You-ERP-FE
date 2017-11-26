@@ -84,7 +84,7 @@ componentDidUpdate() {
           console.log('return');
           return
         } else {
-          this.setState({dominantOptions: [...this.state.dominantOptions, check], dominant_id: [...this.state.dominant_id, check.category_id]})
+          this.setState({dominantOptions: [...this.state.dominantOptions, check], current_dominant_id: check.category_id, dominant_id: [...this.state.dominant_id, check.category_id]})
         }
       })
     })
@@ -94,7 +94,7 @@ componentDidUpdate() {
   renderDominant() {
     return _.map(this.state.dominantOptions, dom => {
       return(
-        <button key={dom.category.name} value={dom.category_id} className={dom.dominant === false ? 'chip' : 'chip-selected'} name={dom.category.name} onClick={this.handleDominantChange}>
+        <button key={dom.category.name} value={dom.category_id} className={this.state.current_dominant_id === dom.category_id ? 'chip-selected' : 'chip'} name={dom.category.name} onClick={this.handleDominantChange}>
           {dom.category.name}
         </button>
       )
@@ -120,9 +120,9 @@ componentDidUpdate() {
     if(event.target.name === '1') {
       this.props.createBrandCategory(id, this.state.currentAnswer)
     } else if(event.target.name === '2') {
-      this.props.updateBrandCategory(id, this.state.dominant)
+      this.props.updateBrandCategory(id, this.state.current_dominant_id, this.state.dominant)
     }
-    this.setState({isEditing: null})
+    this.setState({isEditing: null, save: true})
   }
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
   handleCateChange(event){
@@ -139,7 +139,7 @@ componentDidUpdate() {
   handleDominantChange(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.setState({dominant: [{category_id: parseInt(event.target.value), dominant: true}]})
+    this.setState({current_dominant_id: parseInt(event.target.value), dominant: [{dominant: true}], save: true})
   }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
