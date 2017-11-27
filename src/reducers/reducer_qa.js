@@ -112,7 +112,7 @@ export default function(state = {}, action) {
   case FETCH_STYLES:
     if (!action.error) {
       console.log('fetch, styles', action.payload.data.data);
-      return _.mapKeys(action.payload.data.data, 'style')
+      return _.mapKeys(action.payload.data.data.style_qa, 'question')
     }
   case UPDATE_STYLES:
     if (!action.error) {

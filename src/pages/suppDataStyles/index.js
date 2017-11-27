@@ -36,13 +36,19 @@ componentWillUpdate(nextProps, nextState) {
   }
 }
 
+componentDidUpdate() {
+  if(this.state.save === true) {
+    this.setState({save: false})
+  }
+}
+
 handleKidsEdit(event) {
   event.preventDefault()
   const { id }  = this.props.match.params
   _.map(this.props.qa, check => {
     if(check.style_qa.question === event.target.name) {
-      console.log('kids', check.style_qa.answer);
-      this.setState({[event.target.name]: check.style_qa.answer})
+      console.log('kids', check.style_qa.tag);
+      this.setState({currentAnswer: check.style_qa.tag, [check.style_qa.question]: check.style_qa.question})
     }
   })
   this.setState({isEditing: event.target.name})
@@ -79,7 +85,10 @@ handleKidsEdit(event) {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.createStyles({brand: id, style: this.state.currentAnswer})
+    // if(this.state[event.target.name]) {
+    //   this.props.updateStyles
+    // }
+    this.props.createStyles(id, this.state.currentAnswer, {brand: id, style: this.state.currentAnswer})
     this.setState({isEditing: null, save: true})
     console.log('save', this.state);
   }
@@ -114,14 +123,14 @@ handleKidsEdit(event) {
                 <li><Field
                   type='radio'
                   onChange={this.handleChange}
-                  checked={state.kids === 'yes'}
+                  checked={state.currentAnswer === 'kids'}
                   name='kids'
                   component='input'/> Yes
                 </li>
                 <li><Field
                   type='radio'
                   onChange={this.handleChange}
-                  checked={state.kids === 'no'}
+                  checked={state.currentAnswer === 'no-kids'}
                   name='no-kids'
                   component='input'/> No
                 </li>
