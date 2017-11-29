@@ -22,7 +22,7 @@ class SuppDataStyles extends Component {
     }
 
 
-    this.handleChange = this.handleChange.bind(this)
+    this.handleKids = this.handleKids.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
@@ -46,12 +46,14 @@ componentWillReceiveProps(nextProps) {
 handleKidsEdit(event) {
   event.preventDefault()
   const { id }  = this.props.match.params
-  _.map(this.props.qa, check => {
-    if(check.style_qa.question === event.target.name) {
-      console.log('kids', check.style_qa.tag);
-      this.setState({currentAnswer: check.style_qa.tag, [check.style_qa.question]: check.style_qa.question})
-    }
-  })
+  if(!this.state.kids) {
+    _.map(this.props.qa, check => {
+      if(check.style_qa.question === event.target.name) {
+        console.log('kids', check.style_qa.tag);
+        this.setState({kids: check.style_qa.tag})
+      }
+    })
+  } 
   this.setState({isEditing: event.target.name})
 }
 
@@ -86,11 +88,14 @@ handleKidsEdit(event) {
     _.map(this.state.progress, check => {
       this.props.createStyles({brand: id, style: check, score: this.state[check]})
     })
+    if(this.state.kids && event.target.name === 'kids') {
+      this.props.createStyles({brand: id, style: this.state.kids})
+    }
     this.setState({isEditing: null})
   }
 
-  handleChange(event){
-    this.setState({currentAnswer: event.target.name})
+  handleKids(event){
+    this.setState({kids: event.target.name})
   }
 
   handlePercentage(event) {
@@ -173,15 +178,15 @@ handleKidsEdit(event) {
               <ul>
                 <li><Field
                   type='radio'
-                  onChange={this.handleChange}
-                  checked={state.currentAnswer === 'kids'}
+                  onChange={this.handleKids}
+                  checked={state.kids === 'kids'}
                   name='kids'
                   component='input'/> Yes
                 </li>
                 <li><Field
                   type='radio'
-                  onChange={this.handleChange}
-                  checked={state.currentAnswer === 'no-kids'}
+                  onChange={this.handleKids}
+                  checked={state.kids === 'no-kids'}
                   name='no-kids'
                   component='input'/> No
                 </li>
