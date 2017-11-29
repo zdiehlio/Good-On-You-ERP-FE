@@ -1,4 +1,4 @@
-import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY, FETCHALL_CATEGORY, FETCH_CATEGORY, FETCH_GENERAL, UPDATE_GENERAL, DELETE_SIZE, CREATE_SIZE, FETCH_CONTACT, UPDATE_CONTACT, FETCH_TYPE, CREATE_TYPE, DELETE_TYPE, FETCH_ALIAS, DELETE_ALIAS, CREATE_ALIAS, FETCHALL_STYLES, FETCH_STYLES, UPDATE_STYLES } from '../actions'
+import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY, FETCHALL_CATEGORY, FETCH_CATEGORY, FETCH_GENERAL, UPDATE_GENERAL, DELETE_SIZE, CREATE_SIZE, FETCH_CONTACT, UPDATE_CONTACT, FETCH_TYPE, CREATE_TYPE, DELETE_TYPE, FETCH_ALIAS, DELETE_ALIAS, CREATE_ALIAS, FETCHALL_STYLES, FETCH_STYLES, UPDATE_STYLES, CREATE_STYLES } from '../actions'
 import _ from 'lodash'
 // import jwtDecode from 'jwt-decode'
 
@@ -112,13 +112,18 @@ export default function(state = {}, action) {
   case FETCH_STYLES:
     if (!action.error) {
       console.log('fetch, styles', action.payload.data.data);
-      return _.mapKeys(action.payload.data.data.style_qa, 'question')
+      return _.mapKeys(action.payload.data.data, 'style')
     }
   case UPDATE_STYLES:
     if (!action.error) {
       console.log('update, styles', action.payload.data);
       return {...state, [action.payload.data.data]: action.payload.data.data}
     }
+  // case CREATE_STYLES:
+  //   if(!action.error) {
+  //     console.log('create, styles', action.payload.data);
+  //     return {...state, [state.qa]: action.payload.data}
+  //   }
   return {error: action.error}
   default:
     return state

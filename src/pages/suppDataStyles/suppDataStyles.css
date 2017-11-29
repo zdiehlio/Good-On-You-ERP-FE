@@ -1,0 +1,14 @@
+.progress {
+  padding: 0.2em;
+  width: 2em;
+  display: inline-block;
+}
+
+.progress-container {
+  display: inline-block;
+  text-align: center;
+}
+
+h5 {
+  text-align: center;
+}

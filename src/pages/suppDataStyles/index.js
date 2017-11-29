@@ -6,6 +6,10 @@ import { fetchAllStyles, fetchStyles, createStyles, updateStyles } from '../../a
 import { FormsHeader } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
+import { ProgressBar, Line } from 'react-progressbar.js'
+
+import './suppDataStyles.css'
+const ROOT_URL = 'https://goy-ed-2079.nodechef.com'
 
 class SuppDataStyles extends Component {
   constructor(props){
@@ -14,7 +18,8 @@ class SuppDataStyles extends Component {
     this.state = {
       isEditing: null,
       currentAnswer: null,
-      save: false
+      save: false,
+      progress: []
     }
 
 
@@ -23,12 +28,20 @@ class SuppDataStyles extends Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleKidsEdit = this.handleKidsEdit.bind(this)
+    this.handlePercentage = this.handlePercentage.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
   this.props.fetchStyles(id)
 }
 
+componentWillReceiveProps(nextProps) {
+  if(nextProps.qa !== this.props.qa) {
+  _.map(nextProps.qa, check => {
+    this.setState({[check.style_qa.tag]: check.score})
+  })
+}
+}
 componentWillUpdate(nextProps, nextState) {
   const { id } = this.props.match.params
   if (nextState.save === true && this.state.save === false) {
@@ -58,24 +71,18 @@ handleKidsEdit(event) {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    // if(this.props.qa[event.target.name] || this.state[event.target.name]){
-    //   //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
-    //   if(this.state[event.target.name]){
-    //     this.setState({[event.target.name]: this.state[event.target.name], isEditing: event.target.value})
-    //     console.log('state answer');
-    //   //if state of target 'name' does not yet exist, will pull value of answer off props and set state to that answer and also toggle editing
-    //   } else {
-    //     this.setState({[event.target.name]: `${this.props.qa[event.target.name].answer}`, currentAnswer: `${this.props.qa[event.target.name].answer}`, isEditing: event.target.value})
-    //     console.log('props answer');
-    //   }
-    // }
-    // //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
-    // else {
-    //   this.props.createStyles({brand: id, question: event.target.name, answer: event.target.value})
-      this.setState({isEditing: event.target.value, save: false})
-      console.log('post');
-    // }
+    _.map(this.props.qa, check => {
+      if(check.style_qa.question === event.target.name  && !this.state[check.style_qa.tag]) {
+        console.log('edit', check.style_qa);
+        this.setState({[check.style_qa.tag]: check.score})
+      } else if(!this.state[check.style_qa.tag]){
+        console.log(check.style_qa);
+        this.setState({[check.style_qa.tag]: 0})
+      }
+    })
+    this.setState({isEditing: event.target.name})
   }
+
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
@@ -85,16 +92,48 @@ handleKidsEdit(event) {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    // if(this.state[event.target.name]) {
-    //   this.props.updateStyles
-    // }
-    this.props.createStyles(id, this.state.currentAnswer, {brand: id, style: this.state.currentAnswer})
+    _.map(this.state.progress, check => {
+      console.log('check', check);
+      this.props.createStyles({brand: id, style: check, score: this.state[check]})
+    })
     this.setState({isEditing: null, save: true})
-    console.log('save', this.state);
   }
+
   handleChange(event){
     this.setState({currentAnswer: event.target.name})
   }
+
+  handlePercentage(event) {
+    event.preventDefault()
+    if(!this.state[event.target.name]) {
+      this.setState({[event.target.name]: 0})
+    }
+    if(event.target.value === 'add' && this.state[event.target.name] < 1) {
+      this.setState({[event.target.name]: this.state[event.target.name] + 0.25})
+      console.log(event.target.className);
+    }
+    if(event.target.value === 'subtract' && this.state[event.target.name] > 0) {
+      this.setState({[event.target.name]: this.state[event.target.name] - 0.25})
+    }
+    if(this.state.progress.includes(event.target.name)) {
+      return
+    } else {
+        this.setState({progress: [...this.state.progress, event.target.name]})
+      }
+  }
+
+  // renderStyles(el) {
+  //   return(
+  //     <button onClick={this.handlePercentage} name='men-surf' value='subtract' className='progress'>-</button>
+  //       <li className='progress-container'>
+  //         <Line
+  //         progress={state['men-surf']}
+  //         text={state['men-surf']}
+  //         options={options}/>
+  //       </li>
+  //     <button onClick={this.handlePercentage} name='men-surf' value='add' className='progress'>+</button>
+  //   )
+  // }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
@@ -104,6 +143,16 @@ handleKidsEdit(event) {
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props.qa
+    let options = {
+      strokeWidth: 2,
+      color: '#17CABE',
+      text: {
+        style: {
+          position: 'center',
+          margin:'0.2em',
+        }
+      }
+    }
     return(
       <div className='form-container'>
         <FormsHeader />
@@ -145,34 +194,61 @@ handleKidsEdit(event) {
 
           </div>
             )}
-        {isEditing === '6' ? (
+        {isEditing === 'men' ? (
           <div className='editing'>
           <h4>Does the Brand sell clothes for men?</h4>
-            <ul>
-              <li><Field
-                type='radio'
-                onChange={this.handleChange}
-                checked={state['men']==='6'}
-                name='men'
-                component='input'
-                value='6'/>Yes
-              </li>
-              <li><Field
-                type='radio'
-                onChange={this.handleChange}
-                checked={state['men']==='7'}
-                name='men'
-                component='input'
-                value='7'/>No
-              </li>
-            </ul>
+            <div>
+              <h5>Mens Surf</h5>
+              <div>
+                <button onClick={this.handlePercentage} name='men-surf' value='subtract' className='progress'>-</button>
+                <Line
+                progress={state['men-surf']}
+                text={state['men-surf'] ? `${(state['men-surf'] * 100)}%` : '0%'}
+                options={options}
+                containerClassName={'progress-container'}/>
+                <button onClick={this.handlePercentage} name='men-surf' value='add' className='progress'>+</button>
+              </div>
+              <h5>Mens Wear</h5>
+              <div>
+                <button onClick={this.handlePercentage} name='men-menswear' value='subtract' className='progress'>-</button>
+                <Line
+                progress={state['men-menswear']}
+                text={state['men-menswear'] ? `${(state['men-menswear'] * 100)}%` : '0%'}
+                options={options}
+                containerClassName={'progress-container'}/>
+                <button onClick={this.handlePercentage} name='men-menswear' value='add' className='progress'>+</button>
+              </div>
+              <h5>Mens Casual</h5>
+              <div>
+                <button onClick={this.handlePercentage} name='men-casual' value='subtract' className='progress'>-</button>
+                <Line
+                progress={state['men-casual']}
+                text={state['men-casual'] ? `${(state['men-casual'] * 100)}%` : '0%'}
+                options={options}
+                containerClassName={'progress-container'}/>
+                <button onClick={this.handlePercentage} name='men-casual' value='add' className='progress'>+</button>
+              </div>
+              <h5>Mens Work</h5>
+              <div>
+                <button onClick={this.handlePercentage} name='men-work' value='subtract' className='progress'>-</button>
+                <Line
+                progress={state['men-work']}
+                text={state['men-work'] ? `${(state['men-work'] * 100)}%` : '0%'}
+                options={options}
+                containerClassName={'progress-container'}/>
+                <button onClick={this.handlePercentage} name='men-work' value='add' className='progress'>+</button>
+              </div>
+            </div>
             <button onClick={this.handleCancel}>Cancel</button>
-            <button name='men' onClick={this.handleSave} value='6'>Save</button>
+            <button name='men' onClick={this.handleSave}>Save</button>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the Brand sell clothes for men?</h4>
-            <h5>{state['6']}</h5>
-            <button name='men' onClick={this.handleEdit} value='6'>Edit</button>
+            <h5>Mens Surf: {state['men-surf'] ? `${(state['men-surf'] * 100)}%` : '0%'}</h5>
+            <h5>Mens Wear: {state['men-menswear'] ? `${(state['men-menswear'] * 100)}%` : '0%'}</h5>
+            <h5>Mens Casual: {state['men-casual'] ? `${(state['men-casual'] * 100)}%` : '0%'}</h5>
+            <h5>Mens Work: {state['men-work'] ? `${(state['men-work'] * 100)}%` : '0%'}</h5>
+            <button name='men' onClick={this.handleEdit}>Edit</button>
           </div>
         )}
 
