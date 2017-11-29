@@ -1,6 +1,28 @@
-import { FETCH_CAUSE, UPDATE_CAUSE, FETCH_SENTENCE, UPDATE_SENTENCE, FETCH_SUMMARY, UPDATE_SUMMARY, FETCHALL_CATEGORY, FETCH_CATEGORY, FETCH_GENERAL, UPDATE_GENERAL, DELETE_SIZE, CREATE_SIZE, FETCH_CONTACT, UPDATE_CONTACT, FETCH_TYPE, CREATE_TYPE, DELETE_TYPE, FETCH_ALIAS, DELETE_ALIAS, CREATE_ALIAS, FETCHALL_STYLES, FETCH_STYLES, UPDATE_STYLES, CREATE_STYLES } from '../actions'
+import {
+  FETCH_CAUSE,
+  UPDATE_CAUSE,
+  FETCH_SENTENCE,
+  UPDATE_SENTENCE,
+  FETCH_SUMMARY,
+  UPDATE_SUMMARY,
+  FETCHALL_CATEGORY,
+  FETCH_CATEGORY,
+  FETCH_GENERAL,
+  UPDATE_GENERAL,
+  DELETE_SIZE,
+  CREATE_SIZE, 
+  FETCH_CONTACT,
+  UPDATE_CONTACT,
+  FETCH_TYPE,
+  CREATE_TYPE,
+  DELETE_TYPE,
+  FETCH_ALIAS,
+  DELETE_ALIAS,
+  CREATE_ALIAS,
+  FETCH_STYLES,
+  UPDATE_STYLES,
+  CREATE_STYLES } from '../actions'
 import _ from 'lodash'
-// import jwtDecode from 'jwt-decode'
 
 //fetches all questions for brand and maps through each unique key value returning the brand and answer tied to the question
 export default function(state = {}, action) {
@@ -103,11 +125,6 @@ export default function(state = {}, action) {
     if (!action.error) {
       console.log('delete, alias', action.payload.data);
       return {...state, [action.payload.data.data]: action.payload.data.data}
-    }
-  case FETCHALL_STYLES:
-    if (!action.error) {
-      console.log('fetch all, styles', action.payload.data);
-      return _.mapKeys(action.payload.data.data, 'style')
     }
   case FETCH_STYLES:
     if (!action.error) {
