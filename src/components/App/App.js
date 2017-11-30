@@ -26,7 +26,8 @@ import {
   BrandLanding,
   BrandSentences,
   SuppDataTypes,
-  SuppDataAlias
+  SuppDataAlias,
+  SuppDataSocialMedia
 } from '../../pages'
 import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
@@ -129,6 +130,7 @@ class App extends Component {
               <Route path='/suppDataSimilarBrands/:id' component={SuppDataSimilarBrands} />
               <Route path='/suppDataTypes/:id' component={SuppDataTypes} />
               <Route path='/suppDataAlias/:id' component={SuppDataAlias} />
+              <Route path='/suppDataSocialMedia/:id' component={SuppDataSocialMedia} />
             </Switch>
           </div>
           <Footer/>

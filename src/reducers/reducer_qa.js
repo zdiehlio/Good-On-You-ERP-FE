@@ -21,7 +21,8 @@ import {
   CREATE_ALIAS,
   FETCH_STYLES,
   UPDATE_STYLES,
-  CREATE_STYLES } from '../actions'
+  CREATE_STYLES,
+  } from '../actions'
 import _ from 'lodash'
 
 //fetches all questions for brand and maps through each unique key value returning the brand and answer tied to the question
@@ -101,11 +102,6 @@ export default function(state = {}, action) {
       console.log('fetch, categories', action.payload.data);
       return _.mapKeys(action.payload.data.data, 'name')
     }
-  // case FETCH_CATEGORY:
-  //   if (!action.error) {
-  //     console.log('fetch id, categories', action.payload.data);
-  //     return _.mapKeys(action.payload.data.data, 'category_id')
-  //   }
   case FETCH_TYPE:
     if (!action.error) {
       console.log('fetch, type', action.payload.data.data);
@@ -136,11 +132,6 @@ export default function(state = {}, action) {
       console.log('update, styles', action.payload.data);
       return {...state, [action.payload.data.data]: action.payload.data.data}
     }
-  // case CREATE_STYLES:
-  //   if(!action.error) {
-  //     console.log('create, styles', action.payload.data);
-  //     return {...state, [state.qa]: action.payload.data}
-  //   }
   return {error: action.error}
   default:
     return state

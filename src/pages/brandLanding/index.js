@@ -58,12 +58,17 @@ class BrandLanding extends Component {
         <div className='summary-heading'><h1>Supplementary Data</h1></div>
         <p className='divider'></p>
         <div className='summary-view'>
+          <div>Social Media</div>
+          <div><Link to={`/suppDataSocialMedia/${id}`}><button>Start</button></Link></div>
+        </div>
+        <p className='small-divider'></p>
+        <div className='summary-view'>
           <div>Categories</div>
           <div><Link to={`/suppDataCategory/${id}`}><button>Start</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
-          <div>Styles - (Under Development)</div>
+          <div>Styles</div>
           <div><Link to={`/suppDataStyles/${id}`}><button>Start</button></Link></div>
         </div>
         <p className='small-divider'></p>
@@ -75,6 +80,11 @@ class BrandLanding extends Component {
         <div className='summary-view'>
           <div>Price</div>
           <div><Link to={`/suppDataPrice/${id}`}><button>Start</button></Link></div>
+        </div>
+        <p className='small-divider'></p>
+        <div className='summary-view'>
+          <div>Gender</div>
+          <div><Link to={`/suppDataGender/${id}`}><button>Start</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>

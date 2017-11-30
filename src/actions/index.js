@@ -42,6 +42,7 @@ export const FETCHALL_STYLES = 'fetchall_styles'
 export const FETCH_STYLES = 'fetch_styles'
 export const CREATE_STYLES = 'create_styles'
 export const UPDATE_STYLES = 'update_styles'
+export const UPDATE_SOCIAL = 'update_social'
 
 
 
@@ -107,6 +108,15 @@ export function fetchGeneral(id, value) {
   const request = axios.get(`${ROOT_URL}/brands/${id}?section=${value}`)
   return {
     type: FETCH_GENERAL,
+    payload: request
+  }
+}
+
+export function updateSocial(id, values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.patch(`${ROOT_URL}/brands/${id}`, values)
+  return {
+    type: UPDATE_SOCIAL,
     payload: request
   }
 }
