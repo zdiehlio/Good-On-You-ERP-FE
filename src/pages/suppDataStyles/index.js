@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { fetchAllStyles, fetchStyles, createStyles, updateStyles } from '../../actions'
 import { FormsHeader } from '../../components'
 import _ from 'lodash'
-import axios from 'axios'
 import { ProgressBar, Line } from 'react-progressbar.js'
 
 import './suppDataStyles.css'
@@ -53,7 +52,7 @@ handleKidsEdit(event) {
         this.setState({kids: check.style_qa.tag})
       }
     })
-  } 
+  }
   this.setState({isEditing: event.target.name})
 }
 
@@ -150,16 +149,6 @@ handleKidsEdit(event) {
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props.qa
-    let options = {
-      strokeWidth: 2,
-      color: '#17CABE',
-      text: {
-        style: {
-          position: 'center',
-          margin:'0.2em',
-        }
-      }
-    }
     return(
       <div className='form-container'>
         <FormsHeader />
@@ -198,9 +187,9 @@ handleKidsEdit(event) {
             <h4>Does the Brand sell Clothes for kids?</h4>
             <h5>{state['1']}</h5>
             <button name='kids' onClick={this.handleKidsEdit}>Edit</button>
-
           </div>
-            )}
+          )}
+
 
         {isEditing === 'men' ? (
           <div className='editing'>
