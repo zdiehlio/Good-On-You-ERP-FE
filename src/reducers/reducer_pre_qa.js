@@ -1,4 +1,4 @@
-import { FETCHALL_STYLES, FETCH_TERRITORY } from '../actions'
+import { FETCHALL_STYLES, FETCH_TERRITORY, FETCH_LOGO, UPDATE_LOGO } from '../actions'
 import _ from 'lodash'
 import jwtDecode from 'jwt-decode'
 
@@ -16,6 +16,17 @@ export default function(state = null, action) {
         console.log('get, territory', action.payload.data.data);
         return action.payload.data.data
       }
+
+    case FETCH_LOGO:
+      if (!action.error) {
+        console.log('fetch, logo', action.payload.data.data);
+        return action.payload.data.data
+      }
+    case UPDATE_LOGO:
+        if (!action.error) {
+          console.log('update, logo', action.payload.data.data);
+          return {...state, [action.payload.data.data]: action.payload.data.data}
+        }
       return {error: action.error}
   default:
     return state;

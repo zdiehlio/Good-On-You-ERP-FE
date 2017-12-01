@@ -47,6 +47,10 @@ export const FETCH_RETAILER = 'fetch_retailer'
 export const FETCH_TERRITORY = 'fetch_retailer'
 export const CREATE_RETAILER = 'post_retailer'
 export const UPDATE_RETAILER = 'update_retailer'
+export const FETCH_IMAGE = 'fetch_image'
+export const UPDATE_IMAGE = 'update_image'
+export const FETCH_LOGO = 'fetch_logo'
+export const UPDATE_LOGO = 'update_logo'
 
 
 export function login(values) {
@@ -446,6 +450,46 @@ export function updateRetailer(id, values) {
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: UPDATE_RETAILER, payload: data})
+    })
+  }
+}
+
+export function fetchImage(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-covers?brand=${id}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_IMAGE, payload: data})
+    })
+  }
+}
+
+export function fetchLogo(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-logos?brand=${id}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_LOGO, payload: data})
+    })
+  }
+}
+
+export function updateImage(id, values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.patch(`${ROOT_URL}/brands-covers/${id}`, values)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: UPDATE_IMAGE, payload: data})
+    })
+  }
+}
+
+export function updateLogo(id, values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.patch(`${ROOT_URL}/brands-logos/${id}`, values)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: UPDATE_LOGO, payload: data})
     })
   }
 }
