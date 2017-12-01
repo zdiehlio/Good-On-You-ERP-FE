@@ -21,7 +21,6 @@ import {
   SuppDataRetailers,
   SuppDataPrice,
   SuppDataGender,
-  SuppDataSimilarBrands,
   BrandFormContainer,
   BrandLanding,
   BrandSentences,
@@ -127,7 +126,6 @@ class App extends Component {
               <Route path='/suppDataRetailers/:id' component={SuppDataRetailers} />
               <Route path='/suppDataPrice/:id' component={SuppDataPrice} />
               <Route path='/suppDataGender/:id' component={SuppDataGender} />
-              <Route path='/suppDataSimilarBrands/:id' component={SuppDataSimilarBrands} />
               <Route path='/suppDataTypes/:id' component={SuppDataTypes} />
               <Route path='/suppDataAlias/:id' component={SuppDataAlias} />
               <Route path='/suppDataSocialMedia/:id' component={SuppDataSocialMedia} />

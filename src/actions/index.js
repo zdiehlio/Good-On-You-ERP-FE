@@ -43,7 +43,10 @@ export const FETCH_STYLES = 'fetch_styles'
 export const CREATE_STYLES = 'create_styles'
 export const UPDATE_STYLES = 'update_styles'
 export const UPDATE_SOCIAL = 'update_social'
-
+export const FETCH_RETAILER = 'fetch_retailer'
+export const FETCH_TERRITORY = 'fetch_retailer'
+export const CREATE_RETAILER = 'post_retailer'
+export const UPDATE_RETAILER = 'update_retailer'
 
 
 export function login(values) {
@@ -403,6 +406,46 @@ export function deleteAlias(id) {
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: DELETE_ALIAS, payload: data})
+    })
+  }
+}
+
+export function fetchRetailers(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/retailers?brand=${id}`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_RETAILER, payload: data})
+    })
+  }
+}
+
+export function fetchTerritories() {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/territories`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_TERRITORY, payload: data})
+    })
+  }
+}
+
+export function createRetailer(values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.post(`${ROOT_URL}/retailers`, values)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: CREATE_RETAILER, payload: data})
+    })
+  }
+}
+
+export function updateRetailer(id, values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.patch(`${ROOT_URL}/retailers/${id}`, values)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: UPDATE_RETAILER, payload: data})
     })
   }
 }

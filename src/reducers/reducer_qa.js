@@ -22,6 +22,8 @@ import {
   FETCH_STYLES,
   UPDATE_STYLES,
   CREATE_STYLES,
+  FETCH_RETAILER,
+  UPDATE_RETAILER
   } from '../actions'
 import _ from 'lodash'
 
@@ -130,6 +132,16 @@ export default function(state = {}, action) {
   case UPDATE_STYLES:
     if (!action.error) {
       console.log('update, styles', action.payload.data);
+      return {...state, [action.payload.data.data]: action.payload.data.data}
+    }
+  case FETCH_RETAILER:
+    if (!action.error) {
+      console.log('get, retailer', action.payload.data);
+      return action.payload.data.data
+    }
+  case UPDATE_RETAILER:
+    if (!action.error) {
+      console.log('update, retailer', action.payload.data.data);
       return {...state, [action.payload.data.data]: action.payload.data.data}
     }
   return {error: action.error}
