@@ -1,0 +1,44 @@
+.logo {
+  border-radius: 360px;
+  margin: 1em;
+  width: 200px;
+  height: 200px;
+}
+
+.cover-image {
+  width: 400px;
+  height: 250px;
+  margin: 1em
+}
+
+li {
+  display: inline-block;
+  width: calc(90% / 2);
+}
+
+.logo-selected {
+  border-style: solid;
+  border-width: 10px;
+  border-color: #17CABE;
+  padding: 0.5em;
+  /*width: calc(90% / 2);*/
+  border-radius: 360px;
+  margin: 1em;
+  width: 200px;
+  height: 200px;
+}
+
+.image-selected {
+  border-style: solid;
+  border-width: 10px;
+  border-color: #17CABE;
+  padding: 0.5em;
+  width: 400px;
+  height: 250px;
+  margin: 1em
+}
+
+.display {
+  text-align: center;
+  width: 100%;
+}

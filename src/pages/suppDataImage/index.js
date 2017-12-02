@@ -6,6 +6,8 @@ import { fetchImage, updateImage, fetchLogo, updateLogo } from '../../actions'
 import { FormsHeader } from '../../components'
 import _ from 'lodash'
 
+import './suppDataImage.css'
+
 class SuppDataImage extends Component {
   constructor(props){
     super(props)
@@ -20,8 +22,8 @@ class SuppDataImage extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
-    this.handleDropDown = this.handleDropDown.bind(this)
-    this.handleRemove = this.handleRemove.bind(this)
+    this.handleLogo = this.handleLogo.bind(this)
+    this.handleImage = this.handleImage.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
@@ -30,8 +32,19 @@ componentWillMount() {
 }
 
 componentWillReceiveProps(nextProps) {
+  if(nextProps.pre_qa != this.props.pre_qa) {
+    _.map(nextProps.pre_qa, logo => {
+      if(logo.is_selected === true) {
+        this.setState({logo_selected: logo.id, logo_url: logo.url})
+      }
+    })
+  }
   if(nextProps.qa != this.props.qa) {
-    this.setState({name: nextProps.qa.name, website: nextProps.qa.website, online_only: nextProps.qa.online_only})
+    _.map(nextProps.qa, image => {
+      if(image.is_selected === true) {
+        this.setState({image_selected: image.id, image_url: image.url})
+      }
+    })
   }
 }
 
@@ -49,10 +62,10 @@ componentWillReceiveProps(nextProps) {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(event.target.name === 'retailer') {
-      this.props.updateImageLogo({brand: id, name: this.state.name, website:this.state.website, territories: this.state.territories})
-    } else if(event.target.name === 'online') {
-      this.props.updateRetailer(id, {online_only: this.state.online_only})
+    if(event.target.name === 'logo') {
+      this.props.updateLogo(this.state.logo_selected, {is_selected: true})
+    } else if(event.target.name === 'image') {
+      this.props.updateImage(this.state.image_selected, {is_selected: true})
     }
     this.setState({isEditing: null})
     console.log('save', this.state);
@@ -61,35 +74,36 @@ componentWillReceiveProps(nextProps) {
   handleInput(event) {
     this.setState({[event.target.name]: event.target.value})
   }
-  handleDropDown(event) {
-    if(this.state[event.target.value] === event.target.value) {
-      console.log('Territory already added');
-    } else {
-      this.setState({[event.target.value]: event.target.value, territories: [...this.state.territories, {name: event.target.value}]})
-      console.log('drop', this.state.territories);
-    }
+
+  handleLogo(event) {
+    this.setState({logo_selected: parseInt(event.target.name), logo_url: event.target.src})
   }
-  renderDropDown() {
-    return _.map(this.props.pre_qa, zone => {
+
+  handleImage(event) {
+    this.setState({image_selected: parseInt(event.target.name), image_url: event.target.src})
+  }
+
+  renderLogo() {
+    return _.map(this.props.pre_qa, logo => {
       return(
-        <option key={zone.id} value={zone.name}>{zone.name}</option>
+        <li key={logo.id}>
+          <img className={this.state.logo_selected === logo.id ? 'logo-selected' : 'logo'} onClick={this.handleLogo} name={logo.id} src={logo.url} />
+        </li>
       )
     })
   }
 
-  handleRemove(event) {
-    this.setState({[event.target.value]: null, territories: this.state.territories.filter(select => {return select.name != event.target.value})})
-  }
 
-  renderTerritorries() {
-    return _.map(this.state.territories, select => {
+  renderImage() {
+    return _.map(this.props.qa, image => {
       return(
-        <button key={select.name} value={select.name} className='chip' onClick={this.handleRemove}>
-          {select.name} {'x'}
-        </button>
+        <li key={image.id}>
+          <img className={this.state.image_selected === image.id ? 'image-selected' : 'cover-image'}  onClick={this.handleImage} name={image.id} src={image.url} />
+        </li>
       )
     })
   }
+
 
 //render contains conditional statements based on state of isEditing as described in functions above.
 render() {
@@ -112,60 +126,35 @@ render() {
         </span>
       </div>
       <form className='brand-form'>
-      {isEditing === 'retailer' ? (
+      {isEditing === 'image' ? (
         <div className='editing'>
         <ul>
-            <h5>What is the main retailer?</h5>
-            <li>Retailer Name<Field
-              placeholder={props.name}
-              onChange={this.handleInput}
-              name='name'
-              component='input'/>
-            </li>
-            <h5>Select a logo</h5>
-            <li><Field
-              placeholder={props.website}
-              onChange={this.handleInput}
-              name='website'
-              component='input'/>
-            </li>
+            <h5>What is the Brand Cover Image?</h5>
+            {this.renderImage()}
           </ul>
           <button onClick={this.handleCancel}>Cancel</button>
-          <button onClick={this.handleSave} name='retailer'>Save</button>
+          <button onClick={this.handleSave} name='image'>Save</button>
         </div>) : (
         <div className='not-editing'>
-          <h5>Brand Logo</h5>
-          <button name='retailer' onClick={this.handleEdit}>Edit</button>
+          <h5>Brand Cover Image</h5>
+          <div className='display'><img src={state.image_url} className='cover-image' /></div>
+          <button name='image' onClick={this.handleEdit}>Edit</button>
         </div>
         )}
 
-        {isEditing === 'online' ? (
+        {isEditing === 'logo' ? (
           <div className='editing'>
           <ul>
-              <h5>Select the Brand Cover Image</h5>
-              <li><Field
-                type='radio'
-                onChange={this.handleInput}
-                name='online_only'
-                value={true}
-                checked={state.online_only === 'true'}
-                component='input'/> Yes
-              </li>
-              <li><Field
-                type='radio'
-                onChange={this.handleInput}
-                name='online_only'
-                value={false}
-                checked={state.online_only === 'false'}
-                component='input'/> No
-              </li>
+              <h5>Select the Brand Logo?</h5>
+              {this.renderLogo()}
             </ul>
             <button onClick={this.handleCancel}>Cancel</button>
-            <button onClick={this.handleSave} name='online'>Save</button>
+            <button onClick={this.handleSave} name='logo'>Save</button>
           </div>) : (
           <div className='not-editing'>
-            <h5>Select the Brand Cover Image</h5>
-            <button name='online' onClick={this.handleEdit}>Edit</button>
+            <h5>Brand Logo</h5>
+            <div className='display'><img src={state.logo_url} className='logo' /></div>
+            <button name='logo' onClick={this.handleEdit}>Edit</button>
           </div>
           )}
       </form>

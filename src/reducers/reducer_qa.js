@@ -25,7 +25,6 @@ import {
   FETCH_RETAILER,
   UPDATE_RETAILER,
   FETCH_IMAGE,
-  UPDATE_IMAGE
   } from '../actions'
 import _ from 'lodash'
 
@@ -151,11 +150,6 @@ export default function(state = {}, action) {
       console.log('fetch, image', action.payload.data.data);
       return action.payload.data.data
     }
-  case UPDATE_IMAGE:
-      if (!action.error) {
-        console.log('update, image', action.payload.data.data);
-        return {...state, [action.payload.data.data]: action.payload.data.data}
-      }
   return {error: action.error}
   default:
     return state
