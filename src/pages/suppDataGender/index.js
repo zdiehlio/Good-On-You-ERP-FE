@@ -90,9 +90,9 @@ handleEdit(event) {
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/suppDataRetailers/${id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Brand Styles</h3></div>
-            <div><Link to={`/suppDataGender/${id}`}><button className='next'>Next</button></Link></div>
+            <div><Link to={`/suppDataPrice/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><h3>Gender</h3></div>
+            <div><Link to={`/suppDataAlias/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
         <form className='brand-form'>

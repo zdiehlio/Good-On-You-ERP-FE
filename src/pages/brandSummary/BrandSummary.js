@@ -77,7 +77,7 @@ componentDidUpdate() {
 
   renderSummary() {
     return _.map(this.props.qa, summary => {
-      if(summary.id === 1)
+      // if(summary.id)
       return(
         <li key={summary.id}>{summary.text}</li>
       )
@@ -98,7 +98,7 @@ render() {
         <span className='form-navigation'>
           <div><Link to={`/brandSentences/${id}`}><button className='previous'>Previous</button></Link></div>
           <div><h3>Brand Summary</h3></div>
-          <div><Link to={`/suppDataCategory/${id}`}><button className='next'>Next</button></Link></div>
+          <div><Link to={`/suppDataSocialMedia/${id}`}><button className='next'>Next</button></Link></div>
         </span>
       </div>
       <form className='brand-form'>

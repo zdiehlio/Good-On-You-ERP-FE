@@ -31,7 +31,12 @@ componentWillMount() {
 
 componentWillReceiveProps(nextProps) {
   if(nextProps.qa != this.props.qa) {
-    this.setState({name: nextProps.qa.name, website: nextProps.qa.website, online_only: nextProps.qa.online_only})
+    _.map(nextProps.qa, check => {
+      this.setState({id: check.id, name: check.name, website: check.website, online_only: check.online_only, territories: _.map(check.territories, ter => {
+        return {name: ter.name}
+      })
+    })
+    })
   }
 }
 
@@ -49,13 +54,17 @@ componentWillReceiveProps(nextProps) {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(event.target.name === 'retailer') {
+    if(event.target.name === 'retailer' && !this.props.qa[0]) {
       this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website, territories: this.state.territories})
+      console.log('create retailer');
     } else if(event.target.name === 'online') {
-      this.props.updateRetailer(id, {online_only: this.state.online_only})
+      this.props.updateRetailer(this.state.id, {online_only: this.state.online_only})
+      console.log('update online');
+    } else {
+      this.props.updateRetailer(this.state.id, {name: this.state.name, website: this.state.website, territories: this.state.territories})
+      console.log('update retailer');
     }
     this.setState({isEditing: null})
-    console.log('save', this.state);
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
@@ -117,18 +126,19 @@ render() {
         <ul>
             <h5>What is the main retailer?</h5>
             <li>Retailer Name<Field
-              placeholder={props.name}
+              placeholder={state.name}
               onChange={this.handleInput}
               name='name'
               component='input'/>
             </li>
             <h5>Retailer Website </h5>
             <li><Field
-              placeholder={props.website}
+              placeholder={state.website}
               onChange={this.handleInput}
               name='website'
               component='input'/>
             </li>
+            <h5>Select one or more Retailer territories</h5>
             <li><Field
               name='territories'
               component='select'
@@ -177,7 +187,7 @@ render() {
           </div>) : (
           <div className='not-editing'>
             <h5>Is the brand sold online only?</h5>
-            <p>Online only: {state.online_only}</p>
+            <p>Online only: {state.online_only === 'true' ? 'Yes' : 'No'}</p>
             <button name='online' onClick={this.handleEdit}>Edit</button>
           </div>
           )}

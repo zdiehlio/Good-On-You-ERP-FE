@@ -75,7 +75,7 @@ handleEdit(event) {
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><Link to={`/suppDataRetailers/${id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Brand Styles</h3></div>
+            <div><h3>Price</h3></div>
             <div><Link to={`/suppDataGender/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>

@@ -108,7 +108,7 @@ render() {
       <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
       <div className='forms-header'>
         <span className='form-navigation'>
-          <div><Link to={`/suppDataTypes/${id}`}><button className='previous'>Previous</button></Link></div>
+          <div><Link to={`/suppDataGender/${id}`}><button className='previous'>Previous</button></Link></div>
           <div><h3>Brand Alias</h3></div>
           <div><button className='next'>Next</button></div>
         </span>

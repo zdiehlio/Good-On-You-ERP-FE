@@ -137,14 +137,14 @@ export default function(state = {}, action) {
     }
   case FETCH_RETAILER:
     if (!action.error) {
-      console.log('get, retailer', action.payload.data);
+      console.log('get, retailer', action.payload.data.data);
       return action.payload.data.data
     }
-  case UPDATE_RETAILER:
-    if (!action.error) {
-      console.log('update, retailer', action.payload.data.data);
-      return {...state, [action.payload.data.data]: action.payload.data.data}
-    }
+  // case UPDATE_RETAILER:
+  //   if (!action.error) {
+  //     console.log('update, retailer', action.payload.data.data);
+  //     return {...state, [action.payload.data.data]: action.payload.data.data}
+  //   }
   case FETCH_IMAGE:
     if (!action.error) {
       console.log('fetch, image', action.payload.data.data);

@@ -122,7 +122,7 @@ render() {
         <span className='form-navigation'>
           <div><Link to={`/suppDataSocialMedia/${id}`}><button className='previous'>Previous</button></Link></div>
           <div><h3>Image</h3></div>
-          <div><Link to={`/suppDataCategories/${id}`}><button className='next'>Next</button></Link></div>
+          <div><Link to={`/suppDataCategory/${id}`}><button className='next'>Next</button></Link></div>
         </span>
       </div>
       <form className='brand-form'>
@@ -131,6 +131,12 @@ render() {
         <ul>
             <h5>What is the Brand Cover Image?</h5>
             {this.renderImage()}
+            <li>Or enter a link for a new cover image<Field
+              placeholder={state.name}
+              onChange={this.handleInput}
+              name='name'
+              component='input'/>
+            </li>
           </ul>
           <button onClick={this.handleCancel}>Cancel</button>
           <button onClick={this.handleSave} name='image'>Save</button>

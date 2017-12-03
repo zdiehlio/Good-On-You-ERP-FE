@@ -72,7 +72,7 @@ render() {
         <span className='form-navigation'>
           <div><Link to={`/brandSummary/${id}`}><button className='previous'>Previous</button></Link></div>
           <div><h3>Social Media</h3></div>
-          <div><Link to={`/suppDataImages/${id}`}><button className='next'>Next</button></Link></div>
+          <div><Link to={`/suppDataImage/${id}`}><button className='next'>Next</button></Link></div>
         </span>
       </div>
       <form className='brand-form'>
