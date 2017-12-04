@@ -18,6 +18,7 @@ class BrandGeneral extends Component {
       isEditing: null,
       currentAnswer: '',
       sizeValues: [],
+      deleteSize: [],
       currentValues: [],
       sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'manual', 'subsidiary', 'listed'],
       input: null
@@ -31,20 +32,26 @@ class BrandGeneral extends Component {
     this.handleSave = this.handleSave.bind(this)
     this.handleSubmitSize = this.handleSubmitSize.bind(this)
     this.handleCheckbox = this.handleCheckbox.bind(this)
-    // this.handleDelete = this.handleDelete.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
   this.props.fetchGeneral(id, 'general')
 }
 
+componentWillReceiveProps(nextProps) {
+  const { id } = this.props.match.params
+  if(nextProps.qa !== this.props.qa) {
+    _.map(nextProps.qa.size, crit => {
+      this.setState({[crit.criteria]: crit.criteria})
+    })
+    this.setState({sizeValues: _.map(nextProps.qa.size, val => {return {brand: id, criteria: val.criteria}})})
+  }
+}
+
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    _.mapValues(this.props.qa.size, crit => {
-      this.setState({sizeValues: [...this.state.sizeValues, crit], [crit.criteria]: crit.criteria})
-    })
     this.setState({isEditing: event.target.value})
 }
 //sets state for isEditing to null which will toggle the ability to edit
@@ -55,10 +62,14 @@ componentWillMount() {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.updateGeneral(id, {name: this.state.name, sustainability_report_date: this.state.sustainability_report_date, review_date: this.state.review_date, parent_company: this.state.parent_company, is_large: this.state.is_large})
+    if(event.target.name !== '5') {
+      this.props.updateGeneral(id, {name: this.state.name, sustainability_report_date: this.state.sustainability_report_date, review_date: this.state.review_date, parent_company: this.state.parent_company, is_large: this.state.is_large})
+    } else if(event.target.name === '5') {
+      this.props.createBrandSize(id, this.state.sizeValues)
+      console.log('post');
+      // _.map(this.state.deleteSize, val => {this.props.deleteBrandSize(id, val)})
+    }
     this.setState({isEditing: null})
-    this.props.fetchGeneral(id, 'general')
-    console.log('save', this.state);
   }
 
   handleSubmitSize(event) {
@@ -67,19 +78,20 @@ componentWillMount() {
     this.setState({isEditing: null})
   }
 
+  // this.props.createBrandSize({brand: id, criteria: event.target.name})
+  // this.props.deleteBrandSize(id, event.target.name)
   handleCheckbox(event) {
     const { id }  = this.props.match.params
-    if(this.state[event.target.name]) {
-      this.props.deleteBrandSize(id, event.target.name)
-      this.setState({[event.target.name]: null})
-    } else {
-      this.props.createBrandSize({brand: id, criteria: event.target.name})
-      this.setState({[event.target.name]: event.target.name})
-    }
+      if(this.state[event.target.name]) {
+        this.setState({[event.target.name]: null, sizeValues: this.state.sizeValues.filter(select => {return select.criteria != event.target.name})})
+      } else {
+        this.setState({[event.target.name]: event.target.name, sizeValues: [...this.state.sizeValues, {brand: id, criteria: event.target.name}]})
+      }
+      console.log(this.state.sizeValues);
   }
 
   renderCriteria() {
-      return _.map(this.props.qa.size, crit => {
+      return _.map(this.state.sizeValues, crit => {
         return (
           <li key={crit.criteria}>
             {crit.criteria}
@@ -201,14 +213,14 @@ componentWillMount() {
                         type='radio'
                         onChange={this.handleRadio}
                         name='small'
-                        checked={props.is_large === false}
+                        checked={state.sizeValues.length === 0}
                         component='input' />Small
                       </li>
                       <li> <Field
                         type='radio'
                         onChange={this.handleRadio}
                         name='large'
-                        checked={props.is_large === true}
+                        checked={state.sizeValues.length > 0}
                         component='input' />Large
                       </li>
                     </ul>
@@ -272,7 +284,7 @@ componentWillMount() {
                   </div>) : (
                   <div className='not-editing'>
                     <h5>What is the size of the Brand?</h5>
-                    <p>Size of Brand: {props.is_large === true ? 'Large' : 'Small'}</p>
+                    <p>Size of Brand: {state.sizeValues.length === 0 ? 'Small' : 'Large'}</p>
                     <p>Criteria: </p>
                       <ul>{this.renderCriteria()}</ul>
                     <p>Parent Company: {state.parent_company ? state.parent_company : props.parent_company}</p>

@@ -31,12 +31,14 @@ componentWillMount() {
   this.props.fetchSentence(id)
 }
 
-componentDidMount() {
-  _.map(this.props.qa, ident => {
-    if(ident.is_selected)
-      console.log('ident', ident.is_selected);
-      this.setState({currentAnswer: ident.id})
-})
+componentWillReceiveProps(nextProps) {
+  if(nextProps.qa !== this.props.qa) {
+    _.map(this.props.qa, ident => {
+      if(ident.is_selected)
+        console.log('ident', ident.is_selected);
+        this.setState({currentAnswer: ident.id})
+      })
+    }
 }
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer

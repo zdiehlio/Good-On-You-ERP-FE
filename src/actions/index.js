@@ -137,9 +137,9 @@ export function updateGeneral(id, values) {
   }
 }
 
-export function createBrandSize(values) {
+export function createBrandSize(id, values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.post(`${ROOT_URL}/brands-sizes`, values)
+  const request = axios.delete(`${ROOT_URL}/brands-sizes?brand=${id}`).then(() => {axios.post(`${ROOT_URL}/brands-sizes`, values)})
   return {
     type: CREATE_SIZE,
     payload: request
@@ -157,7 +157,7 @@ export function deleteBrandSize(id, values) {
 
 export function fetchContact(id, values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.get(`${ROOT_URL}/brands-contacts?brand=${id}`)
+  const request = axios.get(`${ROOT_URL}/brands/${id}?section=contact`)
   return {
     type: FETCH_CONTACT,
     payload: request
@@ -168,7 +168,7 @@ export function createContact(values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
   const request = axios.post(`${ROOT_URL}/brands-contacts`, values)
   return {
-    type: FETCH_GENERAL,
+    type: CREATE_CONTACT,
     payload: request
   }
 }
@@ -355,7 +355,7 @@ export function updateBrandCategory(id, cat, values) {
 
 export function createBrandCategory(id, values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.delete(`${ROOT_URL}/brands-categories?brand=${id}`).then(axios.post(`${ROOT_URL}/brands-categories`, values))
+  const request = axios.delete(`${ROOT_URL}/brands-categories?brand=${id}`).then(() => {axios.post(`${ROOT_URL}/brands-categories`, values)})
   // const request = axios.post(`${ROOT_URL}/brands-categories`, values)
   return (dispatch) => {
     request.then((data) => {

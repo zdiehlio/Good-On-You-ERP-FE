@@ -53,6 +53,7 @@ button:hover {
   float:left;
 }
 .brand-form li {
+  display: block;
   list-style-type: none;
   margin:0.5em;
 }

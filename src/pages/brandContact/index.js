@@ -26,8 +26,16 @@ class BrandContact extends Component {
   }
 componentWillMount() {
   const { id } = this.props.match.params
+  // axios.delete(`https://goy-ed-2079.nodechef.com/brands-contacts?brand=${id}`)
   this.props.fetchContact(id)
+}
 
+componentWillReceiveProps(nextProps) {
+  if(nextProps.qa.contact !== this.props.qa.contact) {
+    if(nextProps.qa.contact) {
+      this.setState({name: nextProps.qa.contact.name, email: nextProps.qa.contact.email, relationship_manager: nextProps.qa.contact.relationship_manager })
+    }
+  }
 }
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
@@ -38,12 +46,17 @@ componentWillMount() {
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    this.setState({isEditing: null, currentAnswer: null})
+    event.preventDefault()
+    this.setState({isEditing: null, name: this.props.qa.contact.name, email: this.props.qa.contact.email, relationship_manager: this.props.qa.contact.relationship_manager})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     const { id }  = this.props.match.params
-    this.props.updateContact(id, {name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
+    if(this.props.qa.contact) {
+      this.props.updateContact(id, {name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
+    } else {
+      this.props.createContact({brand: id, name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
+    }
     this.setState({isEditing: null})
     console.log('save', this.state);
   }
@@ -54,7 +67,7 @@ componentWillMount() {
 
 //render contains conditional statements based on state of isEditing as described in functions above.
 render() {
-  console.log('props', _.map(this.props.qa));
+  console.log('props', this.props.qa);
   console.log('state', this.state);
   const isEditing = this.state.isEditing
   const { id }  = this.props.match.params
@@ -77,19 +90,19 @@ render() {
         <ul>
           <h5>Brand Contact Name: </h5>
             <Field
-              placeholder={props.name}
+              placeholder={state.name}
               onChange={this.handleInput}
               name='name'
               component='input'/>
           <h5>Brand Contact Email: </h5>
             <Field
-              placeholder={props.email}
+              placeholder={state.email}
               onChange={this.handleInput}
               name='email'
               component='input'/>
             <h5>Brand GOY Relationship Manager: </h5>
               <Field
-                placeholder={props.relationship_manager}
+                placeholder={state.relationship_manager}
                 onChange={this.handleInput}
                 name='relationship_manager'
                 component='input'/>
@@ -99,9 +112,9 @@ render() {
         </div>) : (
         <div className='not-editing'>
           <h5>Brand Contact Information</h5>
-          <p>Contact Name: {state.name ? state.name : props.name}</p>
-          <p>Email: {state.email ? state.email : props.email}</p>
-          <p>Relationship Manager: {state.relationship_manager ? state.relationship_manager : props.relationship_manager}</p>
+          <p>Contact Name: {state.name}</p>
+          <p>Email: {state.email}</p>
+          <p>Relationship Manager: {state.relationship_manager}</p>
           <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
         </div>
         )}

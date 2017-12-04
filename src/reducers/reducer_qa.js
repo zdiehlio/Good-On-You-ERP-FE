@@ -37,12 +37,6 @@ export default function(state = {}, action) {
       return action.payload.data
     }
     return {error: action.error}
-    case CREATE_SIZE:
-      if (!action.error) {
-        console.log('create, size', action.payload.data);
-        return action.payload.data
-      }
-      return {error: action.error}
     case DELETE_SIZE:
       if (!action.error) {
         console.log('delete, size', action.payload.data);
@@ -51,8 +45,8 @@ export default function(state = {}, action) {
       return {error: action.error}
     case FETCH_CONTACT:
       if (!action.error) {
-        console.log('fetch, contact', action.payload.data.data);
-        return _.mapValues(action.payload.data.data[0])
+        console.log('fetch, contact', action.payload.data);
+        return action.payload.data
       }
       return {error: action.error}
     case UPDATE_CONTACT:
