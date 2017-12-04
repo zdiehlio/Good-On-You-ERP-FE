@@ -73,11 +73,11 @@ export default function(state = {}, action) {
       return _.mapKeys(action.payload.data.data, 'question')
     }
     return {error: action.error}
-  case UPDATE_CAUSE:
-    if (!action.error) {
-    console.log('update answer', action.payload.data)
-    return {...state, [action.payload.data]: action.payload.data}
-  }
+  // case UPDATE_CAUSE:
+  //   if (!action.error) {
+  //   console.log('update answer', action.payload.data)
+  //   return {...state, [action.payload.data]: action.payload.data}
+  // }
   case FETCH_SENTENCE:
     if (!action.error) {
       console.log('fetch, sentence', action.payload.data.data);
@@ -140,11 +140,6 @@ export default function(state = {}, action) {
       console.log('get, retailer', action.payload.data.data);
       return action.payload.data.data
     }
-  // case UPDATE_RETAILER:
-  //   if (!action.error) {
-  //     console.log('update, retailer', action.payload.data.data);
-  //     return {...state, [action.payload.data.data]: action.payload.data.data}
-  //   }
   case FETCH_IMAGE:
     if (!action.error) {
       console.log('fetch, image', action.payload.data.data);

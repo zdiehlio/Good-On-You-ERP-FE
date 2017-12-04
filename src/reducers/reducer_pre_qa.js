@@ -1,4 +1,4 @@
-import { FETCHALL_STYLES, FETCH_TERRITORY, FETCH_LOGO } from '../actions'
+import { FETCHALL_STYLES, FETCH_TERRITORY, FETCH_LOGO, FETCHALL_CAUSE } from '../actions'
 import _ from 'lodash'
 import jwtDecode from 'jwt-decode'
 
@@ -20,6 +20,11 @@ export default function(state = null, action) {
     case FETCH_LOGO:
       if (!action.error) {
         console.log('fetch, logo', action.payload.data.data);
+        return _.mapKeys(action.payload.data.data, 'id')
+      }
+    case FETCHALL_CAUSE:
+      if (!action.error) {
+        console.log('fetch all, cause', action.payload.data.data);
         return _.mapKeys(action.payload.data.data, 'id')
       }
       return {error: action.error}

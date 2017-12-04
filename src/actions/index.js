@@ -10,9 +10,9 @@ export const FETCH_USERS = 'fetch_users'
 export const FETCH_BRANDS = 'fetch_brands'
 export const FETCH_USER_INFO = 'fetch_user_info'
 export const FETCH_CAUSE = 'fetch_cause'
+export const FETCHALL_CAUSE = 'fetchall_cause'
 export const CLEAR_SEARCH = "clear_search"
 export const UPDATE_CAUSE = 'update_cause'
-// export const GET_CAUSES = 'get_causes'
 export const CREATE_CAUSE = 'create_cause'
 export const FETCH_SENTENCE = 'fetch_sentence'
 export const CREATE_SENTENCE = 'create_sentence'
@@ -179,6 +179,16 @@ export function updateContact(id, values) {
   return {
     type: FETCH_GENERAL,
     payload: request
+  }
+}
+
+export function fetchAllCause(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/causes`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCHALL_CAUSE, payload: data})
+    })
   }
 }
 
