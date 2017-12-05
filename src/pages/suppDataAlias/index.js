@@ -7,6 +7,8 @@ import { FormsHeader } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
+import './suppDataAlias.css'
+
 class SuppDataAlias extends Component {
   constructor(props){
     super(props)
@@ -16,7 +18,7 @@ class SuppDataAlias extends Component {
       currentAnswer: null,
       renderAlias: null,
       save: false,
-      delete: false
+      aliasArr: []
     }
 
 
@@ -30,6 +32,13 @@ class SuppDataAlias extends Component {
 componentWillMount() {
   const { id } = this.props.match.params
   this.props.fetchAlias(id)
+}
+
+componentWillReceiveProps(nextProps) {
+  if(nextProps.qa !== this.props.qa) {
+    this.setState({aliasArr: _.map(nextProps.qa, ali => {return {id: ali.id, alias: ali.alias}})})
+    console.log('cwr');
+  }
 }
 
 componentWillUpdate(nextProps, nextState) {
@@ -62,7 +71,7 @@ componentDidUpdate() {
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
-    this.setState({isEditing: null, renderCurrent: this.state.currentAnswer, save: true})
+    this.setState({isEditing: null, renderCurrent: this.state.currentAnswer})
     console.log('save', this.state);
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
@@ -73,24 +82,25 @@ componentDidUpdate() {
   handleDelete(event) {
     event.preventDefault()
     this.props.deleteAlias(event.target.name)
-    this.setState({save: true})
+    this.setState({aliasArr: this.state.aliasArr.filter(ali => {return ali.id !== event.target.name}), [event.target.name]: null})
   }
 
   handleAdd(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
     this.props.createAlias({brand: id, alias: this.state.currentAnswer})
-    this.setState({save: true})
+    this.setState({aliasArr: [...this.state.aliasArr, event.target.name], save: true})
   }
 
   renderAlias() {
     // <button onClick={this.handleDelete} name={name.id} className='remove-list-item'>Delete</button>
-    return _.map(this.props.qa, name => {
+    return _.map(this.state.aliasArr, name => {
       if(name) {
         return(
-          <li key={name.alias} >
+          <div key={name.id}>
             {name.alias}
-          </li>
+            <button className='delete-alias' onClick={this.handleDelete} name={name.id}>Delete</button>
+          </div>
         )
       }
     })
@@ -133,7 +143,7 @@ render() {
         )}
         <h4>List of current Brand Aliases: </h4>
         <ul>
-          {this.renderAlias()}
+          {this.state.save === true ? this.renderAlias() : this.renderAlias()}
         </ul>
       </form>
     </div>

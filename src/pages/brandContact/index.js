@@ -26,7 +26,7 @@ class BrandContact extends Component {
   }
 componentWillMount() {
   const { id } = this.props.match.params
-  // axios.delete(`https://goy-ed-2079.nodechef.com/brands-contacts?brand=${id}`)
+  axios.delete(`https://goy-ed-2079.nodechef.com/brands-contacts/3`)
   this.props.fetchContact(id)
 }
 

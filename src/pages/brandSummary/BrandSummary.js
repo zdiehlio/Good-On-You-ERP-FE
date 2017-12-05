@@ -105,12 +105,12 @@ render() {
       {isEditing === '1' ? (
         <div className='editing'>
         <h5>What is the Summary for the Brand?</h5>
-          <Field
+          <textarea
+            className='edit-summary'
             placeholder={this.currentAnswer}
             onFocus={this.handleInput}
             onChange={this.handleInput}
-            name='summary'
-            component='textarea'/>
+            name='summary'/>
           <button onClick={this.handleCancel}>Cancel</button>
           <button onClick={this.handleSave} name='1' value='1'>Save</button>
         </div>) : (

@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+    import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -7,15 +7,18 @@ import { FormsHeader } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
+import './brandSentence.css'
+
 class BrandSentences extends Component {
   constructor(props){
     super(props)
 
     this.state = {
       isEditing: null,
-      currentAnswer: null,
-      finalAnswer: null,
-      input: null
+      currentAnswer: '',
+      finalAnswer: '',
+      input: '',
+      sentenceOptions: []
     }
 
 
@@ -32,36 +35,49 @@ componentWillMount() {
 }
 
 componentWillReceiveProps(nextProps) {
+  const { id } = this.props.match.params
   if(nextProps.qa !== this.props.qa) {
-    _.map(this.props.qa, ident => {
-      if(ident.is_selected)
+    if(nextProps.qa) {
+    _.map(nextProps.qa, ident => {
+      if(ident.is_selected) {
         console.log('ident', ident.is_selected);
-        this.setState({currentAnswer: ident.id})
-      })
+        this.setState({currentAnswer: ident.id, finalAnswer: ident.text, sentenceOptions: ident.id})
+      }
+    })
+    // this.setState({sentenceOptions: nextProps.qa.id})
     }
+  }
 }
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state.currentAnswer) {
-      console.log('current answer');
-    } else if(this.props.qa) {
-      //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
-      _.map(this.props.qa, ident => {
-        if(ident.is_selected === true)
-          this.setState({currentAnswer: `${ident.id}`, input: ident.text})
-          console.log('ident', ident);
-    })
-      //if state of target 'name' does not yet exist, will pull value of answer off props and set state to that answer and also toggle editing
+    // _.map(this.props.qa, del => {
+    //   axios.delete(`https://goy-ed-2079.nodechef.com/brands-sentences/${del.id}`)
+    // })
+    if(this.state.finalAnswer === '') {
+      // this.props.createSentence({brand: id, text: this.state.finalAnswer})
+      // this.props.createSentence({brand: id, text: this.state.finalAnswer})
+      // this.props.createSentence({brand: id, text: this.state.finalAnswer})
     }
-    //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
-    else {
-      this.props.createSentence({brand: id, text: 'option 1'})
-      this.props.createSentence({brand: id, text: 'option 2'})
-      console.log('post');
-    }
+    // if(this.state.currentAnswer) {
+    //   console.log('current answer');
+    // } else if(this.props.qa) {
+    //   //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
+    //   _.map(this.props.qa, ident => {
+    //     if(ident.is_selected === true)
+    //       this.setState({currentAnswer: `${ident.id}`, finalAnswer: ident.text})
+    //       console.log('ident', ident);
+    // })
+    //   //if state of target 'name' does not yet exist, will pull value of answer off props and set state to that answer and also toggle editing
+    // }
+    // //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
+    // else {
+    //   this.props.createSentence({brand: id, text: 'option 1'})
+    //   this.props.createSentence({brand: id, text: 'option 2'})
+    //   console.log('post');
+    // }
     this.setState({isEditing: '1'})
   }
 //sets state for isEditing to null which will toggle the ability to edit
@@ -71,7 +87,7 @@ componentWillReceiveProps(nextProps) {
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     const { id }  = this.props.match.params
-    this.props.updateSentence(id, this.state.currentAnswer, {text: this.state.finalAnswer, is_selected: true})
+    this.props.createSentence(this.state.currentAnswer, {brand: id, text: this.state.finalAnswer})
     this.setState({isEditing: null})
     console.log('save', this.state);
   }
@@ -81,7 +97,7 @@ componentWillReceiveProps(nextProps) {
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
-    this.setState({finalAnswer: event.target.value, currentAnswer: event.target.name, input: event.target.value})
+    this.setState({finalAnswer: event.target.value, currentAnswer: parseInt(event.target.name), input: event.target.value})
   }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
@@ -115,7 +131,7 @@ componentWillReceiveProps(nextProps) {
                 checked={state.currentAnswer==='1'}
                 name='New Zealands premium casual lifestyle brand for women and men'
                 component='input'
-                value='1'/> New Zealands premium casual lifestyle brand for women and men
+                value={_.map(this.props.qa, val => {return val.id[0]})}/> New Zealands premium casual lifestyle brand for women and men
               </li>
               <li><Field
                 type='radio'
@@ -126,12 +142,13 @@ componentWillReceiveProps(nextProps) {
                 value='2'/> New Zealands luxury lifestyle brand for sustainable and organic fashion for women and men
               </li>
               <h5>Edit the one you chose or write a new one</h5>
-              <li><Field
-                placeholder={state.currentAnswer ? state.input : state.finalAnswer}
+              {state.finalAnswer}
+              <li><textarea
+                className='edit-sentence'
                 onFocus={this.handleInput}
                 onChange={this.handleInput}
-                name='3'
-                component='textarea' />
+                value={state.finalAnswer}
+                name='3'/>
               </li>
             </ul>
             <button onClick={this.handleCancel}>Cancel</button>
