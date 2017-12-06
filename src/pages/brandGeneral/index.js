@@ -20,6 +20,7 @@ class BrandGeneral extends Component {
       sizeValues: [],
       deleteSize: [],
       currentValues: [],
+      parent_company: '',
       sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'manual', 'subsidiary', 'listed'],
       input: null
     }
@@ -44,7 +45,7 @@ componentWillReceiveProps(nextProps) {
     _.map(nextProps.qa.size, crit => {
       this.setState({[crit.criteria]: crit.criteria})
     })
-    this.setState({sizeValues: _.map(nextProps.qa.size, val => {return {brand: id, criteria: val.criteria}})})
+    this.setState({parent_company: nextProps.qa.parent_company, sizeValues: _.map(nextProps.qa.size, val => {return {brand: id, criteria: val.criteria}})})
   }
 }
 
@@ -63,9 +64,10 @@ componentWillReceiveProps(nextProps) {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(event.target.name !== '5') {
-      this.props.updateGeneral(id, {name: this.state.name, sustainability_report_date: this.state.sustainability_report_date, review_date: this.state.review_date, parent_company: this.state.parent_company, is_large: this.state.is_large})
+      this.props.updateGeneral(id, {name: this.state.name, sustainability_report_date: this.state.sustainability_report_date, review_date: this.state.review_date})
     } else if(event.target.name === '5') {
       this.props.createBrandSize(id, this.state.sizeValues)
+      this.props.updateGeneral(id, {parent_company: this.state.parent_company})
       console.log('post');
       // _.map(this.state.deleteSize, val => {this.props.deleteBrandSize(id, val)})
     }
@@ -213,14 +215,14 @@ componentWillReceiveProps(nextProps) {
                         type='radio'
                         onChange={this.handleRadio}
                         name='small'
-                        checked={state.sizeValues.length === 0}
+                        checked={state.sizeValues.length === 0 && state.parent_company.length === 0}
                         component='input' />Small
                       </li>
                       <li> <Field
                         type='radio'
                         onChange={this.handleRadio}
                         name='large'
-                        checked={state.sizeValues.length > 0}
+                        checked={state.sizeValues.length > 0 || state.parent_company}
                         component='input' />Large
                       </li>
                     </ul>
@@ -272,7 +274,7 @@ componentWillReceiveProps(nextProps) {
                       <ul>
                       <h5>Parent Company Name: </h5>
                         <li> <Field
-                          placeholder={props.parent_company}
+                          placeholder={state.parent_company}
                           onFocus={this.handleInput}
                           onChange={this.handleInput}
                           name='parent_company'
@@ -284,10 +286,10 @@ componentWillReceiveProps(nextProps) {
                   </div>) : (
                   <div className='not-editing'>
                     <h5>What is the size of the Brand?</h5>
-                    <p>Size of Brand: {state.sizeValues.length === 0 ? 'Small' : 'Large'}</p>
+                    <p>Size of Brand: {state.sizeValues.length > 0 || state.parent_company.length > 0 ? 'Large' : 'Small'}</p>
                     <p>Criteria: </p>
                       <ul>{this.renderCriteria()}</ul>
-                    <p>Parent Company: {state.parent_company ? state.parent_company : props.parent_company}</p>
+                    <p>Parent Company: {state.parent_company}</p>
                     <button name='5' onClick={this.handleEdit} value='5'>Edit</button>
                   </div>
                   )}

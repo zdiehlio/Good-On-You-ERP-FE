@@ -117,7 +117,6 @@ export default function(state = {}, action) {
   case DELETE_ALIAS:
     if (!action.error) {
       console.log('delete, alias', action.payload.data);
-      console.log('app state', state);
       return _.omit(state, action.payload.data.alias)
     }
   case FETCH_STYLES:
@@ -135,6 +134,12 @@ export default function(state = {}, action) {
       console.log('get, retailer', action.payload.data.data);
       return action.payload.data.data
     }
+  // case UPDATE_RETAILER:
+  //   if (!action.error) {
+  //     console.log('update, retailer', action.payload);
+  //     console.log('app state', state);
+  //     return {...state, [action.payload.data]: action.payload.data}
+  //   }
   case FETCH_IMAGE:
     if (!action.error) {
       console.log('fetch, image', action.payload.data.data);

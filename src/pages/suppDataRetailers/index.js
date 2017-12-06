@@ -12,7 +12,8 @@ class SuppDataRetailers extends Component {
 
     this.state = {
       isEditing: null,
-      territories: []
+      territories: [],
+      save: false
     }
 
 
@@ -40,6 +41,19 @@ componentWillReceiveProps(nextProps) {
   }
 }
 
+componentWillUpdate(nextProps, nextState) {
+  const { id } = this.props.match.params
+  if (nextState.save == true && this.state.save == false) {
+    console.log('update', nextProps);
+}
+}
+
+componentDidUpdate() {
+  if(this.state.save === true) {
+    this.setState({save: false})
+  }
+}
+
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
@@ -59,9 +73,11 @@ componentWillReceiveProps(nextProps) {
       console.log('create retailer');
     } else if(event.target.name === 'online') {
       this.props.updateRetailer(this.state.id, {online_only: this.state.online_only})
+      this.setState({save: true})
       console.log('update online');
     } else {
       this.props.updateRetailer(this.state.id, {name: this.state.name, website: this.state.website, territories: this.state.territories})
+      this.setState({save: true})
       console.log('update retailer');
     }
     this.setState({isEditing: null})
