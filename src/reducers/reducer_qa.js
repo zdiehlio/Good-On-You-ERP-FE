@@ -114,11 +114,12 @@ export default function(state = {}, action) {
       console.log('fetch, alias', action.payload.data);
       return _.mapKeys(action.payload.data.data, 'alias')
     }
-  // case DELETE_ALIAS:
-  //   if (!action.error) {
-  //     console.log('delete, alias', action.payload.data);
-  //     return {...state, action.payload.data !== action.payload.data}
-  //   }
+  case DELETE_ALIAS:
+    if (!action.error) {
+      console.log('delete, alias', action.payload.data);
+      console.log('app state', state);
+      return _.omit(state, action.payload.data.alias)
+    }
   case FETCH_STYLES:
     if (!action.error) {
       console.log('fetch, styles', action.payload.data.data);
