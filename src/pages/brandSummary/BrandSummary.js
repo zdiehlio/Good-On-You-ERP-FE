@@ -29,33 +29,18 @@ componentWillMount() {
   this.props.fetchSummary(id)
 }
 
-componentWillUpdate(nextProps, nextState) {
-  const { id } = this.props.match.params
-  if (nextState.save == true && this.state.save == false) {
-    this.props.fetchSummary(id)
+componentWillReceiveProps(nextProps) {
+  if(nextProps.qa !== this.props.qa) {
+    _.map(nextProps.qa, summary=> {
+      this.setState({renderSummary: summary.text, currentAnswer: summary.text})
+    })
   }
 }
-
-componentDidUpdate() {
-  if(this.state.save === true) {
-    this.setState({save: false})
-  }
-}
-
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.props.qa[0]) {
-      //if a summary already exists, will set state of same target name to the current answer value and also toggle editing
-      _.map(this.props.qa, summary=> {
-        this.setState({renderSummary: summary.text, currentAnswer: summary.text})
-      })
-    } else {
-      this.props.createSummary({brand: id, text: 'option 1'})
-      console.log('post');
-    }
     this.setState({isEditing: event.target.value})
   }
 //sets state for isEditing to null which will toggle the ability to edit
@@ -66,8 +51,13 @@ componentDidUpdate() {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.updateSummary(id, {text: this.state.currentAnswer})
-    this.setState({isEditing: null, renderSummary: this.state.currentAnswer, save: true})
+    if(this.state.renderSummary) {
+      this.props.updateSummary(id, {text: this.state.currentAnswer})
+      this.setState({isEditing: null, renderSummary: this.state.currentAnswer})
+    } else {
+        this.props.createSummary({brand: id, text: this.state.currentAnswer})
+        this.setState({renderSummary: this.state.currentAnswer, isEditing: null})
+    }
     console.log('save', this.state);
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
@@ -75,20 +65,22 @@ componentDidUpdate() {
     this.setState({currentAnswer: event.target.value})
   }
 
-  renderSummary() {
-    return _.map(this.props.qa, summary => {
-      if(summary.id)
-      return(
-        <li key={summary.id}>{summary.text}</li>
-      )
-    })
-  }
+  // renderSummary() {
+  //   return _.map(this.props.qa, summary => {
+  //     if(summary.id)
+  //     return(
+  //       <li key={summary.id}>{summary.text}</li>
+  //     )
+  //   })
+  // }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
 render() {
   console.log('props', this.props.qa);
   console.log('state', this.state);
   const isEditing = this.state.isEditing
+  const props = this.props.qa
+  const state = this.state
   const { id }  = this.props.match.params
   return(
     <div className='form-container'>
@@ -121,7 +113,7 @@ render() {
         )}
         <h4>Current Brand Summary</h4>
         <ul>
-        {this.renderSummary()}
+        {state.renderSummary}
         </ul>
       </form>
     </div>

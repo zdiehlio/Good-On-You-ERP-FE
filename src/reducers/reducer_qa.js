@@ -86,11 +86,13 @@ export default function(state = {}, action) {
       return _.mapKeys(action.payload.data, 'id')
     }
     return {error: action.error}
-  case UPDATE_SUMMARY:
-    if (!action.error) {
-    console.log('update category', action.payload.data)
-    return {...state, [action.payload.data]: action.payload.data}
-  }
+  // case UPDATE_SUMMARY:
+  //   if (!action.error) {
+  //     const idMap = _.map(action.payload.data, check => {return check.id})
+  //     const id = idMap[0]
+  //     console.log('update category', action.payload.data)
+  //     return {...state, [idMap]: action.payload.data}
+  // }
   case FETCHALL_CATEGORY:
     if (!action.error) {
       console.log('fetch, categories', action.payload.data);
