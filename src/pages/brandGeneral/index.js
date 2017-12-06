@@ -43,9 +43,14 @@ componentWillReceiveProps(nextProps) {
   const { id } = this.props.match.params
   if(nextProps.qa !== this.props.qa) {
     _.map(nextProps.qa.size, crit => {
-      this.setState({[crit.criteria]: crit.criteria})
+      if(crit) {
+        this.setState({[crit.criteria]: crit.criteria})
+      }
     })
-    this.setState({parent_company: nextProps.qa.parent_company, sizeValues: _.map(nextProps.qa.size, val => {return {brand: id, criteria: val.criteria}})})
+    if(nextProps.qa.size) {
+      this.setState({sizeValues: _.map(nextProps.qa.size, val => {return {brand: id, criteria: val.criteria}})})
+    }
+    this.setState({parent_company: nextProps.qa.parent_company})
   }
 }
 
@@ -215,7 +220,7 @@ componentWillReceiveProps(nextProps) {
                         type='radio'
                         onChange={this.handleRadio}
                         name='small'
-                        checked={state.sizeValues.length === 0 && state.parent_company.length === 0}
+                        checked={state.sizeValues.length === 0 && (state.parent_company === null || state.parent_company === '')}
                         component='input' />Small
                       </li>
                       <li> <Field
@@ -286,7 +291,7 @@ componentWillReceiveProps(nextProps) {
                   </div>) : (
                   <div className='not-editing'>
                     <h5>What is the size of the Brand?</h5>
-                    <p>Size of Brand: {state.sizeValues.length > 0 || state.parent_company.length > 0 ? 'Large' : 'Small'}</p>
+                    <p>Size of Brand: {state.sizeValues.length > 0 || state.parent_company ? 'Large' : 'Small'}</p>
                     <p>Criteria: </p>
                       <ul>{this.renderCriteria()}</ul>
                     <p>Parent Company: {state.parent_company}</p>

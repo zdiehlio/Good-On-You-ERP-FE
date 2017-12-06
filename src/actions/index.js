@@ -273,9 +273,9 @@ export function fetchSentence(id) {
   }
 }
 
-export function createSentence(id, values) {
+export function createSentence(values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.delete(`${ROOT_URL}/brands-sentences/${id}`).then(() => axios.post(`${ROOT_URL}/brands-sentences`, values))
+  const request = axios.post(`${ROOT_URL}/brands-sentences`, values)
   console.log('post', request);
   return (dispatch) => {
     request.then((data) => {

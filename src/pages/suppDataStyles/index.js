@@ -432,7 +432,7 @@ handleKidsEdit(event) {
           <div className='editing'>
           <h4>Does the brand sell Outdoor Gear?</h4>
             <div>
-              <h5>Accessories</h5>
+              <h5>Outdoor Gear</h5>
               {this.renderStyles('outdoor-')}
             </div>
             <button onClick={this.handleCancel}>Cancel</button>
@@ -440,7 +440,7 @@ handleKidsEdit(event) {
           </div>) : (
           <div className='not-editing'>
             <h4>Does the brand sell Outdoor Gear?</h4>
-            <h5>Accessories: {state['outdoor-'] ? `${(state['outdoor-'] * 100)}%` : '0%'}</h5>
+            <h5>Outdoor Gear: {state['outdoor-'] ? `${(state['outdoor-'] * 100)}%` : '0%'}</h5>
             <button name='outdoor' onClick={this.handleEdit}>Edit</button>
           </div>
         )}
@@ -499,7 +499,7 @@ handleKidsEdit(event) {
 
         {isEditing === 'style-scores' ? (
           <div className='editing'>
-          <h4>Does the Brand sell underwear?</h4>
+          <h4>Style Scores</h4>
             <div>
               <h5>Casual</h5>
               {this.renderStyles('casual')}
@@ -516,7 +516,7 @@ handleKidsEdit(event) {
             <button name='style-scores' onClick={this.handleSave}>Save</button>
           </div>) : (
           <div className='not-editing'>
-            <h4>Does the Brand sell underwear?</h4>
+            <h4>Style Scores</h4>
             <h5>Casual: {state['casual'] ? `${(state['casual'] * 100)}%` : '0%'}</h5>
             <h5>Classic: {state['classic'] ? `${(state['classic'] * 100)}%` : '0%'}</h5>
             <h5>Feminine: {state['feminine'] ? `${(state['feminine'] * 100)}%` : '0%'}</h5>

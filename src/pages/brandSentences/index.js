@@ -15,19 +15,19 @@ class BrandSentences extends Component {
 
     this.state = {
       isEditing: null,
-      currentAnswer: '',
+      currentSelect: '',
+      currentId: '',
       finalAnswer: '',
-      input: '',
-      sentenceOptions: []
+      save: false,
+      input: ''
     }
 
 
     this.handleRadio = this.handleRadio.bind(this)
-    this.handleInput = this.handleInput.bind(this)
+    // this.handleInput = this.handleInput.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
-    // this.handleDelete = this.handleDelete.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
@@ -39,13 +39,26 @@ componentWillReceiveProps(nextProps) {
   if(nextProps.qa !== this.props.qa) {
     if(nextProps.qa) {
     _.map(nextProps.qa, ident => {
-      if(ident.is_selected) {
+      if(ident.is_selected === true) {
         console.log('ident', ident.is_selected);
-        this.setState({currentAnswer: ident.id, finalAnswer: ident.text, sentenceOptions: ident.id})
+        this.setState({originalSelect: ident.slug, originalId: ident.id, originalAnswer: ident.text, currentSelect: ident.slug, currentId: ident.id, finalAnswer: ident.text})
       }
+      this.setState({[ident.slug]: ident.slug})
     })
-    // this.setState({sentenceOptions: nextProps.qa.id})
     }
+  }
+}
+
+componentWillUpdate(nextProps, nextState) {
+  const { id } = this.props.match.params
+  if (nextState.save == true && this.state.save == false) {
+    console.log('update', nextProps);
+}
+}
+
+componentDidUpdate() {
+  if(this.state.save === true) {
+    this.setState({save: false})
   }
 }
 
@@ -53,52 +66,58 @@ componentWillReceiveProps(nextProps) {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    // _.map(this.props.qa, del => {
-    //   axios.delete(`https://goy-ed-2079.nodechef.com/brands-sentences/${del.id}`)
-    // })
-    if(this.state.finalAnswer === '') {
-      // this.props.createSentence({brand: id, text: this.state.finalAnswer})
-      // this.props.createSentence({brand: id, text: this.state.finalAnswer})
-      // this.props.createSentence({brand: id, text: this.state.finalAnswer})
-    }
-    // if(this.state.currentAnswer) {
-    //   console.log('current answer');
-    // } else if(this.props.qa) {
-    //   //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
-    //   _.map(this.props.qa, ident => {
-    //     if(ident.is_selected === true)
-    //       this.setState({currentAnswer: `${ident.id}`, finalAnswer: ident.text})
-    //       console.log('ident', ident);
-    // })
-    //   //if state of target 'name' does not yet exist, will pull value of answer off props and set state to that answer and also toggle editing
-    // }
-    // //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
-    // else {
-    //   this.props.createSentence({brand: id, text: 'option 1'})
-    //   this.props.createSentence({brand: id, text: 'option 2'})
-    //   console.log('post');
-    // }
     this.setState({isEditing: '1'})
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    this.setState({isEditing: null})
+    this.setState({finalAnswer: this.state.originalAnswer, currentId: this.state.originalId, currentSelect: this.state.originalSelect, isEditing: null})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     const { id }  = this.props.match.params
-    this.props.createSentence(this.state.currentAnswer, {brand: id, text: this.state.finalAnswer})
-    this.setState({isEditing: null})
+    if(this.props.qa[this.state.currentSelect]) {
+      this.props.updateSentence(id, this.state.currentId, {text: this.state.finalAnswer, is_selected: true})
+    } else {
+      this.props.createSentence({brand: id, text: this.state.finalAnswer, is_selected: true})
+    }
+    this.setState({isEditing: null, save: true})
     console.log('save', this.state);
   }
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
   handleRadio(event){
-    this.setState({finalAnswer: event.target.name, currentAnswer: event.target.value})
+      _.map(this.props.qa, check => {
+        if(event.target.name === check.slug) {
+          this.setState({currentSelect: check.slug, finalAnswer: event.target.value, currentId: check.id})
+        }
+      })
   }
-  //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
-  handleInput(event) {
-    this.setState({finalAnswer: event.target.value, currentAnswer: parseInt(event.target.name), input: event.target.value})
+
+  renderField() {
+    return _.map(this.props.qa, check => {
+      if(check.slug === 'default-1' || check.slug === 'default-2') {
+      return(
+        <li key={check.id}><Field
+          type='radio'
+          onChange={this.handleRadio}
+          checked={this.state.currentSelect===check.slug}
+          name={check.slug}
+          component='input'
+          value={check.text}/> {check.text}
+          <div>Source: {check.source}</div>
+        </li>
+      )}
+    })
   }
+
+  renderNone(){
+    return(
+      <div>No default sentences found, Please create one</div>
+    )
+  }
+  // handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
+  // handleInput(event) {
+  //   this.setState({currentSelect: event.target.name, finalAnswer: event.target.value, currentId: check.id})
+  // }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
@@ -125,30 +144,15 @@ componentWillReceiveProps(nextProps) {
           <h5>What is the one sentence that describes the brand best?</h5>
           <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p>
             <ul>
-              <li><Field
-                type='radio'
-                onChange={this.handleRadio}
-                checked={state.currentAnswer==='1'}
-                name='New Zealands premium casual lifestyle brand for women and men'
-                component='input'
-                value={_.map(this.props.qa, val => {return val.id[0]})}/> New Zealands premium casual lifestyle brand for women and men
-              </li>
-              <li><Field
-                type='radio'
-                onChange={this.handleRadio}
-                checked={state.currentAnswer==='2'}
-                name='New Zealands luxury lifestyle brand for sustainable and organic fashion for women and men'
-                component='input'
-                value='2'/> New Zealands luxury lifestyle brand for sustainable and organic fashion for women and men
-              </li>
+              {state['default-1'] || state['default-2'] ? this.renderField() : this.renderNone()}
               <h5>Edit the one you chose or write a new one</h5>
               {state.finalAnswer}
               <li><textarea
                 className='edit-sentence'
-                onFocus={this.handleInput}
-                onChange={this.handleInput}
+                onFocus={this.handleRadio}
+                onChange={this.handleRadio}
                 value={state.finalAnswer}
-                name='3'/>
+                name='custom'/>
               </li>
             </ul>
             <button onClick={this.handleCancel}>Cancel</button>
@@ -156,6 +160,7 @@ componentWillReceiveProps(nextProps) {
           </div>) : (
           <div className='not-editing'>
             <h5>What is the one sentence that describes the brand best?</h5>
+            <div>{this.state.finalAnswer}</div>
             <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
           </div>
           )}

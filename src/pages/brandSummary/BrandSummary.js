@@ -77,7 +77,7 @@ componentDidUpdate() {
 
   renderSummary() {
     return _.map(this.props.qa, summary => {
-      // if(summary.id)
+      if(summary.id)
       return(
         <li key={summary.id}>{summary.text}</li>
       )

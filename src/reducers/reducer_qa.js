@@ -55,12 +55,14 @@ export default function(state = {}, action) {
         return action.payload.data
       }
       return {error: action.error}
-  case UPDATE_SENTENCE:
-    if (!action.error) {
-      console.log('update general', action.payload.data)
-      return {...state, [action.payload.data]: action.payload.data}
-    }
-    return {error: action.error}
+  // case UPDATE_SENTENCE:
+  //   if (!action.error) {
+  //     console.log('update sentence', _.map(action.payload.data, check => {return check.slug}))
+  //     console.log('app state', state);
+  //     const slug = _.map(action.payload.data, check => {return check.slug})
+  //     return {...state, [slug]: action.payload.data[0]}
+  //   }
+  //   return {error: action.error}
   case FETCH_CAUSE:
     if (!action.error) {
       console.log('fetch, questions', action.payload.data.data);
@@ -75,14 +77,9 @@ export default function(state = {}, action) {
   case FETCH_SENTENCE:
     if (!action.error) {
       console.log('fetch, sentence', action.payload.data.data);
-      return _.mapKeys(action.payload.data.data, 'id')
+      return _.mapKeys(action.payload.data.data, 'slug')
     }
     return {error: action.error}
-  case UPDATE_SENTENCE:
-    if (!action.error) {
-    console.log('update sentence', action.payload.data)
-    return {...state, [action.payload.data]: action.payload.data}
-  }
   case FETCH_SUMMARY:
     if (!action.error) {
       console.log('fetch, summary', action.payload.data);
