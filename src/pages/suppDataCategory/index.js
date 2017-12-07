@@ -23,7 +23,7 @@ class SuppDataCategory extends Component {
       save: false,
       dominantOptions: [],
       dominant_id: [],
-      dominant: []
+      dominant: null
     }
 
 
@@ -31,24 +31,48 @@ class SuppDataCategory extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleCatSave = this.handleCatSave.bind(this)
-    this.handleDominantEdit = this.handleDominantEdit.bind(this)
     this.handleDominantChange = this.handleDominantChange.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
   this.props.fetchAllCategory()
+  this.props.fetchBrandCategory(id)
+}
+
+componentWillReceiveProps(nextProps) {
+  const { id } = this.props.match.params
+  if(nextProps.pre_qa !== this.props.pre_qa) {
+    _.map(nextProps.pre_qa, cat => {
+        this.setState({[cat.name]: 'chip'})
+      })
+  }
+  if(nextProps.qa !== this.props.qa) {
+    _.map(nextProps.qa, check => {
+        this.setState({[check.category.name]: 'chip-selected'})
+    })
+    _.map(nextProps.qa, check => {
+      if(check.dominant === true) {
+        this.setState({current_dominant_id: check.category_id})
+      }
+    })
+    this.setState({
+      currentAnswer: _.map(nextProps.qa, cat => {return {brand: id, category_id: cat.category_id}}),
+      dominantOptions: _.map(nextProps.qa, dom => {return {name: dom.category.name, id: dom.category_id}}),
+      dominant_id: _.map(nextProps.qa, check => {return check.category_id})
+    })
+  }
 }
 
 componentWillUpdate(nextProps, nextState) {
   const { id } = this.props.match.params
   if (nextState.save == true && this.state.save == false) {
-    return
+    console.log('update', nextProps);
   }
 }
 
 componentDidUpdate() {
   if(this.state.save === true) {
-    this.setState({save: false, currentAnswer: []})
+    this.setState({save: false})
   }
 }
 
@@ -56,53 +80,21 @@ componentDidUpdate() {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.props.qa) {
-      //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
-      _.map(this.props.qa, cat => {
-          this.setState({[cat.name]: 'chip', isEditing: event.target.value})
-        })
-    }
-    axios.get(`${ROOT_URL}/brands-categories?brand=${id}`)
-    .then(res => {
-      this.state.currentAnswer.map(ans => this.setState({catOptions: [...this.state.catOptions, ans.category_id]}))
-      res.data.data.map(check => {
-        if(this.state.catOptions.includes(check.category_id)) {
-          this.setState({[check.category.name]: 'chip-selected'})
-        } else {
-          this.setState({[check.category.name]: 'chip-selected', currentAnswer: [...this.state.currentAnswer, {brand: id, category_id: check.category_id}]})
-        }
-      })
-    })
-  }
-  handleDominantEdit(event) {
-    event.preventDefault()
-    const { id }  = this.props.match.params
-    axios.get(`${ROOT_URL}/brands-categories?brand=${id}`)
-    .then(res => {
-      res.data.data.map(check => {
-        if(this.state.dominant_id.includes(check.category_id)) {
-          console.log('return');
-          return
-        } else {
-          this.setState({dominantOptions: [...this.state.dominantOptions, check], current_dominant_id: check.category_id, dominant_id: [...this.state.dominant_id, check.category_id]})
-        }
-      })
-    })
-    this.setState({isEditing: event.target.name})
+    this.setState({isEditing: event.target.value})
   }
 
   renderDominant() {
     return _.map(this.state.dominantOptions, dom => {
       return(
-        <button key={dom.category.name} value={dom.category_id} className={this.state.current_dominant_id === dom.category_id ? 'chip-selected' : 'chip'} name={dom.category.name} onClick={this.handleDominantChange}>
-          {dom.category.name}
+        <button key={dom.name} value={dom.id} className={this.state.current_dominant_id === dom.id ? 'chip-selected' : 'chip'} name={dom.name} onClick={this.handleDominantChange}>
+          {dom.name}
         </button>
       )
     })
   }
 
   renderCategories() {
-    return _.map(this.props.qa, cat => {
+    return _.map(this.props.pre_qa, cat => {
         return(
             <button key={cat.id} value={cat.id} className={this.state[cat.name]} name={cat.name} onClick={this.handleCateChange}>
               {cat.name} {this.state[cat.name] === 'chip-selected' ? 'x' : '+'}
@@ -129,23 +121,34 @@ componentDidUpdate() {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(this.state[event.target.name] === 'chip-selected') {
-      this.setState({[event.target.name]: 'chip', currentAnswer: this.state.currentAnswer.filter(cat => {return cat.category_id != event.target.value})})
+      this.setState({
+        [event.target.name]: 'chip',
+        currentAnswer: this.state.currentAnswer.filter(cat => {return cat.category_id != event.target.value}),
+        dominantOptions: this.state.dominantOptions.filter(dom => {return dom.id !== parseInt(event.target.value)})
+      })
       console.log('value', event.target.value);
     } else {
-      this.setState({[event.target.name]: 'chip-selected', currentAnswer: [...this.state.currentAnswer, {brand: id, category_id: this.props.qa[event.target.name].id}]})
+      this.setState({
+        [event.target.name]: 'chip-selected',
+        currentAnswer: [...this.state.currentAnswer, {brand: id, category_id: this.props.pre_qa[event.target.name].id}],
+        dominantOptions: [...this.state.dominantOptions, {name: event.target.name, id: parseInt(event.target.value)}]
+      })
     }
   }
 
   handleDominantChange(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.setState({current_dominant_id: parseInt(event.target.value), dominant: [{dominant: true}], save: true})
+    this.setState({current_dominant_id: parseInt(event.target.value), dominant: {dominant: true}})
   }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.qa);
-    console.log('state', this.state);
+    console.log('state', this.state.currentAnswer);
+    console.log('pre_qa', this.props.pre_qa);
+    const state = this.state
+    const props = this.props.qa
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
     return(
@@ -185,7 +188,7 @@ componentDidUpdate() {
             </div>) : (
             <div className='not-editing'>
               <h5>What is the Brands dominant category?</h5>
-              <button name='2' onClick={this.handleDominantEdit} value='2'>Edit</button>
+              <button name='2' onClick={this.handleEdit} value='2'>Edit</button>
             </div>
             )}
         </form>
@@ -195,7 +198,10 @@ componentDidUpdate() {
 }
 
 function mapStateToProps(state) {
-  return {qa: state.qa}
+  return {
+    qa: state.qa,
+    pre_qa: state.preQa
+  }
 }
 
 export default reduxForm({

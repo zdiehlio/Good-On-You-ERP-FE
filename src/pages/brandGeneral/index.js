@@ -166,8 +166,8 @@ componentWillReceiveProps(nextProps) {
           )}
             <div className='not-editing'>
               <h5>What is the rating date and verification date</h5>
-              <div>Rating Date: {props.rating_date ? moments(props.rating_date) : 'MM/DD/YYYY'}</div>
-              <div>Verification Date: {props.verification_date ? moments(props.verification_date) : 'MM/DD/YYYY'}</div>
+              <div>Rating Date: {props.rating_date ? moments(props.rating_date) : ''}</div>
+              <div>Verification Date: {props.verification_date ? moments(props.verification_date) : ''}</div>
             </div>
             {isEditing === '3' ? (
               <div className='editing'>
@@ -186,7 +186,7 @@ componentWillReceiveProps(nextProps) {
               </div>) : (
               <div className='not-editing'>
                 <h5>Which month does the brand release its sustainability report?</h5>
-                <p>Report Date: {state.sustainability_report_date ? state.sustainability_report_date : moments(props.sustainability_report_date)}</p>
+                <p>Report Date: {state.sustainability_report_date ? moments(props.sustainability_report_date) : ''}</p>
                 <button name='3' onClick={this.handleEdit} value='3'>Edit</button>
               </div>
               )}
@@ -207,7 +207,7 @@ componentWillReceiveProps(nextProps) {
                 </div>) : (
                 <div className='not-editing'>
                   <h5>Which month does Good On You need to review the Brand?</h5>
-                  <p>Review Date: {state.review_date? state.review_date : moments(props.review_date)}</p>
+                  <p>Review Date: {state.review_date? moments(props.review_date) : ''}</p>
                   <button name='4' onClick={this.handleEdit} value='4'>Edit</button>
                 </div>
                 )}

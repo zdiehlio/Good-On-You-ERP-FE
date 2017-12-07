@@ -119,14 +119,14 @@ render() {
       <div className='forms-header'>
         <span className='form-navigation'>
           <div><Link to={`/suppDataGender/${id}`}><button className='previous'>Previous</button></Link></div>
-          <div><h3>Brand Alias</h3></div>
+          <div><h3>Alternative Names</h3></div>
           <div><button className='next'>Next</button></div>
         </span>
       </div>
       <form className='brand-form'>
       {isEditing === '1' ? (
         <div className='editing'>
-        <h5>List any Aliases for the Brand below: </h5>
+        <h5>Add any alternative names the brand might have: </h5>
           <Field
             placeholder={this.currentAnswer}
             onChange={this.handleInput}
@@ -137,7 +137,7 @@ render() {
           <button onClick={this.handleSave} name='1' value='1'>Save</button>
         </div>) : (
         <div className='not-editing'>
-          <h5>List and Aliases for the Brand below: </h5>
+          <h5>Add any alternative names the brand might have: </h5>
           <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
         </div>
         )}

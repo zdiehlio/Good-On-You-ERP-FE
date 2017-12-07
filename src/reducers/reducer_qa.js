@@ -5,7 +5,6 @@ import {
   UPDATE_SENTENCE,
   FETCH_SUMMARY,
   UPDATE_SUMMARY,
-  FETCHALL_CATEGORY,
   FETCH_CATEGORY,
   FETCH_GENERAL,
   UPDATE_GENERAL,
@@ -93,16 +92,18 @@ export default function(state = {}, action) {
   //     console.log('update category', action.payload.data)
   //     return {...state, [idMap]: action.payload.data}
   // }
-  case FETCHALL_CATEGORY:
+  case FETCH_CATEGORY:
     if (!action.error) {
-      console.log('fetch, categories', action.payload.data);
-      return _.mapKeys(action.payload.data.data, 'name')
+      console.log('fetch, category', action.payload.data.data);
+      return _.mapKeys(action.payload.data.data, 'category_id')
     }
+    return {error: action.error}
   case FETCH_TYPE:
     if (!action.error) {
       console.log('fetch, type', action.payload.data.data);
       return _.mapKeys(action.payload.data.data, 'product')
     }
+    return {error: action.error}
   case DELETE_TYPE:
     if (!action.error) {
       console.log('delete, type', action.payload.data);
@@ -113,11 +114,13 @@ export default function(state = {}, action) {
       console.log('fetch, alias', action.payload.data);
       return _.mapKeys(action.payload.data.data, 'alias')
     }
+    return {error: action.error}
   case DELETE_ALIAS:
     if (!action.error) {
       console.log('delete, alias', action.payload.data);
       return _.omit(state, action.payload.data.alias)
     }
+    return {error: action.error}
   case FETCH_STYLES:
     if (!action.error) {
       console.log('fetch, styles', action.payload.data.data);
@@ -128,11 +131,13 @@ export default function(state = {}, action) {
       console.log('update, styles', action.payload.data);
       return {...state, [action.payload.data.data]: action.payload.data.data}
     }
+    return {error: action.error}
   case FETCH_RETAILER:
     if (!action.error) {
       console.log('get, retailer', action.payload.data.data);
       return action.payload.data.data
     }
+    return {error: action.error}
   // case UPDATE_RETAILER:
   //   if (!action.error) {
   //     console.log('update, retailer', action.payload);
