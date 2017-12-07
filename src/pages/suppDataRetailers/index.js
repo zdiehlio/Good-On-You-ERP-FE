@@ -31,7 +31,7 @@ componentWillMount() {
 }
 
 componentWillReceiveProps(nextProps) {
-  if(nextProps.qa != this.props.qa) {
+  if(nextProps.qa !== this.props.qa) {
     _.map(nextProps.qa, check => {
       this.setState({id: check.id, name: check.name, website: check.website, online_only: check.online_only, territories: _.map(check.territories, ter => {
         return {name: ter.name}

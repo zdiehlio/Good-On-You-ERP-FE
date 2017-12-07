@@ -41,7 +41,7 @@ componentWillReceiveProps(nextProps) {
     _.map(nextProps.qa, ident => {
       if(ident.is_selected === true) {
         console.log('ident', ident.is_selected);
-        this.setState({originalSelect: ident.slug, originalId: ident.id, originalAnswer: ident.text, currentSelect: ident.slug, currentId: ident.id, finalAnswer: ident.text})
+        this.setState({originalSource: ident.source, originalSelect: ident.slug, originalId: ident.id, originalAnswer: ident.text, currentSelect: ident.slug, currentId: ident.id, finalAnswer: ident.text, finalSource: ident.source})
       }
       this.setState({[ident.slug]: ident.slug})
     })
@@ -70,7 +70,7 @@ componentDidUpdate() {
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    this.setState({finalAnswer: this.state.originalAnswer, currentId: this.state.originalId, currentSelect: this.state.originalSelect, isEditing: null})
+    this.setState({finalSource: this.state.originalSource, finalAnswer: this.state.originalAnswer, currentId: this.state.originalId, currentSelect: this.state.originalSelect, isEditing: null})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
@@ -87,7 +87,7 @@ componentDidUpdate() {
   handleRadio(event){
       _.map(this.props.qa, check => {
         if(event.target.name === check.slug) {
-          this.setState({currentSelect: check.slug, finalAnswer: event.target.value, currentId: check.id})
+          this.setState({currentSelect: check.slug, finalAnswer: event.target.value, currentId: check.id, finalSource: check.source})
         }
       })
   }
@@ -161,6 +161,7 @@ componentDidUpdate() {
           <div className='not-editing'>
             <h5>What is the one sentence that describes the brand best?</h5>
             <div>{this.state.finalAnswer}</div>
+            <div>Source: {this.state.finalSource}</div>
             <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
           </div>
           )}
