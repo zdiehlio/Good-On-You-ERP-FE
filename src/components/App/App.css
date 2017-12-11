@@ -130,3 +130,7 @@ button:hover {
     display: inline-block;
     background-color: #17CABE;
 }
+
+.error-message {
+  color: red;
+}

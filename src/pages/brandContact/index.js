@@ -15,6 +15,7 @@ class BrandContact extends Component {
 
     this.state = {
       isEditing: null,
+      emailValid: false
     }
 
 
@@ -37,6 +38,14 @@ componentWillReceiveProps(nextProps) {
   }
 }
 
+validateEmail(val) {
+  if (/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(val.target.value)) {
+    this.setState({emailValid: true})
+  } else {
+    this.setState({emailValid: false})
+  }
+}
+
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
@@ -50,17 +59,22 @@ componentWillReceiveProps(nextProps) {
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
+    event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.props.qa.contact) {
-      this.props.updateContact(id, {name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
+    if(this.state.emailValid === true) {
+      if(this.props.qa.contact) {
+        this.props.updateContact(id, {name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
+      } else {
+        this.props.createContact({brand: id, name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
+      }
+      this.setState({isEditing: null, renderError: false})
     } else {
-      this.props.createContact({brand: id, name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
+      this.setState({renderError: true})
     }
-    this.setState({isEditing: null})
-    console.log('save', this.state);
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
+    this.validateEmail(event)
     this.setState({[event.target.name]: event.target.value})
   }
 
@@ -99,6 +113,7 @@ render() {
               onChange={this.handleInput}
               name='email'
               component='input'/>
+              <div className='error-message'>{state.renderError === true ? 'Please enter Valid Email' : ''}</div>
             <h5>Brand GOY Relationship Manager: </h5>
               <Field
                 placeholder={state.relationship_manager}

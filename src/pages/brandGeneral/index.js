@@ -22,7 +22,9 @@ class BrandGeneral extends Component {
       currentValues: [],
       parent_company: '',
       sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'manual', 'subsidiary', 'listed'],
-      input: null
+      input: null,
+      dateValid: false,
+      renderError: false
     }
 
 
@@ -50,7 +52,16 @@ componentWillReceiveProps(nextProps) {
     if(nextProps.qa.size) {
       this.setState({sizeValues: _.map(nextProps.qa.size, val => {return {brand: id, criteria: val.criteria}})})
     }
-    this.setState({parent_company: nextProps.qa.parent_company})
+    this.setState({sustainability_report_date: nextProps.qa.sustainability_report_date, review_date: nextProps.qa.review_date, parent_company: nextProps.qa.parent_company})
+  }
+}
+
+validateDate(val) {
+  let date = moment(`${val.target.value}`, 'MM/DD/YYYY', true)
+  if (date.isValid()) {
+    this.setState({dateValid: true})
+  } else {
+    this.setState({dateValid: false})
   }
 }
 
@@ -68,15 +79,21 @@ componentWillReceiveProps(nextProps) {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(event.target.name !== '5') {
-      this.props.updateGeneral(id, {name: this.state.name, sustainability_report_date: this.state.sustainability_report_date, review_date: this.state.review_date})
+    if(event.target.name === '1') {
+      this.props.updateGeneral(id, {name: this.state.name})
+      this.setState({isEditing: null})
     } else if(event.target.name === '5') {
       this.props.createBrandSize(id, this.state.sizeValues)
       this.props.updateGeneral(id, {parent_company: this.state.parent_company})
-      console.log('post');
-      // _.map(this.state.deleteSize, val => {this.props.deleteBrandSize(id, val)})
+      this.setState({isEditing: null})
+    } else {
+      if(this.state.dateValid === true) {
+        this.props.updateGeneral(id, {sustainability_report_date: this.state.sustainability_report_date, review_date: this.state.review_date})
+        this.setState({renderError: false, isEditing: null})
+      } else {
+        this.setState({renderError: true})
+      }
     }
-    this.setState({isEditing: null})
   }
 
   handleSubmitSize(event) {
@@ -85,8 +102,6 @@ componentWillReceiveProps(nextProps) {
     this.setState({isEditing: null})
   }
 
-  // this.props.createBrandSize({brand: id, criteria: event.target.name})
-  // this.props.deleteBrandSize(id, event.target.name)
   handleCheckbox(event) {
     const { id }  = this.props.match.params
       if(this.state[event.target.name]) {
@@ -118,13 +133,15 @@ componentWillReceiveProps(nextProps) {
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
+    this.validateDate(event)
     this.setState({currentAnswer: event.target.name, [event.target.name]: event.target.value, input: event.target.value})
   }
 
 
   render() {
     console.log('props', this.props.qa);
-    console.log('state', this.state);
+    console.log('state', this.state.dateValid);
+    console.log('state', this.state.renderError);
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props.qa
@@ -174,11 +191,12 @@ componentWillReceiveProps(nextProps) {
               <h5>Which month does the brand release its sustainability report?</h5>
                 <ul>
                   <li>Sustainability Report Date: <Field
-                    placeholder={props.sustainability_report_date ? moments(props.sustainability_report_date) : 'DD/MM/YYYY'}
+                    placeholder={state.sustainability_report_date ? moments(state.sustainability_report_date) : 'DD/MM/YYYY'}
                     onFocus={this.handleInput}
                     onChange={this.handleInput}
                     name='sustainability_report_date'
                     component='input' />
+                    <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in MM/DD/YYYY format' : ''}</div>
                   </li>
                 </ul>
                 <button onClick={this.handleCancel}>Cancel</button>
@@ -186,7 +204,7 @@ componentWillReceiveProps(nextProps) {
               </div>) : (
               <div className='not-editing'>
                 <h5>Which month does the brand release its sustainability report?</h5>
-                <p>Report Date: {state.sustainability_report_date ? moments(props.sustainability_report_date) : ''}</p>
+                <p>Report Date: {state.sustainability_report_date ? moments(state.sustainability_report_date) : ''}</p>
                 <button name='3' onClick={this.handleEdit} value='3'>Edit</button>
               </div>
               )}
@@ -195,11 +213,12 @@ componentWillReceiveProps(nextProps) {
                 <h5>Which month does Good On You need to review the Brand?</h5>
                   <ul>
                     <li>Brand Review Date: <Field
-                      placeholder={props.review_date ? moments(props.review_date) : 'DD/MM/YYYY'}
+                      placeholder={state.review_date ? moments(state.review_date) : 'DD/MM/YYYY'}
                       onFocus={this.handleInput}
                       onChange={this.handleInput}
                       name='review_date'
                       component='input' />
+                      <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in MM/DD/YYYY format' : ''}</div>
                     </li>
                   </ul>
                   <button onClick={this.handleCancel}>Cancel</button>
@@ -207,7 +226,7 @@ componentWillReceiveProps(nextProps) {
                 </div>) : (
                 <div className='not-editing'>
                   <h5>Which month does Good On You need to review the Brand?</h5>
-                  <p>Review Date: {state.review_date? moments(props.review_date) : ''}</p>
+                  <p>Review Date: {state.review_date? moments(state.review_date) : ''}</p>
                   <button name='4' onClick={this.handleEdit} value='4'>Edit</button>
                 </div>
                 )}
