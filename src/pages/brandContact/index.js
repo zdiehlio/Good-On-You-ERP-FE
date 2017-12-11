@@ -33,7 +33,14 @@ componentWillMount() {
 componentWillReceiveProps(nextProps) {
   if(nextProps.qa.contact !== this.props.qa.contact) {
     if(nextProps.qa.contact) {
-      this.setState({name: nextProps.qa.contact.name, email: nextProps.qa.contact.email, relationship_manager: nextProps.qa.contact.relationship_manager })
+      this.setState({
+        name: nextProps.qa.contact.name,
+        email: nextProps.qa.contact.email,
+        relationship_manager: nextProps.qa.contact.relationship_manager,
+        originalName: nextProps.qa.contact.name,
+        originalEmail: nextProps.qa.contact.email,
+        originalRelationship_manager: nextProps.qa.contact.relationship_manager
+      })
     }
   }
 }
@@ -55,7 +62,12 @@ validateEmail(val) {
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
-    this.setState({isEditing: null, name: this.props.qa.contact.name, email: this.props.qa.contact.email, relationship_manager: this.props.qa.contact.relationship_manager})
+    this.setState({
+      renderError: false,
+      isEditing: null,
+      name: this.state.originalName,
+      email: this.state.originalEmail,
+      relationship_manager: this.state.originalRelationship_manager})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
@@ -102,24 +114,24 @@ render() {
         <div className='editing'>
         <ul>
           <h5>Brand Contact Name: </h5>
-            <Field
+            <input
               placeholder={state.name}
               onChange={this.handleInput}
               name='name'
-              component='input'/>
+              value={state.name}/>
           <h5>Brand Contact Email: </h5>
-            <Field
+            <input
               placeholder={state.email}
               onChange={this.handleInput}
               name='email'
-              component='input'/>
+              value={state.email}/>
               <div className='error-message'>{state.renderError === true ? 'Please enter Valid Email' : ''}</div>
             <h5>Brand GOY Relationship Manager: </h5>
-              <Field
-                placeholder={state.relationship_manager}
+              <input
+                placeholder='email'
                 onChange={this.handleInput}
                 name='relationship_manager'
-                component='input'/>
+                value={state.relationship_manager}/>
           </ul>
           <button onClick={this.handleCancel}>Cancel</button>
           <button onClick={this.handleSave} name='1' value='1'>Save</button>
@@ -142,8 +154,4 @@ function mapStateToProps(state) {
   return {qa: state.qa}
 }
 
-export default reduxForm({
-  form: 'BrandContactForm'
-})(
-  connect(mapStateToProps, { updateContact, fetchContact, createContact })(BrandContact)
-)
+export default connect(mapStateToProps, { updateContact, fetchContact, createContact })(BrandContact)

@@ -34,7 +34,11 @@ componentWillMount() {
 componentWillReceiveProps(nextProps) {
   if(nextProps.qa !== this.props.qa) {
     _.map(nextProps.qa, quest => {
-      this.setState({[quest.question]: `${quest.answer}`, [`${quest.question}Answer`]: quest.cause.text})
+      this.setState({
+        [quest.question]: `${quest.answer}`,
+        [`${quest.question}Answer`]: quest.cause.text,
+
+      })
   })
 }
 }
@@ -58,7 +62,7 @@ componentWillReceiveProps(nextProps) {
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    this.setState({isEditing: null})
+    this.setState({isEditing: null, currentAnswer: null})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {

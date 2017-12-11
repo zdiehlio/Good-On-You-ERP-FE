@@ -33,9 +33,21 @@ componentWillMount() {
 componentWillReceiveProps(nextProps) {
   if(nextProps.qa !== this.props.qa) {
     _.map(nextProps.qa, check => {
-      this.setState({id: check.id, name: check.name, website: check.website, online_only: check.online_only, territories: _.map(check.territories, ter => {
-        return {name: ter.name}
-      })
+      this.setState({
+        id: check.id,
+        name: check.name,
+        website: check.website,
+        online_only: check.online_only,
+        territories: _.map(check.territories, ter => {
+          return {name: ter.name}
+        }),
+        originalId: check.id,
+        originalName: check.name,
+        originalWebsite: check.website,
+        originalOnline_only: check.online_only,
+        originalTerritories: _.map(check.territories, ter => {
+          return {name: ter.name}
+        }),
     })
     })
   }
@@ -62,7 +74,15 @@ componentDidUpdate() {
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    this.setState({isEditing: null, currentAnswer: null})
+    this.setState({
+      isEditing: null,
+      currentAnswer: null,
+      id: this.state.originalId,
+      name: this.state.originalName,
+      website: this.state.originalWebsite,
+      online_only: this.state.originalOnline_only,
+      territories: this.state.originalTerritories
+    })
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {

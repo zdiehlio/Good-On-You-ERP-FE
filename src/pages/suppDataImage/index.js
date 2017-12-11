@@ -35,14 +35,14 @@ componentWillReceiveProps(nextProps) {
   if(nextProps.pre_qa != this.props.pre_qa) {
     _.map(nextProps.pre_qa, logo => {
       if(logo.is_selected === true) {
-        this.setState({logo_selected: logo.id, logo_url: logo.url})
+        this.setState({logo_selected: logo.id, logo_url: logo.url, originalLogo_selected: logo.id, originalLogo_url: logo.url})
       }
     })
   }
   if(nextProps.qa != this.props.qa) {
     _.map(nextProps.qa, image => {
       if(image.is_selected === true) {
-        this.setState({image_selected: image.id, image_url: image.url})
+        this.setState({image_selected: image.id, image_url: image.url, originalImage_selected: image.id, originalImage_url: image.url})
       }
     })
   }
@@ -56,6 +56,12 @@ componentWillReceiveProps(nextProps) {
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
+    event.preventDefault()
+    if(event.target.name === 'image') {
+      this.setState({image_selected: this.state.originalImage_selected, image_url: this.state.originalImage_url})
+    } else if(event.target.name === 'logo') {
+      this.setState({logo_selected: this.state.originalLogo_selected, logo_url: this.state.originalLogo_url})
+    }
     this.setState({isEditing: null, currentAnswer: null})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -128,17 +134,11 @@ render() {
       <form className='brand-form'>
       {isEditing === 'image' ? (
         <div className='editing'>
-        <ul>
+          <ul>
             <h5>What is the Brand Cover Image?</h5>
             {this.renderImage()}
-            <li>Or enter a link for a new cover image<Field
-              placeholder={state.name}
-              onChange={this.handleInput}
-              name='name'
-              component='input'/>
-            </li>
           </ul>
-          <button onClick={this.handleCancel}>Cancel</button>
+          <button onClick={this.handleCancel} name='image'>Cancel</button>
           <button onClick={this.handleSave} name='image'>Save</button>
         </div>) : (
         <div className='not-editing'>
@@ -154,7 +154,7 @@ render() {
               <h5>Select the Brand Logo?</h5>
               {this.renderLogo()}
             </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
+            <button onClick={this.handleCancel} name='logo'>Cancel</button>
             <button onClick={this.handleSave} name='logo'>Save</button>
           </div>) : (
           <div className='not-editing'>

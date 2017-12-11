@@ -66,7 +66,7 @@ componentWillReceiveProps(nextProps) {
 componentWillUpdate(nextProps, nextState) {
   const { id } = this.props.match.params
   if (nextState.save == true && this.state.save == false) {
-    console.log('update', nextProps);
+    this.setState({currentAnswer: _.map(nextProps.qa, cat => {return {brand: id, category_id: cat.category_id}})})
   }
 }
 
@@ -104,7 +104,8 @@ componentDidUpdate() {
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    this.setState({isEditing: null})
+    event.default()
+    this.setState({isEditing: null, save: true})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleCatSave(event) {

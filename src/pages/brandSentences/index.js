@@ -24,7 +24,6 @@ class BrandSentences extends Component {
 
 
     this.handleRadio = this.handleRadio.bind(this)
-    // this.handleInput = this.handleInput.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
@@ -70,6 +69,7 @@ componentDidUpdate() {
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
+    event.preventDefault()
     this.setState({finalSource: this.state.originalSource, finalAnswer: this.state.originalAnswer, currentId: this.state.originalId, currentSelect: this.state.originalSelect, isEditing: null})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -114,10 +114,6 @@ componentDidUpdate() {
       <div>No default sentences found, Please create one</div>
     )
   }
-  // handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
-  // handleInput(event) {
-  //   this.setState({currentSelect: event.target.name, finalAnswer: event.target.value, currentId: check.id})
-  // }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
   render() {

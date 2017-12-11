@@ -31,7 +31,7 @@ class SuppDataPrice extends Component {
     if(nextProps.qa !== this.props.qa) {
       _.map(nextProps.qa, compare => {
         if(compare.style_qa.question === 'price') {
-          this.setState({price: compare.score})
+          this.setState({price: compare.score, originalPrice: compare.score})
         }
       })
     }
@@ -46,7 +46,7 @@ handleEdit(event) {
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
-    this.setState({isEditing: null})
+    this.setState({isEditing: null, price: this.state.originalPrice})
   }
 
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -122,7 +122,7 @@ handleEdit(event) {
           </div>) : (
           <div className='not-editing'>
             <h4>What is the price guideline?</h4>
-            <h5></h5>
+            <h5>{state.price}</h5>
             <button name='price' onClick={this.handleEdit}>Edit</button>
           </div>
           )}

@@ -56,7 +56,7 @@ handleEdit(event) {
 
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    event.preventDefault()
+    event.default()
     this.setState({isEditing: null})
   }
 

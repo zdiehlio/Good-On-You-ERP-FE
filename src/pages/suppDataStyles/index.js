@@ -37,7 +37,10 @@ componentWillMount() {
 componentWillReceiveProps(nextProps) {
   if(nextProps.qa !== this.props.qa) {
     _.map(nextProps.qa, compare => {
-      this.setState({[compare.style_qa.tag]: compare.score})
+      if(compare.style_qa.question === 'kids') {
+        this.setState({kids: compare.style_qa.tag})
+      }
+      this.setState({[compare.style_qa.tag]: compare.tag})
     })
   }
 }
@@ -77,7 +80,7 @@ handleKidsEdit(event) {
 
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    event.preventDefault()
+    event.default()
     this.setState({isEditing: null})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -185,7 +188,7 @@ handleKidsEdit(event) {
           </div>) : (
           <div className='not-editing'>
             <h4>Does the Brand sell Clothes for kids?</h4>
-            <h5>{state['1']}</h5>
+            <h5>{state.kids === 'no-kids' ? 'No' : 'Yes'}</h5>
             <button name='kids' onClick={this.handleKidsEdit}>Edit</button>
           </div>
           )}

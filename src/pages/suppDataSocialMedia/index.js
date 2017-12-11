@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchGeneral, updateSocial } from '../../actions'
@@ -12,6 +11,8 @@ class SuppDataSocialMedia extends Component {
 
     this.state = {
       isEditing: null,
+      instagram_url: '',
+      facebook_url: ''
     }
 
 
@@ -19,7 +20,6 @@ class SuppDataSocialMedia extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
-    // this.handleDelete = this.handleDelete.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
@@ -29,7 +29,12 @@ componentWillMount() {
 
 componentWillReceiveProps(nextProps) {
   if(nextProps.qa != this.props.qa) {
-    this.setState({facebook_url: nextProps.qa.facebook_url, instagram_url: nextProps.qa.instagram_url})
+    this.setState({
+      facebook_url: nextProps.qa.facebook_url.slice(25),
+      instagram_url: nextProps.qa.instagram_url.slice(26),
+      originalFacebook_url: nextProps.qa.facebook_url.slice(25),
+      originalInstagram_url: nextProps.qa.instagram_url.slice(26)
+    })
   }
 }
 
@@ -41,13 +46,14 @@ componentWillReceiveProps(nextProps) {
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    this.setState({isEditing: null, currentAnswer: null})
+    event.preventDefault()
+    this.setState({isEditing: null, currentAnswer: null, facebook_url: this.state.originalFacebook_url, instagram_url: this.state.originalInstagram_url})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.updateSocial(id, {facebook_url: this.state.facebook_url, instagram_url:this.state.instagram_url})
+    this.props.updateSocial(id, {facebook_url: `https://www.facebook.com/${this.state.facebook_url}`, instagram_url:`https://www.instagram.com/${this.state.instagram_url}`})
     this.setState({isEditing: null})
     console.log('save', this.state);
   }
@@ -80,18 +86,21 @@ render() {
         <div className='editing'>
         <ul>
             <h5>What is the Facebook URL </h5>
-            <li><Field
-              placeholder={props.facebook_url}
+            <li>www.facebook.com/
+            <input
+              placeholder='facebook page name'
               onChange={this.handleInput}
               name='facebook_url'
-              component='input'/>
+              value={state.facebook_url}/>
             </li>
             <h5>What is the Instagram URL? </h5>
-            <li><Field
-              placeholder={props.instagram_url}
+            <li>
+            www.instagram.com/
+            <input
+              placeholder='instagram account name'
               onChange={this.handleInput}
               name='instagram_url'
-              component='input'/>
+              value={state.instagram_url}/>
             </li>
           </ul>
           <button onClick={this.handleCancel}>Cancel</button>
@@ -99,8 +108,8 @@ render() {
         </div>) : (
         <div className='not-editing'>
           <h5>Brand Social Media</h5>
-          <p>Facebook URL: {state.facebook_url}</p>
-          <p>Instagram URL: {state.instagram_url}</p>
+          <p>www.facebook.com/{state.facebook_url}</p>
+          <p>www.instagram.com/{state.instagram_url}</p>
           <button name='social' onClick={this.handleEdit}>Edit</button>
         </div>
         )}
@@ -114,8 +123,4 @@ function mapStateToProps(state) {
   return {qa: state.qa}
 }
 
-export default reduxForm({
-  form: 'SuppDataSocialMediaForm'
-})(
-  connect(mapStateToProps, { fetchGeneral, updateSocial })(SuppDataSocialMedia)
-)
+export default connect(mapStateToProps, { fetchGeneral, updateSocial })(SuppDataSocialMedia)
