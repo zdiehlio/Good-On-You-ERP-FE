@@ -14,6 +14,7 @@ class SuppDataTypes extends Component {
     this.state = {
       isEditing: null,
       typeValues: [],
+      deleteValues: [],
       typeOptions: ['activewear', 'casualwear', 'eveningwear', 'smartcasual', 'workwear'],
       save: false
     }
@@ -28,10 +29,13 @@ componentWillMount() {
   this.props.fetchType(id)
 }
 
-componentWillUpdate(nextProps, nextState) {
+componentWillReceiveProps(nextProps) {
   const { id } = this.props.match.params
-  if (nextState.save == true && this.state.save == false) {
-    this.props.fetchType(id)
+  if(nextProps.qa !== this.props.qa) {
+    _.mapValues(nextProps.qa, type => {
+      this.setState({[type.product]: type.product})
+    })
+    // this.setState({typeValues: _.map(nextProps.qa, type => {return {brand: id, product: type.product} })})
   }
 }
 
@@ -39,40 +43,64 @@ componentWillUpdate(nextProps, nextState) {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    _.mapValues(this.props.qa, type => {
-      this.setState({[type.product]: {type}})
-    })
-    this.setState({isEditing: event.target.name, save: false})
+    this.setState({isEditing: event.target.name})
 }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
+    event.default()
     this.setState({isEditing: null})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.setState({isEditing: null, save: true})
+    _.map(this.state.deleteValues, type => {
+        this.props.deleteType(id, type)
+    })
+    this.props.createType(this.state.typeValues)
+
+    // _.map(this.state.typeValues, type => {
+    //   if(this.props.qa) {
+    //     _.map(this.props.qa, compare => {
+    //       if(type.product === compare.product) {
+    //         console.log('return');
+    //         return
+    //       } else {
+    //         this.props.createType(type)
+    //         console.log('post');
+    //       }
+    //     })
+    //   } else {
+    //     this.props.createType(type)
+    //     console.log('else');
+    //   }
+    // })
+    this.setState({isEditing: null})
   }
 
   handleCheckbox(event) {
     const { id }  = this.props.match.params
-    if(this.state[event.target.name]) {
-      this.props.deleteType(id, event.target.name)
-      this.setState({[event.target.name]: null})
-      console.log('delete');
+    if(this.state[event.target.name] === event.target.name) {
+      this.setState({
+        [event.target.name]: null,
+        typeValues: this.state.typeValues.filter(type => {return type.product !== event.target.name}),
+        deleteValues: [...this.state.deleteValues, event.target.name],
+      })
     } else {
-      this.props.createType([{brand: id, product: event.target.name}])
-      this.setState({[event.target.name]: event.target.name})
-      console.log('post');
+      this.setState({
+        [event.target.name]: event.target.name,
+        typeValues: [...this.state.typeValues, {brand: id, product: event.target.name}],
+        deleteValues: this.state.deleteValues.filter(type => {return type !== event.target.name})
+      })
     }
   }
 
-  renderTypes() {
-    return _.map(this.props.qa, type => {
+  renderSelected() {
+    return _.map(this.state.typeOptions, type => {
+      if(this.state[type] === type)
       return(
-        <li key={type.id}>
-          {type.product}
+        <li key={type}>
+          {type}
         </li>
       )
     })
@@ -143,7 +171,7 @@ componentWillUpdate(nextProps, nextState) {
             <div className='not-editing'>
               <h5>What is the size of the Brand?</h5>
               <p>Current sizes:</p>
-              <p>{this.renderTypes()}</p>
+              <p>{this.renderSelected()}</p>
               <button name='1' onClick={this.handleEdit}>Edit</button>
             </div>
             )}

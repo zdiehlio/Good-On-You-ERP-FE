@@ -71,7 +71,7 @@ handleEdit(event) {
   handleChange(event){
     const { id }  = this.props.match.params
     if(this.state[event.target.name] === event.target.name) {
-      this.setState({[event.target.name]: null, genders: this.state.genders.filter(gender => {return gender.style != event.target.name})})
+      this.setState({[event.target.name]: null, genders: this.state.genders.filter(gender => {return gender.style !== event.target.name})})
     } else {
       this.setState({[event.target.name]: event.target.name, genders: [...this.state.genders, {brand: id, style: event.target.name}]})
     }

@@ -104,11 +104,11 @@ export default function(state = {}, action) {
       return _.mapKeys(action.payload.data.data, 'product')
     }
     return {error: action.error}
-  case DELETE_TYPE:
-    if (!action.error) {
-      console.log('delete, type', action.payload.data);
-      return _.mapKeys(action.payload.data, 'product')
-    }
+  // case DELETE_TYPE:
+  //   if (!action.error) {
+  //     console.log('delete, type', action.payload.data);
+  //     return _.omit(state, action.payload.data.product)
+  //   }
   case FETCH_ALIAS:
     if (!action.error) {
       console.log('fetch, alias', action.payload.data);
