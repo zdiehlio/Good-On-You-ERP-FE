@@ -24,6 +24,7 @@ import {
   FETCH_RETAILER,
   UPDATE_RETAILER,
   FETCH_IMAGE,
+  FETCH_RATING
   } from '../actions'
 import _ from 'lodash'
 
@@ -54,25 +55,18 @@ export default function(state = {}, action) {
         return action.payload.data
       }
       return {error: action.error}
-  // case UPDATE_SENTENCE:
-  //   if (!action.error) {
-  //     console.log('update sentence', _.map(action.payload.data, check => {return check.slug}))
-  //     console.log('app state', state);
-  //     const slug = _.map(action.payload.data, check => {return check.slug})
-  //     return {...state, [slug]: action.payload.data[0]}
-  //   }
-  //   return {error: action.error}
+    case FETCH_RATING:
+      if (!action.error) {
+        console.log('fetch, rating', action.payload.data.data);
+        return action.payload.data.data
+      }
+      return {error: action.error}
   case FETCH_CAUSE:
     if (!action.error) {
       console.log('fetch, questions', action.payload.data.data);
       return _.mapKeys(action.payload.data.data, 'question')
     }
     return {error: action.error}
-  // case UPDATE_CAUSE:
-  //   if (!action.error) {
-  //   console.log('update answer', action.payload.data)
-  //   return {...state, [action.payload.data]: action.payload.data}
-  // }
   case FETCH_SENTENCE:
     if (!action.error) {
       console.log('fetch, sentence', action.payload.data.data);
@@ -85,13 +79,6 @@ export default function(state = {}, action) {
       return _.mapKeys(action.payload.data, 'id')
     }
     return {error: action.error}
-  // case UPDATE_SUMMARY:
-  //   if (!action.error) {
-  //     const idMap = _.map(action.payload.data, check => {return check.id})
-  //     const id = idMap[0]
-  //     console.log('update category', action.payload.data)
-  //     return {...state, [idMap]: action.payload.data}
-  // }
   case FETCH_CATEGORY:
     if (!action.error) {
       console.log('fetch, category', action.payload.data.data);
@@ -104,11 +91,6 @@ export default function(state = {}, action) {
       return _.mapKeys(action.payload.data.data, 'product')
     }
     return {error: action.error}
-  // case DELETE_TYPE:
-  //   if (!action.error) {
-  //     console.log('delete, type', action.payload.data);
-  //     return _.omit(state, action.payload.data.product)
-  //   }
   case FETCH_ALIAS:
     if (!action.error) {
       console.log('fetch, alias', action.payload.data);
@@ -138,12 +120,6 @@ export default function(state = {}, action) {
       return action.payload.data.data
     }
     return {error: action.error}
-  // case UPDATE_RETAILER:
-  //   if (!action.error) {
-  //     console.log('update, retailer', action.payload);
-  //     console.log('app state', state);
-  //     return {...state, [action.payload.data]: action.payload.data}
-  //   }
   case FETCH_IMAGE:
     if (!action.error) {
       console.log('fetch, image', action.payload.data.data);

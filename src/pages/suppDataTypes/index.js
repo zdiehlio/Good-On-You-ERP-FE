@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { fetchType, createType, deleteType } from '../../actions'
 import { FormsHeader } from '../../components'
 import _ from 'lodash'
-import axios from 'axios'
 
 class SuppDataTypes extends Component {
   constructor(props){
@@ -58,23 +57,6 @@ componentWillReceiveProps(nextProps) {
         this.props.deleteType(id, type)
     })
     this.props.createType(this.state.typeValues)
-
-    // _.map(this.state.typeValues, type => {
-    //   if(this.props.qa) {
-    //     _.map(this.props.qa, compare => {
-    //       if(type.product === compare.product) {
-    //         console.log('return');
-    //         return
-    //       } else {
-    //         this.props.createType(type)
-    //         console.log('post');
-    //       }
-    //     })
-    //   } else {
-    //     this.props.createType(type)
-    //     console.log('else');
-    //   }
-    // })
     this.setState({isEditing: null})
   }
 

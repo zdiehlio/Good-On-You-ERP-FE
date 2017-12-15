@@ -27,7 +27,8 @@ import {
   SuppDataTypes,
   SuppDataAlias,
   SuppDataSocialMedia,
-  SuppDataImage
+  SuppDataImage,
+  RatingAnimal
 } from '../../pages'
 import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
@@ -120,6 +121,7 @@ class App extends Component {
               <Route path='/createBrand' component={CreateBrands} />
               <Route path='/brandGeneral/:id' component={BrandGeneral}/>
               <Route path='/brandContact/:id' component={BrandContact} />
+              <Route path='/ratingAnimal/:id' component={RatingAnimal} />
               <Route path='/brandCauses/:id' component={BrandCauses} />
               <Route path='/brandSentences/:id' component={BrandSentences} />
               <Route path='/suppDataCategory/:id' component={SuppDataCategory} />

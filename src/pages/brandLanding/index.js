@@ -37,6 +37,24 @@ class BrandLanding extends Component {
         </div>
         <p className='small-divider'></p>
 
+        <div className='summary-heading'><h1>Ratings</h1></div>
+        <p className='divider'></p>
+        <div className='summary-view'>
+          <div>Environment</div>
+          <div><Link to={`/ratingEnvironment/${id}`}><button>Start</button></Link></div>
+        </div>
+        <p className='small-divider'></p>
+        <div className='summary-view'>
+          <div>Labour</div>
+          <div><Link to={`/ratingLabour/${id}`}><button>Start</button></Link></div>
+        </div>
+        <p className='small-divider'></p>
+        <div className='summary-view'>
+          <div>Animal</div>
+          <div><Link to={`/ratingAnimal/${id}`}><button>Start</button></Link></div>
+        </div>
+        <p className='small-divider'></p>
+
         <div className='summary-heading'><h1>Qualitative Ratings</h1></div>
         <p className='divider'></p>
         <div className='summary-view'>

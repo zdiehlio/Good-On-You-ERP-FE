@@ -51,6 +51,11 @@ export const FETCH_IMAGE = 'fetch_image'
 export const UPDATE_IMAGE = 'update_image'
 export const FETCH_LOGO = 'fetch_logo'
 export const UPDATE_LOGO = 'update_logo'
+export const FETCHALL_RATING = 'fetchall_rating'
+export const FETCH_RATING = 'fetch_rating'
+export const UPDATE_RATING = 'update_rating'
+export const CREATE_RATING = 'create_rating'
+
 
 
 export function login(values) {
@@ -178,6 +183,42 @@ export function updateContact(id, values) {
   const request = axios.patch(`${ROOT_URL}/brands-contacts?brand=${id}`, values)
   return {
     type: FETCH_GENERAL,
+    payload: request
+  }
+}
+
+export function fetchAllRating(theme) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/themes?name=${theme}`)
+  return {
+    type: FETCHALL_RATING,
+    payload: request
+  }
+}
+
+export function fetchRating(id, theme) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.get(`${ROOT_URL}/brands-ratings-answers?brand=${id}&theme=${theme}`)
+  return {
+    type: FETCH_RATING,
+    payload: request
+  }
+}
+
+export function createRating(values) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.post(`${ROOT_URL}/brands-ratings-answers`)
+  return {
+    type: CREATE_RATING,
+    payload: request
+  }
+}
+
+export function updateRating(id, ans) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  const request = axios.patch(`${ROOT_URL}/brands-ratings-answers?brand=${id}&answer=${ans}`)
+  return {
+    type: UPDATE_RATING,
     payload: request
   }
 }
