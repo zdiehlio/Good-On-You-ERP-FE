@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchAllRating, fetchRating, createRating, updateRating } from '../../actions'
 import { FormsHeader } from '../../components'
+import { HeaderAngora } from '../../components'
 import _ from 'lodash'
 
-class RatingAnimal extends Component {
+class Rating extends Component {
   constructor(props){
     super(props)
 
@@ -21,22 +22,23 @@ class RatingAnimal extends Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleCheckbox = this.handleCheckbox.bind(this)
-    this.handleUrl = this.handleUrl.bind(this)
+    // this.handleUrl = this.handleUrl.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
-  this.props.fetchAllRating('resource')
-  this.props.fetchRating(id, 'resource')
+  let theme = this.props.match.path.slice(1, -4)
+  this.props.fetchAllRating(theme)
+  this.props.fetchRating(id, theme)
 }
 
 componentWillReceiveProps(nextProps) {
   const { id } = this.props.match.params
   if(nextProps.qa !== this.props.qa) {
     _.map(nextProps.qa, rate => {
-      this.setState({[rate.id]: rate.id})
+      this.setState({[`answer${rate.answer}`]: rate.answer, [`url${rate.answer}`]: rate.url, [`comment${rate.answer}`]: rate.comment})
     })
     this.setState({ratingValues: _.map(nextProps.qa, check => {
-      return {brand: id, answer: check.id, url: check.url, comment: check.comment}
+      return {brand: id, answer: check.answer, url: check.url, comment: check.comment}
       })
     })
   }
@@ -48,6 +50,7 @@ componentWillReceiveProps(nextProps) {
     const { id }  = this.props.match.params
     this.setState({isEditing: event.target.name})
 }
+
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.default()
@@ -57,34 +60,33 @@ componentWillReceiveProps(nextProps) {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.createQualiRating(this.state.typeValues)
+    this.props.createRating(this.state.ratingValues)
     this.setState({isEditing: null})
   }
 
   handleCheckbox(event) {
     const { id }  = this.props.match.params
-    if(this.state[event.target.name] === event.target.name) {
+    if(this.state[`answer${event.target.name}`] === parseInt(event.target.name)) {
       this.setState({
-        [event.target.name]: null,
+        [`answer${event.target.name}`]: null,
         ratingValues: this.state.ratingValues.filter(rate => {return rate.answer !== parseInt(event.target.name)}),
         // deleteValues: [...this.state.deleteValues, event.target.name],
       })
     } else {
       this.setState({
-        [event.target.name]: event.target.name,
-        ratingValues: [...this.state.ratingValues, {brand: id, answer: parseInt(event.target.name), url: '', comment: ''}],
+        [`answer${event.target.name}`]: parseInt(event.target.name),
+        ratingValues: [...this.state.ratingValues, {brand: id, answer: parseInt(event.target.name), comment: 'test', url: 'www.testing.com'}],
         // deleteValues: this.state.deleteValues.filter(type => {return type !== event.target.name})
       })
     }
   }
 
-  handleUrl(event) {
-    const { id }  = this.props.match.params
-    _.map(this.state.ratingValues, check => {
-      if(check.answer === parseInt(event.target.name)) {
-        this.setState({ratingValues: [...check, {url: event.target.value}]})
-      }
-    })
+  renderHeader() {
+    let theme = this.props.match.path.slice(1, -4)
+    if(theme === 'angora') {
+      console.log('angora');
+      return(<HeaderAngora />)
+    }
   }
 
 
@@ -104,7 +106,7 @@ componentWillReceiveProps(nextProps) {
                         type='checkbox'
                         name={ans.id}
                         onChange={this.handleCheckbox}
-                        checked={this.state[ans.id]}
+                        checked={this.state[`answer${ans.id}`]}
                         />
                         {ans.text}
                       <input
@@ -133,14 +135,7 @@ componentWillReceiveProps(nextProps) {
     return(
       <div className='form-container'>
         <FormsHeader />
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
-        <div className='forms-header'>
-          <span className='form-navigation'>
-            <div><Link to={`/ratingLabour/${id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Animal</h3></div>
-            <div><Link to={`/brandCauses/${id}`}><button className='next'>Next</button></Link></div>
-          </span>
-        </div>
+        {this.renderHeader()}
         <form className='brand-form'>
           {isEditing === '1' ? (
             <div className='editing'>
@@ -170,4 +165,4 @@ componentWillReceiveProps(nextProps) {
     }
   }
 
-  export default connect(mapStateToProps, { fetchAllRating, fetchRating, createRating, updateRating })(RatingAnimal)
+  export default connect(mapStateToProps, { fetchAllRating, fetchRating, createRating, updateRating })(Rating)

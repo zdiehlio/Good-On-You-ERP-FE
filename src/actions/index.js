@@ -207,7 +207,7 @@ export function fetchRating(id, theme) {
 
 export function createRating(values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-  const request = axios.post(`${ROOT_URL}/brands-ratings-answers`)
+  const request = axios.post(`${ROOT_URL}/brands-ratings-answers`, values)
   return {
     type: CREATE_RATING,
     payload: request

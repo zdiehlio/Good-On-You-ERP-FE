@@ -28,7 +28,7 @@ import {
   SuppDataAlias,
   SuppDataSocialMedia,
   SuppDataImage,
-  RatingAnimal
+  Rating
 } from '../../pages'
 import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
@@ -121,7 +121,22 @@ class App extends Component {
               <Route path='/createBrand' component={CreateBrands} />
               <Route path='/brandGeneral/:id' component={BrandGeneral}/>
               <Route path='/brandContact/:id' component={BrandContact} />
-              <Route path='/ratingAnimal/:id' component={RatingAnimal} />
+              <Route path='/resource/:id' component={Rating} />
+              <Route path='/energy/:id' component={Rating} />
+              <Route path='/chemical/:id' component={Rating} />
+              <Route path='/water/:id' component={Rating} />
+              <Route path='/worker_policies/:id' component={Rating} />
+              <Route path='/wages/:id' component={Rating} />
+              <Route path='/suppliers/:id' component={Rating} />
+              <Route path='/practices/:id' component={Rating} />
+              <Route path='/rights/:id' component={Rating} />
+              <Route path='/fur/:id' component={Rating} />
+              <Route path='/leather/:id' component={Rating} />
+              <Route path='/wool/:id' component={Rating} />
+              <Route path='/feathers/:id' component={Rating} />
+              <Route path='/angora/:id' component={Rating} />
+              <Route path='/hairs/:id' component={Rating} />
+              <Route path='/skins/:id' component={Rating} />
               <Route path='/brandCauses/:id' component={BrandCauses} />
               <Route path='/brandSentences/:id' component={BrandSentences} />
               <Route path='/suppDataCategory/:id' component={SuppDataCategory} />

@@ -11,3 +11,4 @@ export { default as SummaryQualitativeRating } from './summaryQualitativeRating/
 export { default as SummarySupplementaryData } from './summarySupplementaryData/SummarySupplementaryData'
 // export { default as DetailedList } from './detailedList/DetailedList'
 export { default as FormsHeader } from './formsHeader'
+export { default as HeaderAngora } from './headerAngora'
