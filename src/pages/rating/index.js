@@ -3,7 +3,24 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchAllRating, fetchRating, createRating, updateRating } from '../../actions'
 import { FormsHeader } from '../../components'
-import { HeaderAngora } from '../../components'
+import {
+  HeaderAngora,
+  HeaderChemical,
+  HeaderEnergy,
+  HeaderFeathers,
+  HeaderFur,
+  HeaderHairs,
+  HeaderLeather,
+  HeaderPractices,
+  HeaderResource,
+  HeaderRights,
+  HeaderSkins,
+  HeaderSuppliers,
+  HeaderWages,
+  HeaderWater,
+  HeaderWool,
+  HeaderWorker
+} from '../../components'
 import _ from 'lodash'
 
 class Rating extends Component {
@@ -82,10 +99,55 @@ componentWillReceiveProps(nextProps) {
   }
 
   renderHeader() {
+    const id  = this.props.match.params.id
     let theme = this.props.match.path.slice(1, -4)
     if(theme === 'angora') {
-      console.log('angora');
-      return(<HeaderAngora />)
+      return(<HeaderAngora id={id} />)
+    }
+    if(theme === 'chemical') {
+      return(<HeaderChemical id={id} />)
+    }
+    if(theme === 'energy') {
+      return(<HeaderEnergy id={id} />)
+    }
+    if(theme === 'feathers') {
+      return(<HeaderFeathers id={id} />)
+    }
+    if(theme === 'fur') {
+      return(<HeaderFur id={id} />)
+    }
+    if(theme === 'hairs') {
+      return(<HeaderHairs id={id} />)
+    }
+    if(theme === 'leather') {
+      return(<HeaderLeather id={id} />)
+    }
+    if(theme === 'practices') {
+      return(<HeaderPractices id={id} />)
+    }
+    if(theme === 'resource') {
+      return(<HeaderResource id={id} />)
+    }
+    if(theme === 'rights') {
+      return(<HeaderRights id={id} />)
+    }
+    if(theme === 'skins') {
+      return(<HeaderSkins id={id} />)
+    }
+    if(theme === 'suppliers') {
+      return(<HeaderSuppliers id={id} />)
+    }
+    if(theme === 'wages') {
+      return(<HeaderWages id={id} />)
+    }
+    if(theme === 'water') {
+      return(<HeaderWater id={id} />)
+    }
+    if(theme === 'wool') {
+      return(<HeaderWool id={id} />)
+    }
+    if(theme === 'worker_policies') {
+      return(<HeaderWorker id={id} />)
     }
   }
 

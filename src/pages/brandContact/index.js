@@ -23,7 +23,6 @@ class BrandContact extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
-    // this.handleDelete = this.handleDelete.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params

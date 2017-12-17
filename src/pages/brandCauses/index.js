@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchCause, fetchAllCause, createCause, updateCause } from '../../actions'
@@ -37,7 +36,6 @@ componentWillReceiveProps(nextProps) {
       this.setState({
         [quest.question]: `${quest.answer}`,
         [`${quest.question}Answer`]: quest.cause.text,
-
       })
   })
 }
@@ -50,7 +48,7 @@ componentWillReceiveProps(nextProps) {
     const { id }  = this.props.match.params
     if(this.state[event.target.name]){
       //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
-      this.setState({isEditing: event.target.value, currentAnswer: this.state[event.target.name]})
+      this.setState({isEditing: event.target.value, currentAnswer: this.state[event.target.value]})
       console.log('state answer');
     }
     //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
@@ -73,20 +71,26 @@ componentWillReceiveProps(nextProps) {
     console.log('save', this.state);
   }
   handleChange(event){
-    this.setState({[`${event.target.name}Answer`]: event.target.name, [event.target.name]: event.target.name, currentAnswer: event.target.value})
+    this.setState({[`${event.target.name}Answer`]: _.map(this.props.pre_qa, check => {
+      if(event.target.value === check.id) {
+        return check.text
+      }
+    }),
+      [event.target.value]: event.target.value,
+      currentAnswer: event.target.value})
   }
 
   renderQuestion(quest) {
     return _.map(this.props.pre_qa, ans => {
       if(ans.question === quest)
       return(
-        <li key={ans.id}><Field
+        <li key={ans.id}><input
           type='radio'
           onChange={this.handleChange}
-          checked={this.state.currentAnswer===`${ans.id}`}
+          checked={this.state.currentAnswer === ans.id}
           value={ans.id}
-          name={ans.text}
-          component='input'/> {ans.text}
+          name={ans.question}
+          /> {ans.text}
         </li>
       )
     })
@@ -260,8 +264,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default reduxForm({
-  form: 'BrandCausesForm'
-})(
-  connect(mapStateToProps, { fetchCause, fetchAllCause, updateCause, createCause })(BrandCauses)
-)
+export default connect(mapStateToProps, { fetchCause, fetchAllCause, updateCause, createCause })(BrandCauses)

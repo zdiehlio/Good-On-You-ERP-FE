@@ -134,3 +134,7 @@ button:hover {
 .error-message {
   color: red;
 }
+
+.rating-header {
+  width: 100%;
+}

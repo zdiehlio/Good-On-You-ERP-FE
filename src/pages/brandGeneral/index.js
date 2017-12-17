@@ -57,7 +57,7 @@ componentWillReceiveProps(nextProps) {
 }
 
 validateDate(val) {
-  let date = moment(`${val.target.value}`, 'MM/DD/YYYY', true)
+  let date = moment(`${val.target.value}`, 'DD/MM/YYYY', true)
   if (date.isValid()) {
     this.setState({dateValid: true})
   } else {
@@ -146,7 +146,7 @@ validateDate(val) {
     const state = this.state
     const props = this.props.qa
     const { id }  = this.props.match.params
-    const moments = date => moment(new Date(date)).format('MM/DD/YYYY')
+    const moments = date => moment(new Date(date)).format('DD/MM/YYYY')
     return(
       <div className='form-container'>
         <FormsHeader />
@@ -196,7 +196,7 @@ validateDate(val) {
                     onChange={this.handleInput}
                     name='sustainability_report_date'
                     component='input' />
-                    <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in MM/DD/YYYY format' : ''}</div>
+                    <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in DD/MM/YYYY format' : ''}</div>
                   </li>
                 </ul>
                 <button onClick={this.handleCancel}>Cancel</button>
@@ -218,7 +218,7 @@ validateDate(val) {
                       onChange={this.handleInput}
                       name='review_date'
                       component='input' />
-                      <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in MM/DD/YYYY format' : ''}</div>
+                      <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in DD/MM/YYYY format' : ''}</div>
                     </li>
                   </ul>
                   <button onClick={this.handleCancel}>Cancel</button>

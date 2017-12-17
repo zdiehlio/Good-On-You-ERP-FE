@@ -127,7 +127,9 @@ handleEdit(event) {
           </div>) : (
           <div className='not-editing'>
             <h4>What are the Genders offered by the brand?</h4>
-            <h5></h5>
+            <p>{this.state['gender-children'] ? 'Children' : ''}</p>
+            <p>{this.state['gender-women'] ? 'Women' : ''}</p>
+            <p>{this.state['gender-men'] ? 'Men' : ''}</p>
             <button name='gender' onClick={this.handleEdit}>Edit</button>
           </div>
           )}

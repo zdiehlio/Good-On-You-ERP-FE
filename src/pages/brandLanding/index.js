@@ -66,41 +66,41 @@ class BrandLanding extends Component {
             (<button name='environment' onClick={this.handleHide}>Hide</button>)}
           </div>
           {this.state.show === 'environment' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+            <p className='small-divider'></p>
+              <span className='summary-view'>
                 <div>Resource</div>
                 <div><Link to={`/resource/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'environment' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Energy</div>
                 <div><Link to={`/energy/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'environment' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Chemical</div>
                 <div><Link to={`/chemical/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'environment' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Water</div>
                 <div><Link to={`/water/${id}`}><button>Start</button></Link></div>
-              </div>
-              <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+              </span>
+            </span> ) :
+            (<div className='hide-summary'></div>)}
 
         </div>
         <p className='small-divider'></p>
@@ -111,52 +111,53 @@ class BrandLanding extends Component {
             (<button name='labour' onClick={this.handleHide}>Hide</button>)}
           </div>
           {this.state.show === 'labour' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+            <p className='small-divider'></p>
+              <span className='summary-view'>
                 <div>Worker Policies</div>
                 <div><Link to={`/worker_policies/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'labour' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Wages</div>
                 <div><Link to={`/wages/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'labour' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Suppliers</div>
                 <div><Link to={`/suppliers/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'labour' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Practices</div>
                 <div><Link to={`/practices/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'labour' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Rights</div>
                 <div><Link to={`/rights/${id}`}><button>Start</button></Link></div>
-              </div>
-              <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+              </span>
+            </span> ) :
+            (<div className='hide-summary'></div>)}
         </div>
         <p className='small-divider'></p>
+
         <div className='summary-view'>
           <div>Animal</div>
           <div>{this.state.show !== 'animal' ?
@@ -164,68 +165,68 @@ class BrandLanding extends Component {
             (<button name='animal' onClick={this.handleHide}>Hide</button>)}
           </div>
           {this.state.show === 'animal' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+            <p className='small-divider'></p>
+              <span className='summary-view'>
                 <div>Fur</div>
                 <div><Link to={`/fur/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'animal' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Leather</div>
                 <div><Link to={`/leather/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'animal' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Wool</div>
                 <div><Link to={`/wool/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'animal' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Feathers</div>
                 <div><Link to={`/feathers/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'animal' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Angora</div>
                 <div><Link to={`/angora/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'animal' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Hairs</div>
                 <div><Link to={`/hairs/${id}`}><button>Start</button></Link></div>
-              </div>
+              </span>
               <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+            </span> ) :
+            (<div className='hide-summary'></div>)}
           {this.state.show === 'animal' ? (
-            <div className='editing'>
-              <div className='summary-view'>
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Skins</div>
                 <div><Link to={`/skins/${id}`}><button>Start</button></Link></div>
-              </div>
-              <p className='small-divider'></p>
-            </div> ) :
-            (<div className='not-editing'></div>)}
+              </span>
+            </span> ) :
+            (<div className='hide-summary'></div>)}
         </div>
         <p className='small-divider'></p>
 

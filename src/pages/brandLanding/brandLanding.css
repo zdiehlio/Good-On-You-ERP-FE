@@ -31,3 +31,12 @@
 .summary-container {
   width: 80%;
 }
+
+.show-summary {
+  width: 100%;
+  display: block;
+}
+
+.hide-summary {
+
+}

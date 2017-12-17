@@ -18,6 +18,7 @@ class SuppDataCategory extends Component {
       isEditing: null,
       currentAnswer: [],
       catOptions: [],
+      categories: [],
       finalAnswer: null,
       input: null,
       save: false,
@@ -52,7 +53,7 @@ componentWillReceiveProps(nextProps) {
     })
     _.map(nextProps.qa, check => {
       if(check.dominant === true) {
-        this.setState({current_dominant_id: check.category_id})
+        this.setState({current_dominant_id: check.category_id, current_dominant_name: check.category.name})
       }
     })
     this.setState({
@@ -109,6 +110,7 @@ componentDidUpdate() {
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleCatSave(event) {
+    event.preventDefault()
     const { id }  = this.props.match.params
     if(event.target.name === '1') {
       this.props.createBrandCategory(id, this.state.currentAnswer)
@@ -127,7 +129,9 @@ componentDidUpdate() {
         currentAnswer: this.state.currentAnswer.filter(cat => {return cat.category_id != event.target.value}),
         dominantOptions: this.state.dominantOptions.filter(dom => {return dom.id !== parseInt(event.target.value)})
       })
-      console.log('value', event.target.value);
+      if(event.target.name === this.state.current_dominant_name) {
+        this.setState({current_dominant_name: null})
+      }
     } else {
       this.setState({
         [event.target.name]: 'chip-selected',
@@ -140,13 +144,17 @@ componentDidUpdate() {
   handleDominantChange(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.setState({current_dominant_id: parseInt(event.target.value), dominant: {dominant: true}})
+    this.setState({
+      current_dominant_id: parseInt(event.target.value),
+      current_dominant_name: event.target.name,
+      dominant: {dominant: true}
+    })
   }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.qa);
-    console.log('state', this.state.currentAnswer);
+    console.log('state', this.state);
     console.log('pre_qa', this.props.pre_qa);
     const state = this.state
     const props = this.props.qa
@@ -175,6 +183,8 @@ componentDidUpdate() {
           </div>) : (
           <div className='not-editing'>
           <h5>What are the categories?</h5>
+          <h5>Currently Selected Categories</h5>
+            <ul>{_.map(state.dominantOptions, cat => {return (<li key={cat.id}>{cat.name}</li>)})}</ul>
             <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
           </div>
           )}
@@ -189,6 +199,8 @@ componentDidUpdate() {
             </div>) : (
             <div className='not-editing'>
               <h5>What is the Brands dominant category?</h5>
+              <h5>Current Dominant Category</h5>
+              <ul>{state.current_dominant_name}</ul>
               <button name='2' onClick={this.handleEdit} value='2'>Edit</button>
             </div>
             )}
