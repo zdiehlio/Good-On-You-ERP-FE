@@ -65,7 +65,7 @@ componentWillReceiveProps(nextProps) {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.setState({isEditing: event.target.name})
+    this.setState({isEditing: parseInt(event.target.name)})
 }
 
 //sets state for isEditing to null which will toggle the ability to edit
@@ -151,39 +151,50 @@ componentWillReceiveProps(nextProps) {
     }
   }
 
-
   renderQA() {
     return _.map(this.props.pre_qa, theme => {
       return _.map(theme.questions, type => {
+          if(this.state.isEditing === type.id) {
           return(
-            <ul>
-              <li key={type.id}>
-                {type.text}
-              </li>
+              <div className='editing'>
               <ul>
-                {_.map(type.answers, ans => {
-                  return (
-                    <li key={ans.id}>
-                      <input
-                        type='checkbox'
-                        name={ans.id}
-                        onChange={this.handleCheckbox}
-                        checked={this.state[`answer${ans.id}`]}
+                <li key={type.id}>
+                  <h5>{type.text}</h5>
+                </li>
+                <ul>
+                  {_.map(type.answers, ans => {
+                    if(this.state)
+                    return (
+                      <li key={ans.id}>
+                        <input
+                          type='checkbox'
+                          name={ans.id}
+                          onChange={this.handleCheckbox}
+                          checked={this.state[`answer${ans.id}`]}
+                          />
+                          {ans.text}
+                        <input
+                          type='text'
+                          onChange={this.handleUrl}
+                          name={ans.id}
                         />
-                        {ans.text}
-                      <input
-                        type='text'
-                        onChange={this.handleUrl}
-                        name={ans.id}
-                      />
-                      <textArea
-                      />
-                    </li>
+                        <textArea
+                        />
+                      </li>
+                      )}
                     )}
-                  )}
+                </ul>
               </ul>
-            </ul>
-          )
+              <button onClick={this.handleCancel}>Cancel</button>
+              <button onClick={this.handleSave} name={type.id}>Save</button>
+            </div>) } else {
+              return(
+            <div className='not-editing'>
+              <h5>{type.text}</h5>
+              <p>Current Selections:</p>
+              <button name={type.id} onClick={this.handleEdit}>Edit</button>
+            </div>
+            )}
       })
     })
   }
@@ -199,21 +210,7 @@ componentWillReceiveProps(nextProps) {
         <FormsHeader />
         {this.renderHeader()}
         <form className='brand-form'>
-          {isEditing === '1' ? (
-            <div className='editing'>
-                <div>
-                <h5>What are the product types?  Select one or more?</h5>
-                {this.renderQA()}
-                </div>
-              <button onClick={this.handleCancel}>Cancel</button>
-              <button onClick={this.handleSave} name='1'>Save</button>
-            </div>) : (
-            <div className='not-editing'>
-              <h5>What is the size of the Brand?</h5>
-              <p>Current sizes:</p>
-              <button name='1' onClick={this.handleEdit}>Edit</button>
-            </div>
-            )}
+          {this.renderQA()}
         </form>
       </div>
     )

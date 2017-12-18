@@ -45,7 +45,7 @@ componentWillReceiveProps(nextProps) {
 }
 
 validateEmail(val) {
-  if (/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(val.target.value)) {
+  if (/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(val.target.value) || /^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(this.state.email)) {
     this.setState({emailValid: true})
   } else {
     this.setState({emailValid: false})
