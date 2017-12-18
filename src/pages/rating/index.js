@@ -39,7 +39,7 @@ class Rating extends Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleCheckbox = this.handleCheckbox.bind(this)
-    // this.handleUrl = this.handleUrl.bind(this)
+    this.handleUrl = this.handleUrl.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
@@ -81,6 +81,9 @@ componentWillReceiveProps(nextProps) {
     this.setState({isEditing: null})
   }
 
+  handleUrl(event) {
+    this.setState({})
+  }
   handleCheckbox(event) {
     const { id }  = this.props.match.params
     if(this.state[`answer${event.target.name}`] === parseInt(event.target.name)) {

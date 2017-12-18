@@ -34,13 +34,14 @@ componentWillReceiveProps(nextProps) {
   if(nextProps.qa !== this.props.qa) {
     _.map(nextProps.qa, quest => {
       this.setState({
-        [quest.question]: `${quest.answer}`,
+        [quest.question]: quest.answer,
+        [`${quest.question}Original`]: quest.answer,
         [`${quest.question}Answer`]: quest.cause.text,
+        [`${quest.question}OriginalAnswer`]: quest.cause.text
       })
   })
 }
 }
-
 
 //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
@@ -60,24 +61,30 @@ componentWillReceiveProps(nextProps) {
   }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    this.setState({isEditing: null, currentAnswer: null})
+    this.setState({
+      isEditing: null,
+      [`${event.target.name}Answer`]: this.state[`${event.target.name}OriginalAnswer`],
+      [event.target.name]: this.state[`${event.target.name}Original`],
+      currentAnswer: null})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
     this.props.updateCause(id, event.target.name, {answer: this.state.currentAnswer})
-    this.setState({isEditing: null})
-    console.log('save', this.state);
+    this.setState({isEditing: null, save: true})
   }
   handleChange(event){
-    this.setState({[`${event.target.name}Answer`]: _.map(this.props.pre_qa, check => {
-      if(event.target.value === check.id) {
-        return check.text
+    _.map(this.props.pre_qa, check => {
+      if(check.id === parseInt(event.target.value)) {
+        console.log(check);
+        this.setState({[`${event.target.name}Answer`]: check.text})
       }
-    }),
-      [event.target.value]: event.target.value,
-      currentAnswer: event.target.value})
+    })
+    this.setState({
+      [event.target.name]: parseInt(event.target.value),
+      currentAnswer: parseInt(event.target.value)
+    })
   }
 
   renderQuestion(quest) {
@@ -87,7 +94,7 @@ componentWillReceiveProps(nextProps) {
         <li key={ans.id}><input
           type='radio'
           onChange={this.handleChange}
-          checked={this.state.currentAnswer === ans.id}
+          checked={this.state[quest] === ans.id}
           value={ans.id}
           name={ans.question}
           /> {ans.text}
@@ -123,8 +130,8 @@ componentWillReceiveProps(nextProps) {
               <ul>
                 {this.renderQuestion('made-in')}
               </ul>
-              <button onClick={this.handleCancel}>Cancel</button>
-              <button onClick={this.handleSave} name='made-in' value='1'>Save</button>
+              <button name='made-in' onClick={this.handleCancel} >Cancel</button>
+              <button name='made-in' onClick={this.handleSave}  value='1'>Save</button>
           </div>) : (
           <div className='not-editing'>
             <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
@@ -140,7 +147,7 @@ componentWillReceiveProps(nextProps) {
             <ul>
               {this.renderQuestion('b-corp')}
             </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
+            <button name='b-corp' onClick={this.handleCancel}>Cancel</button>
             <button name='b-corp' onClick={this.handleSave} value='6'>Save</button>
           </div>) : (
           <div className='not-editing'>
@@ -157,7 +164,7 @@ componentWillReceiveProps(nextProps) {
             <ul>
               {this.renderQuestion('social-enterprise')}
             </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
+            <button name='social-enterprise' onClick={this.handleCancel}>Cancel</button>
             <button name='social-enterprise' onClick={this.handleSave} value='8'>Save</button>
           </div>) : (
           <div className='not-editing'>
@@ -174,7 +181,7 @@ componentWillReceiveProps(nextProps) {
             <ul>
               {this.renderQuestion('1-for-1')}
             </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
+            <button name='1-for-1' onClick={this.handleCancel}>Cancel</button>
             <button name='1-for-1' onClick={this.handleSave} value='10'>Save</button>
           </div>) : (
           <div className='not-editing'>
@@ -191,7 +198,7 @@ componentWillReceiveProps(nextProps) {
             <ul>
               {this.renderQuestion('vegan')}
             </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
+            <button name='vegan' onClick={this.handleCancel}>Cancel</button>
             <button name='vegan' onClick={this.handleSave} value='12'>Save</button>
           </div>) : (
           <div className='not-editing'>
@@ -208,7 +215,7 @@ componentWillReceiveProps(nextProps) {
             <ul>
               {this.renderQuestion('fair-trade')}
             </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
+            <button name='fair-trade' onClick={this.handleCancel}>Cancel</button>
             <button name='fair-trade' onClick={this.handleSave} value='14'>Save</button>
           </div>) : (
           <div className='not-editing'>
@@ -225,7 +232,7 @@ componentWillReceiveProps(nextProps) {
             <ul>
               {this.renderQuestion('organic')}
             </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
+            <button name='organic' onClick={this.handleCancel}>Cancel</button>
             <button name='organic' onClick={this.handleSave} value='16'>Save</button>
           </div>) : (
           <div className='not-editing'>
@@ -241,7 +248,7 @@ componentWillReceiveProps(nextProps) {
             <ul>
               {this.renderQuestion('recycled')}
             </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
+            <button name='recycled' onClick={this.handleCancel}>Cancel</button>
             <button name='recycled' onClick={this.handleSave} value='18'>Save</button>
           </div>) : (
           <div className='not-editing'>

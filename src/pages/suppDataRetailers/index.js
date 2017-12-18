@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchRetailers, createRetailer, fetchTerritories, updateRetailer } from '../../actions'
 import { FormsHeader } from '../../components'
+import validUrl from 'valid-url'
 import _ from 'lodash'
 
 class SuppDataRetailers extends Component {
@@ -88,29 +89,45 @@ componentDidUpdate() {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state.name && this.state.website){
+    if(this.state.name && this.state.website && this.state.errorwebsite === false){
       if(event.target.name === 'retailer' && !this.props.qa[0]) {
         this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website, territories: this.state.territories})
-        this.setState({renderError: false})
+        this.setState({isEditing: null, errorwebsite: false, errorname: false})
         console.log('create retailer');
       } else if(event.target.name === 'online') {
         this.props.updateRetailer(this.state.id, {online_only: this.state.online_only})
-        this.setState({save: true, renderError: false})
+        this.setState({isEditing: null, save: true, errorwebsite: false, errorname: false})
         console.log('update online');
       } else {
         this.props.updateRetailer(this.state.id, {name: this.state.name, website: this.state.website, territories: this.state.territories})
-        this.setState({save: true, renderError: false})
+        this.setState({isEditing: null, save: true, errorwebsite: false, errorname: false})
         console.log('update retailer');
       }
     } else {
-        this.setState({renderError: true})
+      return
+        this.setState({errorwebsite: this.state.website || this.state.errorwebsite === false ? false : true, errorname: this.state.name ? false : true})
       }
-    this.setState({isEditing: null})
+  }
+
+  handleError(e) {
+    if(e.target.value === '') {
+      this.setState({[`error${e.target.name}`]: true})
+    } else {
+        this.setState({[`error${e.target.name}`]: false})
+      }
+    if(e.target.name === 'website') {
+      if(/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(e.target.value) && e.target.value !== ''){
+        this.setState({errorwebsite: false})
+      } else {
+        this.setState({[`error${e.target.name}`]: true})
+      }
+    }
   }
 
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
-    this.setState({[event.target.name]: event.target.value, [`error${event.target.name}`]: true})
+    this.setState({[event.target.name]: event.target.value})
+    this.handleError(event)
   }
 
   handleDropDown(event) {
@@ -130,7 +147,7 @@ componentDidUpdate() {
   }
 
   handleRemove(event) {
-    this.setState({[event.target.value]: null, territories: this.state.territories.filter(select => {return select.name != event.target.value})})
+    this.setState({[event.target.value]: null, territories: this.state.territories.filter(select => {return select.name !== event.target.value})})
   }
 
   renderTerritorries() {
@@ -168,11 +185,13 @@ render() {
         <div className='editing'>
         <ul>
             <h5>What is the main retailer?</h5>
-            <li>Retailer Name<input
+            <h5>Retailer Name</h5>
+            <li><input
               value={state.name}
               onChange={this.handleInput}
               name='name'
               />
+              <div className='error-message'>{state.errorname === true ? 'Please enter retailer name' : ''}</div>
             </li>
             <h5>Retailer Website </h5>
             <li><input
@@ -180,6 +199,7 @@ render() {
               onChange={this.handleInput}
               name='website'
               />
+              <div className='error-message'>{state.errorwebsite === true ? 'Please enter valid website' : ''}</div>
             </li>
             <h5>Select one or more Retailer territories</h5>
             <li><select

@@ -67,6 +67,12 @@ export default function(state = {}, action) {
       return _.mapKeys(action.payload.data.data, 'question')
     }
     return {error: action.error}
+  // case UPDATE_CAUSE:
+  //   if (!action.error) {
+  //     console.log('update, cause', action.payload.data);
+  //     return {...state, [action.payload.data]: action.payload.data}
+  //   }
+    return {error: action.error}
   case FETCH_SENTENCE:
     if (!action.error) {
       console.log('fetch, sentence', action.payload.data.data);
