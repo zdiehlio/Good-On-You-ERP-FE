@@ -29,9 +29,11 @@ class Rating extends Component {
 
     this.state = {
       isEditing: null,
-      ratingValues: [],
+      showEvidence: null,
+      ratingValues: [{id:24, url: 'www.aicm.com', comment: 'aciemciam'}],
       deleteValues: [],
       path: this.props.match,
+      testState: {brand: 1, id: 3},
       save: false
     }
 
@@ -40,6 +42,7 @@ class Rating extends Component {
     this.handleSave = this.handleSave.bind(this)
     this.handleCheckbox = this.handleCheckbox.bind(this)
     this.handleUrl = this.handleUrl.bind(this)
+    this.handleComment = this.handleComment.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
@@ -54,10 +57,10 @@ componentWillReceiveProps(nextProps) {
     _.map(nextProps.qa, rate => {
       this.setState({[`answer${rate.answer}`]: rate.answer, [`url${rate.answer}`]: rate.url, [`comment${rate.answer}`]: rate.comment})
     })
-    this.setState({ratingValues: _.map(nextProps.qa, check => {
-      return {brand: id, answer: check.answer, url: check.url, comment: check.comment}
-      })
-    })
+    // this.setState({ratingValues: _.map(nextProps.qa, check => {
+    //   return {brand: id, answer: check.answer, url: check.url, comment: check.comment}
+    //   })
+    // })
   }
 }
 
@@ -73,30 +76,53 @@ componentWillReceiveProps(nextProps) {
     event.default()
     this.setState({isEditing: null})
   }
+
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.createRating(this.state.ratingValues)
+    this.props.createRating({question: event.target.name, brand: id, answers: this.state.ratingValues})
     this.setState({isEditing: null})
   }
 
-  handleUrl(event) {
-    this.setState({})
+  handleComment(event) {
+    _.map(this.state.ratingValues, val => {
+      if(val.id === parseInt(event.target.name)) {
+        Object.assign(val, {comment: event.target.value})
+      }
+    })
+    console.log('comment', this.state.ratingValues);
   }
+
+  handleUrl(event) {
+    _.map(this.state.ratingValues, val => {
+      if(val.id === parseInt(event.target.name)) {
+        Object.assign(val, {url: event.target.value})
+      }
+    })
+    console.log('url', this.state.ratingValues);
+  }
+
   handleCheckbox(event) {
     const { id }  = this.props.match.params
     if(this.state[`answer${event.target.name}`] === parseInt(event.target.name)) {
       this.setState({
         [`answer${event.target.name}`]: null,
-        ratingValues: this.state.ratingValues.filter(rate => {return rate.answer !== parseInt(event.target.name)}),
-        // deleteValues: [...this.state.deleteValues, event.target.name],
+        ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(event.target.name)}),
+        showEvidence: null
       })
     } else {
-      this.setState({
-        [`answer${event.target.name}`]: parseInt(event.target.name),
-        ratingValues: [...this.state.ratingValues, {brand: id, answer: parseInt(event.target.name), comment: 'test', url: 'www.testing.com'}],
-        // deleteValues: this.state.deleteValues.filter(type => {return type !== event.target.name})
+      _.map(this.state.ratingValues, check => {
+        if(check.id === parseInt(event.target.name)) {
+          this.setState({showEvidence: parseInt(event.target.name)})
+        } else {
+          console.log('adding id');
+          this.setState({
+            [`answer${event.target.name}`]: parseInt(event.target.name),
+            ratingValues: [...this.state.ratingValues, {id: parseInt(event.target.name)}],
+            showEvidence: parseInt(event.target.name)
+          })
+        }
       })
     }
   }
@@ -176,13 +202,18 @@ componentWillReceiveProps(nextProps) {
                           checked={this.state[`answer${ans.id}`]}
                           />
                           {ans.text}
-                        <input
-                          type='text'
-                          onChange={this.handleUrl}
-                          name={ans.id}
-                        />
-                        <textArea
-                        />
+                        {this.state.showEvidence === ans.id ? (
+                          <div>
+                            <input
+                              type='text'
+                              onChange={this.handleUrl}
+                              name={ans.id}
+                            />
+                            <textArea
+                              onChange={this.handleComment}
+                              name={ans.id}
+                            />
+                          </div>) : ('')}
                       </li>
                       )}
                     )}
