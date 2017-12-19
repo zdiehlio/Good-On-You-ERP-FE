@@ -29,12 +29,7 @@ class Rating extends Component {
 
     this.state = {
       isEditing: null,
-      showEvidence: null,
-      ratingValues: [{id:24, url: 'www.aicm.com', comment: 'aciemciam'}],
-      deleteValues: [],
-      path: this.props.match,
-      testState: {brand: 1, id: 3},
-      save: false
+      ratingValues: [{}]
     }
 
     this.handleEdit = this.handleEdit.bind(this)
@@ -55,12 +50,12 @@ componentWillReceiveProps(nextProps) {
   const { id } = this.props.match.params
   if(nextProps.qa !== this.props.qa) {
     _.map(nextProps.qa, rate => {
-      this.setState({[`answer${rate.answer}`]: rate.answer, [`url${rate.answer}`]: rate.url, [`comment${rate.answer}`]: rate.comment})
+      this.setState({[`answer${rate.answer}`]: rate.is_selected, [`show${rate.answer}`]: rate.is_selected, [`url${rate.answer}`]: rate.url, [`comment${rate.answer}`]: rate.comment})
     })
-    // this.setState({ratingValues: _.map(nextProps.qa, check => {
-    //   return {brand: id, answer: check.answer, url: check.url, comment: check.comment}
-    //   })
-    // })
+    this.setState({ratingValues: _.map(nextProps.qa, check => {
+      return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
+      })
+    })
   }
 }
 
@@ -68,6 +63,12 @@ componentWillReceiveProps(nextProps) {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
+      this.setState({ratingValues: _.map(this.state.ratingValues, val => {
+        if(val.is_selected === false) {
+          this.state.ratingValues.filter(rate => {return rate.id !== val.id})
+        }
+        })
+      })
     this.setState({isEditing: parseInt(event.target.name)})
 }
 
@@ -89,41 +90,37 @@ componentWillReceiveProps(nextProps) {
     _.map(this.state.ratingValues, val => {
       if(val.id === parseInt(event.target.name)) {
         Object.assign(val, {comment: event.target.value})
+        this.setState({[`comment${val.id}`]: event.target.value})
+        console.log('comment', this.state[`comment${val.id}`]);
       }
     })
-    console.log('comment', this.state.ratingValues);
   }
 
   handleUrl(event) {
     _.map(this.state.ratingValues, val => {
       if(val.id === parseInt(event.target.name)) {
         Object.assign(val, {url: event.target.value})
+        this.setState({[`url${val.id}`]: event.target.value})
+        console.log('url', this.state[`url${val.id}`]);
       }
     })
-    console.log('url', this.state.ratingValues);
   }
 
   handleCheckbox(event) {
     const { id }  = this.props.match.params
-    if(this.state[`answer${event.target.name}`] === parseInt(event.target.name)) {
+    if(this.state[`answer${event.target.name}`] === true) {
       this.setState({
-        [`answer${event.target.name}`]: null,
+        [`answer${event.target.name}`]: false,
         ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(event.target.name)}),
-        showEvidence: null
+        [`show${event.target.name}`]: false
       })
+    } else if(this.state[`answer${event.target.name}`] === false) {
+      this.setState({[`show${event.target.name}`]: true, [`answer${event.target.name}`]: true})
     } else {
-      _.map(this.state.ratingValues, check => {
-        if(check.id === parseInt(event.target.name)) {
-          this.setState({showEvidence: parseInt(event.target.name)})
-        } else {
-          console.log('adding id');
-          this.setState({
-            [`answer${event.target.name}`]: parseInt(event.target.name),
-            ratingValues: [...this.state.ratingValues, {id: parseInt(event.target.name)}],
-            showEvidence: parseInt(event.target.name)
-          })
-        }
-      })
+      this.setState({[`show${event.target.name}`]: true, [`answer${event.target.name}`]: true})
+      // _.map(this.state.ratingValues, check => {
+          this.setState({ratingValues: [...this.state.ratingValues, {id: parseInt(event.target.name)}]})
+      // })
     }
   }
 
@@ -196,22 +193,28 @@ componentWillReceiveProps(nextProps) {
                     return (
                       <li key={ans.id}>
                         <input
+                          className='checkbox'
                           type='checkbox'
                           name={ans.id}
                           onChange={this.handleCheckbox}
-                          checked={this.state[`answer${ans.id}`]}
+                          checked={this.state[`answer${ans.id}`] === true}
                           />
                           {ans.text}
-                        {this.state.showEvidence === ans.id ? (
+                        {this.state[`show${ans.id}`] === true ? (
                           <div>
+                          <h5>Evidence</h5>
+                            <p>Source URL</p>
                             <input
                               type='text'
                               onChange={this.handleUrl}
                               name={ans.id}
+                              value={this.state[`url${ans.id}`]}
                             />
+                            <p>Comment</p>
                             <textArea
                               onChange={this.handleComment}
                               name={ans.id}
+                              value={this.state[`comment${ans.id}`]}
                             />
                           </div>) : ('')}
                       </li>
