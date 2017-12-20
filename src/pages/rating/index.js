@@ -31,7 +31,8 @@ class Rating extends Component {
       isEditing: null,
       ratingValues: [{}],
       errorsWebsite: [],
-      errorsComment: []
+      errorsComment: [],
+      errors: []
     }
 
     this.handleEdit = this.handleEdit.bind(this)
@@ -111,7 +112,12 @@ componentWillReceiveProps(nextProps) {
       this.props.createRating({question: event.target.name, brand: id, answers: this.state.ratingValues})
       this.setState({isEditing: null})
     } else {
-      return
+      _.map(this.state.errorsComment, check => {
+        this.setState({[`errorComment${check}`]: true})
+      })
+      _.map(this.state.errorsWebsite, check => {
+        this.setState({[`errorWebsite${check}`]: true})
+      })
     }
   }
 
@@ -123,7 +129,7 @@ componentWillReceiveProps(nextProps) {
         console.log('comment', this.state[`comment${val.id}`]);
       }
     })
-    this.handleRequired(event)
+    this.handleValidComment(event)
   }
 
   handleUrl(event) {
@@ -138,22 +144,52 @@ componentWillReceiveProps(nextProps) {
   }
 
   handleCheckbox(event) {
+    event.persist()
     const { id }  = this.props.match.params
-    if(this.state[`answer${event.target.name}`] === true) {
-      this.setState({
+      if(this.state[`answer${event.target.name}`] === true) {
+        this.setState({
         [`answer${event.target.name}`]: false,
         ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(event.target.name)}),
         [`show${event.target.name}`]: false
       })
     } else if(this.state[`answer${event.target.name}`] === false) {
-      this.setState({[`show${event.target.name}`]: true, [`answer${event.target.name}`]: true})
+        this.setState({
+          [`show${event.target.name}`]: true,
+          [`answer${event.target.name}`]: true})
     } else {
-      this.setState({[`show${event.target.name}`]: true, [`answer${event.target.name}`]: true})
-      // _.map(this.state.ratingValues, check => {
-          this.setState({ratingValues: [...this.state.ratingValues, {id: parseInt(event.target.name), is_selected: true}]})
-      // })
+        this.setState({
+        [`show${event.target.name}`]: true,
+        [`answer${event.target.name}`]: true,
+        ratingValues: [...this.state.ratingValues, {id: parseInt(event.target.name), is_selected: true}]
+      })
     }
+    // this.handleSaveValidation(event)
   }
+
+  // handleCheckbox(event) {
+  //   event.persist()
+  //   const { id }  = this.props.match.params
+  //       if(this.state[`answer${event.target.name}`] === true) {
+  //         new Promise((resolve, reject) => {
+  //         resolve(this.setState({
+  //           [`answer${event.target.name}`]: false,
+  //           ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(event.target.name)}),
+  //           [`show${event.target.name}`]: false
+  //         }))
+  //       }).then(() => this.handleSaveValidation(event))
+  //       } else if(this.state[`answer${event.target.name}`] === false) {
+  //         this.setState({[`show${event.target.name}`]: true, [`answer${event.target.name}`]: true})
+  //       } else {
+  //         new Promise((resolve, reject) => {
+  //           resolve(this.setState({
+  //           [`show${event.target.name}`]: true,
+  //           [`answer${event.target.name}`]: true,
+  //           ratingValues: [...this.state.ratingValues, {id: parseInt(event.target.name), is_selected: true}]
+  //         }))
+  //         }).then(() => this.handleSaveValidation(event))
+  //       }
+  //   // this.handleSaveValidation(event)
+  // }
 
   renderHeader() {
     const id  = this.props.match.params.id
@@ -208,7 +244,29 @@ componentWillReceiveProps(nextProps) {
     }
   }
 
-  handleRequired(e) {
+  handleSaveValidation(e) {
+    if(this.state[`answer${e.target.name}`] === true) {
+      if(!this.state[`url${e.target.name}`]) {
+        console.log('url error');
+        this.setState({errorsWebsite: [...this.state.errorsWebsite, parseInt(e.target.name)]})
+      } else {
+        console.log('no url error');
+        this.setState({errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e.target.name)})})
+      }
+      if(!this.state[`comment${e.target.name}`]) {
+        this.setState({errorsComment: [...this.state.errorsComment, parseInt(e.target.name)]})
+      } else {
+        this.setState({errorsComment: this.state.errorsComment.filter(rate => {return rate !== parseInt(e.target.name)})})
+      }
+    } else if(this.state[`answer${e.target.name}`] === false){
+        this.setState({
+          errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e.target.name)}),
+          errorsComment: this.state.errorsComment.filter(rate => {return rate !== parseInt(e.target.name)})
+        })
+  }
+}
+
+  handleValidComment(e) {
     if(e.target.value === '') {
       this.setState({
         [`errorComment${e.target.name}`]: true,
@@ -296,11 +354,17 @@ componentWillReceiveProps(nextProps) {
               </ul>
               <button onClick={this.handleCancel} name={type.id}>Cancel</button>
               <button onClick={this.handleSave} name={type.id}>Save</button>
-            </div>) } else {
+              {_.map(type.answers, ans => {
+                return (<div key={ans.id} className='error-message'>{this.state[`errorComment${ans.id}`] === true || this.state[`errorWebsite${ans.id}`] === true ? 'Please fill out all required fields' : ''}</div>)
+              })}
+             </div>) } else {
               return(
             <div className='not-editing'>
               <h5>{type.text}</h5>
               <p>Current Selections:</p>
+              {_.map(type.answers, ans => {
+                return (this.state[`answer${ans.id}`] === true ? (<li key={ans.id}>{ans.text}</li>) : (''))
+              })}
               <button name={type.id} onClick={this.handleEdit}>Edit</button>
             </div>
             )}
