@@ -63,12 +63,12 @@ componentWillReceiveProps(nextProps) {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-      this.setState({ratingValues: _.map(this.state.ratingValues, val => {
-        if(val.is_selected === false) {
-          this.state.ratingValues.filter(rate => {return rate.id !== val.id})
+      this.setState({ratingValues: this.state.ratingValues.filter(rate => {
+        if(rate.is_selected === true) {
+          return rate.id !== this.state.ratingValues.id
         }
-        })
       })
+    })
     this.setState({isEditing: parseInt(event.target.name)})
 }
 
@@ -119,7 +119,7 @@ componentWillReceiveProps(nextProps) {
     } else {
       this.setState({[`show${event.target.name}`]: true, [`answer${event.target.name}`]: true})
       // _.map(this.state.ratingValues, check => {
-          this.setState({ratingValues: [...this.state.ratingValues, {id: parseInt(event.target.name)}]})
+          this.setState({ratingValues: [...this.state.ratingValues, {id: parseInt(event.target.name), is_selected: true}]})
       // })
     }
   }
