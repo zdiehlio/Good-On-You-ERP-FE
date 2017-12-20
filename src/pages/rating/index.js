@@ -52,9 +52,22 @@ componentWillReceiveProps(nextProps) {
   const { id } = this.props.match.params
   if(nextProps.qa !== this.props.qa) {
     _.map(nextProps.qa, rate => {
-      this.setState({[`answer${rate.answer}`]: rate.is_selected, [`show${rate.answer}`]: rate.is_selected, [`url${rate.answer}`]: rate.url, [`comment${rate.answer}`]: rate.comment})
+      this.setState({
+        [`answer${rate.answer}`]: rate.is_selected,
+        [`originalAnswer${rate.answer}`]: rate.is_selected,
+        [`show${rate.answer}`]: rate.is_selected,
+        [`originalShow${rate.answer}`]: rate.is_selected,
+        [`url${rate.answer}`]: rate.url,
+        [`originalUrl${rate.answer}`]: rate.url,
+        [`comment${rate.answer}`]: rate.comment,
+        [`originalComment${rate.answer}`]: rate.comment
+      })
     })
     this.setState({ratingValues: _.map(nextProps.qa, check => {
+      return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
+      })
+    })
+    this.setState({originalRatingValues: _.map(nextProps.qa, check => {
       return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
       })
     })
@@ -76,8 +89,18 @@ componentWillReceiveProps(nextProps) {
 
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    event.default()
-    this.setState({isEditing: null})
+    event.preventDefault()
+    _.map(this.state.ratingValues, val => {
+      this.setState({
+        isEditing: null,
+        [`answer${val.id}`]: this.state[`originalAnswer${val.id}`],
+        [`url${val.id}`]: this.state[`originalUrl${val.id}`],
+        [`comment${val.id}`]: this.state[`originalComment${val.id}`],
+        [`show${val.id}`]: this.state[`originalShow${val.id}`],
+        ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== val.id})
+      })
+    })
+    this.setState({ratingValues: this.state.originalRatingValues})
   }
 
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -271,7 +294,7 @@ componentWillReceiveProps(nextProps) {
                     )}
                 </ul>
               </ul>
-              <button onClick={this.handleCancel}>Cancel</button>
+              <button onClick={this.handleCancel} name={type.id}>Cancel</button>
               <button onClick={this.handleSave} name={type.id}>Save</button>
             </div>) } else {
               return(
