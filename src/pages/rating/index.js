@@ -84,9 +84,9 @@ componentWillReceiveProps(nextProps) {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state.errorComment === false && this.state.errorWebsite === false) {
+    if(this.state.errorsWebsite.length <= 0 && this.state.errorsComment.length <= 0) {
       this.props.createRating({question: event.target.name, brand: id, answers: this.state.ratingValues})
-      this.setState({isEditing: null, errorComment: false, errorWebsite: false})
+      this.setState({isEditing: null})
     } else {
       return
     }
@@ -187,9 +187,15 @@ componentWillReceiveProps(nextProps) {
 
   handleRequired(e) {
     if(e.target.value === '') {
-      this.setState({[`errorComment${e.target.name}`]: true})
+      this.setState({
+        [`errorComment${e.target.name}`]: true,
+        errorsComment: [...this.state.errorsComment, parseInt(e.target.name)]
+      })
     } else {
-        this.setState({[`errorComment${e.target.name}`]: false})
+        this.setState({
+          [`errorComment${e.target.name}`]: false,
+          errorsComment: this.state.errorsComment.filter(rate => {return rate !== parseInt(e.target.name)})
+        })
       }
   }
 
@@ -202,13 +208,13 @@ componentWillReceiveProps(nextProps) {
     } else {
         this.setState({
           [`errorWebsite${e.target.name}`]: false,
-          errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate.id !== parseInt(e.target.name)})
+          errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e.target.name)})
         })
       }
     if(/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(e.target.value) && e.target.value !== ''){
       this.setState({
         [`errorWebsite${e.target.name}`]: false,
-        errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate.id !== parseInt(e.target.name)})
+        errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e.target.name)})
       })
     } else {
       this.setState({
