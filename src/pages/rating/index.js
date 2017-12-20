@@ -29,7 +29,9 @@ class Rating extends Component {
 
     this.state = {
       isEditing: null,
-      ratingValues: [{}]
+      ratingValues: [{}],
+      errorsWebsite: [],
+      errorsComment: []
     }
 
     this.handleEdit = this.handleEdit.bind(this)
@@ -82,8 +84,12 @@ componentWillReceiveProps(nextProps) {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.createRating({question: event.target.name, brand: id, answers: this.state.ratingValues})
-    this.setState({isEditing: null})
+    if(this.state.errorComment === false && this.state.errorWebsite === false) {
+      this.props.createRating({question: event.target.name, brand: id, answers: this.state.ratingValues})
+      this.setState({isEditing: null, errorComment: false, errorWebsite: false})
+    } else {
+      return
+    }
   }
 
   handleComment(event) {
@@ -94,6 +100,7 @@ componentWillReceiveProps(nextProps) {
         console.log('comment', this.state[`comment${val.id}`]);
       }
     })
+    this.handleRequired(event)
   }
 
   handleUrl(event) {
@@ -104,6 +111,7 @@ componentWillReceiveProps(nextProps) {
         console.log('url', this.state[`url${val.id}`]);
       }
     })
+    this.handleValidUrl(event)
   }
 
   handleCheckbox(event) {
@@ -177,6 +185,39 @@ componentWillReceiveProps(nextProps) {
     }
   }
 
+  handleRequired(e) {
+    if(e.target.value === '') {
+      this.setState({[`errorComment${e.target.name}`]: true})
+    } else {
+        this.setState({[`errorComment${e.target.name}`]: false})
+      }
+  }
+
+  handleValidUrl(e) {
+    if(e.target.value === '') {
+      this.setState({
+        [`errorWebsite${e.target.name}`]: true,
+        errorsWebsite: [...this.state.errorsWebsite, parseInt(e.target.name)]
+      })
+    } else {
+        this.setState({
+          [`errorWebsite${e.target.name}`]: false,
+          errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate.id !== parseInt(e.target.name)})
+        })
+      }
+    if(/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(e.target.value) && e.target.value !== ''){
+      this.setState({
+        [`errorWebsite${e.target.name}`]: false,
+        errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate.id !== parseInt(e.target.name)})
+      })
+    } else {
+      this.setState({
+        [`errorWebsite${e.target.name}`]: true,
+        errorsWebsite: [...this.state.errorsWebsite, parseInt(e.target.name)]
+      })
+    }
+  }
+
   renderQA() {
     return _.map(this.props.pre_qa, theme => {
       return _.map(theme.questions, type => {
@@ -210,12 +251,14 @@ componentWillReceiveProps(nextProps) {
                               name={ans.id}
                               value={this.state[`url${ans.id}`]}
                             />
+                            <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
                             <p>Comment</p>
                             <textArea
                               onChange={this.handleComment}
                               name={ans.id}
                               value={this.state[`comment${ans.id}`]}
                             />
+                            <div className='error-message'>{this.state[`errorComment${ans.id}`] === true ? 'Please enter a comment as evidence' : ''}</div>
                           </div>) : ('')}
                       </li>
                       )}
