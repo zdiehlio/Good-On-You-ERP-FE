@@ -56,6 +56,7 @@ componentWillReceiveProps(nextProps) {
       this.setState({
         [`answer${rate.answer}`]: rate.is_selected,
         [`originalAnswer${rate.answer}`]: rate.is_selected,
+        [`props${rate.answer}`]: rate.answer,
         [`show${rate.answer}`]: rate.is_selected,
         [`originalShow${rate.answer}`]: rate.is_selected,
         [`url${rate.answer}`]: rate.url,
@@ -146,50 +147,27 @@ componentWillReceiveProps(nextProps) {
   handleCheckbox(event) {
     event.persist()
     const { id }  = this.props.match.params
-      if(this.state[`answer${event.target.name}`] === true) {
-        this.setState({
-        [`answer${event.target.name}`]: false,
-        ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(event.target.name)}),
-        [`show${event.target.name}`]: false
-      })
-    } else if(this.state[`answer${event.target.name}`] === false) {
-        this.setState({
-          [`show${event.target.name}`]: true,
-          [`answer${event.target.name}`]: true})
-    } else {
-        this.setState({
-        [`show${event.target.name}`]: true,
-        [`answer${event.target.name}`]: true,
-        ratingValues: [...this.state.ratingValues, {id: parseInt(event.target.name), is_selected: true}]
-      })
-    }
+        if(this.state[`answer${event.target.name}`] === true) {
+          new Promise((resolve, reject) => {
+          resolve(this.setState({
+            [`answer${event.target.name}`]: false,
+            ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(event.target.name)}),
+            [`show${event.target.name}`]: false
+          }))
+        }).then(() => this.handleSaveValidation(event))
+        } else if(this.state[`answer${event.target.name}`] === false && this.state[`props${event.target.name}`] === parseInt(event.target.name)) {
+          this.setState({[`show${event.target.name}`]: true, [`answer${event.target.name}`]: true})
+        } else {
+          new Promise((resolve, reject) => {
+            resolve(this.setState({
+            [`show${event.target.name}`]: true,
+            [`answer${event.target.name}`]: true,
+            ratingValues: [...this.state.ratingValues, {id: parseInt(event.target.name), is_selected: true}]
+          }))
+          }).then(() => this.handleSaveValidation(event))
+        }
     // this.handleSaveValidation(event)
   }
-
-  // handleCheckbox(event) {
-  //   event.persist()
-  //   const { id }  = this.props.match.params
-  //       if(this.state[`answer${event.target.name}`] === true) {
-  //         new Promise((resolve, reject) => {
-  //         resolve(this.setState({
-  //           [`answer${event.target.name}`]: false,
-  //           ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(event.target.name)}),
-  //           [`show${event.target.name}`]: false
-  //         }))
-  //       }).then(() => this.handleSaveValidation(event))
-  //       } else if(this.state[`answer${event.target.name}`] === false) {
-  //         this.setState({[`show${event.target.name}`]: true, [`answer${event.target.name}`]: true})
-  //       } else {
-  //         new Promise((resolve, reject) => {
-  //           resolve(this.setState({
-  //           [`show${event.target.name}`]: true,
-  //           [`answer${event.target.name}`]: true,
-  //           ratingValues: [...this.state.ratingValues, {id: parseInt(event.target.name), is_selected: true}]
-  //         }))
-  //         }).then(() => this.handleSaveValidation(event))
-  //       }
-  //   // this.handleSaveValidation(event)
-  // }
 
   renderHeader() {
     const id  = this.props.match.params.id
