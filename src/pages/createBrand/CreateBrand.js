@@ -98,8 +98,14 @@ function validate(values) {
     errors.name = "Enter a name!"
   }
 
-  if (!values.url) {
-    errors.url = "Enter a url!"
+  if (!values.website) {
+    errors.website = "Enter a valid website!"
+  }
+
+  if(/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(values.website)) {
+    errors.website = null
+  } else {
+    errors.website = "Enter a valid website!"
   }
 
   // If errors is empty, the form is fine to submit

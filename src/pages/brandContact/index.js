@@ -127,7 +127,7 @@ render() {
               <div className='error-message'>{state.renderError === true ? 'Please enter Valid Email' : ''}</div>
             <h5>Brand GOY Relationship Manager: </h5>
               <input
-                placeholder='email'
+                placeholder='manager name'
                 onChange={this.handleInput}
                 name='relationship_manager'
                 value={state.relationship_manager}/>

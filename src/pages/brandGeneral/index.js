@@ -4,6 +4,7 @@ import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { fetchGeneral, updateGeneral, createBrandSize, deleteBrandSize } from '../../actions'
 import { FormsHeader } from '../../components'
+import { Form, Input, Radio, Checkbox} from 'semantic-ui-react'
 import _ from 'lodash'
 import axios from 'axios'
 import moment from 'moment'
@@ -35,6 +36,7 @@ class BrandGeneral extends Component {
     this.handleSave = this.handleSave.bind(this)
     this.handleSubmitSize = this.handleSubmitSize.bind(this)
     this.handleCheckbox = this.handleCheckbox.bind(this)
+    this.handleSizeCancel = this.handleSizeCancel.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
@@ -46,13 +48,23 @@ componentWillReceiveProps(nextProps) {
   if(nextProps.qa !== this.props.qa) {
     _.map(nextProps.qa.size, crit => {
       if(crit) {
-        this.setState({[crit.criteria]: crit.criteria})
+        this.setState({[`original${crit.criteria}`]: crit.criteria, [crit.criteria]: crit.criteria})
       }
     })
     if(nextProps.qa.size) {
       this.setState({sizeValues: _.map(nextProps.qa.size, val => {return {brand: id, criteria: val.criteria}})})
     }
-    this.setState({sustainability_report_date: nextProps.qa.sustainability_report_date, review_date: nextProps.qa.review_date, parent_company: nextProps.qa.parent_company})
+    this.setState({
+      name: nextProps.qa.name,
+      originalname: nextProps.qa.name,
+      website: nextProps.qa.website,
+      sustainability_report_date: nextProps.qa.sustainability_report_date,
+      originalsustainability_report_date: nextProps.qa.sustainability_report_date,
+      review_date: nextProps.qa.review_date,
+      originalreview_date: nextProps.qa.review_date,
+      parent_company: nextProps.qa.parent_company,
+      originalparent_company: nextProps.qa.parent_company
+    })
   }
 }
 
@@ -73,7 +85,13 @@ validateDate(val) {
 }
 //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    this.setState({isEditing: null, currentAnswer: null})
+    this.setState({isEditing: null, currentAnswer: null, [event.target.name]: this.state[`original${event.target.name}`]})
+  }
+  handleSizeCancel(event) {
+    _.map(this.state.sizeOptions, size => {
+      this.setState({[size]: this.state[`original${size}`]})
+    })
+    this.setState({isEditing: null, parent_company: this.state.originalparent_company})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
@@ -140,8 +158,7 @@ validateDate(val) {
 
   render() {
     console.log('props', this.props.qa);
-    console.log('state', this.state.dateValid);
-    console.log('state', this.state.renderError);
+    console.log('state', this.state);
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props.qa
@@ -158,26 +175,32 @@ validateDate(val) {
             <div><Link to={`/brandContact/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
-        <form className='brand-form'>
+        <Form>
         {isEditing === '1' ? (
           <div className='editing'>
           <h5>What is the Brand Name and Website?</h5>
-            <ul>
-              <li>Brand Name: <Field
-                placeholder={props.name}
-                onChange={this.handleInput}
-                name='name'
-                component='input' />
-              </li>
-              <div> Brand Website: </div><div>{props.website}</div>
-            </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
+              <Form.Field inline>
+                <Input
+                  label='Brand name'
+                  value={state.name}
+                  onChange={this.handleInput}
+                  name='name'
+                  />
+              </Form.Field>
+              <Form.Field inline>
+                <Input
+                  disabled
+                  label='Brand Website'
+                  value={props.website}
+                  />
+              </Form.Field>
+            <button className='cancel' onClick={this.handleCancel} name='name'>Cancel</button>
             <button onClick={this.handleSave} name='1' value='1'>Save</button>
           </div>) : (
           <div className='not-editing'>
             <h5>What is the Brand Name and Website?</h5>
-            <p>Name: {state.name ? state.name : props.name}</p>
-            <p>Website: {props.website}</p>
+            <p>{state.name}</p>
+            <p>{state.website}</p>
             <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
           </div>
           )}
@@ -189,17 +212,18 @@ validateDate(val) {
             {isEditing === '3' ? (
               <div className='editing'>
               <h5>Which month does the brand release its sustainability report?</h5>
-                <ul>
-                  <li>Sustainability Report Date: <Field
-                    placeholder={state.sustainability_report_date ? moments(state.sustainability_report_date) : 'DD/MM/YYYY'}
-                    onFocus={this.handleInput}
-                    onChange={this.handleInput}
-                    name='sustainability_report_date'
-                    component='input' />
+                  <Form.Field inline>
+                    <Input
+                      label='Sustainability Report Date'
+                      placeholder='DD/MM/YYYY'
+                      value={moments(state.sustainability_report_date)}
+                      onFocus={this.handleInput}
+                      onChange={this.handleInput}
+                      name='sustainability_report_date'
+                    />
+                  </Form.Field>
                     <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in DD/MM/YYYY format' : ''}</div>
-                  </li>
-                </ul>
-                <button onClick={this.handleCancel}>Cancel</button>
+                <button className='cancel' onClick={this.handleCancel} name='sustainability_report_date'>Cancel</button>
                 <button onClick={this.handleSave} name='3' value='3'>Save</button>
               </div>) : (
               <div className='not-editing'>
@@ -211,17 +235,18 @@ validateDate(val) {
               {isEditing === '4' ? (
                 <div className='editing'>
                 <h5>Which month does Good On You need to review the Brand?</h5>
-                  <ul>
-                    <li>Brand Review Date: <Field
-                      placeholder={state.review_date ? moments(state.review_date) : 'DD/MM/YYYY'}
+                  <Form.Field inline>
+                    <Input
+                      label='Brand Review Date'
+                      placeholder='DD/MM/YYYY'
+                      value={moments(state.review_date)}
                       onFocus={this.handleInput}
                       onChange={this.handleInput}
                       name='review_date'
-                      component='input' />
+                      />
+                  </Form.Field>
                       <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in DD/MM/YYYY format' : ''}</div>
-                    </li>
-                  </ul>
-                  <button onClick={this.handleCancel}>Cancel</button>
+                  <button className='cancel' onClick={this.handleCancel} name='review_date'>Cancel</button>
                   <button onClick={this.handleSave} name='4' value='4'>Save</button>
                 </div>) : (
                 <div className='not-editing'>
@@ -233,79 +258,84 @@ validateDate(val) {
                 {isEditing === '5' ? (
                   <div className='editing'>
                   <h5>What is the size of the Brand?</h5>
-                    <ul>
-                      <h5>Brand Size: </h5>
-                      <li> <Field
-                        type='radio'
-                        onChange={this.handleRadio}
-                        name='small'
-                        checked={state.sizeValues.length === 0 && (state.parent_company === null || state.parent_company === '')}
-                        component='input' />Small
-                      </li>
-                      <li> <Field
-                        type='radio'
-                        onChange={this.handleRadio}
-                        name='large'
-                        checked={state.sizeValues.length > 0 || state.parent_company}
-                        component='input' />Large
-                      </li>
-                    </ul>
-                      <ul>
-                      <h5>Does the Brand meet at least one of the following large brand criteria?</h5>
-                        <li> <Field
-                          type='checkbox'
+                      <p>Brand Size: </p>
+                      <Form.Field inline>
+                        <Radio
+                          disabled
+                          label='Small'
+                          onChange={this.handleRadio}
+                          name='small'
+                          checked={state.sizeValues.length === 0 && (state.parent_company === null || state.parent_company === '')}
+                        />
+                      </Form.Field>
+                      <Form.Field>
+                        <Radio
+                          disabled
+                          label='Large'
+                          onChange={this.handleRadio}
+                          name='large'
+                          checked={state.sizeValues.length > 0 || state.parent_company}
+                        />
+                      </Form.Field>
+                      <p>Does the Brand meet at least one of the following large brand criteria?</p>
+                      <Form.Field>
+                        <Checkbox
+                          label='Listed Company'
                           onChange={this.handleCheckbox}
                           checked={state.listed}
                           name='listed'
-                          component='input' />Listed Company
-                        </li>
-                        <li> <Field
-                          type='checkbox'
+                        />
+                      </Form.Field>
+                      <Form.Field>
+                        <Checkbox
+                          label='Subsidiary Company'
                           onChange={this.handleCheckbox}
                           checked={state.subsidiary}
                           name='subsidiary'
-                          component='input' />Subsidiary Company
-                        </li>
-                        <li> <Field
-                          type='checkbox'
+                        />
+                      </Form.Field>
+                      <Form.Field>
+                        <Checkbox
+                          label='Alexa &#60; 200k'
                           onChange={this.handleCheckbox}
                           checked={state.alexa}
                           name='alexa'
-                          component='input' />Alexa &#60; 200k
-                        </li>
-                        <li> <Field
-                          type='checkbox'
+                        />
+                      </Form.Field>
+                      <Form.Field>
+                        <Checkbox
+                          label='Insta + FB &#62; 75k'
                           onChange={this.handleCheckbox}
                           checked={state['insta-fb']}
                           name='insta-fb'
-                          component='input' />Insta + FB &#62; 75k
-                        </li>
-                        <li> <Field
-                          type='checkbox'
+                        />
+                      </Form.Field>
+                      <Form.Field>
+                        <Checkbox
+                          label='Linkedin employees &#62; 50'
                           onChange={this.handleCheckbox}
                           checked={state['linked-in']}
                           name='linked-in'
-                          component='input' />Linkedin employees &#62; 50
-                        </li>
-                        <li> <Field
-                          type='checkbox'
+                        />
+                      </Form.Field>
+                      <Form.Field>
+                        <Checkbox
+                          label='Manual override after company provided data satisfying Good On You criteria'
                           onChange={this.handleCheckbox}
                           checked={state.manual}
                           name='manual'
-                          component='input' />Manual override after company provided data satisfying Good On You criteria
-                        </li>
-                      </ul>
-                      <ul>
-                      <h5>Parent Company Name: </h5>
-                        <li> <Field
-                          placeholder={state.parent_company}
-                          onFocus={this.handleInput}
-                          onChange={this.handleInput}
-                          name='parent_company'
-                          component='input' />
-                        </li>
-                      </ul>
-                    <button onClick={this.handleCancel}>Cancel</button>
+                        />
+                      </Form.Field>
+                        <Form.Field inline>
+                          <Input
+                            label='Parent Company Name'
+                            onFocus={this.handleInput}
+                            onChange={this.handleInput}
+                            name='parent_company'
+                            value={state.parent_company}
+                          />
+                        </Form.Field>
+                    <button className='cancel' onClick={this.handleSizeCancel} name='5'>Cancel</button>
                     <button onClick={this.handleSave} name='5' value='5'>Save</button>
                   </div>) : (
                   <div className='not-editing'>
@@ -317,7 +347,7 @@ validateDate(val) {
                     <button name='5' onClick={this.handleEdit} value='5'>Edit</button>
                   </div>
                   )}
-        </form>
+        </Form>
       </div>
     )
   }

@@ -9,7 +9,7 @@ import reducers from './reducers';
 import promise from 'redux-promise'
 import thunk from 'redux-thunk'
 
-
+import 'semantic-ui-css/semantic.min.css'
 
 const createStoreWithMiddleware = applyMiddleware(promise, thunk)(createStore);
 

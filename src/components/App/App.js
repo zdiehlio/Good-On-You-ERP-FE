@@ -33,10 +33,10 @@ import {
 import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
 import BrandCauses from '../../pages/brandCauses'
-import './App.css';
 import axios from 'axios'
 import request from "request"
 
+import './App.css';
 
 // <Route path=`/viewBrand/${this.state.currentBrand}` component={Summary} currentBrand={this.state.currentBrand} />
 

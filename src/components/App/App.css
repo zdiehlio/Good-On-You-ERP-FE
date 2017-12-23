@@ -26,11 +26,21 @@ button {
   border-radius: 40px;
 }
 
+.cancel {
+  background-color: maroon;
+}
+
 button:hover {
   cursor: pointer;
   background-color: #2D2D2F;
   color: #17CABE;
 }
+
+h5, p, ul, li {
+  text-align: left;
+}
+
+
 
 
 /*Common classNames*/
@@ -55,7 +65,6 @@ button:hover {
 .brand-form li {
   display: block;
   list-style-type: none;
-  margin:0.5em;
 }
 
 .form-container {
@@ -64,11 +73,23 @@ button:hover {
 
 .editing {
   background-color: white;
+  margin-bottom: 1em;
+  padding: 1em;
+}
+
+.editing button {
+  margin: 1em;
 }
 
 .not-editing {
+  width: 100%;
   background-color: #F2F2F2;
   padding: 2em;
+}
+
+.ui.form {
+  margin-top: 1em;
+  width: 80%;
 }
 
 .chip {

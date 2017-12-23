@@ -34,6 +34,9 @@ componentWillMount() {
 componentWillReceiveProps(nextProps) {
   if(nextProps.qa !== this.props.qa) {
     _.map(nextProps.qa, check => {
+      _.map(check.territories, ter => {
+        this.setState({[ter.name]: ter.name})
+      })
       this.setState({
         id: check.id,
         name: check.name,
@@ -90,7 +93,7 @@ componentDidUpdate() {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(this.state.name && this.state.website && this.state.errorwebsite === false){
-      if(event.target.name === 'retailer' && !this.props.qa[0]) {
+      if(event.target.name === 'retailer' && !this.state.id) {
         this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website, territories: this.state.territories})
         this.setState({isEditing: null, errorwebsite: false, errorname: false})
         console.log('create retailer');
@@ -104,8 +107,8 @@ componentDidUpdate() {
         console.log('update retailer');
       }
     } else {
-      return
-        this.setState({errorwebsite: this.state.website || this.state.errorwebsite === false ? false : true, errorname: this.state.name ? false : true})
+      console.log('catch');
+        this.setState({errorwebsite: this.state.website &&  this.state.errorwebsite === false ? false : true, errorname: this.state.name ? false : true})
       }
   }
 
@@ -131,13 +134,19 @@ componentDidUpdate() {
   }
 
   handleDropDown(event) {
-    if(this.state[event.target.value] === event.target.value) {
-      console.log('Territory already added');
+    if(this.state[event.target.value]) {
+      console.log('error');
+      this.handleDropDownError()
     } else {
-      this.setState({[event.target.value]: event.target.value, territories: [...this.state.territories, {name: event.target.value}]})
-      console.log('drop', this.state.territories);
+      this.setState({errorTerritory: false, [event.target.value]: event.target.value, territories: [...this.state.territories, {name: event.target.value}]})
+      console.log('drop', this.state.territories.name);
     }
   }
+
+  handleDropDownError() {
+    this.setState({errorTerritory: true})
+  }
+
   renderDropDown() {
     return _.map(this.props.pre_qa, zone => {
       return(
@@ -208,12 +217,15 @@ render() {
                 <option />
                 {this.renderDropDown()}
                 </select>
+                <div className='error-message'>{state.errorTerritory === true ? 'Territory already added' : ''}</div>
             </li>
             <h5>List of Retailer Territories</h5>
             {this.renderTerritorries()}
           </ul>
           <button onClick={this.handleCancel}>Cancel</button>
           <button onClick={this.handleSave} name='retailer'>Save</button>
+          <div className='error-message'>{this.state.errorname === true || this.state.errorwebsite === true ?
+            'Please fill out all required fields' : ''}</div>
         </div>) : (
         <div className='not-editing'>
           <h5>Main Retailer</h5>

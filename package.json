@@ -21,6 +21,8 @@
     "redux": "^3.7.2",
     "redux-form": "^7.0.4",
     "redux-promise": "^0.5.3",
+    "semantic-ui-css": "^2.2.12",
+    "semantic-ui-react": "^0.77.1",
     "valid-url": "^1.0.9"
   },
   "scripts": {

@@ -284,9 +284,12 @@ componentWillReceiveProps(nextProps) {
   }
 
   renderQA() {
+    const id  = this.props.match.params.id
+    let theme = this.props.match.path.slice(1, -4)
     return _.map(this.props.pre_qa, theme => {
       return _.map(theme.questions, type => {
           if(this.state.isEditing === type.id) {
+            console.log('type editing', type);
           return(
               <div className='editing'>
               <ul>
@@ -336,6 +339,7 @@ componentWillReceiveProps(nextProps) {
                 return (<div key={ans.id} className='error-message'>{this.state[`errorComment${ans.id}`] === true || this.state[`errorWebsite${ans.id}`] === true ? 'Please fill out all required fields' : ''}</div>)
               })}
              </div>) } else {
+               console.log('type', type);
               return(
             <div className='not-editing'>
               <h5>{type.text}</h5>
