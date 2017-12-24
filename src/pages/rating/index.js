@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Form, Input, Checkbox, TextArea} from 'semantic-ui-react'
 import { fetchAllRating, fetchRating, createRating, updateRating } from '../../actions'
 import { FormsHeader } from '../../components'
 import {
@@ -144,27 +145,27 @@ componentWillReceiveProps(nextProps) {
     this.handleValidUrl(event)
   }
 
-  handleCheckbox(event) {
+  handleCheckbox(event, { value }) {
     event.persist()
     const { id }  = this.props.match.params
-        if(this.state[`answer${event.target.name}`] === true) {
+        if(this.state[`answer${value}`] === true) {
           new Promise((resolve, reject) => {
           resolve(this.setState({
-            [`answer${event.target.name}`]: false,
-            ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(event.target.name)}),
-            [`show${event.target.name}`]: false
+            [`answer${value}`]: false,
+            ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(value)}),
+            [`show${value}`]: false
           }))
         }).then(() => this.handleSaveValidation(event))
-        } else if(this.state[`answer${event.target.name}`] === false && this.state[`props${event.target.name}`] === parseInt(event.target.name)) {
-          this.setState({[`show${event.target.name}`]: true, [`answer${event.target.name}`]: true})
+      } else if(this.state[`answer${value}`] === false && this.state[`props${value}`] === parseInt(value)) {
+          this.setState({[`show${value}`]: true, [`answer${value}`]: true})
         } else {
           new Promise((resolve, reject) => {
             resolve(this.setState({
-            [`show${event.target.name}`]: true,
-            [`answer${event.target.name}`]: true,
-            ratingValues: [...this.state.ratingValues, {id: parseInt(event.target.name), is_selected: true}]
+            [`show${value}`]: true,
+            [`answer${value}`]: true,
+            ratingValues: [...this.state.ratingValues, {id: parseInt(value), is_selected: true}]
           }))
-          }).then(() => this.handleSaveValidation(event))
+        }).then(() => this.handleSaveValidation(value))
         }
     // this.handleSaveValidation(event)
   }
@@ -223,23 +224,23 @@ componentWillReceiveProps(nextProps) {
   }
 
   handleSaveValidation(e) {
-    if(this.state[`answer${e.target.name}`] === true) {
-      if(!this.state[`url${e.target.name}`]) {
+    if(this.state[`answer${e}`] === true) {
+      if(!this.state[`url${e}`]) {
         console.log('url error');
-        this.setState({errorsWebsite: [...this.state.errorsWebsite, parseInt(e.target.name)]})
+        this.setState({errorsWebsite: [...this.state.errorsWebsite, parseInt(e)]})
       } else {
         console.log('no url error');
-        this.setState({errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e.target.name)})})
+        this.setState({errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e)})})
       }
-      if(!this.state[`comment${e.target.name}`]) {
-        this.setState({errorsComment: [...this.state.errorsComment, parseInt(e.target.name)]})
+      if(!this.state[`comment${e}`]) {
+        this.setState({errorsComment: [...this.state.errorsComment, parseInt(e)]})
       } else {
-        this.setState({errorsComment: this.state.errorsComment.filter(rate => {return rate !== parseInt(e.target.name)})})
+        this.setState({errorsComment: this.state.errorsComment.filter(rate => {return rate !== parseInt(e)})})
       }
-    } else if(this.state[`answer${e.target.name}`] === false){
+    } else if(this.state[`answer${e}`] === false){
         this.setState({
-          errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e.target.name)}),
-          errorsComment: this.state.errorsComment.filter(rate => {return rate !== parseInt(e.target.name)})
+          errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e)}),
+          errorsComment: this.state.errorsComment.filter(rate => {return rate !== parseInt(e)})
         })
   }
 }
@@ -292,48 +293,49 @@ componentWillReceiveProps(nextProps) {
             console.log('type editing', type);
           return(
               <div className='editing'>
-              <ul>
-                <li key={type.id}>
+                <div key={type.id}>
                   <h5>{type.text}</h5>
-                </li>
-                <ul>
+                </div>
                   {_.map(type.answers, ans => {
                     if(this.state)
                     return (
-                      <li key={ans.id}>
-                        <input
-                          className='checkbox'
-                          type='checkbox'
-                          name={ans.id}
-                          onChange={this.handleCheckbox}
-                          checked={this.state[`answer${ans.id}`] === true}
+                      <div key={ans.id}>
+                        <Form.Field>
+                          <Checkbox
+                            label={ans.text}
+                            value={ans.id}
+                            onChange={this.handleCheckbox}
+                            checked={this.state[`answer${ans.id}`] === true ? true : false}
                           />
-                          {ans.text}
+                        </Form.Field>
                         {this.state[`show${ans.id}`] === true ? (
                           <div>
                           <h5>Evidence</h5>
-                            <p>Source URL</p>
-                            <input
-                              type='text'
-                              onChange={this.handleUrl}
-                              name={ans.id}
-                              value={this.state[`url${ans.id}`]}
-                            />
-                            <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
-                            <p>Comment</p>
-                            <textArea
-                              onChange={this.handleComment}
-                              name={ans.id}
-                              value={this.state[`comment${ans.id}`]}
-                            />
+                          <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
+                            <Form.Field inline>
+                              <Input
+                                label='Source URL'
+                                onChange={this.handleUrl}
+                                name={ans.id}
+                                value={this.state[`url${ans.id}`]}
+                              />
+                            </Form.Field>
+                            <Form.Field inline>
+                              <p>Comments</p>
+                              <TextArea
+                                label='Comments'
+                                placeholder='Comments'
+                                onChange={this.handleComment}
+                                name={ans.id}
+                                value={this.state[`comment${ans.id}`]}
+                              />
+                            </Form.Field>
                             <div className='error-message'>{this.state[`errorComment${ans.id}`] === true ? 'Please enter a comment as evidence' : ''}</div>
                           </div>) : ('')}
-                      </li>
+                      </div>
                       )}
                     )}
-                </ul>
-              </ul>
-              <button onClick={this.handleCancel} name={type.id}>Cancel</button>
+              <button className='cancel' onClick={this.handleCancel} name={type.id}>Cancel</button>
               <button onClick={this.handleSave} name={type.id}>Save</button>
               {_.map(type.answers, ans => {
                 return (<div key={ans.id} className='error-message'>{this.state[`errorComment${ans.id}`] === true || this.state[`errorWebsite${ans.id}`] === true ? 'Please fill out all required fields' : ''}</div>)
@@ -345,7 +347,7 @@ componentWillReceiveProps(nextProps) {
               <h5>{type.text}</h5>
               <p>Current Selections:</p>
               {_.map(type.answers, ans => {
-                return (this.state[`answer${ans.id}`] === true ? (<li key={ans.id}>{ans.text}</li>) : (''))
+                return (this.state[`answer${ans.id}`] === true ? (<div key={ans.id}>{ans.text}</div>) : (''))
               })}
               <button name={type.id} onClick={this.handleEdit}>Edit</button>
             </div>
