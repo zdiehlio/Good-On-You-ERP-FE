@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
-import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Form, Input } from 'semantic-ui-react'
 import { fetchContact, createContact, updateContact } from '../../actions'
 import { FormsHeader } from '../../components'
 import _ from 'lodash'
-import axios from 'axios'
 
 import './brandContact.css'
 
@@ -45,7 +44,7 @@ componentWillReceiveProps(nextProps) {
 }
 
 validateEmail(val) {
-  if (/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(val.target.value) || /^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(this.state.email)) {
+  if (/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(val) || /^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(this.state.email)) {
     this.setState({emailValid: true})
   } else {
     this.setState({emailValid: false})
@@ -84,9 +83,9 @@ validateEmail(val) {
     }
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
-  handleInput(event) {
-    this.validateEmail(event)
-    this.setState({[event.target.name]: event.target.value})
+  handleInput(event, { value }) {
+    this.setState({[event.target.name]: value})
+    this.validateEmail(value)
   }
 
 //render contains conditional statements based on state of isEditing as described in functions above.
@@ -108,31 +107,38 @@ render() {
           <div><Link to={`/brandCauses/${id}`}><button className='next'>Next</button></Link></div>
         </span>
       </div>
-      <form className='brand-form'>
+      <Form>
       {isEditing === '1' ? (
         <div className='editing'>
-        <ul>
-          <h5>Brand Contact Name: </h5>
-            <input
-              placeholder={state.name}
+          <Form.Field inline>
+            <Input
+              label='Brand contact name'
+              placeholder='contact name'
               onChange={this.handleInput}
               name='name'
-              value={state.name}/>
-          <h5>Brand Contact Email: </h5>
-            <input
-              placeholder={state.email}
+              value={state.name}
+            />
+          </Form.Field>
+          <div className='error-message'>{state.renderError === true ? 'Please enter Valid Email' : ''}</div>
+          <Form.Field inline>
+            <Input
+              label='Brand contact email'
+              placeholder='email'
               onChange={this.handleInput}
               name='email'
-              value={state.email}/>
-              <div className='error-message'>{state.renderError === true ? 'Please enter Valid Email' : ''}</div>
-            <h5>Brand GOY Relationship Manager: </h5>
-              <input
-                placeholder='manager name'
-                onChange={this.handleInput}
-                name='relationship_manager'
-                value={state.relationship_manager}/>
-          </ul>
-          <button onClick={this.handleCancel}>Cancel</button>
+              value={state.email}
+            />
+          </Form.Field>
+          <Form.Field inline>
+            <Input
+              label='Brand GOY Relationship Manager'
+              placeholder='manager name'
+              onChange={this.handleInput}
+              name='relationship_manager'
+              value={state.relationship_manager}
+            />
+          </Form.Field>
+          <button className='cancel' onClick={this.handleCancel}>Cancel</button>
           <button onClick={this.handleSave} name='1' value='1'>Save</button>
         </div>) : (
         <div className='not-editing'>
@@ -143,7 +149,7 @@ render() {
           <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
         </div>
         )}
-      </form>
+      </Form>
     </div>
   )
 }

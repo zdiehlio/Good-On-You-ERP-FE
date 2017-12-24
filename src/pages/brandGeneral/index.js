@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
-import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { fetchGeneral, updateGeneral, createBrandSize, deleteBrandSize } from '../../actions'
 import { FormsHeader } from '../../components'
@@ -51,7 +50,7 @@ componentWillReceiveProps(nextProps) {
         this.setState({[`original${crit.criteria}`]: crit.criteria, [crit.criteria]: crit.criteria})
       }
     })
-    if(nextProps.qa.size) {
+    if(nextProps.qa.size) {;
       this.setState({sizeValues: _.map(nextProps.qa.size, val => {return {brand: id, criteria: val.criteria}})})
     }
     this.setState({
@@ -120,14 +119,15 @@ validateDate(val) {
     this.setState({isEditing: null})
   }
 
-  handleCheckbox(event) {
+  handleCheckbox(event, { value }) {
     const { id }  = this.props.match.params
-      if(this.state[event.target.name]) {
-        this.setState({[event.target.name]: null, sizeValues: this.state.sizeValues.filter(select => {return select.criteria != event.target.name})})
+      if(this.state[value]) {
+        this.setState({[value]: null, sizeValues: this.state.sizeValues.filter(select => {return select.criteria != value})})
+        console.log('remove', value);
       } else {
-        this.setState({[event.target.name]: event.target.name, sizeValues: [...this.state.sizeValues, {brand: id, criteria: event.target.name}]})
+        this.setState({[value]: value, sizeValues: [...this.state.sizeValues, {brand: id, criteria: value}]})
+        console.log('add', value);
       }
-      console.log(this.state.sizeValues);
   }
 
   renderCriteria() {
@@ -277,64 +277,65 @@ validateDate(val) {
                           checked={state.sizeValues.length > 0 || state.parent_company}
                         />
                       </Form.Field>
+
                       <p>Does the Brand meet at least one of the following large brand criteria?</p>
                       <Form.Field>
                         <Checkbox
                           label='Listed Company'
                           onChange={this.handleCheckbox}
-                          checked={state.listed}
-                          name='listed'
+                          checked={state.listed ? true : false}
+                          value='listed'
                         />
                       </Form.Field>
                       <Form.Field>
                         <Checkbox
                           label='Subsidiary Company'
                           onChange={this.handleCheckbox}
-                          checked={state.subsidiary}
-                          name='subsidiary'
+                          checked={state.subsidiary ? true : false}
+                          value='subsidiary'
                         />
                       </Form.Field>
                       <Form.Field>
                         <Checkbox
                           label='Alexa &#60; 200k'
                           onChange={this.handleCheckbox}
-                          checked={state.alexa}
-                          name='alexa'
+                          checked={state.alexa ? true : false}
+                          value='alexa'
                         />
                       </Form.Field>
                       <Form.Field>
                         <Checkbox
                           label='Insta + FB &#62; 75k'
                           onChange={this.handleCheckbox}
-                          checked={state['insta-fb']}
-                          name='insta-fb'
+                          checked={state['insta-fb'] ? true : false}
+                          value='insta-fb'
                         />
                       </Form.Field>
                       <Form.Field>
                         <Checkbox
                           label='Linkedin employees &#62; 50'
                           onChange={this.handleCheckbox}
-                          checked={state['linked-in']}
-                          name='linked-in'
+                          checked={state['linked-in'] ? true : false}
+                          value='linked-in'
                         />
                       </Form.Field>
                       <Form.Field>
                         <Checkbox
                           label='Manual override after company provided data satisfying Good On You criteria'
                           onChange={this.handleCheckbox}
-                          checked={state.manual}
-                          name='manual'
+                          checked={state['manual'] ? true : false}
+                          value='manual'
                         />
                       </Form.Field>
-                        <Form.Field inline>
-                          <Input
-                            label='Parent Company Name'
-                            onFocus={this.handleInput}
-                            onChange={this.handleInput}
-                            name='parent_company'
-                            value={state.parent_company}
-                          />
-                        </Form.Field>
+                      <Form.Field inline>
+                        <Input
+                          label='Parent Company Name'
+                          onFocus={this.handleInput}
+                          onChange={this.handleInput}
+                          name='parent_company'
+                          value={state.parent_company}
+                        />
+                      </Form.Field>
                     <button className='cancel' onClick={this.handleSizeCancel} name='5'>Cancel</button>
                     <button onClick={this.handleSave} name='5' value='5'>Save</button>
                   </div>) : (
@@ -357,8 +358,4 @@ function mapStateToProps(state) {
   return {qa: state.qa}
 }
 
-export default reduxForm({
-  form: 'BrandGeneralForm'
-})(
-  connect(mapStateToProps, { updateGeneral, fetchGeneral, createBrandSize, deleteBrandSize})(BrandGeneral)
-)
+export default connect(mapStateToProps, { updateGeneral, fetchGeneral, createBrandSize, deleteBrandSize})(BrandGeneral)
