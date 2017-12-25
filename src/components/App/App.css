@@ -33,6 +33,7 @@ button {
 }
 
 .button-container div {
+  margin-top: 2em;
   width: calc(100%/2);
 }
 .cancel {
