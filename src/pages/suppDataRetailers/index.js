@@ -2,9 +2,9 @@ import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Form, Input, Select, Radio } from 'semantic-ui-react'
 import { fetchRetailers, createRetailer, fetchTerritories, updateRetailer } from '../../actions'
-import { FormsHeader } from '../../components'
-import validUrl from 'valid-url'
+import { SuppHeading } from '../../components'
 import _ from 'lodash'
 
 class SuppDataRetailers extends Component {
@@ -14,6 +14,8 @@ class SuppDataRetailers extends Component {
     this.state = {
       isEditing: null,
       territories: [],
+      originalTerritories: [],
+      territoryOptions: [],
       save: false
     }
 
@@ -24,6 +26,7 @@ class SuppDataRetailers extends Component {
     this.handleSave = this.handleSave.bind(this)
     this.handleDropDown = this.handleDropDown.bind(this)
     this.handleRemove = this.handleRemove.bind(this)
+    this.handleOnlineSave = this.handleOnlineSave.bind(this)
   }
 componentWillMount() {
   const { id } = this.props.match.params
@@ -32,9 +35,16 @@ componentWillMount() {
 }
 
 componentWillReceiveProps(nextProps) {
+  if(nextProps.pre_qa !== this.props.pre_qa) {
+    _.map(nextProps.pre_qa, opt => {
+      this.state.territoryOptions.push({text: opt.name, value: opt.name, key: opt.id})
+    })
+  }
   if(nextProps.qa !== this.props.qa) {
     _.map(nextProps.qa, check => {
       _.map(check.territories, ter => {
+        this.state.territories.push({name: ter.name})
+        this.state.originalTerritories.push({name: ter.name})
         this.setState({[ter.name]: ter.name})
       })
       this.setState({
@@ -42,16 +52,16 @@ componentWillReceiveProps(nextProps) {
         name: check.name,
         website: check.website,
         online_only: check.online_only,
-        territories: _.map(check.territories, ter => {
-          return {name: ter.name}
-        }),
+        // territories: _.map(check.territories, ter => {
+        //   return {name: ter.name}
+        // }),
         originalId: check.id,
         originalName: check.name,
         originalWebsite: check.website,
-        originalOnline_only: check.online_only,
-        originalTerritories: _.map(check.territories, ter => {
-          return {name: ter.name}
-        }),
+        originalOnline_only: check.online_only
+        // originalTerritories: _.map(check.territories, ter => {
+        //   return {name: ter.name}
+        // }),
     })
     })
   }
@@ -97,10 +107,6 @@ componentDidUpdate() {
         this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website, territories: this.state.territories})
         this.setState({isEditing: null, errorwebsite: false, errorname: false})
         console.log('create retailer');
-      } else if(event.target.name === 'online') {
-        this.props.updateRetailer(this.state.id, {online_only: this.state.online_only})
-        this.setState({isEditing: null, save: true, errorwebsite: false, errorname: false})
-        console.log('update online');
       } else {
         this.props.updateRetailer(this.state.id, {name: this.state.name, website: this.state.website, territories: this.state.territories})
         this.setState({isEditing: null, save: true, errorwebsite: false, errorname: false})
@@ -108,37 +114,43 @@ componentDidUpdate() {
       }
     } else {
       console.log('catch');
-        this.setState({errorwebsite: this.state.website &&  this.state.errorwebsite === false ? false : true, errorname: this.state.name ? false : true})
+        this.setState({isEditing: null, errorwebsite: this.state.website &&  this.state.errorwebsite === false ? false : true, errorname: this.state.name ? false : true})
       }
   }
 
-  handleError(e) {
-    if(e.target.value === '') {
-      this.setState({[`error${e.target.name}`]: true})
+  handleOnlineSave() {
+    this.props.updateRetailer(this.state.id, {online_only: this.state.online_only})
+    this.setState({isEditing: null})
+    console.log('update online');
+  }
+
+  handleError(value, name) {
+    if(value === '') {
+      this.setState({[`error${name}`]: true})
     } else {
-        this.setState({[`error${e.target.name}`]: false})
+        this.setState({[`error${name}`]: false})
       }
-    if(e.target.name === 'website') {
-      if(/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(e.target.value) && e.target.value !== ''){
+    if(name === 'website') {
+      if(/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(value) && value !== ''){
         this.setState({errorwebsite: false})
       } else {
-        this.setState({[`error${e.target.name}`]: true})
+        this.setState({[`error${name}`]: true})
       }
     }
   }
 
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
-  handleInput(event) {
-    this.setState({[event.target.name]: event.target.value})
-    this.handleError(event)
+  handleInput(event, { value, name }) {
+    this.setState({[name]: value})
+    this.handleError(value, name)
   }
 
-  handleDropDown(event) {
-    if(this.state[event.target.value]) {
+  handleDropDown(event, { value }) {
+    if(this.state[value]) {
       console.log('error');
       this.handleDropDownError()
     } else {
-      this.setState({errorTerritory: false, [event.target.value]: event.target.value, territories: [...this.state.territories, {name: event.target.value}]})
+      this.setState({errorTerritory: false, [value]: value, territories: [...this.state.territories, {name: value}]})
       console.log('drop', this.state.territories.name);
     }
   }
@@ -147,13 +159,13 @@ componentDidUpdate() {
     this.setState({errorTerritory: true})
   }
 
-  renderDropDown() {
-    return _.map(this.props.pre_qa, zone => {
-      return(
-        <option key={zone.id} value={zone.name}>{zone.name}</option>
-      )
-    })
-  }
+  // renderDropDown() {
+  //   return _.map(this.props.pre_qa, zone => {
+  //     return(
+  //       <option key={zone.id} value={zone.name}>{zone.name}</option>
+  //     )
+  //   })
+  // }
 
   handleRemove(event) {
     this.setState({[event.target.value]: null, territories: this.state.territories.filter(select => {return select.name !== event.target.value})})
@@ -180,7 +192,7 @@ render() {
   const props = this.props.qa
   return(
     <div className='form-container'>
-      <FormsHeader />
+      <SuppHeading />
       <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
       <div className='forms-header'>
         <span className='form-navigation'>
@@ -192,38 +204,41 @@ render() {
       <form className='brand-form'>
       {isEditing === 'retailer' ? (
         <div className='editing'>
-        <ul>
             <h5>What is the main retailer?</h5>
-            <h5>Retailer Name</h5>
-            <li><input
-              value={state.name}
-              onChange={this.handleInput}
-              name='name'
+            <Form.Field inline>
+              <Input
+                label='Retailer Name'
+                value={state.name}
+                onChange={this.handleInput}
+                name='name'
               />
               <div className='error-message'>{state.errorname === true ? 'Please enter retailer name' : ''}</div>
-            </li>
-            <h5>Retailer Website </h5>
-            <li><input
-              value={state.website}
-              onChange={this.handleInput}
-              name='website'
+            </Form.Field>
+            <Form.Field inline>
+              <Input
+                label='Retailer Website'
+                value={state.website}
+                onChange={this.handleInput}
+                name='website'
               />
               <div className='error-message'>{state.errorwebsite === true ? 'Please enter valid website' : ''}</div>
-            </li>
+            </Form.Field>
             <h5>Select one or more Retailer territories</h5>
-            <li><select
-              name='territories'
-              onChange={this.handleDropDown}>
-                <option />
-                {this.renderDropDown()}
-                </select>
-                <div className='error-message'>{state.errorTerritory === true ? 'Territory already added' : ''}</div>
-            </li>
+            <Form.Field>
+              <Select
+                name='territories'
+                placeholder='Choose Territory'
+                onChange={this.handleDropDown}
+                options={this.state.territoryOptions}
+              />
+                  <div className='error-message'>{state.errorTerritory === true ? 'Territory already added' : ''}</div>
+            </Form.Field>
             <h5>List of Retailer Territories</h5>
             {this.renderTerritorries()}
-          </ul>
-          <button onClick={this.handleCancel}>Cancel</button>
-          <button onClick={this.handleSave} name='retailer'>Save</button>
+          <div className='button-container'>
+            <div><button className='button-container' onClick={this.handleCancel}>Cancel</button></div>
+            <div><button onClick={this.handleSave} name='retailer'>Save</button></div>
+          </div>
           <div className='error-message'>{this.state.errorname === true || this.state.errorwebsite === true ?
             'Please fill out all required fields' : ''}</div>
         </div>) : (
@@ -233,38 +248,46 @@ render() {
           <p>Retailer Website: {state.website}</p>
           <h5>Retailer Territorries</h5>
           <ul>{_.map(state.territories, list => {return (<li key={list.name}>{list.name}</li>)})}</ul>
-          <button name='retailer' onClick={this.handleEdit}>Edit</button>
+          <div className='button-container'>
+            <div></div>
+            <div><button name='retailer' onClick={this.handleEdit}>Edit</button></div>
+          </div>
         </div>
         )}
 
         {isEditing === 'online' ? (
           <div className='editing'>
-          <ul>
-              <h5>Is the brand sold online only?</h5>
-              <li><input
-                type='radio'
+            <h5>Is the brand sold online only?</h5>
+            <Form.Field inline>
+              <Radio
+                label='Yes'
                 onChange={this.handleInput}
                 name='online_only'
-                value={true}
-                checked={state.online_only === 'true'}
-                /> Yes
-              </li>
-              <li><input
-                type='radio'
+                value='true'
+                checked={state.online_only === 'true' ? true : false}
+              />
+            </Form.Field>
+            <Form.Field inline>
+              <Radio
+                label='No'
                 onChange={this.handleInput}
                 name='online_only'
-                value={false}
-                checked={state.online_only === 'false'}
-                /> No
-              </li>
-            </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button onClick={this.handleSave} name='online'>Save</button>
+                value='false'
+                checked={state.online_only === 'false' ? true : false}
+              />
+            </Form.Field>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button onClick={this.handleOnlineSave} name='online'>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h5>Is the brand sold online only?</h5>
             <p>Online only: {state.online_only === 'true' ? 'Yes' : 'No'}</p>
-            <button name='online' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='online' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
           )}
       </form>

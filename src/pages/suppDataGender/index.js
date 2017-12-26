@@ -34,15 +34,16 @@ class SuppDataGender extends Component {
     if(nextProps.qa !== this.props.qa) {
       _.map(nextProps.qa, compare => {
         if(compare.style_qa.question === 'gender') {
+          this.state.genders.push({brand: id, style: compare.style_qa.tag})
           this.setState({[compare.style_qa.tag]: compare.style_qa.tag})
         }
       })
-      this.setState({genders: _.map(nextProps.qa, check => {
-          if(check.style_qa.question === 'gender') {
-            return {brand: id, style: check.style_qa.tag}
-          }
-        }
-      )})
+      // this.setState({genders: _.map(nextProps.qa, check => {
+      //     if(check.style_qa.question === 'gender') {
+      //       return {brand: id, style: check.style_qa.tag}
+      //     }
+      //   }
+      // )})
     }
   }
 //toggles if clause that sets state to target elements value and enables user to edit the answer
