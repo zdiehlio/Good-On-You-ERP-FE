@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Form, Input} from 'semantic-ui-react'
 import { fetchGeneral, updateSocial } from '../../actions'
-import { FormsHeader } from '../../components'
+import { SuppHeading } from '../../components'
 import _ from 'lodash'
 
 class SuppDataSocialMedia extends Component {
@@ -72,7 +73,7 @@ render() {
   const props = this.props.qa
   return(
     <div className='form-container'>
-      <FormsHeader />
+      <SuppHeading />
       <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
       <div className='forms-header'>
         <span className='form-navigation'>
@@ -81,39 +82,41 @@ render() {
           <div><Link to={`/suppDataImage/${id}`}><button className='next'>Next</button></Link></div>
         </span>
       </div>
-      <form className='brand-form'>
+      <Form>
       {isEditing === 'social' ? (
         <div className='editing'>
-        <ul>
-            <h5>What is the Facebook URL </h5>
-            <li>www.facebook.com/
-            <input
-              placeholder='facebook page name'
-              onChange={this.handleInput}
-              name='facebook_url'
-              value={state.facebook_url}/>
-            </li>
-            <h5>What is the Instagram URL? </h5>
-            <li>
-            www.instagram.com/
-            <input
-              placeholder='instagram account name'
-              onChange={this.handleInput}
-              name='instagram_url'
-              value={state.instagram_url}/>
-            </li>
-          </ul>
-          <button onClick={this.handleCancel}>Cancel</button>
-          <button onClick={this.handleSave} name='social'>Save</button>
+          <Form.Field>
+          <Input
+            label='www.facebook.com/'
+            placeholder='facebook page name'
+            onChange={this.handleInput}
+            name='facebook_url'
+            value={state.facebook_url}/>
+          </Form.Field>
+          <Form.Field>
+          <Input
+            label='www.instagram.com/'
+            placeholder='instagram account name'
+            onChange={this.handleInput}
+            name='instagram_url'
+            value={state.instagram_url}/>
+          </Form.Field>
+        <div className='button-container'>
+          <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+          <div><button onClick={this.handleSave} name='social'>Save</button></div>
+        </div>
         </div>) : (
         <div className='not-editing'>
           <h5>Brand Social Media</h5>
           <p>www.facebook.com/{state.facebook_url}</p>
           <p>www.instagram.com/{state.instagram_url}</p>
-          <button name='social' onClick={this.handleEdit}>Edit</button>
+          <div className='button-container'>
+            <div></div>
+            <div><button name='social' onClick={this.handleEdit}>Edit</button></div>
+          </div>
         </div>
         )}
-      </form>
+      </Form>
     </div>
   )
 }

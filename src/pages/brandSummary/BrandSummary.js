@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Form, TextArea} from 'semantic-ui-react'
 import { fetchSummary, createSummary, updateSummary } from '../../actions'
-import { FormsHeader } from '../../components'
+import { QualiHeading } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
@@ -84,7 +85,7 @@ render() {
   const { id }  = this.props.match.params
   return(
     <div className='form-container'>
-      <FormsHeader />
+      <QualiHeading />
       <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
       <div className='forms-header'>
         <span className='form-navigation'>
@@ -93,29 +94,33 @@ render() {
           <div><Link to={`/suppDataSocialMedia/${id}`}><button className='next'>Next</button></Link></div>
         </span>
       </div>
-      <form className='brand-form'>
+      <Form>
       {isEditing === '1' ? (
         <div className='editing'>
         <h5>What is the Summary for the Brand?</h5>
-          <textarea
-            className='edit-summary'
+          <TextArea
             placeholder={this.currentAnswer}
             onFocus={this.handleInput}
             onChange={this.handleInput}
             name='summary'/>
-          <button onClick={this.handleCancel}>Cancel</button>
-          <button onClick={this.handleSave} name='1' value='1'>Save</button>
+        <div className='button-container'>
+          <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+          <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
+        </div>
         </div>) : (
         <div className='not-editing'>
           <h5>What is the Summary for the Brand?</h5>
-          <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
+          <div className='button-container'>
+            <div></div>
+            <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+          </div>
         </div>
         )}
         <h4>Current Brand Summary</h4>
         <ul>
         {state.renderSummary}
         </ul>
-      </form>
+      </Form>
     </div>
   )
 }

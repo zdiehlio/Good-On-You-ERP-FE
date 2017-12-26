@@ -3,7 +3,8 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchSentence, createSentence, updateSentence } from '../../actions'
-import { FormsHeader } from '../../components'
+import { Form, TextArea} from 'semantic-ui-react'
+import { QualiHeading } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
@@ -125,7 +126,7 @@ componentDidUpdate() {
     const props = this.props.qa
     return(
       <div className='form-container'>
-        <FormsHeader />
+        <QualiHeading />
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -134,34 +135,34 @@ componentDidUpdate() {
             <div><Link to={`/brandSummary/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
-        <form className='brand-form'>
+        <Form>
         {isEditing === '1' ? (
           <div className='editing'>
           <h5>What is the one sentence that describes the brand best?</h5>
           <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p>
-            <ul>
               {state['default-1'] || state['default-2'] ? this.renderField() : this.renderNone()}
               <h5>Edit the one you chose or write a new one</h5>
-              {state.finalAnswer}
-              <li><textarea
-                className='edit-sentence'
+              <TextArea
                 onFocus={this.handleRadio}
                 onChange={this.handleRadio}
                 value={state.finalAnswer}
                 name='custom'/>
-              </li>
-            </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button onClick={this.handleSave} name='1' value='1'>Save</button>
+          <div className='button-container'>
+            <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+            <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
+          </div>
           </div>) : (
           <div className='not-editing'>
             <h5>What is the one sentence that describes the brand best?</h5>
-            <div>{this.state.finalAnswer}</div>
-            <div>Source: {this.state.finalSource}</div>
-            <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
+            <p>{this.state.finalAnswer}</p>
+            <p>{this.state.finalSource}</p>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+            </div>
           </div>
           )}
-        </form>
+        </Form>
       </div>
     )
   }

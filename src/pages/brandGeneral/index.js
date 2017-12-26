@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchGeneral, updateGeneral, createBrandSize, deleteBrandSize } from '../../actions'
-import { FormsHeader } from '../../components'
+import { OverviewHeading } from '../../components'
 import { Form, Input, Radio, Checkbox} from 'semantic-ui-react'
 import _ from 'lodash'
 import axios from 'axios'
@@ -166,7 +166,7 @@ validateDate(val) {
     const moments = date => moment(new Date(date)).format('DD/MM/YYYY')
     return(
       <div className='form-container'>
-        <FormsHeader />
+        <OverviewHeading />
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -194,20 +194,25 @@ validateDate(val) {
                   value={props.website}
                   />
               </Form.Field>
-            <button className='cancel' onClick={this.handleCancel} name='name'>Cancel</button>
-            <button onClick={this.handleSave} name='1' value='1'>Save</button>
+          <div className='button-container'>
+            <div><button className='cancel' onClick={this.handleCancel} name='name'>Cancel</button></div>
+            <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
+          </div>
           </div>) : (
           <div className='not-editing'>
             <h5>What is the Brand Name and Website?</h5>
             <p>{state.name}</p>
             <p>{state.website}</p>
-            <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+            </div>
           </div>
           )}
             <div className='not-editing'>
               <h5>What is the rating date and verification date</h5>
-              <div>Rating Date: {props.rating_date ? moments(props.rating_date) : ''}</div>
-              <div>Verification Date: {props.verification_date ? moments(props.verification_date) : ''}</div>
+              <div>{props.rating_date ? moments(props.rating_date) : ''}</div>
+              <div>{props.verification_date ? moments(props.verification_date) : ''}</div>
             </div>
             {isEditing === '3' ? (
               <div className='editing'>
@@ -223,13 +228,18 @@ validateDate(val) {
                     />
                   </Form.Field>
                     <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in DD/MM/YYYY format' : ''}</div>
-                <button className='cancel' onClick={this.handleCancel} name='sustainability_report_date'>Cancel</button>
-                <button onClick={this.handleSave} name='3' value='3'>Save</button>
+              <div className='button-container'>
+                <div><button className='cancel' onClick={this.handleCancel} name='sustainability_report_date'>Cancel</button></div>
+                <div><button onClick={this.handleSave} name='3' value='3'>Save</button></div>
+              </div>
               </div>) : (
               <div className='not-editing'>
                 <h5>Which month does the brand release its sustainability report?</h5>
-                <p>Report Date: {state.sustainability_report_date ? moments(state.sustainability_report_date) : ''}</p>
-                <button name='3' onClick={this.handleEdit} value='3'>Edit</button>
+                <p>{state.sustainability_report_date ? moments(state.sustainability_report_date) : ''}</p>
+                <div className='button-container'>
+                  <div></div>
+                  <div><button name='3' onClick={this.handleEdit} value='3'>Edit</button></div>
+                </div>
               </div>
               )}
               {isEditing === '4' ? (
@@ -245,14 +255,19 @@ validateDate(val) {
                       name='review_date'
                       />
                   </Form.Field>
-                      <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in DD/MM/YYYY format' : ''}</div>
-                  <button className='cancel' onClick={this.handleCancel} name='review_date'>Cancel</button>
-                  <button onClick={this.handleSave} name='4' value='4'>Save</button>
+                  <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in DD/MM/YYYY format' : ''}</div>
+                <div className='button-container'>
+                  <div><button className='cancel' onClick={this.handleCancel} name='review_date'>Cancel</button></div>
+                  <div><button onClick={this.handleSave} name='4' value='4'>Save</button></div>
+                </div>
                 </div>) : (
                 <div className='not-editing'>
                   <h5>Which month does Good On You need to review the Brand?</h5>
-                  <p>Review Date: {state.review_date? moments(state.review_date) : ''}</p>
-                  <button name='4' onClick={this.handleEdit} value='4'>Edit</button>
+                  <p>{state.review_date? moments(state.review_date) : ''}</p>
+                  <div className='button-container'>
+                    <div></div>
+                    <div><button name='4' onClick={this.handleEdit} value='4'>Edit</button></div>
+                  </div>
                 </div>
                 )}
                 {isEditing === '5' ? (
@@ -336,16 +351,20 @@ validateDate(val) {
                           value={state.parent_company}
                         />
                       </Form.Field>
-                    <button className='cancel' onClick={this.handleSizeCancel} name='5'>Cancel</button>
-                    <button onClick={this.handleSave} name='5' value='5'>Save</button>
+                  <div className='button-container'>
+                    <div><button className='cancel' onClick={this.handleSizeCancel} name='5'>Cancel</button></div>
+                    <div><button onClick={this.handleSave} name='5' value='5'>Save</button></div>
+                  </div>
                   </div>) : (
                   <div className='not-editing'>
                     <h5>What is the size of the Brand?</h5>
-                    <p>Size of Brand: {state.sizeValues.length > 0 || state.parent_company ? 'Large' : 'Small'}</p>
-                    <p>Criteria: </p>
+                    <p>{state.sizeValues.length > 0 || state.parent_company ? 'Large' : 'Small'}</p>
                       <ul>{this.renderCriteria()}</ul>
-                    <p>Parent Company: {state.parent_company}</p>
-                    <button name='5' onClick={this.handleEdit} value='5'>Edit</button>
+                    <p>{state.parent_company}</p>
+                    <div className='button-container'>
+                      <div></div>
+                      <div><button name='5' onClick={this.handleEdit} value='5'>Edit</button></div>
+                    </div>
                   </div>
                   )}
         </Form>

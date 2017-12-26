@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Form, Radio, Input} from 'semantic-ui-react'
 import { fetchAllStyles, fetchStyles, createStyles, updateStyles } from '../../actions'
-import { FormsHeader } from '../../components'
+import { SuppHeading } from '../../components'
 import _ from 'lodash'
 import { ProgressBar, Line } from 'react-progressbar.js'
 
@@ -96,8 +97,8 @@ handleKidsEdit(event) {
     this.setState({isEditing: null})
   }
 
-  handleKids(event){
-    this.setState({kids: event.target.name})
+  handleKids(event, {name}){
+    this.setState({kids: name})
   }
 
   handlePercentage(event) {
@@ -131,7 +132,7 @@ handleKidsEdit(event) {
       }
     }
     return(
-      <div>
+      <div className='percentage-container'>
         <button onClick={this.handlePercentage} name={el} value='subtract' className='progress'>-</button>
         <Line
         progress={state[el]}
@@ -154,7 +155,7 @@ handleKidsEdit(event) {
     const props = this.props.qa
     return(
       <div className='form-container'>
-        <FormsHeader />
+        <SuppHeading />
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -167,29 +168,34 @@ handleKidsEdit(event) {
         {isEditing === 'kids' ? (
           <div className='editing'>
             <h4>Does the Brand sell Clothes for kids?</h4>
-              <ul>
-                <li><Field
-                  type='radio'
+              <Form.Field inline>
+                <Radio
+                  label='Yes'
                   onChange={this.handleKids}
-                  checked={state.kids === 'kids'}
+                  checked={state.kids === 'kids' ? true : false}
                   name='kids'
-                  component='input'/> Yes
-                </li>
-                <li><Field
-                  type='radio'
+                />
+                </Form.Field>
+                <Form.Field inline>
+                <Radio
+                  label='No'
                   onChange={this.handleKids}
-                  checked={state.kids === 'no-kids'}
+                  checked={state.kids === 'no-kids' ? true : false}
                   name='no-kids'
-                  component='input'/> No
-                </li>
-              </ul>
-              <button onClick={this.handleCancel}>Cancel</button>
-              <button onClick={this.handleSave} name='kids'>Save</button>
+                />
+              </Form.Field>
+              <div className='button-container'>
+                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                <div><button onClick={this.handleSave} name='kids'>Save</button></div>
+              </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the Brand sell Clothes for kids?</h4>
             <h5>{state.kids === 'no-kids' ? 'No' : 'Yes'}</h5>
-            <button name='kids' onClick={this.handleKidsEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='kids' onClick={this.handleKidsEdit}>Edit</button></div>
+            </div>
           </div>
           )}
 
@@ -207,8 +213,10 @@ handleKidsEdit(event) {
               <h5>Mens Work</h5>
               {this.renderStyles('men-work')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='men' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='men' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the Brand sell clothes for men?</h4>
@@ -216,7 +224,10 @@ handleKidsEdit(event) {
             <h5>Mens Wear: {state['men-menswear'] ? `${(state['men-menswear'] * 100)}%` : '0%'}</h5>
             <h5>Mens Casual: {state['men-casual'] ? `${(state['men-casual'] * 100)}%` : '0%'}</h5>
             <h5>Mens Work: {state['men-work'] ? `${(state['men-work'] * 100)}%` : '0%'}</h5>
-            <button name='men' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='men' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
 
@@ -237,8 +248,10 @@ handleKidsEdit(event) {
               <h5>Older Women Comfort</h5>
                 {this.renderStyles('women-old-comfort')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='older-women' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='older-women' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the Brand sell clothes for older-women?</h4>
@@ -248,7 +261,10 @@ handleKidsEdit(event) {
             <h5>Older Women Plus: {state['women-old-plus'] ? `${(state['women-old-plus'] * 100)}%` : '0%'}</h5>
             <h5>Older Women Classic: {state['women-old-classic'] ? `${(state['women-old-classic'] * 100)}%` : '0%'}</h5>
             <h5>Older Women Comfort: {state['women-old-comfort'] ? `${(state['women-old-comfort'] * 100)}%` : '0%'}</h5>
-            <button name='older-women' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='older-women' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
 
@@ -277,8 +293,10 @@ handleKidsEdit(event) {
               <h5>Young Women Wedding/Formal</h5>
                 {this.renderStyles('women-young-formal')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='young-women' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='young-women' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the Brand sell clothes for young-women?</h4>
@@ -292,7 +310,10 @@ handleKidsEdit(event) {
             <h5>Young Women Evening: {state['women-young-evening'] ? `${(state['women-young-evening'] * 100)}%` : '0%'}</h5>
             <h5>Young Women Vintage Look: {state['women-young-vintage'] ? `${(state['women-young-vintage'] * 100)}%` : '0%'}</h5>
             <h5>Young Women Wedding/Formal: {state['women-young-formal'] ? `${(state['women-young-formal'] * 100)}%` : '0%'}</h5>
-            <button name='young-women' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='young-women' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
 
@@ -311,8 +332,10 @@ handleKidsEdit(event) {
               <h5>EU Designers</h5>
               {this.renderStyles('eu-designed')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='designer' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='designer' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Where is the brand designed?</h4>
@@ -321,7 +344,10 @@ handleKidsEdit(event) {
             <h5>AU Designers: {state['au-designed'] ? `${(state['au-designed'] * 100)}%` : '0%'}</h5>
             <h5>NZ Designers: {state['nz-designed'] ? `${(state['nz-designed'] * 100)}%` : '0%'}</h5>
             <h5>EU Designers: {state['eu-designed'] ? `${(state['eu-designed'] * 100)}%` : '0%'}</h5>
-            <button name='designer' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='designer' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
 
@@ -334,14 +360,19 @@ handleKidsEdit(event) {
               <h5>Tees</h5>
               {this.renderStyles('basics-tees')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='basics' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='basics' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the brand sell basics?</h4>
             <h5>Denim: {state['basics-denim'] ? `${(state['basics-denim'] * 100)}%` : '0%'}</h5>
             <h5>Tees: {state['basics-tees'] ? `${(state['basics-tees'] * 100)}%` : '0%'}</h5>
-            <button name='basics' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='basics' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
 
@@ -356,15 +387,20 @@ handleKidsEdit(event) {
               <h5>High Luxury</h5>
               {this.renderStyles('luxury-high')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='luxury' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='luxury' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the brand sell Luxury clothes?</h4>
             <h5>Luxury - but showy: {state['luxury-showy'] ? `${(state['luxury-showy'] * 100)}%` : '0%'}</h5>
             <h5>Luxury - but cool: {state['luxury-cool'] ? `${(state['luxury-cool'] * 100)}%` : '0%'}</h5>
             <h5>High Luxury: {state['luxury-high'] ? `${(state['luxury-high'] * 100)}%` : '0%'}</h5>
-            <button name='luxury' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='luxury' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
 
@@ -375,13 +411,18 @@ handleKidsEdit(event) {
               <h5>Accessories</h5>
               {this.renderStyles('accessories')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='accessories' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='accessories' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the brand sell accessories?</h4>
             <h5>Accessories: {state['accessories'] ? `${(state['accessories'] * 100)}%` : '0%'}</h5>
-            <button name='accessories' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='accessories' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
 
@@ -396,15 +437,20 @@ handleKidsEdit(event) {
               <h5>Other Bags</h5>
               {this.renderStyles('bags-other')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='bags' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='bags' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the brand sell bags?</h4>
             <h5>Low end Handbags: {state['bags-low'] ? `${(state['bags-low'] * 100)}%` : '0%'}</h5>
             <h5>High end Handbags: {state['bags-high'] ? `${(state['bags-high'] * 100)}%` : '0%'}</h5>
             <h5>Other Bags: {state['bags-other'] ? `${(state['bags-other'] * 100)}%` : '0%'}</h5>
-            <button name='bags' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='bags' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
 
@@ -419,15 +465,20 @@ handleKidsEdit(event) {
               <h5>Activewear</h5>
               {this.renderStyles('activewear')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='fitness' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='fitness' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the brand sell Fitness clothing?</h4>
             <h5>Swimwear Low-End: {state['swimwear-low'] ? `${(state['swimwear-low'] * 100)}%` : '0%'}</h5>
             <h5>Swimwear Mid-Range: {state['swimwear-mid'] ? `${(state['swimwear-mid'] * 100)}%` : '0%'}</h5>
             <h5>Activewear: {state['activewear'] ? `${(state['activewear'] * 100)}%` : '0%'}</h5>
-            <button name='fitness' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='fitness' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
 
@@ -438,13 +489,18 @@ handleKidsEdit(event) {
               <h5>Outdoor Gear</h5>
               {this.renderStyles('outdoor-')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='outdoor' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='outdoor' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the brand sell Outdoor Gear?</h4>
             <h5>Outdoor Gear: {state['outdoor-'] ? `${(state['outdoor-'] * 100)}%` : '0%'}</h5>
-            <button name='outdoor' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='outdoor' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
 
@@ -461,8 +517,10 @@ handleKidsEdit(event) {
               <h5>Sport Shoes</h5>
               {this.renderStyles('shoes-sport')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='shoes' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='shoes' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the Brand sell shoes?</h4>
@@ -470,7 +528,10 @@ handleKidsEdit(event) {
             <h5>Low-End Shoes: {state['shoes-low'] ? `${(state['shoes-low'] * 100)}%` : '0%'}</h5>
             <h5>Dressy Shoes: {state['shoes-dressy'] ? `${(state['shoes-dressy'] * 100)}%` : '0%'}</h5>
             <h5>Sport Shoes: {state['shoes-sport'] ? `${(state['shoes-sport'] * 100)}%` : '0%'}</h5>
-            <button name='shoes' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='shoes' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
 
@@ -487,8 +548,10 @@ handleKidsEdit(event) {
               <h5>Low End Bras/Hoisery</h5>
               {this.renderStyles('underwear-low')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='underwear' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='underwear' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the Brand sell underwear?</h4>
@@ -496,7 +559,10 @@ handleKidsEdit(event) {
             <h5>High End Lingerie: {state['underwear-high'] ? `${(state['underwear-high'] * 100)}%` : '0%'}</h5>
             <h5>Basic Underwear/Socks: {state['underwear-basic'] ? `${(state['underwear-basic'] * 100)}%` : '0%'}</h5>
             <h5>Low End Bras/Hoisery: {state['underwear-low'] ? `${(state['underwear-low'] * 100)}%` : '0%'}</h5>
-            <button name='underwear' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='underwear' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
 
@@ -515,8 +581,10 @@ handleKidsEdit(event) {
               <h5>Trendy</h5>
               {this.renderStyles('trendy')}
             </div>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button name='style-scores' onClick={this.handleSave}>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='style-scores' onClick={this.handleSave}>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Style Scores</h4>
@@ -525,7 +593,10 @@ handleKidsEdit(event) {
             <h5>Feminine: {state['feminine'] ? `${(state['feminine'] * 100)}%` : '0%'}</h5>
             <h5>Sporty: {state['sporty'] ? `${(state['sporty'] * 100)}%` : '0%'}</h5>
             <h5>Trendy: {state['trendy'] ? `${(state['trendy'] * 100)}%` : '0%'}</h5>
-            <button name='style-scores' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='style-scores' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
         )}
         </form>

@@ -64,7 +64,7 @@ class Landing extends Component {
       case 1:
         return (this.props.user ? (
           <div className="page-container">
-            <div className="button-container">
+            <div className="search-container">
               <div className="button-and-search">
                 <span><Link to='/createBrand' className="landingButton">
                   Create Brand

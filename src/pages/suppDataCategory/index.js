@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Form, Input} from 'semantic-ui-react'
 import { fetchBrandCategory, createBrandCategory, updateBrandCategory, fetchAllCategory } from '../../actions'
-import { FormsHeader } from '../../components'
+import { SuppHeading } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
@@ -162,7 +163,7 @@ componentDidUpdate() {
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
-        <FormsHeader />
+        <SuppHeading />
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -178,14 +179,18 @@ componentDidUpdate() {
             <ul>
               {this.renderCategories()}
             </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button onClick={this.handleCatSave} name='1' value='1'>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button onClick={this.handleCatSave} name='1' value='1'>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
           <h5>What are the categories?</h5>
-          <h5>Currently Selected Categories</h5>
             <ul>{_.map(state.dominantOptions, cat => {return (<li key={cat.id}>{cat.name}</li>)})}</ul>
-            <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+            </div>
           </div>
           )}
           {isEditing === '2' ? (
@@ -194,14 +199,18 @@ componentDidUpdate() {
               <ul>
               {this.renderDominant()}
               </ul>
-              <button onClick={this.handleCancel}>Cancel</button>
-              <button onClick={this.handleCatSave} name='2' value='2'>Save</button>
+              <div className='button-container'>
+                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                <div><button onClick={this.handleCatSave} name='2' value='2'>Save</button></div>
+              </div>
             </div>) : (
             <div className='not-editing'>
               <h5>What is the Brands dominant category?</h5>
-              <h5>Current Dominant Category</h5>
               <ul>{state.current_dominant_name}</ul>
-              <button name='2' onClick={this.handleEdit} value='2'>Edit</button>
+              <div className='button-container'>
+                <div></div>
+                <div><button name='2' onClick={this.handleEdit} value='2'>Edit</button></div>
+              </div>
             </div>
             )}
         </form>
@@ -217,8 +226,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default reduxForm({
-  form: 'SuppDataCategoryForm'
-})(
-  connect(mapStateToProps, { fetchBrandCategory, createBrandCategory, updateBrandCategory, fetchAllCategory })(SuppDataCategory)
-)
+export default connect(mapStateToProps, { fetchBrandCategory, createBrandCategory, updateBrandCategory, fetchAllCategory })(SuppDataCategory)

@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchCause, fetchAllCause, createCause, updateCause } from '../../actions'
-import { FormsHeader } from '../../components'
+import { QualiHeading } from '../../components'
+import { Form, Radio} from 'semantic-ui-react'
 import _ from 'lodash'
 import axios from 'axios'
 
@@ -74,16 +75,18 @@ componentWillReceiveProps(nextProps) {
     this.props.updateCause(id, event.target.name, {answer: this.state.currentAnswer})
     this.setState({isEditing: null, save: true})
   }
-  handleChange(event){
+
+  handleChange(event, { value, name }){
     _.map(this.props.pre_qa, check => {
-      if(check.id === parseInt(event.target.value)) {
-        console.log(check);
-        this.setState({[`${event.target.name}Answer`]: check.text})
+      if(check.id === parseInt(value)) {
+        console.log('check', check);
+        this.setState({[`${name}Answer`]: check.text})
       }
     })
+    console.log('value', value, name);
     this.setState({
-      [event.target.name]: parseInt(event.target.value),
-      currentAnswer: parseInt(event.target.value)
+      [name]: parseInt(value),
+      currentAnswer: parseInt(value)
     })
   }
 
@@ -91,14 +94,15 @@ componentWillReceiveProps(nextProps) {
     return _.map(this.props.pre_qa, ans => {
       if(ans.question === quest)
       return(
-        <li key={ans.id}><input
-          type='radio'
-          onChange={this.handleChange}
-          checked={this.state[quest] === ans.id}
-          value={ans.id}
-          name={ans.question}
-          /> {ans.text}
-        </li>
+        <Form.Field inline key={ans.id}>
+          <Radio
+            label={ans.text}
+            onChange={this.handleChange}
+            checked={this.state[quest] === ans.id ? true : false}
+            value={ans.id}
+            name={ans.question}
+          />
+        </Form.Field>
       )
     })
   }
@@ -114,7 +118,7 @@ componentWillReceiveProps(nextProps) {
     const props = this.props.qa
     return(
       <div className='form-container'>
-        <FormsHeader />
+        <QualiHeading />
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -123,142 +127,158 @@ componentWillReceiveProps(nextProps) {
             <div><Link to={`/brandSentences/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
-        <form className='brand-form'>
+        <Form>
         {isEditing === '1' ? (
           <div className='editing'>
             <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
-              <ul>
-                {this.renderQuestion('made-in')}
-              </ul>
-              <button name='made-in' onClick={this.handleCancel} >Cancel</button>
-              <button name='made-in' onClick={this.handleSave}  value='1'>Save</button>
+                  {this.renderQuestion('made-in')}
+            <div className='button-container'>
+              <div><button className='cancel' name='made-in' onClick={this.handleCancel} >Cancel</button></div>
+              <div><button name='made-in' onClick={this.handleSave}  value='1'>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
-            <h5>Current Answer: </h5>
-            <div>{state['made-inAnswer']}</div>
-            <button name='made-in' onClick={this.handleEdit} value='1'>Edit</button>
+            <p>{state['made-inAnswer']}</p>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='made-in' onClick={this.handleEdit} value='1'>Edit</button></div>
+            </div>
 
           </div>
             )}
         {isEditing === '6' ? (
           <div className='editing'>
           <h4>Is the Brand Certified B-Corp?</h4>
-            <ul>
               {this.renderQuestion('b-corp')}
-            </ul>
-            <button name='b-corp' onClick={this.handleCancel}>Cancel</button>
-            <button name='b-corp' onClick={this.handleSave} value='6'>Save</button>
+          <div className='button-container'>
+            <div><button className='cancel' name='b-corp' onClick={this.handleCancel}>Cancel</button></div>
+            <div><button name='b-corp' onClick={this.handleSave} value='6'>Save</button></div>
+          </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Is the Brand Certified B-Corp?</h4>
-            <h5>Current Answer: </h5>
             <div>{state['b-corpAnswer']}</div>
-            <button name='b-corp' onClick={this.handleEdit} value='6'>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='b-corp' onClick={this.handleEdit} value='6'>Edit</button></div>
+            </div>
           </div>
         )}
 
         {isEditing === '8'? (
           <div className='editing'>
           <h4>Is the brand a social enterprise that provides employment for people from a disadvantaged background?</h4>
-            <ul>
               {this.renderQuestion('social-enterprise')}
-            </ul>
-            <button name='social-enterprise' onClick={this.handleCancel}>Cancel</button>
-            <button name='social-enterprise' onClick={this.handleSave} value='8'>Save</button>
+          <div className='button-container'>
+            <div><button className='cancel' name='social-enterprise' onClick={this.handleCancel}>Cancel</button></div>
+            <div><button name='social-enterprise' onClick={this.handleSave} value='8'>Save</button></div>
+          </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Is the brand a social enterprise that provides employment for people from a disadvantaged background?</h4>
-            <h5>Current Answer: </h5>
             <div>{state['social-enterpriseAnswer']}</div>
-            <button name='social-enterprise' onClick={this.handleEdit} value='8'>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='social-enterprise' onClick={this.handleEdit} value='8'>Edit</button></div>
+            </div>
           </div>
           )}
 
         {isEditing === '10' ? (
           <div className='editing'>
           <h4>Does the brand have a 1 for 1 model?</h4>
-            <ul>
               {this.renderQuestion('1-for-1')}
-            </ul>
-            <button name='1-for-1' onClick={this.handleCancel}>Cancel</button>
-            <button name='1-for-1' onClick={this.handleSave} value='10'>Save</button>
+          <div className='button-container'>
+            <div><button className='cancel' name='1-for-1' onClick={this.handleCancel}>Cancel</button></div>
+            <div><button name='1-for-1' onClick={this.handleSave} value='10'>Save</button></div>
+          </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Does the brand have a 1 for 1 model?</h4>
-            <h5>Current Answer: </h5>
             <div>{state['1-for-1Answer']}</div>
-            <button name='1-for-1' onClick={this.handleEdit} value='10'>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='1-for-1' onClick={this.handleEdit} value='10'>Edit</button></div>
+            </div>
           </div>
           )}
 
         {isEditing === '12' ? (
           <div className='editing'>
           <h4>Is the brand Vegan?</h4>
-            <ul>
               {this.renderQuestion('vegan')}
-            </ul>
-            <button name='vegan' onClick={this.handleCancel}>Cancel</button>
-            <button name='vegan' onClick={this.handleSave} value='12'>Save</button>
+          <div className='button-container'>
+            <div><button className='cancel' name='vegan' onClick={this.handleCancel}>Cancel</button></div>
+            <div><button name='vegan' onClick={this.handleSave} value='12'>Save</button></div>
+          </div>
           </div>) : (
           <div className='not-editing'>
             <h4>Is the brand Vegan?</h4>
-            <h5>Current Answer: </h5>
             <div>{state.veganAnswer}</div>
-            <button name='vegan' onClick={this.handleEdit} value='12'>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='vegan' onClick={this.handleEdit} value='12'>Edit</button></div>
+            </div>
           </div>
           )}
 
         {isEditing === '14' ? (
           <div className='editing'>
           <h4>What Percentage of the brands products are certified Fair Trade?</h4>
-            <ul>
               {this.renderQuestion('fair-trade')}
-            </ul>
-            <button name='fair-trade' onClick={this.handleCancel}>Cancel</button>
-            <button name='fair-trade' onClick={this.handleSave} value='14'>Save</button>
+            <div className='button-container'>
+              <div><button className='cancel' name='fair-trade' onClick={this.handleCancel}>Cancel</button></div>
+              <div><button name='fair-trade' onClick={this.handleSave} value='14'>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h4>What Percentage of the brands products are certified Fair Trade?</h4>
-            <h5>Current Answer: </h5>
             <div>{state['fair-tradeAnswer']}</div>
-            <button name='fair-trade' onClick={this.handleEdit} value='14'>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='fair-trade' onClick={this.handleEdit} value='14'>Edit</button></div>
+            </div>
           </div>
           )}
 
         {isEditing === '16' ? (
           <div className='editing'>
           <h4>What percentage of products are made from certified Organic materials?</h4>
-            <ul>
               {this.renderQuestion('organic')}
-            </ul>
-            <button name='organic' onClick={this.handleCancel}>Cancel</button>
-            <button name='organic' onClick={this.handleSave} value='16'>Save</button>
+          <div className='button-container'>
+            <div><button className='cancel' name='organic' onClick={this.handleCancel}>Cancel</button></div>
+            <div><button name='organic' onClick={this.handleSave} value='16'>Save</button></div>
+          </div>
           </div>) : (
           <div className='not-editing'>
             <h4>What percentage of products are made from certified Organic materials?</h4>
-            <h5>Current Answer: </h5>
             <div>{state.organicAnswer}</div>
-            <button name='organic' onClick={this.handleEdit} value='16'>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='organic' onClick={this.handleEdit} value='16'>Edit</button></div>
+            </div>
           </div>
           )}
         {isEditing === '18' ? (
           <div className='editing'>
           <h4>What percentage of products are made from a substantial proportion(-50%) of recycled/upcycled materials?</h4>
-            <ul>
               {this.renderQuestion('recycled')}
-            </ul>
-            <button name='recycled' onClick={this.handleCancel}>Cancel</button>
-            <button name='recycled' onClick={this.handleSave} value='18'>Save</button>
+          <div className='button-container'>
+            <div><button className='cancel' name='recycled' onClick={this.handleCancel}>Cancel</button></div>
+            <div><button name='recycled' onClick={this.handleSave} value='18'>Save</button></div>
+          </div>
           </div>) : (
           <div className='not-editing'>
             <h4>What percentage of products are made from a substantial proportion(-50%) of recycled/upcycled materials?</h4>
-            <h5>Current Answer: </h5>
             <div>{state.recycledAnswer}</div>
-            <button name='recycled' onClick={this.handleEdit} value='18'>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='recycled' onClick={this.handleEdit} value='18'>Edit</button></div>
+            </div>
           </div>
           )}
-        </form>
+        </Form>
       </div>
     )
   }

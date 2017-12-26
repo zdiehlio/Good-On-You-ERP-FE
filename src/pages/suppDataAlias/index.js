@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Form, Input } from 'semantic-ui-react'
 import { fetchAlias, createAlias, deleteAlias  } from '../../actions'
-import { FormsHeader } from '../../components'
+import { SuppHeading } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
@@ -76,8 +76,8 @@ componentDidUpdate() {
     console.log('save', this.state);
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
-  handleInput(event) {
-    this.setState({currentAnswer: event.target.value})
+  handleInput(event, { value }) {
+    this.setState({currentAnswer: value})
   }
 
   handleDelete(event) {
@@ -98,9 +98,9 @@ componentDidUpdate() {
     return _.map(this.state.aliasArr, name => {
       if(name) {
         return(
-          <div key={name.id}>
-            {name.alias}
-            <button className='delete-alias' onClick={this.handleDelete} name={name.id}>Delete</button>
+          <div className='alias-item' key={name.id}>
+            <div>{name.alias}</div>
+            <div><button className='delete-alias' onClick={this.handleDelete} name={name.id}>Delete</button></div>
           </div>
         )
       }
@@ -115,7 +115,7 @@ render() {
   const { id }  = this.props.match.params
   return(
     <div className='form-container'>
-      <FormsHeader />
+      <SuppHeading />
       <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
       <div className='forms-header'>
         <span className='form-navigation'>
@@ -128,24 +128,33 @@ render() {
       {isEditing === '1' ? (
         <div className='editing'>
         <h5>Add any alternative names the brand might have: </h5>
-          <Field
-            placeholder={this.currentAnswer}
-            onChange={this.handleInput}
-            name='summary'
-            component='textarea'/>
-          <button onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button>
-          <button onClick={this.handleCancel}>Cancel</button>
-          <button onClick={this.handleSave} name='1' value='1'>Save</button>
+          <Form.Field inline>
+            <Input
+              label='Brand Alias'
+              placeholder={this.currentAnswer}
+              onChange={this.handleInput}
+              name='summary'
+            />
+          </Form.Field>
+          <div className='button-container'>
+            <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+            <div><button onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button></div>
+          </div>
+          <div className='button-container'>
+            <div></div>
+            <div><button onClick={this.handleSave} name='1' value='1'>Done</button></div>
+          </div>
         </div>) : (
         <div className='not-editing'>
           <h5>Add any alternative names the brand might have: </h5>
-          <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
+          <div className='button-container'>
+            <div></div>
+            <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+          </div>
         </div>
         )}
         <h4>List of current Brand Aliases: </h4>
-        <ul>
           {this.state.save === true ? this.renderAlias() : this.renderAlias()}
-        </ul>
       </form>
     </div>
   )
@@ -156,8 +165,4 @@ function mapStateToProps(state) {
   return {qa: state.qa}
 }
 
-export default reduxForm({
-  form: 'SuppDataAliasForm'
-})(
-  connect(mapStateToProps, { fetchAlias, createAlias, deleteAlias })(SuppDataAlias)
-)
+export default connect(mapStateToProps, { fetchAlias, createAlias, deleteAlias })(SuppDataAlias)

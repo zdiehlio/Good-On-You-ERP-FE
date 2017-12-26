@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Form } from 'semantic-ui-react'
 import { fetchImage, updateImage, fetchLogo, updateLogo } from '../../actions'
-import { FormsHeader } from '../../components'
+import { SuppHeading } from '../../components'
 import _ from 'lodash'
 
 import './suppDataImage.css'
@@ -74,7 +75,6 @@ componentWillReceiveProps(nextProps) {
       this.props.updateImage(this.state.image_selected, {is_selected: true})
     }
     this.setState({isEditing: null})
-    console.log('save', this.state);
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
@@ -90,39 +90,51 @@ componentWillReceiveProps(nextProps) {
   }
 
   renderLogo() {
-    return _.map(this.props.pre_qa, logo => {
+    if(this.props.pre_qa.length > 0) {
+      return _.map(this.props.pre_qa, logo => {
+        return(
+          <div className='image-container' key={logo.id}>
+            <img className={this.state.logo_selected === logo.id ? 'logo-selected' : 'logo'} onClick={this.handleLogo} name={logo.id} src={logo.url} />
+          </div>
+        )
+      })
+    } else {
       return(
-        <li key={logo.id}>
-          <img className={this.state.logo_selected === logo.id ? 'logo-selected' : 'logo'} onClick={this.handleLogo} name={logo.id} src={logo.url} />
-        </li>
+        <p>No Logos Found</p>
       )
-    })
+    }
   }
 
 
   renderImage() {
-    return _.map(this.props.qa, image => {
-      return(
-        <li key={image.id}>
-          <img className={this.state.image_selected === image.id ? 'image-selected' : 'cover-image'}  onClick={this.handleImage} name={image.id} src={image.url} />
-        </li>
-      )
-    })
+    if(this.props.qa.length > 0) {
+      return _.map(this.props.qa, image => {
+          return(
+            <div className='image-container' key={image.id}>
+              <img className={this.state.image_selected === image.id ? 'image-selected' : 'cover-image'}  onClick={this.handleImage} name={image.id} src={image.url} />
+            </div>
+          )
+        })
+      } else {
+        return(
+          <p>No Images Found</p>
+        )
+      }
   }
 
 
 //render contains conditional statements based on state of isEditing as described in functions above.
 render() {
-  console.log('props', this.props.qa);
-  console.log('preQA', this.props.pre_qa);
-  console.log('state', this.state);
+  console.log('props', this.props.qa)
+  console.log('preQA', this.props.pre_qa)
+  console.log('state', this.state)
   const isEditing = this.state.isEditing
   const { id }  = this.props.match.params
   const state = this.state
   const props = this.props.qa
   return(
     <div className='form-container'>
-      <FormsHeader />
+      <SuppHeading />
       <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
       <div className='forms-header'>
         <span className='form-navigation'>
@@ -131,39 +143,45 @@ render() {
           <div><Link to={`/suppDataCategory/${id}`}><button className='next'>Next</button></Link></div>
         </span>
       </div>
-      <form className='brand-form'>
+      <Form>
       {isEditing === 'image' ? (
         <div className='editing'>
-          <ul>
-            <h5>What is the Brand Cover Image?</h5>
-            {this.renderImage()}
-          </ul>
-          <button onClick={this.handleCancel} name='image'>Cancel</button>
-          <button onClick={this.handleSave} name='image'>Save</button>
+          <h5>What is the Brand Cover Image?</h5>
+          {this.renderImage()}
+          <div className='button-container'>
+            <div><button className='cancel' onClick={this.handleCancel} name='image'>Cancel</button></div>
+            <div><button onClick={this.handleSave} name='image'>Save</button></div>
+          </div>
         </div>) : (
         <div className='not-editing'>
           <h5>Brand Cover Image</h5>
           <div className='display'><img src={state.image_url} className='cover-image' /></div>
-          <button name='image' onClick={this.handleEdit}>Edit</button>
+          <div className='button-container'>
+            <div></div>
+            <div><button name='image' onClick={this.handleEdit}>Edit</button></div>
+          </div>
         </div>
         )}
 
         {isEditing === 'logo' ? (
           <div className='editing'>
-          <ul>
-              <h5>Select the Brand Logo?</h5>
-              {this.renderLogo()}
-            </ul>
-            <button onClick={this.handleCancel} name='logo'>Cancel</button>
-            <button onClick={this.handleSave} name='logo'>Save</button>
+            <h5>Select the Brand Logo?</h5>
+            {this.renderLogo()}
+            <div className='button-container'>
+              <div><button className='cancel' onClick={this.handleCancel} name='logo'>Cancel</button></div>
+              <div><button onClick={this.handleSave} name='logo'>Save</button></div>
+            </div>
           </div>) : (
           <div className='not-editing'>
             <h5>Brand Logo</h5>
             <div className='display'><img src={state.logo_url} className='logo' /></div>
-            <button name='logo' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div></div>
+              <div><button name='logo' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
           )}
-      </form>
+      </Form>
     </div>
   )
 }
@@ -176,8 +194,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default reduxForm({
-  form: 'SuppDataImageForm'
-})(
-  connect(mapStateToProps, { fetchImage, updateImage, fetchLogo, updateLogo })(SuppDataImage)
-)
+export default connect(mapStateToProps, { fetchImage, updateImage, fetchLogo, updateLogo })(SuppDataImage)

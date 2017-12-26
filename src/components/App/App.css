@@ -33,8 +33,9 @@ button {
 }
 
 .button-container div {
+  display: inline-block;
   margin-top: 2em;
-  width: calc(100%/2);
+  width: calc(90%/2);
 }
 .cancel {
   background-color: maroon;

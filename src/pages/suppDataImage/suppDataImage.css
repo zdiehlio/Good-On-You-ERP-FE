@@ -11,9 +11,9 @@
   margin: 1em
 }
 
-li {
+.image-container {
   display: inline-block;
-  width: calc(90% / 2);
+  width: calc(90% / 4);
 }
 
 .logo-selected {

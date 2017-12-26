@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Form, Input } from 'semantic-ui-react'
 import { fetchContact, createContact, updateContact } from '../../actions'
-import { FormsHeader } from '../../components'
+import { OverviewHeading } from '../../components'
 import _ from 'lodash'
 
 import './brandContact.css'
@@ -98,7 +98,7 @@ render() {
   const props = this.props.qa
   return(
     <div className='form-container'>
-      <FormsHeader />
+      <OverviewHeading />
       <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
       <div className='forms-header'>
         <span className='form-navigation'>
@@ -138,15 +138,20 @@ render() {
               value={state.relationship_manager}
             />
           </Form.Field>
-          <button className='cancel' onClick={this.handleCancel}>Cancel</button>
-          <button onClick={this.handleSave} name='1' value='1'>Save</button>
+        <div className='button-container'>
+          <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+          <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
+        </div>
         </div>) : (
         <div className='not-editing'>
           <h5>Brand Contact Information</h5>
-          <p>Contact Name: {state.name}</p>
-          <p>Email: {state.email}</p>
-          <p>Relationship Manager: {state.relationship_manager}</p>
-          <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
+          <p>{state.name}</p>
+          <p>{state.email}</p>
+          <p>{state.relationship_manager}</p>
+          <div className='button-container'>
+            <div></div>
+            <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+          </div>
         </div>
         )}
       </Form>

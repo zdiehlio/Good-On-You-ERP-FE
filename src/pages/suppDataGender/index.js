@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Form, Checkbox} from 'semantic-ui-react'
 import { fetchStyles, createStyles } from '../../actions'
-import { FormsHeader } from '../../components'
+import { SuppHeading } from '../../components'
 import _ from 'lodash'
 
 
@@ -36,21 +37,27 @@ class SuppDataGender extends Component {
           this.setState({[compare.style_qa.tag]: compare.style_qa.tag})
         }
       })
+      this.setState({genders: _.map(nextProps.qa, check => {
+          if(check.style_qa.question === 'gender') {
+            return {brand: id, style: check.style_qa.tag}
+          }
+        }
+      )})
     }
   }
 //toggles if clause that sets state to target elements value and enables user to edit the answer
 handleEdit(event) {
   event.preventDefault()
   const { id }  = this.props.match.params
-  if(this.state['gender-children']) {
-    this.setState({genders: [...this.state.genders, {brand: id, style: this.state['gender-children']}]})
-  }
-  if(this.state['gender-women']) {
-    this.setState({genders: [...this.state.genders, {brand: id, style: this.state['gender-women']}]})
-  }
-  if(this.state['gender-men']) {
-    this.setState({genders: [...this.state.genders, {brand: id, style: this.state['gender-men']}]})
-  }
+  // if(this.state['gender-children']) {
+  //   this.setState({genders: [...this.state.genders, {brand: id, style: this.state['gender-children']}]})
+  // }
+  // if(this.state['gender-women']) {
+  //   this.setState({genders: [...this.state.genders, {brand: id, style: this.state['gender-women']}]})
+  // }
+  // if(this.state['gender-men']) {
+  //   this.setState({genders: [...this.state.genders, {brand: id, style: this.state['gender-men']}]})
+  // }
   this.setState({isEditing: event.target.name})
 }
 
@@ -68,12 +75,12 @@ handleEdit(event) {
     this.setState({isEditing: null})
   }
 
-  handleChange(event){
+  handleChange(event, { name }){
     const { id }  = this.props.match.params
-    if(this.state[event.target.name] === event.target.name) {
-      this.setState({[event.target.name]: null, genders: this.state.genders.filter(gender => {return gender.style !== event.target.name})})
+    if(this.state[name] === name) {
+      this.setState({[name]: null, genders: this.state.genders.filter(gender => {return gender.style !== name})})
     } else {
-      this.setState({[event.target.name]: event.target.name, genders: [...this.state.genders, {brand: id, style: event.target.name}]})
+      this.setState({[name]: name, genders: [...this.state.genders, {brand: id, style: name}]})
     }
   }
 
@@ -86,7 +93,7 @@ handleEdit(event) {
     const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
-        <FormsHeader />
+        <SuppHeading />
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -99,38 +106,43 @@ handleEdit(event) {
         {isEditing === 'gender' ? (
           <div className='editing'>
             <h4>What are the Genders offered by the brand?</h4>
-              <ul>
-              <li><Field
-                  type='checkbox'
+              <Form.Field inline>
+                <Checkbox
+                  label='Children'
                   onChange={this.handleChange}
-                  checked={state['gender-children']}
+                  checked={state['gender-children'] ? true : false}
                   name='gender-children'
-                  component='input'/> Children
-                </li>
-                <li><Field
-                  type='checkbox'
+                />
+              </Form.Field>
+              <Form.Field inline>
+                <Checkbox
+                  label='Women'
                   onChange={this.handleChange}
-                  checked={state['gender-women']}
+                  checked={state['gender-women'] ? true : false}
                   name='gender-women'
-                  component='input'/> Women
-                </li>
-                <li><Field
-                  type='checkbox'
+                />
+              </Form.Field>
+              <Form.Field inline>
+                <Checkbox
+                  label='Men'
                   onChange={this.handleChange}
-                  checked={state['gender-men']}
+                  checked={state['gender-men'] ? true : false}
                   name='gender-men'
-                  component='input'/> Men
-                </li>
-              </ul>
-              <button onClick={this.handleCancel}>Cancel</button>
-              <button onClick={this.handleSave} name='gender'>Save</button>
+                />
+              </Form.Field>
+              <div className='button-container'>
+                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                <div><button onClick={this.handleSave} name='gender'>Save</button></div>
+              </div>
           </div>) : (
           <div className='not-editing'>
             <h4>What are the Genders offered by the brand?</h4>
             <p>{this.state['gender-children'] ? 'Children' : ''}</p>
             <p>{this.state['gender-women'] ? 'Women' : ''}</p>
             <p>{this.state['gender-men'] ? 'Men' : ''}</p>
-            <button name='gender' onClick={this.handleEdit}>Edit</button>
+            <div className='button-container'>
+              <div><button name='gender' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
           )}
         </form>
@@ -145,8 +157,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default reduxForm({
-  form: 'SuppDataGenderForm'
-})(
-  connect(mapStateToProps, { fetchStyles, createStyles })(SuppDataGender)
-)
+export default connect(mapStateToProps, { fetchStyles, createStyles })(SuppDataGender)

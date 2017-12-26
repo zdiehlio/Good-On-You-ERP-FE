@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
+import { Form, Checkbox} from 'semantic-ui-react'
 import { fetchType, createType, deleteType } from '../../actions'
 import { FormsHeader } from '../../components'
 import _ from 'lodash'
@@ -60,19 +61,19 @@ componentWillReceiveProps(nextProps) {
     this.setState({isEditing: null})
   }
 
-  handleCheckbox(event) {
+  handleCheckbox(event, { name }) {
     const { id }  = this.props.match.params
-    if(this.state[event.target.name] === event.target.name) {
+    if(this.state[name] === name) {
       this.setState({
-        [event.target.name]: null,
-        typeValues: this.state.typeValues.filter(type => {return type.product !== event.target.name}),
-        deleteValues: [...this.state.deleteValues, event.target.name],
+        [name]: null,
+        typeValues: this.state.typeValues.filter(type => {return type.product !== name}),
+        deleteValues: [...this.state.deleteValues, name],
       })
     } else {
       this.setState({
-        [event.target.name]: event.target.name,
-        typeValues: [...this.state.typeValues, {brand: id, product: event.target.name}],
-        deleteValues: this.state.deleteValues.filter(type => {return type !== event.target.name})
+        [name]: name,
+        typeValues: [...this.state.typeValues, {brand: id, product: name}],
+        deleteValues: this.state.deleteValues.filter(type => {return type !== name})
       })
     }
   }
@@ -107,54 +108,59 @@ componentWillReceiveProps(nextProps) {
         <form className='brand-form'>
           {isEditing === '1' ? (
             <div className='editing'>
-                <ul>
                 <h5>What are the product types?  Select one or more?</h5>
-                  <li> <Field
-                    type='checkbox'
-                    onChange={this.handleCheckbox}
-                    checked={this.state.workwear}
-                    name='workwear'
-                    component='input' />Workwear
-                  </li>
-                  <li> <Field
-                    type='checkbox'
-                    onChange={this.handleCheckbox}
-                    checked={this.state.activewear}
-                    name='activewear'
-                    component='input' />Activewear
-                  </li>
-                  <li> <Field
-                    type='checkbox'
-                    onChange={this.handleCheckbox}
-                    checked={this.state.casualwear}
-                    name='casualwear'
-                    component='input' />Casualwear
-                  </li>
-                  <li> <Field
-                    type='checkbox'
-                    onChange={this.handleCheckbox}
-                    checked={this.state.eveningwear}
-                    name='eveningwear'
-                    component='input' />Eveningwear
-                  </li>
-                  <li> <Field
-                    type='checkbox'
-                    onChange={this.handleCheckbox}
-                    checked={this.state.smartcasual}
-                    name='smartcasual'
-                    component='input' />SmartCasual
-                  </li>
-                </ul>
-                <ul>
-                </ul>
-              <button onClick={this.handleCancel}>Cancel</button>
-              <button onClick={this.handleSave} name='1'>Save</button>
+                  <Form.Field inline>
+                    <Checkbox
+                      label='Workwear'
+                      onChange={this.handleCheckbox}
+                      checked={this.state.workwear ? true : false}
+                      name='workwear'
+                    />
+                  </Form.Field>
+                  <Form.Field inline>
+                    <Checkbox
+                      label='Activewear'
+                      onChange={this.handleCheckbox}
+                      checked={this.state.activewear ? true : false}
+                      name='activewear'
+                    />
+                  </Form.Field>
+                  <Form.Field inline>
+                    <Checkbox
+                      label='Casualwear'
+                      onChange={this.handleCheckbox}
+                      checked={this.state.casualwear ? true : false}
+                      name='casualwear'
+                    />
+                  </Form.Field>
+                  <Form.Field inline>
+                    <Checkbox
+                      label='Eveningwear'
+                      onChange={this.handleCheckbox}
+                      checked={this.state.eveningwear ? true : false}
+                      name='eveningwear'
+                    />
+                  </Form.Field>
+                  <Form.Field inline>
+                    <Checkbox
+                      label='Smart Casual'
+                      onChange={this.handleCheckbox}
+                      checked={this.state.smartcasual ? true : false}
+                      name='smartcasual'
+                    />
+                  </Form.Field>
+              <div className='button-container'>
+                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                <div><button onClick={this.handleSave} name='1'>Save</button></div>
+              </div>
             </div>) : (
             <div className='not-editing'>
               <h5>What is the size of the Brand?</h5>
-              <p>Current sizes:</p>
               <p>{this.renderSelected()}</p>
-              <button name='1' onClick={this.handleEdit}>Edit</button>
+              <div className='button-container'>
+                <div></div>
+                <div><button name='1' onClick={this.handleEdit}>Edit</button></div>
+              </div>
             </div>
             )}
         </form>

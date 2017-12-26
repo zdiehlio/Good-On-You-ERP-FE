@@ -35,7 +35,7 @@
   width: 80%;
 }
 
-.button-container{
+.search-container{
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -43,12 +43,13 @@
   width: 80%;
 }
 
-.button-container > *{
+.search-container > *{
   padding: 5px 15px;
 }
 
 .list-container {
   width: 100%;
+  list-style-type: none;
 }
 
 

@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Form, Radio} from 'semantic-ui-react'
 import { fetchStyles, createStyles } from '../../actions'
-import { FormsHeader } from '../../components'
+import { SuppHeading } from '../../components'
 import _ from 'lodash'
 
 
@@ -54,11 +54,23 @@ handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
     this.props.createStyles({brand: id, style: 'price', score: this.state.price})
-    this.setState({isEditing: null})
+    this.setState({isEditing: null, originalPrice: this.state.price})
   }
 
-  handleChange(event){
-    this.setState({[event.target.name]: event.target.value});
+  renderPrice() {
+    if(this.state.price === 1) {
+      return('$')
+    } else if(this.state.price ===2) {
+      return('$$')
+    } else if(this.state.price===3) {
+      return('$$$')
+    } else if(this.state.price===4) {
+      return('$$$$')
+    }
+  }
+
+  handleChange(event, { value, name }){
+    this.setState({[name]: parseInt(value)});
   }
 
   render() {
@@ -70,7 +82,7 @@ handleEdit(event) {
     const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
-        <FormsHeader />
+        <SuppHeading />
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -83,47 +95,54 @@ handleEdit(event) {
         {isEditing === 'price' ? (
           <div className='editing'>
             <h4>What is the price guideline?</h4>
-              <ul>
-                <li><Field
-                  type='radio'
+              <Form.Field inline>
+                <Radio
+                  label='$'
                   onChange={this.handleChange}
-                  checked={state.price === '1' || state.price === 1}
+                  checked={state.price === 1 ? true : false}
                   value='1'
                   name='price'
-                  component='input'/> $
-                </li>
-                <li><Field
-                  type='radio'
+                />
+              </Form.Field>
+              <Form.Field inline>
+                <Radio
+                  label='$$'
                   onChange={this.handleChange}
-                  checked={state.price === '2' || state.price === 2}
+                  checked={state.price === 2 ? true : false}
                   value='2'
                   name='price'
-                  component='input'/> $$
-                </li>
-                <li><Field
-                  type='radio'
+                />
+              </Form.Field>
+              <Form.Field inline>
+                <Radio
+                  label='$$$'
                   onChange={this.handleChange}
-                  checked={state.price === '3' || state.price === 3}
+                  checked={state.price === 3 ? true : false}
                   name='price'
                   value='3'
-                  component='input'/> $$$
-                </li>
-                <li><Field
-                  type='radio'
+                />
+              </Form.Field>
+              <Form.Field inline>
+                <Radio
+                  label='$$$$'
                   onChange={this.handleChange}
-                  checked={state.price === '4' || state.price === 4}
+                  checked={state.price === 4  ? true : false}
                   name='price'
                   value='4'
-                  component='input'/> $$$$
-                </li>
-              </ul>
-              <button onClick={this.handleCancel}>Cancel</button>
-              <button onClick={this.handleSave} name='price'>Save</button>
+                />
+              </Form.Field>
+              <div className='button-container'>
+                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                <div><button onClick={this.handleSave} name='price'>Save</button></div>
+              </div>
           </div>) : (
           <div className='not-editing'>
             <h4>What is the price guideline?</h4>
-            <h5>{state.price}</h5>
-            <button name='price' onClick={this.handleEdit}>Edit</button>
+            {this.renderPrice()}
+            <div className='button-container'>
+              <div></div>
+              <div><button name='price' onClick={this.handleEdit}>Edit</button></div>
+            </div>
           </div>
           )}
         </form>
@@ -138,8 +157,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default reduxForm({
-  form: 'SuppDataPriceForm'
-})(
-  connect(mapStateToProps, { fetchStyles, createStyles })(SuppDataPrice)
-)
+export default connect(mapStateToProps, { fetchStyles, createStyles })(SuppDataPrice)
