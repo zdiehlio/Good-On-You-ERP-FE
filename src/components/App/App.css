@@ -41,6 +41,10 @@ button {
   background-color: maroon;
 }
 
+.add {
+  margin-left: 5em;
+}
+
 button:hover {
   cursor: pointer;
   background-color: #2D2D2F;

@@ -109,6 +109,8 @@ class SuppDataAlias extends Component {
     console.log('props', this.props.qa)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
+    const prop = this.props.qa
+    const state = this.state
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
@@ -132,26 +134,30 @@ class SuppDataAlias extends Component {
                   onChange={this.handleInput}
                   name='summary'
                 />
+                <button className='add' onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button>
               </Form.Field>
+              <h4>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h4>
+              {state.save === true ? this.renderAlias() : this.renderAlias()}
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-                <div><button onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button></div>
-              </div>
-              <div className='button-container'>
-                <div></div>
                 <div><button onClick={this.handleSave} name='1' value='1'>Done</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>
               <h5>Add any alternative names the brand might have: </h5>
+              <h4>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h4>
+              <ul>{_.map(state.aliasArr, ali => {
+                return(
+                  <li key={ali.id}>{ali.alias}</li>
+                )}
+              )}
+              </ul>
               <div className='button-container'>
                 <div></div>
                 <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
               </div>
             </div>
           )}
-          <h4>{this.state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h4>
-          {this.state.save === true ? this.renderAlias() : this.renderAlias()}
         </form>
       </div>
     )
