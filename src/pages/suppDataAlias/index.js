@@ -18,7 +18,7 @@ class SuppDataAlias extends Component {
       currentAnswer: null,
       renderAlias: null,
       save: false,
-      aliasArr: []
+      aliasArr: [],
     }
 
 
@@ -29,43 +29,42 @@ class SuppDataAlias extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleAdd = this.handleAdd.bind(this)
   }
-componentWillMount() {
-  const { id } = this.props.match.params
-  this.props.fetchAlias(id)
-}
-
-componentWillReceiveProps(nextProps) {
-  if(nextProps.qa !== this.props.qa) {
-    this.setState({aliasArr: _.map(nextProps.qa, ali => {return {id: ali.id, alias: ali.alias}})})
-    console.log('cwr');
-  }
-}
-
-componentWillUpdate(nextProps, nextState) {
-  const { id } = this.props.match.params
-  if (nextState.save == true && this.state.save == false) {
+  componentWillMount() {
+    const { id } = this.props.match.params
     this.props.fetchAlias(id)
   }
-}
 
-componentDidUpdate() {
-  if(this.state.save === true) {
-    this.setState({save: false})
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.qa !== this.props.qa) {
+      this.setState({aliasArr: _.map(nextProps.qa, ali => {return {id: ali.id, alias: ali.alias}})})
+    }
   }
-}
 
-//toggles if clause that sets state to target elements value and enables user to edit the answer
+  componentWillUpdate(nextProps, nextState) {
+    const { id } = this.props.match.params
+    if (nextState.save == true && this.state.save == false) {
+      this.props.fetchAlias(id)
+    }
+  }
+
+  componentDidUpdate() {
+    if(this.state.save === true) {
+      this.setState({save: false})
+    }
+  }
+
+  //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-      //if a summary already exists, will set state of same target name to the current answer value and also toggle editing
-      _.map(this.props.qa, name=> {
-        this.setState({[name.alias]: name.alias})
-      })
-      this.setState({isEditing: event.target.name, save: false})
-      console.log('set state', this.state);
+    //if a summary already exists, will set state of same target name to the current answer value and also toggle editing
+    _.map(this.props.qa, name=> {
+      this.setState({[name.alias]: name.alias})
+    })
+    this.setState({isEditing: event.target.name, save: false})
+    console.log('set state', this.state)
   }
-//sets state for isEditing to null which will toggle the ability to edit
+  //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.default()
     this.setState({isEditing: null, renderCurrent: null})
@@ -73,7 +72,6 @@ componentDidUpdate() {
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     this.setState({isEditing: null, renderCurrent: this.state.currentAnswer})
-    console.log('save', this.state);
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event, { value }) {
@@ -94,7 +92,6 @@ componentDidUpdate() {
   }
 
   renderAlias() {
-    // <button onClick={this.handleDelete} name={name.id} className='remove-list-item'>Delete</button>
     return _.map(this.state.aliasArr, name => {
       if(name) {
         return(
@@ -107,58 +104,58 @@ componentDidUpdate() {
     })
   }
 
-//render contains conditional statements based on state of isEditing as described in functions above.
-render() {
-  console.log('props', this.props.qa);
-  console.log('state', this.state);
-  const isEditing = this.state.isEditing
-  const { id }  = this.props.match.params
-  return(
-    <div className='form-container'>
-      <SuppHeading />
-      <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
-      <div className='forms-header'>
-        <span className='form-navigation'>
-          <div><Link to={`/suppDataGender/${id}`}><button className='previous'>Previous</button></Link></div>
-          <div><h3>Alternative Names</h3></div>
-          <div><button className='next'>Next</button></div>
-        </span>
-      </div>
-      <form className='brand-form'>
-      {isEditing === '1' ? (
-        <div className='editing'>
-        <h5>Add any alternative names the brand might have: </h5>
-          <Form.Field inline>
-            <Input
-              label='Brand Alias'
-              placeholder={this.currentAnswer}
-              onChange={this.handleInput}
-              name='summary'
-            />
-          </Form.Field>
-          <div className='button-container'>
-            <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-            <div><button onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button></div>
-          </div>
-          <div className='button-container'>
-            <div></div>
-            <div><button onClick={this.handleSave} name='1' value='1'>Done</button></div>
-          </div>
-        </div>) : (
-        <div className='not-editing'>
-          <h5>Add any alternative names the brand might have: </h5>
-          <div className='button-container'>
-            <div></div>
-            <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
-          </div>
+  //render contains conditional statements based on state of isEditing as described in functions above.
+  render() {
+    console.log('props', this.props.qa)
+    console.log('state', this.state)
+    const isEditing = this.state.isEditing
+    const { id }  = this.props.match.params
+    return(
+      <div className='form-container'>
+        <SuppHeading />
+        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'>
+          <span className='form-navigation'>
+            <div><Link to={`/suppDataGender/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><h3>Alternative Names</h3></div>
+            <div><button className='next disabled'>Next</button></div>
+          </span>
         </div>
-        )}
-        <h4>List of current Brand Aliases: </h4>
+        <form className='brand-form'>
+          {isEditing === '1' ? (
+            <div className='editing'>
+              <h5>Add any alternative names the brand might have: </h5>
+              <Form.Field inline>
+                <Input
+                  label='Brand Alias'
+                  placeholder={this.currentAnswer}
+                  onChange={this.handleInput}
+                  name='summary'
+                />
+              </Form.Field>
+              <div className='button-container'>
+                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                <div><button onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button></div>
+              </div>
+              <div className='button-container'>
+                <div></div>
+                <div><button onClick={this.handleSave} name='1' value='1'>Done</button></div>
+              </div>
+            </div>) : (
+            <div className='not-editing'>
+              <h5>Add any alternative names the brand might have: </h5>
+              <div className='button-container'>
+                <div></div>
+                <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+              </div>
+            </div>
+          )}
+          <h4>{this.state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h4>
           {this.state.save === true ? this.renderAlias() : this.renderAlias()}
-      </form>
-    </div>
-  )
-}
+        </form>
+      </div>
+    )
+  }
 }
 
 function mapStateToProps(state) {

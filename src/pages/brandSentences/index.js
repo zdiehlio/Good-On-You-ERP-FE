@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchSentence, createSentence, updateSentence } from '../../actions'
-import { Form, TextArea} from 'semantic-ui-react'
+import { Form, TextArea, Radio} from 'semantic-ui-react'
 import { QualiHeading } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
@@ -20,7 +20,7 @@ class BrandSentences extends Component {
       currentId: '',
       finalAnswer: '',
       save: false,
-      input: ''
+      input: '',
     }
 
 
@@ -29,46 +29,45 @@ class BrandSentences extends Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
   }
-componentWillMount() {
-  const { id } = this.props.match.params
-  this.props.fetchSentence(id)
-}
+  componentWillMount() {
+    const { id } = this.props.match.params
+    this.props.fetchSentence(id)
+  }
 
-componentWillReceiveProps(nextProps) {
-  const { id } = this.props.match.params
-  if(nextProps.qa !== this.props.qa) {
-    if(nextProps.qa) {
-    _.map(nextProps.qa, ident => {
-      if(ident.is_selected === true) {
-        console.log('ident', ident.is_selected);
-        this.setState({originalSource: ident.source, originalSelect: ident.slug, originalId: ident.id, originalAnswer: ident.text, currentSelect: ident.slug, currentId: ident.id, finalAnswer: ident.text, finalSource: ident.source})
+  componentWillReceiveProps(nextProps) {
+    const { id } = this.props.match.params
+    if(nextProps.qa !== this.props.qa) {
+      if(nextProps.qa) {
+        _.map(nextProps.qa, ident => {
+          if(ident.is_selected === true) {
+            this.setState({originalSource: ident.source, originalSelect: ident.slug, originalId: ident.id, originalAnswer: ident.text, currentSelect: ident.slug, currentId: ident.id, finalAnswer: ident.text, finalSource: ident.source})
+          }
+          this.setState({[ident.slug]: ident.slug})
+        })
       }
-      this.setState({[ident.slug]: ident.slug})
-    })
     }
   }
-}
 
-componentWillUpdate(nextProps, nextState) {
-  const { id } = this.props.match.params
-  if (nextState.save == true && this.state.save == false) {
-    console.log('update', nextProps);
-}
-}
-
-componentDidUpdate() {
-  if(this.state.save === true) {
-    this.setState({save: false})
+  componentWillUpdate(nextProps, nextState) {
+    const { id } = this.props.match.params
+    if (nextState.save == true && this.state.save == false) {
+      console.log('update', nextProps)
+    }
   }
-}
 
-//toggles if clause that sets state to target elements value and enables user to edit the answer
+  componentDidUpdate() {
+    if(this.state.save === true) {
+      this.setState({save: false})
+    }
+  }
+
+  //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
     this.setState({isEditing: '1'})
   }
-//sets state for isEditing to null which will toggle the ability to edit
+  //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
     this.setState({finalSource: this.state.originalSource, finalAnswer: this.state.originalAnswer, currentId: this.state.originalId, currentSelect: this.state.originalSelect, isEditing: null})
@@ -82,31 +81,38 @@ componentDidUpdate() {
       this.props.createSentence({brand: id, text: this.state.finalAnswer, is_selected: true})
     }
     this.setState({isEditing: null, save: true})
-    console.log('save', this.state);
   }
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
   handleRadio(event){
+    if(this.props.qa.length > 0) {
       _.map(this.props.qa, check => {
         if(event.target.name === check.slug) {
+          console.log(event.target.value)
           this.setState({currentSelect: check.slug, finalAnswer: event.target.value, currentId: check.id, finalSource: check.source})
         }
       })
+    } else {
+      this.setState({finalAnswer: event.target.value})
+    }
   }
 
   renderField() {
     return _.map(this.props.qa, check => {
       if(check.slug === 'default-1' || check.slug === 'default-2') {
-      return(
-        <li key={check.id}><Field
-          type='radio'
-          onChange={this.handleRadio}
-          checked={this.state.currentSelect===check.slug}
-          name={check.slug}
-          component='input'
-          value={check.text}/> {check.text}
-          <div>Source: {check.source}</div>
-        </li>
-      )}
+        return(
+          <Form>
+            <Form.Field inline key={check.id}>
+              <Radio
+                label={check.text}
+                onChange={this.handleRadio}
+                checked={this.state.currentSelect===check.slug}
+                name={check.slug}
+                value={check.text}
+              />
+            </Form.Field>
+            <div>Source: {check.source}</div>
+          </Form>
+        )}
     })
   }
 
@@ -116,10 +122,10 @@ componentDidUpdate() {
     )
   }
 
-//render contains conditional statements based on state of isEditing as described in functions above.
+  //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.qa);
-    console.log('state', this.state);
+    console.log('props', this.props.qa)
+    console.log('state', this.state)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
     const state = this.state
@@ -136,10 +142,10 @@ componentDidUpdate() {
           </span>
         </div>
         <Form>
-        {isEditing === '1' ? (
-          <div className='editing'>
-          <h5>What is the one sentence that describes the brand best?</h5>
-          <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p>
+          {isEditing === '1' ? (
+            <div className='editing'>
+              <h5>What is the one sentence that describes the brand best?</h5>
+              <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p>
               {state['default-1'] || state['default-2'] ? this.renderField() : this.renderNone()}
               <h5>Edit the one you chose or write a new one</h5>
               <TextArea
@@ -147,20 +153,20 @@ componentDidUpdate() {
                 onChange={this.handleRadio}
                 value={state.finalAnswer}
                 name='custom'/>
-          <div className='button-container'>
-            <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-            <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
-          </div>
-          </div>) : (
-          <div className='not-editing'>
-            <h5>What is the one sentence that describes the brand best?</h5>
-            <p>{this.state.finalAnswer}</p>
-            <p>{this.state.finalSource}</p>
-            <div className='button-container'>
-              <div></div>
-              <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+              <div className='button-container'>
+                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
+              </div>
+            </div>) : (
+            <div className='not-editing'>
+              <h5>What is the one sentence that describes the brand best?</h5>
+              <p>{this.state.finalAnswer}</p>
+              <p>{this.state.finalSource}</p>
+              <div className='button-container'>
+                <div></div>
+                <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+              </div>
             </div>
-          </div>
           )}
         </Form>
       </div>
@@ -172,8 +178,4 @@ function mapStateToProps(state) {
   return {qa: state.qa}
 }
 
-export default reduxForm({
-  form: 'BrandSentenceForm'
-})(
-  connect(mapStateToProps, { updateSentence, fetchSentence, createSentence })(BrandSentences)
-)
+export default connect(mapStateToProps, { updateSentence, fetchSentence, createSentence })(BrandSentences)

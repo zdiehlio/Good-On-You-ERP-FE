@@ -52,9 +52,9 @@ h5, p, ul, li {
   margin-top: 0.5em;
 }
 
-
-
-
+li {
+  list-style-type: none;
+}
 /*Common classNames*/
 .goy-color {
   color: #6ac1bf;
@@ -144,6 +144,15 @@ h5, p, ul, li {
 
 .next {
   float:right;
+}
+
+.disabled {
+  background-color: #F2F2F2;
+}
+
+.disabled:hover {
+  background-color: #F2F2F2;
+  color: white;
 }
 
 .divider {

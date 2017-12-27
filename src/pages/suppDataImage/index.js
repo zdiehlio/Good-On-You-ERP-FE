@@ -15,7 +15,6 @@ class SuppDataImage extends Component {
 
     this.state = {
       isEditing: null,
-      territories: []
     }
 
 
@@ -26,36 +25,36 @@ class SuppDataImage extends Component {
     this.handleLogo = this.handleLogo.bind(this)
     this.handleImage = this.handleImage.bind(this)
   }
-componentWillMount() {
-  const { id } = this.props.match.params
-  this.props.fetchImage(id)
-  this.props.fetchLogo(id)
-}
-
-componentWillReceiveProps(nextProps) {
-  if(nextProps.pre_qa != this.props.pre_qa) {
-    _.map(nextProps.pre_qa, logo => {
-      if(logo.is_selected === true) {
-        this.setState({logo_selected: logo.id, logo_url: logo.url, originalLogo_selected: logo.id, originalLogo_url: logo.url})
-      }
-    })
+  componentWillMount() {
+    const { id } = this.props.match.params
+    this.props.fetchImage(id)
+    this.props.fetchLogo(id)
   }
-  if(nextProps.qa != this.props.qa) {
-    _.map(nextProps.qa, image => {
-      if(image.is_selected === true) {
-        this.setState({image_selected: image.id, image_url: image.url, originalImage_selected: image.id, originalImage_url: image.url})
-      }
-    })
-  }
-}
 
-//toggles if clause that sets state to target elements value and enables user to edit the answer
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.pre_qa != this.props.pre_qa) {
+      _.map(nextProps.pre_qa, logo => {
+        if(logo.is_selected === true) {
+          this.setState({logo_selected: logo.id, logo_url: logo.url, originalLogo_selected: logo.id, originalLogo_url: logo.url})
+        }
+      })
+    }
+    if(nextProps.qa != this.props.qa) {
+      _.map(nextProps.qa, image => {
+        if(image.is_selected === true) {
+          this.setState({image_selected: image.id, image_url: image.url, originalImage_selected: image.id, originalImage_url: image.url})
+        }
+      })
+    }
+  }
+
+  //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
     this.setState({isEditing: event.target.name})
   }
-//sets state for isEditing to null which will toggle the ability to edit
+  //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
     if(event.target.name === 'image') {
@@ -90,7 +89,8 @@ componentWillReceiveProps(nextProps) {
   }
 
   renderLogo() {
-    if(this.props.pre_qa.length > 0) {
+    if(this.state.logo_selected) {
+      console.log('logo', this.state.logo_selected)
       return _.map(this.props.pre_qa, logo => {
         return(
           <div className='image-container' key={logo.id}>
@@ -99,6 +99,7 @@ componentWillReceiveProps(nextProps) {
         )
       })
     } else {
+      console.log('denied')
       return(
         <p>No Logos Found</p>
       )
@@ -107,90 +108,90 @@ componentWillReceiveProps(nextProps) {
 
 
   renderImage() {
-    if(this.props.qa.length > 0) {
+    if(this.state.image_selected) {
       return _.map(this.props.qa, image => {
-          return(
-            <div className='image-container' key={image.id}>
-              <img className={this.state.image_selected === image.id ? 'image-selected' : 'cover-image'}  onClick={this.handleImage} name={image.id} src={image.url} />
-            </div>
-          )
-        })
-      } else {
         return(
-          <p>No Images Found</p>
+          <div className='image-container' key={image.id}>
+            <img className={this.state.image_selected === image.id ? 'image-selected' : 'cover-image'}  onClick={this.handleImage} name={image.id} src={image.url} />
+          </div>
         )
-      }
+      })
+    } else {
+      return(
+        <p>No Images Found</p>
+      )
+    }
   }
 
 
-//render contains conditional statements based on state of isEditing as described in functions above.
-render() {
-  console.log('props', this.props.qa)
-  console.log('preQA', this.props.pre_qa)
-  console.log('state', this.state)
-  const isEditing = this.state.isEditing
-  const { id }  = this.props.match.params
-  const state = this.state
-  const props = this.props.qa
-  return(
-    <div className='form-container'>
-      <SuppHeading />
-      <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
-      <div className='forms-header'>
-        <span className='form-navigation'>
-          <div><Link to={`/suppDataSocialMedia/${id}`}><button className='previous'>Previous</button></Link></div>
-          <div><h3>Image</h3></div>
-          <div><Link to={`/suppDataCategory/${id}`}><button className='next'>Next</button></Link></div>
-        </span>
-      </div>
-      <Form>
-      {isEditing === 'image' ? (
-        <div className='editing'>
-          <h5>What is the Brand Cover Image?</h5>
-          {this.renderImage()}
-          <div className='button-container'>
-            <div><button className='cancel' onClick={this.handleCancel} name='image'>Cancel</button></div>
-            <div><button onClick={this.handleSave} name='image'>Save</button></div>
-          </div>
-        </div>) : (
-        <div className='not-editing'>
-          <h5>Brand Cover Image</h5>
-          <div className='display'><img src={state.image_url} className='cover-image' /></div>
-          <div className='button-container'>
-            <div></div>
-            <div><button name='image' onClick={this.handleEdit}>Edit</button></div>
-          </div>
+  //render contains conditional statements based on state of isEditing as described in functions above.
+  render() {
+    console.log('props', this.props.qa)
+    console.log('preQA', this.props.pre_qa)
+    console.log('state', this.state)
+    const isEditing = this.state.isEditing
+    const { id }  = this.props.match.params
+    const state = this.state
+    const props = this.props.qa
+    return(
+      <div className='form-container'>
+        <SuppHeading />
+        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'>
+          <span className='form-navigation'>
+            <div><Link to={`/suppDataSocialMedia/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><h3>Image</h3></div>
+            <div><Link to={`/suppDataCategory/${id}`}><button className='next'>Next</button></Link></div>
+          </span>
         </div>
-        )}
-
-        {isEditing === 'logo' ? (
-          <div className='editing'>
-            <h5>Select the Brand Logo?</h5>
-            {this.renderLogo()}
-            <div className='button-container'>
-              <div><button className='cancel' onClick={this.handleCancel} name='logo'>Cancel</button></div>
-              <div><button onClick={this.handleSave} name='logo'>Save</button></div>
+        <Form>
+          {isEditing === 'image' ? (
+            <div className='editing'>
+              <h5>What is the Brand Cover Image?</h5>
+              {this.renderImage()}
+              <div className='button-container'>
+                <div><button className='cancel' onClick={this.handleCancel} name='image'>Cancel</button></div>
+                <div><button onClick={this.handleSave} name='image'>Save</button></div>
+              </div>
+            </div>) : (
+            <div className='not-editing'>
+              <h5>Brand Cover Image</h5>
+              <div className='display'>{state.image_selected ? <img src={state.image_url} className='cover-image' /> : <p>No Image Found</p>}</div>
+              <div className='button-container'>
+                <div></div>
+                <div><button name='image' onClick={this.handleEdit}>Edit</button></div>
+              </div>
             </div>
-          </div>) : (
-          <div className='not-editing'>
-            <h5>Brand Logo</h5>
-            <div className='display'><img src={state.logo_url} className='logo' /></div>
-            <div className='button-container'>
-              <div></div>
-              <div><button name='logo' onClick={this.handleEdit}>Edit</button></div>
-            </div>
-          </div>
           )}
-      </Form>
-    </div>
-  )
-}
+
+          {isEditing === 'logo' ? (
+            <div className='editing'>
+              <h5>Select the Brand Logo?</h5>
+              {this.renderLogo()}
+              <div className='button-container'>
+                <div><button className='cancel' onClick={this.handleCancel} name='logo'>Cancel</button></div>
+                <div><button onClick={this.handleSave} name='logo'>Save</button></div>
+              </div>
+            </div>) : (
+            <div className='not-editing'>
+              <h5>Brand Logo</h5>
+              <div className='display'>{this.state.logo_selected ? <img src={state.logo_url} className='logo' /> : <p>No Logo found</p>}</div>
+              <div className='button-container'>
+                <div></div>
+                <div><button name='logo' onClick={this.handleEdit}>Edit</button></div>
+              </div>
+            </div>
+          )}
+        </Form>
+      </div>
+    )
+  }
 }
 
 function mapStateToProps(state) {
   return {
     qa: state.qa,
-    pre_qa: state.preQa
+    pre_qa: state.preQa,
   }
 }
 
