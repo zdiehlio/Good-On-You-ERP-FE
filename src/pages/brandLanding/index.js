@@ -11,7 +11,7 @@ class BrandLanding extends Component {
     super(props)
 
     this.state = {
-      show: null
+      show: null,
     }
     this.handleShow = this.handleShow.bind(this)
     this.handleHide = this.handleHide.bind(this)
@@ -36,8 +36,8 @@ class BrandLanding extends Component {
     const  id   = this.props.match.params.id
     const props = this.props.qa
     const state = this.state
-    console.log('state', state);
-    console.log('props', this.props.qa);
+    console.log('state', state)
+    console.log('props', this.props.qa)
     return(
       <div className='summary-container'>
         <div className='summary-heading'>Create a brand for: <h1>{props.name}</h1></div>
@@ -67,7 +67,7 @@ class BrandLanding extends Component {
           </div>
           {this.state.show === 'environment' ? (
             <span className='show-summary'>
-            <p className='small-divider'></p>
+              <p className='small-divider'></p>
               <span className='summary-view'>
                 <div>Resource</div>
                 <div><Link to={`/resource/${id}`}><button>Start</button></Link></div>
@@ -78,7 +78,7 @@ class BrandLanding extends Component {
           {this.state.show === 'environment' ? (
             <span className='show-summary'>
               <span className='summary-view'>
-                <div>Energy</div>
+                <div>Climate Change</div>
                 <div><Link to={`/energy/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
@@ -112,7 +112,7 @@ class BrandLanding extends Component {
           </div>
           {this.state.show === 'labour' ? (
             <span className='show-summary'>
-            <p className='small-divider'></p>
+              <p className='small-divider'></p>
               <span className='summary-view'>
                 <div>Worker Policies</div>
                 <div><Link to={`/worker_policies/${id}`}><button>Start</button></Link></div>
@@ -166,7 +166,7 @@ class BrandLanding extends Component {
           </div>
           {this.state.show === 'animal' ? (
             <span className='show-summary'>
-            <p className='small-divider'></p>
+              <p className='small-divider'></p>
               <span className='summary-view'>
                 <div>Fur</div>
                 <div><Link to={`/fur/${id}`}><button>Start</button></Link></div>

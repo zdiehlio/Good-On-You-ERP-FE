@@ -17,6 +17,7 @@ class BrandSummary extends Component {
       currentAnswer: null,
       renderSummary: null,
       save: false,
+      textlength: 0,
     }
 
 
@@ -62,7 +63,7 @@ class BrandSummary extends Component {
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
-    this.setState({currentAnswer: event.target.value})
+    this.setState({textlength: event.target.value.length, currentAnswer: event.target.value})
   }
 
   // renderSummary() {
@@ -98,10 +99,13 @@ class BrandSummary extends Component {
             <div className='editing'>
               <h5>What is the Summary for the Brand?</h5>
               <TextArea
+                autoHeight
+                maxLength='3000'
                 placeholder={this.currentAnswer}
                 onFocus={this.handleInput}
                 onChange={this.handleInput}
                 name='summary'/>
+              <p>{this.state.textlength}/3000</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>

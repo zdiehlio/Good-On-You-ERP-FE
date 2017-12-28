@@ -146,7 +146,7 @@ class SuppDataStyles extends Component {
     const props = this.props.qa
     return(
       <div className='form-container'>
-        <SuppHeading />
+        <SuppHeading id={this.props.match.params.id} />
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>

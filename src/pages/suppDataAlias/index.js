@@ -136,7 +136,7 @@ class SuppDataAlias extends Component {
                 />
                 <button className='add' onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button>
               </Form.Field>
-              <h4>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h4>
+              <h5>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h5>
               {state.save === true ? this.renderAlias() : this.renderAlias()}
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
@@ -145,7 +145,7 @@ class SuppDataAlias extends Component {
             </div>) : (
             <div className='not-editing'>
               <h5>Add any alternative names the brand might have: </h5>
-              <h4>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h4>
+              <h5>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h5>
               <ul>{_.map(state.aliasArr, ali => {
                 return(
                   <li key={ali.id}>{ali.alias}</li>

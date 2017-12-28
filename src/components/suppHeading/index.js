@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { fetchBrandInfo } from '../../actions'
 
 import './suppHeading.css'
 
 class SuppHeading extends Component {
 
-
   render() {
+    console.log('brand', this.props.brand)
     return(
       <div className='forms-header'>
         <div className='overview-header'>Brand Overview</div>

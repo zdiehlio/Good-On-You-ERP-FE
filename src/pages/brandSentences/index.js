@@ -21,6 +21,7 @@ class BrandSentences extends Component {
       finalAnswer: '',
       save: false,
       input: '',
+      textlength: 0,
     }
 
 
@@ -87,12 +88,11 @@ class BrandSentences extends Component {
     if(this.props.qa.length > 0) {
       _.map(this.props.qa, check => {
         if(event.target.name === check.slug) {
-          console.log(event.target.value)
-          this.setState({currentSelect: check.slug, finalAnswer: event.target.value, currentId: check.id, finalSource: check.source})
+          this.setState({textlength: event.target.value.length, currentSelect: check.slug, finalAnswer: event.target.value, currentId: check.id, finalSource: check.source})
         }
       })
     } else {
-      this.setState({finalAnswer: event.target.value})
+      this.setState({textlength: event.target.value.length, finalAnswer: event.target.value})
     }
   }
 
@@ -149,10 +149,13 @@ class BrandSentences extends Component {
               {state['default-1'] || state['default-2'] ? this.renderField() : this.renderNone()}
               <h5>Edit the one you chose or write a new one</h5>
               <TextArea
+                autoHeight
+                maxLength='255'
                 onFocus={this.handleRadio}
                 onChange={this.handleRadio}
                 value={state.finalAnswer}
                 name='custom'/>
+              <p>{this.state.textlength}/255</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>

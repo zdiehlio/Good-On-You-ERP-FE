@@ -3,15 +3,15 @@ import _ from 'lodash'
 
 export const ROOT_URL = 'https://goy-ed-2079.nodechef.com'
 
-export const LOG_IN = 'log_in';
-export const LOG_OUT = 'log_out';
+export const LOG_IN = 'log_in'
+export const LOG_OUT = 'log_out'
 export const CREATE_BRAND = 'create_brand'
 export const FETCH_USERS = 'fetch_users'
 export const FETCH_BRANDS = 'fetch_brands'
 export const FETCH_USER_INFO = 'fetch_user_info'
 export const FETCH_CAUSE = 'fetch_cause'
 export const FETCHALL_CAUSE = 'fetchall_cause'
-export const CLEAR_SEARCH = "clear_search"
+export const CLEAR_SEARCH = 'clear_search'
 export const UPDATE_CAUSE = 'update_cause'
 export const CREATE_CAUSE = 'create_cause'
 export const FETCH_SENTENCE = 'fetch_sentence'
@@ -55,176 +55,186 @@ export const FETCHALL_RATING = 'fetchall_rating'
 export const FETCH_RATING = 'fetch_rating'
 export const UPDATE_RATING = 'update_rating'
 export const CREATE_RATING = 'create_rating'
+export const FETCH_BRAND_INFO = 'fetch_brand_info'
 
 
 
 export function login(values) {
   const strategy = {
-    strategy: "local"
+    strategy: 'local',
   }
 
   const request = axios.post(`${ROOT_URL}/authentication/`, {...values, ...strategy})
   return {
     type: LOG_IN,
-    payload: request
+    payload: request,
   }
 }
 
 export function fetchUserInfo(email) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/users?email=${email}`)
 
   return {
     type: FETCH_USER_INFO,
-    payload: request
+    payload: request,
   }
 }
 
 export function logout() {
   return {
     type: LOG_OUT,
-    payload: {}
+    payload: {},
   }
 }
 
 export function createBrand(values, callback) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.post(`${ROOT_URL}/brands`, {...values})
     .then((res) => callback(res))
   return {
     type: CREATE_BRAND,
-    payload: request
+    payload: request,
   }
 }
 
 export function fetchUsers(value) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/users?$search=${value}`)
   return {
     type: FETCH_USERS,
-    payload: request
+    payload: request,
   }
 }
 
 export function fetchBrands(value) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands?name=${value}`)
   return {
     type: FETCH_BRANDS,
-    payload: request
+    payload: request,
+  }
+}
+
+export function fetchBrandInfo(id, value) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
+  const request = axios.get(`${ROOT_URL}/brands/${id}?section=${value}`)
+  return {
+    type: FETCH_BRAND_INFO,
+    payload: request,
   }
 }
 
 export function fetchGeneral(id, value) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands/${id}?section=${value}`)
   return {
     type: FETCH_GENERAL,
-    payload: request
+    payload: request,
   }
 }
 
 export function updateSocial(id, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.patch(`${ROOT_URL}/brands/${id}`, values)
   return {
     type: UPDATE_SOCIAL,
-    payload: request
+    payload: request,
   }
 }
 
 export function updateGeneral(id, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.patch(`${ROOT_URL}/brands?id=${id}`, values)
   return {
     type: UPDATE_GENERAL,
-    payload: request
+    payload: request,
   }
 }
 
 export function createBrandSize(id, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.delete(`${ROOT_URL}/brands-sizes?brand=${id}`).then(() => {axios.post(`${ROOT_URL}/brands-sizes`, values)})
   return {
     type: CREATE_SIZE,
-    payload: request
+    payload: request,
   }
 }
 
 export function deleteBrandSize(id, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.delete(`${ROOT_URL}/brands-sizes?brand=${id}&criteria=${values}`)
   return {
     type: DELETE_SIZE,
-    payload: request
+    payload: request,
   }
 }
 
 export function fetchContact(id, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands/${id}?section=contact`)
   return {
     type: FETCH_CONTACT,
-    payload: request
+    payload: request,
   }
 }
 
 export function createContact(values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.post(`${ROOT_URL}/brands-contacts`, values)
   return {
     type: CREATE_CONTACT,
-    payload: request
+    payload: request,
   }
 }
 
 export function updateContact(id, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.patch(`${ROOT_URL}/brands-contacts?brand=${id}`, values)
   return {
     type: FETCH_GENERAL,
-    payload: request
+    payload: request,
   }
 }
 
 export function fetchAllRating(theme) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/themes?name=${theme}`)
   return {
     type: FETCHALL_RATING,
-    payload: request
+    payload: request,
   }
 }
 
 export function fetchRating(id, theme) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands-ratings-answers?brand=${id}&theme=${theme}`)
   return {
     type: FETCH_RATING,
-    payload: request
+    payload: request,
   }
 }
 
 export function createRating(values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.post(`${ROOT_URL}/brands-ratings-answers`, values)
   return {
     type: CREATE_RATING,
-    payload: request
+    payload: request,
   }
 }
 
 export function updateRating(id, ans) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.patch(`${ROOT_URL}/brands-ratings-answers?brand=${id}&answer=${ans}`)
   return {
     type: UPDATE_RATING,
-    payload: request
+    payload: request,
   }
 }
 
 export function fetchAllCause(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/causes`)
   return (dispatch) => {
     request.then((data) => {
@@ -234,7 +244,7 @@ export function fetchAllCause(id) {
 }
 
 export function fetchCause(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands-causes?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
@@ -244,9 +254,8 @@ export function fetchCause(id) {
 }
 
 export function createCause(values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.post(`${ROOT_URL}/brands-causes`, values)
-  console.log('post', request);
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: CREATE_CAUSE, payload: data})
@@ -255,16 +264,16 @@ export function createCause(values) {
 }
 
 export function updateCause(id, quest, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.patch(`${ROOT_URL}/brands-causes?brand=${id}&question=${quest}`, values)
   return {
     type: UPDATE_CAUSE,
-    payload: request
+    payload: request,
   }
 }
 
 export function fetchAllStyles() {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/styles`)
   return (dispatch) => {
     request.then((data) => {
@@ -275,7 +284,7 @@ export function fetchAllStyles() {
 
 
 export function fetchStyles(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands-styles?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
@@ -285,7 +294,7 @@ export function fetchStyles(id) {
 }
 
 export function createStyles(values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.post(`${ROOT_URL}/brands-styles`, values)
   return (dispatch) => {
     request.then((data) => {
@@ -295,7 +304,7 @@ export function createStyles(values) {
 }
 
 export function updateStyles(id, tag) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.patch(`${ROOT_URL}/brands-styles?brand=${id}&style=${tag}`)
   return (dispatch) => {
     request.then((data) => {
@@ -305,7 +314,7 @@ export function updateStyles(id, tag) {
 }
 
 export function fetchSentence(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands-sentences?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
@@ -315,9 +324,8 @@ export function fetchSentence(id) {
 }
 
 export function createSentence(values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.post(`${ROOT_URL}/brands-sentences`, values)
-  console.log('post', request);
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: CREATE_SENTENCE, payload: data})
@@ -326,16 +334,16 @@ export function createSentence(values) {
 }
 
 export function updateSentence(id, sent, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.patch(`${ROOT_URL}/brands-sentences?brand=${id}&id=${sent}`, values)
   return {
     type: UPDATE_SENTENCE,
-    payload: request
+    payload: request,
   }
 }
 
 export function fetchSummary(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands-summaries?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
@@ -345,9 +353,8 @@ export function fetchSummary(id) {
 }
 
 export function createSummary(values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.post(`${ROOT_URL}/brands-summaries`, values)
-  console.log('post', request);
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: CREATE_SUMMARY, payload: data})
@@ -356,16 +363,16 @@ export function createSummary(values) {
 }
 
 export function updateSummary(id, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.patch(`${ROOT_URL}/brands-summaries?brand=${id}`, values)
   return {
     type: UPDATE_SUMMARY,
-    payload: request
+    payload: request,
   }
 }
 
 export function fetchAllCategory() {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/categories`)
   return (dispatch) => {
     request.then((data) => {
@@ -375,7 +382,7 @@ export function fetchAllCategory() {
 }
 
 export function fetchBrandCategory(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands-categories?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
@@ -385,7 +392,7 @@ export function fetchBrandCategory(id) {
 }
 
 export function updateBrandCategory(id, cat, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.patch(`${ROOT_URL}/brands-categories?brand=${id}&category_id=${cat}`, values)
   return (dispatch) => {
     request.then((data) => {
@@ -395,7 +402,7 @@ export function updateBrandCategory(id, cat, values) {
 }
 
 export function createBrandCategory(id, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.delete(`${ROOT_URL}/brands-categories?brand=${id}`).then(() => {axios.post(`${ROOT_URL}/brands-categories`, values)})
   // const request = axios.post(`${ROOT_URL}/brands-categories`, values)
   return (dispatch) => {
@@ -406,7 +413,7 @@ export function createBrandCategory(id, values) {
 }
 
 export function fetchType(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands-product-types?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
@@ -416,7 +423,7 @@ export function fetchType(id) {
 }
 
 export function createType(values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.post(`${ROOT_URL}/brands-product-types`, values)
   return (dispatch) => {
     request.then((data) => {
@@ -426,7 +433,7 @@ export function createType(values) {
 }
 
 export function deleteType(id, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.delete(`${ROOT_URL}/brands-product-types?brand=${id}&product=${values}`)
   return (dispatch) => {
     request.then((data) => {
@@ -436,7 +443,7 @@ export function deleteType(id, values) {
 }
 
 export function fetchAlias(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands-aliases?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
@@ -446,7 +453,7 @@ export function fetchAlias(id) {
 }
 
 export function createAlias(values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.post(`${ROOT_URL}/brands-aliases`, values)
   return (dispatch) => {
     request.then((data) => {
@@ -456,7 +463,7 @@ export function createAlias(values) {
 }
 
 export function deleteAlias(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.delete(`${ROOT_URL}/brands-aliases/${id}`)
   return (dispatch) => {
     request.then((data) => {
@@ -466,7 +473,7 @@ export function deleteAlias(id) {
 }
 
 export function fetchRetailers(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/retailers?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
@@ -476,7 +483,7 @@ export function fetchRetailers(id) {
 }
 
 export function fetchTerritories() {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/territories`)
   return (dispatch) => {
     request.then((data) => {
@@ -486,7 +493,7 @@ export function fetchTerritories() {
 }
 
 export function createRetailer(values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.post(`${ROOT_URL}/retailers`, values)
   return (dispatch) => {
     request.then((data) => {
@@ -496,7 +503,7 @@ export function createRetailer(values) {
 }
 
 export function updateRetailer(id, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.patch(`${ROOT_URL}/retailers/${id}`, values)
   return (dispatch) => {
     request.then((data) => {
@@ -506,7 +513,7 @@ export function updateRetailer(id, values) {
 }
 
 export function fetchImage(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands-covers?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
@@ -516,7 +523,7 @@ export function fetchImage(id) {
 }
 
 export function fetchLogo(id) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands-logos?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
@@ -526,7 +533,7 @@ export function fetchLogo(id) {
 }
 
 export function updateImage(id, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.patch(`${ROOT_URL}/brands-covers/${id}`, values)
   return (dispatch) => {
     request.then((data) => {
@@ -536,7 +543,7 @@ export function updateImage(id, values) {
 }
 
 export function updateLogo(id, values) {
-  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.patch(`${ROOT_URL}/brands-logos/${id}`, values)
   return (dispatch) => {
     request.then((data) => {
@@ -549,6 +556,6 @@ export function updateLogo(id, values) {
 export function clearSearch() {
   return {
     type: CLEAR_SEARCH,
-    payload: {}
+    payload: {},
   }
 }
