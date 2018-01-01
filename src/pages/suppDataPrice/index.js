@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, Radio} from 'semantic-ui-react'
+import { Form, Radio, Progress } from 'semantic-ui-react'
 import { fetchStyles, createStyles } from '../../actions'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -83,7 +83,7 @@ class SuppDataPrice extends Component {
     const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
-        <SuppHeading />
+        <SuppHeading id={id}/>
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -92,6 +92,9 @@ class SuppDataPrice extends Component {
             <div><Link to={`/suppDataGender/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
+        <p className='small-divider'></p>
+        <h5> Current:</h5>
+        <Progress total={4} value={state.progressBar} progress />
         <form className='brand-form'>
           {isEditing === 'price' ? (
             <div className='editing'>

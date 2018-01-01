@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchGeneral, updateGeneral, createBrandSize, deleteBrandSize } from '../../actions'
 import { OverviewHeading } from '../../components'
-import { Form, Input, Radio, Checkbox} from 'semantic-ui-react'
+import { Form, Input, Radio, Checkbox, Progress} from 'semantic-ui-react'
 import _ from 'lodash'
 import axios from 'axios'
 import moment from 'moment'
@@ -27,6 +27,7 @@ class BrandGeneral extends Component {
       input: null,
       dateValid: false,
       renderError: false,
+      progressBar: 0,
     }
 
 
@@ -52,6 +53,12 @@ class BrandGeneral extends Component {
         this.state.sizeValues.push({brand: id, criteria: crit.criteria})
         if(crit) {
           this.setState({[`original${crit.criteria}`]: crit.criteria, [crit.criteria]: crit.criteria})
+        }
+      })
+      _.map(nextProps.qa, check => {
+        if(check!==null) {
+          console.log(check)
+          return this.state.progressBar++
         }
       })
       this.setState({
@@ -166,7 +173,7 @@ class BrandGeneral extends Component {
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
-        <OverviewHeading />
+        <OverviewHeading id={id}/>
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -175,6 +182,9 @@ class BrandGeneral extends Component {
             <div><Link to={`/brandContact/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
+        <p className='small-divider'></p>
+        <h5> Current:</h5>
+        <Progress total={4} value={state.progressBar} progress />
         <Form>
           {isEditing === '1' ? (
             <div className='editing'>

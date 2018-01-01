@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, Input } from 'semantic-ui-react'
+import { Form, Input, Progress } from 'semantic-ui-react'
 import { fetchAlias, createAlias, deleteAlias  } from '../../actions'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -114,7 +114,7 @@ class SuppDataAlias extends Component {
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
-        <SuppHeading />
+        <SuppHeading id={id}/>
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -123,6 +123,9 @@ class SuppDataAlias extends Component {
             <div><button className='next disabled'>Next</button></div>
           </span>
         </div>
+        <p className='small-divider'></p>
+        <h5> Current:</h5>
+        <Progress total={4} value={state.progressBar} progress />
         <form className='brand-form'>
           {isEditing === '1' ? (
             <div className='editing'>

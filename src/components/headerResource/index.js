@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 class HeaderResource extends Component {
 
   render() {
-    console.log('params', this.props);
+    console.log('params', this.props)
     return(
       <div className='rating-header'>
         <div className='forms-header'><Link to={`/brandLanding/${this.props.id}`}><button>Back to Summary</button></Link></div>

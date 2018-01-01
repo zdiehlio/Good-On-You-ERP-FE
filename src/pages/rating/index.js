@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, Input, Checkbox, TextArea} from 'semantic-ui-react'
+import { Form, Input, Checkbox, TextArea, Progress} from 'semantic-ui-react'
 import { fetchAllRating, fetchRating, createRating, updateRating } from '../../actions'
 import { RatingHeading } from '../../components'
 import {
@@ -376,7 +376,7 @@ class Rating extends Component {
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
-        <RatingHeading />
+        <RatingHeading id={id} />
         {this.renderHeader()}
         <form className='brand-form'>
           {this.renderQA()}

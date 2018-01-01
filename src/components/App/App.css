@@ -16,7 +16,6 @@
   }
 }
 
-
 button {
   margin: 1em;
   padding: 0.5em 1em;
@@ -86,6 +85,24 @@ li {
 
 .form-container {
   width:80%;
+}
+
+.forms-header {
+  width:100%;
+  color: grey;
+}
+
+.forms-header button {
+  margin-top: 2em;
+}
+
+.forms-header div {
+  margin-top: 1em;
+  float: left;
+  color: grey;
+  width: calc(100%/7);
+  font-weight: bold;
+  text-align: center;
 }
 
 .editing {
@@ -186,4 +203,8 @@ li {
 
 .field {
   margin-top: 0.5em;
+}
+
+.progress {
+  width: 80%;
 }

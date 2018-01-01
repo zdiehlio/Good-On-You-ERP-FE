@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, Radio, Input} from 'semantic-ui-react'
+import { Form, Radio, Input, Checkbox, Progress } from 'semantic-ui-react'
 import { fetchAllStyles, fetchStyles, createStyles, updateStyles } from '../../actions'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -18,6 +18,7 @@ class SuppDataStyles extends Component {
       isEditing: null,
       currentAnswer: null,
       progress: [],
+      styles: [],
     }
 
 
@@ -27,7 +28,7 @@ class SuppDataStyles extends Component {
     this.handleSave = this.handleSave.bind(this)
     this.handleKidsEdit = this.handleKidsEdit.bind(this)
     this.handlePercentage = this.handlePercentage.bind(this)
-    this.handleTotalPercentage = this.handleTotalPercentage.bind(this)
+    this.handleCheckbox = this.handleCheckbox.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -41,7 +42,10 @@ class SuppDataStyles extends Component {
         if(compare.style_qa.question === 'kids') {
           this.setState({kids: compare.style_qa.tag})
         }
-        this.setState({[compare.style_qa.tag]: compare.score, [compare.style_qa.question]: 0})
+        if(compare.style_qa.question === 'style-scores') {
+          this.setState({[compare.style_qa.tag]: compare.tag, [compare.style_qa.question]: 0})
+        }
+        this.setState({[compare.style_qa.tag]: compare.style_qa.tag})
       })
     }
   }
@@ -86,8 +90,8 @@ class SuppDataStyles extends Component {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    _.map(this.state.progress, check => {
-      this.props.createStyles({brand: id, style: check, score: this.state[check]})
+    _.map(this.state.styles, check => {
+      this.props.createStyles({brand: id, style: check})
     })
     if(this.state.kids && event.target.name === 'kids') {
       this.props.createStyles({brand: id, style: this.state.kids})
@@ -99,9 +103,14 @@ class SuppDataStyles extends Component {
     this.setState({kids: name})
   }
 
-  handleTotalPercentage(event) {
-    event.preventDefault()
-    console.log('total working', event.target)
+  renderKids() {
+    if(this.state.kids === 'no-kids') {
+      return (<p>No</p>)
+    } else if(this.state.kids === 'kids') {
+      return (<p>Yes</p>)
+    } else {
+      return
+    }
   }
 
   handlePercentage(event) {
@@ -140,7 +149,42 @@ class SuppDataStyles extends Component {
     )
   }
 
+  handleCheckbox(event, { name }){
+    const { id }  = this.props.match.params
+    if(this.state[name] === name) {
+      this.setState({[name]: null, styles: this.state.styles.filter(check => {return check.style !== name})})
+    } else {
+      this.setState({[name]: name, styles: [...this.state.styles, {brand: id, style: name}]})
+    }
+  }
+
   renderStyles(el) {
+    const state = this.state
+    return(
+      <div>
+        {_.map(this.props.pre_qa, style => {
+          if(style.question === el) {
+            return(
+              <Form.Field key={style.tag} inline>
+                <Checkbox
+                  label={style.answer}
+                  onChange={this.handleCheckbox}
+                  checked={state[style.tag] ? true : false}
+                  name={style.tag}
+                />
+              </Form.Field>
+            )
+          }
+        })}
+        <div className='button-container'>
+          <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+          <div><button name={el} onClick={this.handleSave}>Save</button></div>
+        </div>
+      </div>
+    )
+  }
+
+  renderScores(el) {
     const state = this.state
     let options = {
       strokeWidth: 2,
@@ -188,7 +232,7 @@ class SuppDataStyles extends Component {
     const props = this.props.qa
     return(
       <div className='form-container'>
-        <SuppHeading id={this.props.match.params.id} />
+        <SuppHeading id={id} />
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -197,6 +241,9 @@ class SuppDataStyles extends Component {
             <div><Link to={`/suppDataTypes/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
+        <p className='small-divider'></p>
+        <h5> Current:</h5>
+        <Progress total={4} value={state.progressBar} progress />
         <form className='brand-form'>
           {isEditing === 'kids' ? (
             <div className='editing'>
@@ -224,7 +271,7 @@ class SuppDataStyles extends Component {
             </div>) : (
             <div className='not-editing'>
               <h4>Does the Brand sell Clothes for kids?</h4>
-              <p>{state.kids === 'no-kids' ? 'No' : 'Yes'}</p>
+              {this.renderKids()}
               <div className='button-container'>
                 <div></div>
                 <div><button name='kids' onClick={this.handleKidsEdit}>Edit</button></div>
@@ -368,7 +415,7 @@ class SuppDataStyles extends Component {
           {isEditing === 'style-scores' ? (
             <div className='editing'>
               <h4>Style Scores</h4>
-              {this.renderStyles('style-scores')}
+              {this.renderScores('style-scores')}
             </div>) : (
             <div className='not-editing'>
               <h4>Style Scores</h4>

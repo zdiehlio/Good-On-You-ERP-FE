@@ -1,9 +1,9 @@
-    import React, {Component} from 'react'
+import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchSentence, createSentence, updateSentence } from '../../actions'
-import { Form, TextArea, Radio} from 'semantic-ui-react'
+import { Form, TextArea, Radio, Progress} from 'semantic-ui-react'
 import { QualiHeading } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
@@ -132,7 +132,7 @@ class BrandSentences extends Component {
     const props = this.props.qa
     return(
       <div className='form-container'>
-        <QualiHeading />
+        <QualiHeading id={id}/>
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -141,6 +141,9 @@ class BrandSentences extends Component {
             <div><Link to={`/brandSummary/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
+        <p className='small-divider'></p>
+        <h5> Current:</h5>
+        <Progress total={4} value={state.progressBar} progress />
         <Form>
           {isEditing === '1' ? (
             <div className='editing'>

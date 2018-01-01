@@ -2,9 +2,9 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
-import { Form, Checkbox} from 'semantic-ui-react'
+import { Form, Checkbox, Progress } from 'semantic-ui-react'
 import { fetchType, createType, deleteType } from '../../actions'
-import { FormsHeader } from '../../components'
+import { SuppHeading } from '../../components'
 import _ from 'lodash'
 
 class SuppDataTypes extends Component {
@@ -93,10 +93,12 @@ class SuppDataTypes extends Component {
     console.log('props', this.props.qa)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
+    const state = this.state
+    const props = this.props.qa
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
-        <FormsHeader />
+        <SuppHeading id={id} />
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -105,6 +107,9 @@ class SuppDataTypes extends Component {
             <div><Link to={`/suppDataRetailers/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
+        <p className='small-divider'></p>
+        <h5> Current:</h5>
+        <Progress total={4} value={state.progressBar} progress />
         <form className='brand-form'>
           {isEditing === '1' ? (
             <div className='editing'>
@@ -113,7 +118,7 @@ class SuppDataTypes extends Component {
                 <Checkbox
                   label='Workwear'
                   onChange={this.handleCheckbox}
-                  checked={this.state.workwear ? true : false}
+                  checked={state.workwear ? true : false}
                   name='workwear'
                 />
               </Form.Field>
@@ -121,7 +126,7 @@ class SuppDataTypes extends Component {
                 <Checkbox
                   label='Activewear'
                   onChange={this.handleCheckbox}
-                  checked={this.state.activewear ? true : false}
+                  checked={state.activewear ? true : false}
                   name='activewear'
                 />
               </Form.Field>
@@ -129,7 +134,7 @@ class SuppDataTypes extends Component {
                 <Checkbox
                   label='Casualwear'
                   onChange={this.handleCheckbox}
-                  checked={this.state.casualwear ? true : false}
+                  checked={state.casualwear ? true : false}
                   name='casualwear'
                 />
               </Form.Field>
@@ -137,7 +142,7 @@ class SuppDataTypes extends Component {
                 <Checkbox
                   label='Eveningwear'
                   onChange={this.handleCheckbox}
-                  checked={this.state.eveningwear ? true : false}
+                  checked={state.eveningwear ? true : false}
                   name='eveningwear'
                 />
               </Form.Field>
@@ -145,7 +150,7 @@ class SuppDataTypes extends Component {
                 <Checkbox
                   label='Smart Casual'
                   onChange={this.handleCheckbox}
-                  checked={this.state.smartcasual ? true : false}
+                  checked={state.smartcasual ? true : false}
                   name='smartcasual'
                 />
               </Form.Field>

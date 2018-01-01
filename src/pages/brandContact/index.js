@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, Input } from 'semantic-ui-react'
+import { Form, Input, Progress } from 'semantic-ui-react'
 import { fetchContact, createContact, updateContact } from '../../actions'
 import { OverviewHeading } from '../../components'
 import _ from 'lodash'
@@ -15,6 +15,7 @@ class BrandContact extends Component {
     this.state = {
       isEditing: null,
       emailValid: false,
+      progressBar: 0,
     }
 
 
@@ -39,6 +40,7 @@ class BrandContact extends Component {
           originalEmail: nextProps.qa.contact.email,
           originalRelationship_manager: nextProps.qa.contact.relationship_manager,
         })
+        return this.state.progressBar++
       }
     }
   }
@@ -78,6 +80,7 @@ class BrandContact extends Component {
         this.props.createContact({brand: id, name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
       }
       this.setState({isEditing: null, renderError: false})
+      return this.state.progressBar++
     } else {
       this.setState({renderError: true})
     }
@@ -98,15 +101,18 @@ class BrandContact extends Component {
     const props = this.props.qa
     return(
       <div className='form-container'>
-        <OverviewHeading />
+        <OverviewHeading id={id}/>
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><Link to={`/brandGeneral/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Brand Contact</h3></div>
-            <div><Link to={`/brandCauses/${id}`}><button className='next'>Next</button></Link></div>
+            <div><Link to={`/resource/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
+        <p className='small-divider'></p>
+        <h5> Current:</h5>
+        <Progress total={1} value={state.progressBar} progress />
         <Form>
           {isEditing === '1' ? (
             <div className='editing'>

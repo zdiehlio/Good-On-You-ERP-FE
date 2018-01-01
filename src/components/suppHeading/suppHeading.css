@@ -1,20 +1,3 @@
-.forms-header {
-  width:100%;
-  color: grey;
-}
-
-.forms-header button {
-  margin-top: 2em;
-}
-
-.forms-header div {
-  margin-top: 1em;
-  float: left;
-  width: calc(100%/7);
-  font-weight: bold;
-  text-align: center;
-}
-
 .suppData-header {
-  color: #17CABE;
+  color: #17CABE !important;
 }

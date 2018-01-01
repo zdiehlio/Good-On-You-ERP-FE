@@ -1,22 +1,21 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { fetchBrandInfo } from '../../actions'
+import { Link } from 'react-router-dom'
 
 import './suppHeading.css'
 
 class SuppHeading extends Component {
 
   render() {
-    console.log('brand', this.props.brand)
+    const  id   = this.props.id
     return(
       <div className='forms-header'>
-        <div className='overview-header'>Brand Overview</div>
+        <Link to={`/brandGeneral/${id}`}><div>Brand Overview</div></Link>
         <div>>></div>
-        <div className='rating-header'>Rating</div>
+        <Link to={`/resource/${id}`}><div>Rating</div></Link>
         <div>>></div>
-        <div className='qualitative-header'>Qualitative Ratings</div>
+        <Link to={`/brandCauses/${id}`}><div>Qualitative Ratings</div></Link>
         <div>>></div>
-        <div className='suppData-header'>Supplementary Data</div>
+        <Link to={`/suppDataSocialMedia/${id}`}><div className='suppData-header'>Supplementary Data</div></Link>
         <p className='divider'></p>
       </div>
     )

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, Checkbox} from 'semantic-ui-react'
+import { Form, Checkbox, Progress } from 'semantic-ui-react'
 import { fetchStyles, createStyles } from '../../actions'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -94,7 +94,7 @@ class SuppDataGender extends Component {
     const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
-        <SuppHeading />
+        <SuppHeading id={id}/>
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -103,6 +103,9 @@ class SuppDataGender extends Component {
             <div><Link to={`/suppDataAlias/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
+        <p className='small-divider'></p>
+        <h5> Current:</h5>
+        <Progress total={4} value={state.progressBar} progress />
         <form className='brand-form'>
           {isEditing === 'gender' ? (
             <div className='editing'>
