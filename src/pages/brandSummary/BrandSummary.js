@@ -18,6 +18,7 @@ class BrandSummary extends Component {
       renderSummary: null,
       save: false,
       textlength: 0,
+      progressBar: 0,
     }
 
 
@@ -35,6 +36,9 @@ class BrandSummary extends Component {
     if(nextProps.qa !== this.props.qa) {
       _.map(nextProps.qa, summary=> {
         this.setState({renderSummary: summary.text, currentAnswer: summary.text})
+        if(summary.text) {
+          this.state.progressBar++
+        }
       })
     }
   }
@@ -96,7 +100,7 @@ class BrandSummary extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={4} value={state.progressBar} progress />
+        <Progress total={1} value={state.progressBar} progress />
         <Form>
           {isEditing === '1' ? (
             <div className='editing'>

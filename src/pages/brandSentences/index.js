@@ -22,6 +22,7 @@ class BrandSentences extends Component {
       save: false,
       input: '',
       textlength: 0,
+      progressBar: 0,
     }
 
 
@@ -42,6 +43,7 @@ class BrandSentences extends Component {
         _.map(nextProps.qa, ident => {
           if(ident.is_selected === true) {
             this.setState({originalSource: ident.source, originalSelect: ident.slug, originalId: ident.id, originalAnswer: ident.text, currentSelect: ident.slug, currentId: ident.id, finalAnswer: ident.text, finalSource: ident.source})
+            this.state.progressBar++
           }
           this.setState({[ident.slug]: ident.slug})
         })
@@ -80,6 +82,7 @@ class BrandSentences extends Component {
       this.props.updateSentence(id, this.state.currentId, {text: this.state.finalAnswer, is_selected: true})
     } else {
       this.props.createSentence({brand: id, text: this.state.finalAnswer, is_selected: true})
+      this.state.progressBar++
     }
     this.setState({isEditing: null, save: true})
   }
@@ -143,7 +146,7 @@ class BrandSentences extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={4} value={state.progressBar} progress />
+        <Progress total={1} value={state.progressBar} progress />
         <Form>
           {isEditing === '1' ? (
             <div className='editing'>
