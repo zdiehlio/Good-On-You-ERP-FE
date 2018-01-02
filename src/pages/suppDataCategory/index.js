@@ -26,6 +26,7 @@ class SuppDataCategory extends Component {
       dominantOptions: [],
       dominant_id: [],
       dominant: null,
+      progressBar: 0,
     }
 
 
@@ -51,6 +52,10 @@ class SuppDataCategory extends Component {
     if(nextProps.qa !== this.props.qa) {
       _.map(nextProps.qa, check => {
         this.setState({[check.category.name]: 'chip-selected'})
+        if(check.dominant === true) {
+          this.state.progressBar++
+          console.log('dominant')
+        }
       })
       _.map(nextProps.qa, check => {
         if(check.dominant === true) {
@@ -62,6 +67,9 @@ class SuppDataCategory extends Component {
         dominantOptions: _.map(nextProps.qa, dom => {return {name: dom.category.name, id: dom.category_id}}),
         dominant_id: _.map(nextProps.qa, check => {return check.category_id}),
       })
+      if(Object.keys(nextProps.qa).length > 0) {
+        this.state.progressBar++
+      }
     }
   }
 
@@ -115,8 +123,12 @@ class SuppDataCategory extends Component {
     const { id }  = this.props.match.params
     if(event.target.name === '1') {
       this.props.createBrandCategory(id, this.state.currentAnswer)
+      if(Object.keys(this.props.qa).length === 0) {
+        this.state.progressBar++
+      }
     } else if(event.target.name === '2') {
       this.props.updateBrandCategory(id, this.state.current_dominant_id, this.state.dominant)
+      this.state.progressBar++
     }
     this.setState({isEditing: null, save: true})
   }
@@ -174,7 +186,7 @@ class SuppDataCategory extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={4} value={state.progressBar} progress />
+        <Progress total={2} value={state.progressBar} progress />
         <form className='brand-form'>
           {isEditing === '1' ? (
             <div className='editing'>

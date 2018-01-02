@@ -15,6 +15,7 @@ class SuppDataImage extends Component {
 
     this.state = {
       isEditing: null,
+      progressBar: 0,
     }
 
 
@@ -36,6 +37,7 @@ class SuppDataImage extends Component {
       _.map(nextProps.pre_qa, logo => {
         if(logo.is_selected === true) {
           this.setState({logo_selected: logo.id, logo_url: logo.url, originalLogo_selected: logo.id, originalLogo_url: logo.url})
+          this.state.progressBar++
         }
       })
     }
@@ -43,6 +45,7 @@ class SuppDataImage extends Component {
       _.map(nextProps.qa, image => {
         if(image.is_selected === true) {
           this.setState({image_selected: image.id, image_url: image.url, originalImage_selected: image.id, originalImage_url: image.url})
+          this.state.progressBar++
         }
       })
     }
@@ -70,8 +73,10 @@ class SuppDataImage extends Component {
     const { id }  = this.props.match.params
     if(event.target.name === 'logo') {
       this.props.updateLogo(this.state.logo_selected, {is_selected: true})
+      this.state.progressBar++
     } else if(event.target.name === 'image') {
       this.props.updateImage(this.state.image_selected, {is_selected: true})
+      this.state.progressBar++
     }
     this.setState({isEditing: null})
   }
@@ -146,7 +151,7 @@ class SuppDataImage extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={4} value={state.progressBar} progress />
+        <Progress total={2} value={state.progressBar} progress />
         <Form>
           {isEditing === 'image' ? (
             <div className='editing'>

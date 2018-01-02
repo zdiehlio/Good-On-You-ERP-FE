@@ -63,6 +63,7 @@ class BrandSummary extends Component {
     } else {
       this.props.createSummary({brand: id, text: this.state.currentAnswer})
       this.setState({renderSummary: this.state.currentAnswer, isEditing: null})
+      this.state.progressBar++
     }
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.

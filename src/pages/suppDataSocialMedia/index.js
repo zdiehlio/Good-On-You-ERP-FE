@@ -14,6 +14,7 @@ class SuppDataSocialMedia extends Component {
       isEditing: null,
       instagram_url: '',
       facebook_url: '',
+      progressBar: 0,
     }
 
 
@@ -36,6 +37,12 @@ class SuppDataSocialMedia extends Component {
         originalFacebook_url: nextProps.qa.facebook_url ? nextProps.qa.facebook_url.slice(25) : '',
         originalInstagram_url: nextProps.qa.instagram_url ? nextProps.qa.instagram_url.slice(26) : '',
       })
+      if(nextProps.qa.facebook_url) {
+        this.state.progressBar++
+      }
+      if(nextProps.qa.instagram_url) {
+        this.state.progressBar++
+      }
     }
   }
 
@@ -56,6 +63,7 @@ class SuppDataSocialMedia extends Component {
     const { id }  = this.props.match.params
     this.props.updateSocial(id, {facebook_url: `https://www.facebook.com/${this.state.facebook_url}`, instagram_url:`https://www.instagram.com/${this.state.instagram_url}`})
     this.setState({isEditing: null})
+    this.state.progressBar++
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
@@ -83,7 +91,7 @@ class SuppDataSocialMedia extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={4} value={state.progressBar} progress />
+        <Progress total={2} value={state.progressBar} progress />
         <Form>
           {isEditing === 'social' ? (
             <div className='editing'>
