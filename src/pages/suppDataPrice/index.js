@@ -14,6 +14,7 @@ class SuppDataPrice extends Component {
     this.state = {
       isEditing: null,
       price: null,
+      progressBar: 0,
     }
 
 
@@ -33,6 +34,7 @@ class SuppDataPrice extends Component {
         console.log(compare.style_qa.question)
         if(compare.style_qa.question === 'price') {
           this.setState({price: compare.score, originalPrice: compare.score})
+          this.state.progressBar++
         }
       })
     }
@@ -56,6 +58,9 @@ class SuppDataPrice extends Component {
     const { id }  = this.props.match.params
     this.props.createStyles({brand: id, style: 'price', score: this.state.price})
     this.setState({isEditing: null, originalPrice: this.state.price})
+    if(this.state.price) {
+      this.state.progressBar++
+    }
   }
 
   renderPrice() {
@@ -94,7 +99,7 @@ class SuppDataPrice extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={4} value={state.progressBar} progress />
+        <Progress total={1} value={state.progressBar} progress />
         <form className='brand-form'>
           {isEditing === 'price' ? (
             <div className='editing'>

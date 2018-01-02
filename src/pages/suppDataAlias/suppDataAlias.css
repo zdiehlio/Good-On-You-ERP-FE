@@ -11,3 +11,8 @@
   width: calc(90%/2);
   display: inline-block;
 }
+
+.alias-list {
+  margin-top: 1em;
+  padding: 0.5em;
+}

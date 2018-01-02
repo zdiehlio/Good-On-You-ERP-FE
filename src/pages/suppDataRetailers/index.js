@@ -19,6 +19,7 @@ class SuppDataRetailers extends Component {
       originalTerritories: [],
       territoryOptions: [],
       save: false,
+      progressBar: 0,
     }
 
     const { id } = this.props.match.params
@@ -60,6 +61,12 @@ class SuppDataRetailers extends Component {
           originalWebsite: check.website,
           originalOnline_only: check.online_only,
         })
+        if(check.name || check.website) {
+          this.state.progressBar++
+        }
+        if(check.online_only) {
+          this.state.progressBar++
+        }
       })
     }
   }
@@ -100,15 +107,13 @@ class SuppDataRetailers extends Component {
         new Promise((resolve, reject) => {
           resolve(this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website, territories: this.state.territories}))
         }).then(this.props.fetchRetailers(id))
+        this.state.progressBar++
         this.setState({save: true, isEditing: null, errorwebsite: false, errorname: false})
-        console.log('create retailer')
       } else {
         this.props.updateRetailer(this.state.id, {name: this.state.name, website: this.state.website, territories: this.state.territories})
         this.setState({isEditing: null, errorwebsite: false, errorname: false})
-        console.log('update retailer')
       }
     } else {
-      console.log('catch')
       this.setState({errorwebsite: this.state.website &&  this.state.errorwebsite === false ? false : true, errorname: this.state.name ? false : true})
     }
   }
@@ -117,7 +122,7 @@ class SuppDataRetailers extends Component {
     const { id }  = this.props.match.params
     this.props.updateRetailer(this.state.id, {online_only: this.state.online_only})
     this.setState({isEditing: null})
-    console.log('update online')
+    this.state.progressBar++
   }
 
   handleError(value, name) {
@@ -191,7 +196,7 @@ class SuppDataRetailers extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={4} value={state.progressBar} progress />
+        <Progress total={2} value={state.progressBar} progress />
         <form className='brand-form'>
           {isEditing === 'retailer' ? (
             <div className='editing'>

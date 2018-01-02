@@ -17,6 +17,7 @@ class SuppDataTypes extends Component {
       deleteValues: [],
       typeOptions: ['activewear', 'casualwear', 'eveningwear', 'smartcasual', 'workwear'],
       save: false,
+      progressBar: 0,
     }
 
     this.handleEdit = this.handleEdit.bind(this)
@@ -35,6 +36,9 @@ class SuppDataTypes extends Component {
       _.mapValues(nextProps.qa, type => {
         this.setState({[type.product]: type.product})
       })
+      if(Object.keys(nextProps.qa).length > 0) {
+        this.state.progressBar++
+      }
       // this.setState({typeValues: _.map(nextProps.qa, type => {return {brand: id, product: type.product} })})
     }
   }
@@ -59,6 +63,7 @@ class SuppDataTypes extends Component {
     })
     this.props.createType(this.state.typeValues)
     this.setState({isEditing: null})
+    this.state.progressBar++
   }
 
   handleCheckbox(event, { name }) {
@@ -109,7 +114,7 @@ class SuppDataTypes extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={4} value={state.progressBar} progress />
+        <Progress total={1} value={state.progressBar} progress />
         <form className='brand-form'>
           {isEditing === '1' ? (
             <div className='editing'>

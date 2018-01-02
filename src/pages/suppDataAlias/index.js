@@ -19,6 +19,7 @@ class SuppDataAlias extends Component {
       renderAlias: null,
       save: false,
       aliasArr: [],
+      progressBar: 0,
     }
 
 
@@ -37,6 +38,9 @@ class SuppDataAlias extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.qa !== this.props.qa) {
       this.setState({aliasArr: _.map(nextProps.qa, ali => {return {id: ali.id, alias: ali.alias}})})
+      if(Object.keys(nextProps.qa).length > 0) {
+        this.state.progressBar++
+      }
     }
   }
 
@@ -72,6 +76,9 @@ class SuppDataAlias extends Component {
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     this.setState({isEditing: null, renderCurrent: this.state.currentAnswer})
+    if(this.state.currentAnswer) {
+      this.state.progressBar++
+    }
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event, { value }) {
@@ -125,7 +132,7 @@ class SuppDataAlias extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={4} value={state.progressBar} progress />
+        <Progress total={1} value={state.progressBar} progress />
         <form className='brand-form'>
           {isEditing === '1' ? (
             <div className='editing'>
@@ -140,7 +147,7 @@ class SuppDataAlias extends Component {
                 <button className='add' onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button>
               </Form.Field>
               <h5>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h5>
-              {state.save === true ? this.renderAlias() : this.renderAlias()}
+              <div className='alias-list'>{state.save === true ? this.renderAlias() : this.renderAlias()}</div>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1' value='1'>Done</button></div>

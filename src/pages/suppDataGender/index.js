@@ -15,6 +15,7 @@ class SuppDataGender extends Component {
     this.state = {
       isEditing: null,
       genders: [],
+      progressBar: 0,
     }
 
 
@@ -36,6 +37,7 @@ class SuppDataGender extends Component {
         if(compare.style_qa.question === 'gender') {
           this.state.genders.push({brand: id, style: compare.style_qa.tag})
           this.setState({[compare.style_qa.tag]: compare.style_qa.tag})
+          this.state.progressBar++
         }
       })
       // this.setState({genders: _.map(nextProps.qa, check => {
@@ -74,6 +76,9 @@ class SuppDataGender extends Component {
     const { id }  = this.props.match.params
     this.props.createStyles(this.state.genders)
     this.setState({isEditing: null})
+    if(this.state.genders) {
+      this.state.progressBar++
+    }
   }
 
   handleChange(event, { name }){
@@ -105,7 +110,7 @@ class SuppDataGender extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={4} value={state.progressBar} progress />
+        <Progress total={1} value={state.progressBar} progress />
         <form className='brand-form'>
           {isEditing === 'gender' ? (
             <div className='editing'>
