@@ -55,12 +55,6 @@ class BrandGeneral extends Component {
           this.setState({[`original${crit.criteria}`]: crit.criteria, [crit.criteria]: crit.criteria})
         }
       })
-      _.map(nextProps.qa, check => {
-        if(check!==null) {
-          console.log(check)
-          return this.state.progressBar++
-        }
-      })
       this.setState({
         name: nextProps.qa.name,
         originalname: nextProps.qa.name,
@@ -72,6 +66,18 @@ class BrandGeneral extends Component {
         parent_company: nextProps.qa.parent_company,
         originalparent_company: nextProps.qa.parent_company,
       })
+      if(nextProps.qa.name) {
+        this.state.progressBar++
+      }
+      if(nextProps.qa.review_date) {
+        this.state.progressBar++
+      }
+      if(nextProps.qa.sustainability_report_date) {
+        this.state.progressBar++
+      }
+      if(nextProps.qa.size) {
+        this.state.progressBar++
+      }
     }
   }
 
@@ -111,10 +117,12 @@ class BrandGeneral extends Component {
       this.props.createBrandSize(id, this.state.sizeValues)
       this.props.updateGeneral(id, {parent_company: this.state.parent_company})
       this.setState({isEditing: null})
+      return this.state.progressBar++
     } else {
       if(this.state.dateValid === true) {
         this.props.updateGeneral(id, {sustainability_report_date: this.state.sustainability_report_date, review_date: this.state.review_date})
         this.setState({renderError: false, isEditing: null})
+        return this.state.progressBar++
       } else {
         this.setState({renderError: true})
       }
@@ -192,7 +200,7 @@ class BrandGeneral extends Component {
               <Form.Field inline>
                 <Input
                   label='Brand name'
-                  value={state.name}
+                  value={state.name ? state.name : ''}
                   onChange={this.handleInput}
                   name='name'
                 />
@@ -231,7 +239,7 @@ class BrandGeneral extends Component {
                 <Input
                   label='Sustainability Report Date'
                   placeholder='DD/MM/YYYY'
-                  value={state.sustainability_report_date}
+                  value={state.sustainability_report_date ? state.sustainability_report_date : ''}
                   onFocus={this.handleInput}
                   onChange={this.handleInput}
                   name='sustainability_report_date'
@@ -259,7 +267,7 @@ class BrandGeneral extends Component {
                 <Input
                   label='Brand Review Date'
                   placeholder='DD/MM/YYYY'
-                  value={state.review_date}
+                  value={state.review_date ? state.review_date : ''}
                   onFocus={this.handleInput}
                   onChange={this.handleInput}
                   name='review_date'
@@ -358,7 +366,7 @@ class BrandGeneral extends Component {
                   onFocus={this.handleInput}
                   onChange={this.handleInput}
                   name='parent_company'
-                  value={state.parent_company}
+                  value={state.parent_company ? state.parent_company : ''}
                 />
               </Form.Field>
               <div className='button-container'>
