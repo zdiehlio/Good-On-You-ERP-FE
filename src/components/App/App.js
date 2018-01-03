@@ -28,7 +28,8 @@ import {
   SuppDataAlias,
   SuppDataSocialMedia,
   SuppDataImage,
-  Rating
+  Rating,
+  SearchBrand,
 } from '../../pages'
 import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
@@ -116,6 +117,7 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={props => <Landing {...props} handleViewSummaryClick={this.onViewSummaryClicked}/>}/>
               <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
+              <Route path='/searchBrand' component={SearchBrand} />
               <Route path='/brandLanding/:id' component={BrandLanding} />
               <Route path='/brandSummary/:id' component={BrandSummary}/>
               <Route path='/createBrand' component={CreateBrands} />

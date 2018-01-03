@@ -10,7 +10,7 @@ import moment from 'moment'
 
 import './brandGeneral.css'
 
-const moments = date => moment(new Date(date)).format('DD/MM/YYYY')
+const moments = date => moment(new Date(date)).format('MM/YYYY')
 
 class BrandGeneral extends Component {
   constructor(props){
@@ -61,8 +61,8 @@ class BrandGeneral extends Component {
         website: nextProps.qa.website,
         sustainability_report_date: nextProps.qa.sustainability_report_date ? moments(nextProps.qa.sustainability_report_date) : '',
         originalsustainability_report_date: nextProps.qa.review_date ? moments(nextProps.qa.sustainability_report_date) : '',
-        review_date: nextProps.qa.review_date,
-        originalreview_date: nextProps.qa.review_date,
+        review_date: nextProps.qa.review_date ? moments(nextProps.qa.review_date) : '',
+        originalreview_date: nextProps.qa.review_date ? moments(nextProps.qa.review_date) : '',
         parent_company: nextProps.qa.parent_company,
         originalparent_company: nextProps.qa.parent_company,
       })
@@ -82,7 +82,7 @@ class BrandGeneral extends Component {
   }
 
   validateDate(val) {
-    let date = moment(`${val.target.value}`, 'DD/MM/YYYY', true)
+    let date = moment(`${val.target.value}`, 'MM/YYYY', true)
     if (date.isValid()) {
       this.setState({dateValid: true})
     } else {
@@ -228,7 +228,7 @@ class BrandGeneral extends Component {
             </div>
           )}
           <div className='not-editing'>
-            <h5>What is the rating date and verification date</h5>
+            <h5>Rating date and verification date</h5>
             <div>{props.rating_date ? moments(props.rating_date) : ''}</div>
             <div>{props.verification_date ? moments(props.verification_date) : ''}</div>
           </div>
@@ -238,14 +238,14 @@ class BrandGeneral extends Component {
               <Form.Field inline>
                 <Input
                   label='Sustainability Report Date'
-                  placeholder='DD/MM/YYYY'
+                  placeholder='MM/YYYY'
                   value={state.sustainability_report_date ? state.sustainability_report_date : ''}
                   onFocus={this.handleInput}
                   onChange={this.handleInput}
                   name='sustainability_report_date'
                 />
               </Form.Field>
-              <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in DD/MM/YYYY format' : ''}</div>
+              <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in MM/YYYY format' : ''}</div>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='sustainability_report_date'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='3' value='3'>Save</button></div>
@@ -266,14 +266,14 @@ class BrandGeneral extends Component {
               <Form.Field inline>
                 <Input
                   label='Brand Review Date'
-                  placeholder='DD/MM/YYYY'
+                  placeholder='MM/YYYY'
                   value={state.review_date ? state.review_date : ''}
                   onFocus={this.handleInput}
                   onChange={this.handleInput}
                   name='review_date'
                 />
               </Form.Field>
-              <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in DD/MM/YYYY format' : ''}</div>
+              <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in MM/YYYY format' : ''}</div>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='review_date'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='4' value='4'>Save</button></div>
@@ -281,7 +281,7 @@ class BrandGeneral extends Component {
             </div>) : (
             <div className='not-editing'>
               <h5>Which month does Good On You need to review the Brand?</h5>
-              <p>{state.review_date? moments(state.review_date) : ''}</p>
+              <p>{state.review_date? state.review_date : ''}</p>
               <div className='button-container'>
                 <div></div>
                 <div><button name='4' onClick={this.handleEdit} value='4'>Edit</button></div>

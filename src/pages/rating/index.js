@@ -34,7 +34,6 @@ class Rating extends Component {
       isEditing: null,
       ratingValues: [{}],
       errorsWebsite: [],
-      errorsComment: [],
       errors: [],
     }
 
@@ -111,7 +110,7 @@ class Rating extends Component {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state.errorsWebsite.length <= 0 && this.state.errorsComment.length <= 0) {
+    if(this.state.errorsWebsite.length <= 0) {
       this.props.createRating({question: event.target.name, brand: id, answers: this.state.ratingValues})
       _.map(this.state.ratingValues, val => {
         this.setState({
@@ -127,9 +126,6 @@ class Rating extends Component {
         originalRatingValues: this.state.ratingValues,
       })
     } else {
-      _.map(this.state.errorsComment, check => {
-        this.setState({[`errorComment${check}`]: true})
-      })
       _.map(this.state.errorsWebsite, check => {
         this.setState({[`errorWebsite${check}`]: true})
       })
@@ -143,7 +139,6 @@ class Rating extends Component {
         this.setState({[`comment${val.id}`]: event.target.value})
       }
     })
-    this.handleValidComment(event)
   }
 
   handleUrl(event) {
@@ -240,32 +235,26 @@ class Rating extends Component {
       } else {
         this.setState({errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e)})})
       }
-      if(!this.state[`comment${e}`]) {
-        this.setState({errorsComment: [...this.state.errorsComment, parseInt(e)]})
-      } else {
-        this.setState({errorsComment: this.state.errorsComment.filter(rate => {return rate !== parseInt(e)})})
-      }
     } else if(this.state[`answer${e}`] === false){
       this.setState({
         errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e)}),
-        errorsComment: this.state.errorsComment.filter(rate => {return rate !== parseInt(e)}),
       })
     }
   }
 
-  handleValidComment(e) {
-    if(e.target.value === '') {
-      this.setState({
-        [`errorComment${e.target.name}`]: true,
-        errorsComment: [...this.state.errorsComment, parseInt(e.target.name)],
-      })
-    } else {
-      this.setState({
-        [`errorComment${e.target.name}`]: false,
-        errorsComment: this.state.errorsComment.filter(rate => {return rate !== parseInt(e.target.name)}),
-      })
-    }
-  }
+  // handleValidComment(e) {
+  //   if(e.target.value === '') {
+  //     this.setState({
+  //       [`errorComment${e.target.name}`]: true,
+  //       errorsComment: [...this.state.errorsComment, parseInt(e.target.name)],
+  //     })
+  //   } else {
+  //     this.setState({
+  //       [`errorComment${e.target.name}`]: false,
+  //       errorsComment: this.state.errorsComment.filter(rate => {return rate !== parseInt(e.target.name)}),
+  //     })
+  //   }
+  // }
 
   handleValidUrl(e) {
     if(e.target.value === '') {
@@ -339,7 +328,6 @@ class Rating extends Component {
                               value={this.state[`comment${ans.id}`]}
                             />
                           </Form.Field>
-                          <div className='error-message'>{this.state[`errorComment${ans.id}`] === true ? 'Please enter a comment as evidence' : ''}</div>
                         </div>) : ('')}
                     </div>
                   )}
@@ -349,7 +337,7 @@ class Rating extends Component {
                 <div><button onClick={this.handleSave} name={type.id}>Save</button></div>
               </div>
               {_.map(type.answers, ans => {
-                return (<div key={ans.id} className='error-message'>{this.state[`errorComment${ans.id}`] === true || this.state[`errorWebsite${ans.id}`] === true ? 'Please fill out all required fields' : ''}</div>)
+                return (<div key={ans.id} className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please fill out all required fields' : ''}</div>)
               })}
             </div>) } else {
           return(

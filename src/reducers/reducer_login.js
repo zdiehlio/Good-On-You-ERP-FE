@@ -12,11 +12,11 @@ export default function(state = {accessToken: sessionStorage.accessToken}, actio
     sessionStorage.clear()
     if (!action.error) {
 
-      console.log('login', action.payload.data);
+      console.log('login', action.payload.data)
 
-      sessionStorage.setItem("email", action.payload.data.user.email)
-      sessionStorage.setItem("userId", action.payload.data.user._id)
-      sessionStorage.setItem("jwt", action.payload.data.accessToken)
+      sessionStorage.setItem('email', action.payload.data.user.email)
+      sessionStorage.setItem('userId', action.payload.data.user._id)
+      sessionStorage.setItem('jwt', action.payload.data.accessToken)
 
 
       return {...action.payload.data}
@@ -24,14 +24,14 @@ export default function(state = {accessToken: sessionStorage.accessToken}, actio
     return {error: action.error}
   case LOG_OUT:
     sessionStorage.clear()
-    return null;
+    return null
   case FETCH_USER_INFO:
     if (!action.error) {
-      console.log('fetch user', action.payload);
+      console.log('fetch user', action.payload)
       return {user: action.payload.data.data[0]}
     }
     return {error: action.error}
   default:
-    return state;
+    return state
   }
 }

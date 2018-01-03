@@ -96,6 +96,8 @@ class SuppDataRetailers extends Component {
       website: this.state.originalWebsite,
       online_only: this.state.originalOnline_only,
       territories: this.state.originalTerritories,
+      errorname: false,
+      errorwebsite: false,
     })
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.

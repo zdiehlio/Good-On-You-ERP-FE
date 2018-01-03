@@ -74,7 +74,7 @@ class BrandLanding extends Component {
               </span>
               <p className='small-divider'></p>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'environment' ? (
             <span className='show-summary'>
               <span className='summary-view'>
@@ -83,7 +83,7 @@ class BrandLanding extends Component {
               </span>
               <p className='small-divider'></p>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'environment' ? (
             <span className='show-summary'>
               <span className='summary-view'>
@@ -92,7 +92,7 @@ class BrandLanding extends Component {
               </span>
               <p className='small-divider'></p>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'environment' ? (
             <span className='show-summary'>
               <span className='summary-view'>
@@ -100,7 +100,7 @@ class BrandLanding extends Component {
                 <div><Link to={`/water/${id}`}><button>Start</button></Link></div>
               </span>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
 
         </div>
         <p className='small-divider'></p>
@@ -119,7 +119,7 @@ class BrandLanding extends Component {
               </span>
               <p className='small-divider'></p>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'labour' ? (
             <span className='show-summary'>
               <span className='summary-view'>
@@ -128,7 +128,7 @@ class BrandLanding extends Component {
               </span>
               <p className='small-divider'></p>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'labour' ? (
             <span className='show-summary'>
               <span className='summary-view'>
@@ -137,7 +137,7 @@ class BrandLanding extends Component {
               </span>
               <p className='small-divider'></p>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'labour' ? (
             <span className='show-summary'>
               <span className='summary-view'>
@@ -146,7 +146,7 @@ class BrandLanding extends Component {
               </span>
               <p className='small-divider'></p>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'labour' ? (
             <span className='show-summary'>
               <span className='summary-view'>
@@ -154,7 +154,7 @@ class BrandLanding extends Component {
                 <div><Link to={`/rights/${id}`}><button>Start</button></Link></div>
               </span>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
         </div>
         <p className='small-divider'></p>
 
@@ -173,7 +173,7 @@ class BrandLanding extends Component {
               </span>
               <p className='small-divider'></p>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'animal' ? (
             <span className='show-summary'>
               <span className='summary-view'>
@@ -182,7 +182,7 @@ class BrandLanding extends Component {
               </span>
               <p className='small-divider'></p>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'animal' ? (
             <span className='show-summary'>
               <span className='summary-view'>
@@ -191,7 +191,7 @@ class BrandLanding extends Component {
               </span>
               <p className='small-divider'></p>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'animal' ? (
             <span className='show-summary'>
               <span className='summary-view'>
@@ -200,7 +200,7 @@ class BrandLanding extends Component {
               </span>
               <p className='small-divider'></p>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'animal' ? (
             <span className='show-summary'>
               <span className='summary-view'>
@@ -209,16 +209,16 @@ class BrandLanding extends Component {
               </span>
               <p className='small-divider'></p>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'animal' ? (
             <span className='show-summary'>
               <span className='summary-view'>
                 <div>Hairs</div>
                 <div><Link to={`/hairs/${id}`}><button>Start</button></Link></div>
               </span>
-              <p className='small-divider'></p>
+              <p className='small-divider'></p>span
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
           {this.state.show === 'animal' ? (
             <span className='show-summary'>
               <span className='summary-view'>
@@ -226,7 +226,7 @@ class BrandLanding extends Component {
                 <div><Link to={`/skins/${id}`}><button>Start</button></Link></div>
               </span>
             </span> ) :
-            (<div className='hide-summary'></div>)}
+            (<span className='hide-summary'></span>)}
         </div>
         <p className='small-divider'></p>
 

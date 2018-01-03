@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import './Login.css';
-import TextField from 'material-ui/TextField';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import $ from "jquery";
-import request from "request"
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import TextField from 'material-ui/TextField'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import $ from 'jquery'
+import request from 'request'
 import { Field, reduxForm } from 'redux-form'
-import { connect } from 'react-redux';
-import { login } from '../../actions';
+import { connect } from 'react-redux'
+import { login } from '../../actions'
 
+import './Login.css'
 
 class Login extends Component {
 
@@ -29,13 +30,21 @@ class Login extends Component {
   //   console.log(this.props.data);
   // }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.data !== this.props.data) {
+      if(nextProps.data.accessToken) {
+        this.props.history.push('/searchBrand')
+      }
+    }
+  }
 
   onSubmit(values) {
-    this.props.login(values);
+    this.props.login(values)
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    console.log('props', this.props.data)
+    const { handleSubmit } = this.props
 
     return (
       <div className="page-container">
@@ -54,11 +63,11 @@ class Login extends Component {
               type="password"
               component={this.renderField}
             ></Field>
-            <button className="button" style={{width: "100%", marginTop: "20px"}}>Go</button>
+            <button className="button" style={{width: '100%', marginTop: '20px'}}>Go</button>
           </form>
         </div>
       </div>
-    );
+    )
   }
 }
 
@@ -67,7 +76,7 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-  form: "LoginForm"
+  form: 'LoginForm',
 })(
   connect(mapStateToProps, { login })(Login)
 )
