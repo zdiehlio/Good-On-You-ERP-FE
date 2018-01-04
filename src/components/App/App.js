@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-} from 'react-router-dom';
+} from 'react-router-dom'
 
 import { ROOT_URL } from '../../actions'
 
@@ -35,9 +35,9 @@ import BrandGeneral from '../../pages/brandGeneral'
 import BrandContact from '../../pages/brandContact'
 import BrandCauses from '../../pages/brandCauses'
 import axios from 'axios'
-import request from "request"
+import request from 'request'
 
-import './App.css';
+import './App.css'
 
 // <Route path=`/viewBrand/${this.state.currentBrand}` component={Summary} currentBrand={this.state.currentBrand} />
 
@@ -46,14 +46,14 @@ import './App.css';
 class App extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       currentBrand: {
-        'name': 'Nike',
-        'url': 'www.nike.com/us/en_us/'
-      }
-    };
+        'name': '',
+        'url': '',
+      },
+    }
 
     // this.getData = this.getData.bind(this)
   }
@@ -62,62 +62,63 @@ class App extends Component {
 
     var headers = {
       'Content-Type': 'application/json',
-    };
+    }
 
-    var dataString = '{ "strategy": "local", "email": "me@goodonyou.eco", "password": "myPassword" }';
+    var dataString = '{ "strategy": "local", "email": "me@goodonyou.eco", "password": "myPassword" }'
 
     var options = {
       url: `${ROOT_URL}`,
       method: 'POST',
       path: '/authentication/',
       headers: headers,
-      body: dataString
-    };
+      body: dataString,
+    }
 
     function callback(error, response, body) {
       if (!error) {
         if (JSON.parse(body).accessToken) {
-          console.log(JSON.parse(body).accessToken);
+          console.log('access', JSON.parse(body).accessToken)
         }
       }
     }
 
-    request(options, callback);
+    request(options, callback)
   }
 
-  onViewSummaryClicked = (id, name) => {
-    this.setState({
-      currentBrand: {
-        'name': name,
-        'id': id
-      }
-    })
-
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`${ROOT_URL}/brands/?id=${id}`)
-      .then(res => {
-        console.log('res', res);
-        this.setState({
-          currentBrand: {
-            'name': name,
-            'id': id,
-            summaryHeaderData: res.data.data[0]
-          }
-        })
-        console.log('login state', this.state);
-      })
-  }
+  // onViewSummaryClicked(id, name){
+  //   this.setState({
+  //     currentBrand: {
+  //       'name': name,
+  //       'id': id,
+  //     },
+  //   })
+  //
+  //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
+  //   axios.get(`${ROOT_URL}/brands/?id=${id}`)
+  //     .then(res => {
+  //       console.log('res', res)
+  //       this.setState({
+  //         currentBrand: {
+  //           'name': name,
+  //           'id': id,
+  //           summaryHeaderData: res.data.data[0],
+  //         },
+  //       })
+  //       console.log('login state', this.state)
+  //     })
+  // }
 
   render() {
+    console.log('app', sessionStorage)
     return (
       <Router>
         <div>
           <Header/>
           <div className="container-body">
             <Switch>
-              <Route exact path='/' component={props => <Landing {...props} handleViewSummaryClick={this.onViewSummaryClicked}/>}/>
-              <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
-              <Route path='/searchBrand' component={SearchBrand} />
+              <Route exact path='/' component={Login}/>
+              <Route path='/login' component={Login}/>
+              <Route path='/searchBrand' component={sessionStorage.jwt ? SearchBrand : Login} />
               <Route path='/brandLanding/:id' component={BrandLanding} />
               <Route path='/brandSummary/:id' component={BrandSummary}/>
               <Route path='/createBrand' component={CreateBrands} />
@@ -155,8 +156,8 @@ class App extends Component {
           <Footer/>
         </div>
       </Router>
-    );
+    )
   }
 }
 
-export default App;
+export default App

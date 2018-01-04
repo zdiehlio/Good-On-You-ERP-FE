@@ -24,11 +24,15 @@ class Header extends Component {
           </div>
 
           <div className="links-container-left">
-            <a href="/">Home</a>
+            <a href="/searchBrand">Home</a>
           </div>
 
           <div className="links-container-left">
-            <a href="/">Brand</a>
+            <a href="/searchBrand">Brand</a>
+          </div>
+
+          <div className="links-container-left">
+          <a href="/login">Login</a>
           </div>
 
           <div className="links-container-right">
