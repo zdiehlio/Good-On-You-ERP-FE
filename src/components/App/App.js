@@ -58,7 +58,7 @@ class App extends Component {
     // this.getData = this.getData.bind(this)
   }
 
-  handleLogin = () => {
+  handleLogin(){
 
     var headers = {
       'Content-Type': 'application/json',

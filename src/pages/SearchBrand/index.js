@@ -5,12 +5,14 @@ import { connect } from 'react-redux'
 import { fetchBrands, fetchUsers } from '../../actions'
 import { Field, reduxForm } from 'redux-form'
 import { fetchUserInfo } from '../../actions'
-import { Search, Grid, Header } from 'semantic-ui-react'
+import { Search, Grid, Header, Label } from 'semantic-ui-react'
 import _ from 'lodash'
 
 import './searchbrand.css'
 
 class SearchBrand extends Component {
+
+// const resultRenderer = ({ title }) => <Label content={title} />
 
   constructor(props) {
     super(props)
@@ -19,40 +21,53 @@ class SearchBrand extends Component {
       search: '',
       brand: '',
       results: [],
+      renderResults: [],
     }
     this.handleChange=this.handleChange.bind(this)
-    this.handleSearch=this.handleSearch.bind(this)
+    // this.handleSearch=this.handleSearch.bind(this)
+  }
+
+  componentWillMount() {
+    this.resetComponent()
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.search !== this.props.search) {
       _.map(nextProps.search.brands.data, check => {
-        if(this.state.brand) {
-          Object.assign()
+        if(this.state.brand === check.name) {
+          this.state.results.push({title: check.name})
+          this.state.renderResults.push({name: check.name, id: check.id})
         }
       })
     }
   }
 
-  handleSearch(event) {
-    this.props.fetchBrands(this.state.brand)
+  resetComponent(){
+    this.setState({renderResults: [], results: [], brand: '' })
   }
 
+  // handleSearch(event) {
+  //   this.props.fetchBrands(this.state.brand)
+  // }
+
   handleChange(e, { value }){
+    setTimeout(() => {
+      if(this.state.brand.length < 1) return this.resetComponent()
+    }, 500)
     new Promise((resolve, reject) => {
-      resolve(this.props.fetchBrands(this.state.brand))
-        .then(() => {
-          console.log('res', this.props)
-          this.setState({
-            brand: e.target.value,
-          })
-        })
+      resolve(
+        this.setState({
+          brand: value,
+        }))
     })
+      .then(() => {
+        this.props.fetchBrands(value)
+      })
   }
 
   render() {
     console.log('props', this.props.search)
-    console.log(this.state.results)
+    console.log(this.state)
     const { handleSubmit } = this.props
 
     return (
@@ -66,13 +81,15 @@ class SearchBrand extends Component {
                   onResultSelect={this.handleSearch}
                   onSearchChange={this.handleChange}
                   results={this.state.results}
+                  value={this.state.brand}
+                  resultRenderer={({ title }) => <Label content={title} />}
                 />
               </Grid.Column>
             </Grid>
           </div>
         </div>
         <ul className="list-container">
-          {this.state.results ? (this.state.results.map((brand) => {
+          {this.state.results.length > 0 ? (this.state.renderResults.map((brand) => {
             return <li key={brand.id}> <Link to={`/brandLanding/${brand.id}`}>{brand.name} </Link></li>
           })) : <div></div>}
         </ul>
