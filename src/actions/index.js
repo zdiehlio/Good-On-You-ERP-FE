@@ -1,5 +1,6 @@
 import axios from 'axios'
 import _ from 'lodash'
+import { push } from 'react-router-redux'
 
 export const ROOT_URL = 'https://goy-ed-2079.nodechef.com'
 
@@ -65,9 +66,16 @@ export function login(values) {
   }
 
   const request = axios.post(`${ROOT_URL}/authentication/`, {...values, ...strategy})
-  return {
-    type: LOG_IN,
-    payload: request,
+  return function(dispatch){
+    request.then(res => {
+      dispatch({
+        type: LOG_IN,
+        payload: res,
+      })
+    })
+      // .catch(() => {
+      //   return {type: AUTH_ERROR, payload: error}
+      // })
   }
 }
 
@@ -84,7 +92,6 @@ export function fetchUserInfo(email) {
 export function logout() {
   return {
     type: LOG_OUT,
-    payload: {},
   }
 }
 

@@ -6,7 +6,7 @@ import axios from 'axios'
 
 
 
-export default function(state = {accessToken: sessionStorage.accessToken}, action) {
+export default function(state = {}, action) {
   switch (action.type) {
   case LOG_IN:
     sessionStorage.clear()
@@ -19,12 +19,12 @@ export default function(state = {accessToken: sessionStorage.accessToken}, actio
       sessionStorage.setItem('jwt', action.payload.data.accessToken)
 
 
-      return {...action.payload.data}
+      return {...state, token: action.payload.data.accessToken}
     }
     return {error: action.error}
   case LOG_OUT:
     sessionStorage.clear()
-    return null
+    return {...state, token: null}
   case FETCH_USER_INFO:
     if (!action.error) {
       console.log('fetch user', action.payload)

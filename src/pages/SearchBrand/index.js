@@ -12,7 +12,6 @@ import './searchbrand.css'
 
 class SearchBrand extends Component {
 
-// const resultRenderer = ({ title }) => <Label content={title} />
 
   constructor(props) {
     super(props)
@@ -24,7 +23,6 @@ class SearchBrand extends Component {
       renderResults: [],
     }
     this.handleChange=this.handleChange.bind(this)
-    // this.handleSearch=this.handleSearch.bind(this)
   }
 
   componentWillMount() {
@@ -35,7 +33,8 @@ class SearchBrand extends Component {
     if(nextProps.search !== this.props.search) {
       _.map(nextProps.search.brands.data, check => {
         if(this.state.brand === check.name) {
-          this.state.results.push({title: check.name})
+          this.setState({currentSelection: check.id})
+          this.state.results.push({title: check.name, description: check.id.toString()})
           this.state.renderResults.push({name: check.name, id: check.id})
         }
       })
@@ -45,10 +44,6 @@ class SearchBrand extends Component {
   resetComponent(){
     this.setState({renderResults: [], results: [], brand: '' })
   }
-
-  // handleSearch(event) {
-  //   this.props.fetchBrands(this.state.brand)
-  // }
 
   handleChange(e, { value }){
     setTimeout(() => {
@@ -66,7 +61,7 @@ class SearchBrand extends Component {
   }
 
   render() {
-    console.log('props', this.props.search)
+    console.log('props', this.props)
     console.log(this.state)
     const { handleSubmit } = this.props
 
@@ -78,11 +73,10 @@ class SearchBrand extends Component {
             <Grid>
               <Grid.Column width={8}>
                 <Search
-                  onResultSelect={this.handleSearch}
                   onSearchChange={this.handleChange}
                   results={this.state.results}
                   value={this.state.brand}
-                  resultRenderer={({ title }) => <Label content={title} />}
+                  resultRenderer={({ title }) => <Link to={`/brandLanding/${this.state.currentSelection}`}><Label content={title} /></Link>}
                 />
               </Grid.Column>
             </Grid>
@@ -104,7 +98,7 @@ class SearchBrand extends Component {
 
 
 function mapStateToProps(state) {
-  return {search: state.search}
+  return {search: state.search, state}
 }
 
 export default connect(mapStateToProps, { fetchBrands, fetchUserInfo })( SearchBrand )

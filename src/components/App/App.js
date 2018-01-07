@@ -4,9 +4,8 @@ import {
   Switch,
   Route,
 } from 'react-router-dom'
-
+import Authentication from '../requireAuth'
 import { ROOT_URL } from '../../actions'
-
 import { Header, Footer } from '../index'
 import {
   Landing,
@@ -30,10 +29,10 @@ import {
   SuppDataImage,
   Rating,
   SearchBrand,
+  BrandGeneral,
+  BrandContact,
+  BrandCauses,
 } from '../../pages'
-import BrandGeneral from '../../pages/brandGeneral'
-import BrandContact from '../../pages/brandContact'
-import BrandCauses from '../../pages/brandCauses'
 import axios from 'axios'
 import request from 'request'
 
@@ -118,39 +117,39 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={Login}/>
               <Route path='/login' component={Login}/>
-              <Route path='/searchBrand' component={sessionStorage.jwt ? SearchBrand : Login} />
-              <Route path='/brandLanding/:id' component={BrandLanding} />
-              <Route path='/brandSummary/:id' component={BrandSummary}/>
-              <Route path='/createBrand' component={CreateBrands} />
-              <Route path='/brandGeneral/:id' component={BrandGeneral}/>
-              <Route path='/brandContact/:id' component={BrandContact} />
-              <Route path='/resource/:id' component={Rating} />
-              <Route path='/energy/:id' component={Rating} />
-              <Route path='/chemical/:id' component={Rating} />
-              <Route path='/water/:id' component={Rating} />
-              <Route path='/worker_policies/:id' component={Rating} />
-              <Route path='/wages/:id' component={Rating} />
-              <Route path='/suppliers/:id' component={Rating} />
-              <Route path='/practices/:id' component={Rating} />
-              <Route path='/rights/:id' component={Rating} />
-              <Route path='/fur/:id' component={Rating} />
-              <Route path='/leather/:id' component={Rating} />
-              <Route path='/wool/:id' component={Rating} />
-              <Route path='/feathers/:id' component={Rating} />
-              <Route path='/angora/:id' component={Rating} />
-              <Route path='/hairs/:id' component={Rating} />
-              <Route path='/skins/:id' component={Rating} />
-              <Route path='/brandCauses/:id' component={BrandCauses} />
-              <Route path='/brandSentences/:id' component={BrandSentences} />
-              <Route path='/suppDataCategory/:id' component={SuppDataCategory} />
-              <Route path='/suppDataStyles/:id' component={SuppDataStyles} />
-              <Route path='/suppDataRetailers/:id' component={SuppDataRetailers} />
-              <Route path='/suppDataPrice/:id' component={SuppDataPrice} />
-              <Route path='/suppDataGender/:id' component={SuppDataGender} />
-              <Route path='/suppDataTypes/:id' component={SuppDataTypes} />
-              <Route path='/suppDataAlias/:id' component={SuppDataAlias} />
-              <Route path='/suppDataSocialMedia/:id' component={SuppDataSocialMedia} />
-              <Route path='/suppDataImage/:id' component={SuppDataImage} />
+              <Route path='/searchBrand' component={Authentication(SearchBrand)} />
+              <Route path='/brandLanding/:id' component={Authentication(BrandLanding)} />
+              <Route path='/brandSummary/:id' component={Authentication(BrandSummary)}/>
+              <Route path='/createBrand' component={Authentication(CreateBrands)} />
+              <Route path='/brandGeneral/:id' component={Authentication(BrandGeneral)}/>
+              <Route path='/brandContact/:id' component={Authentication(BrandContact)} />
+              <Route path='/resource/:id' component={Authentication(Rating)} />
+              <Route path='/energy/:id' component={Authentication(Rating)} />
+              <Route path='/chemical/:id' component={Authentication(Rating)} />
+              <Route path='/water/:id' component={Authentication(Rating)} />
+              <Route path='/worker_policies/:id' component={Authentication(Rating)} />
+              <Route path='/wages/:id' component={Authentication(Rating)} />
+              <Route path='/suppliers/:id' component={Authentication(Rating)} />
+              <Route path='/practices/:id' component={Authentication(Rating)} />
+              <Route path='/rights/:id' component={Authentication(Rating)} />
+              <Route path='/fur/:id' component={Authentication(Rating)} />
+              <Route path='/leather/:id' component={Authentication(Rating)} />
+              <Route path='/wool/:id' component={Authentication(Rating)} />
+              <Route path='/feathers/:id' component={Authentication(Rating)} />
+              <Route path='/angora/:id' component={Authentication(Rating)} />
+              <Route path='/hairs/:id' component={Authentication(Rating)} />
+              <Route path='/skins/:id' component={Authentication(Rating)} />
+              <Route path='/brandCauses/:id' component={Authentication(BrandCauses)} />
+              <Route path='/brandSentences/:id' component={Authentication(BrandSentences)} />
+              <Route path='/suppDataCategory/:id' component={Authentication(SuppDataCategory)} />
+              <Route path='/suppDataStyles/:id' component={Authentication(SuppDataStyles)} />
+              <Route path='/suppDataRetailers/:id' component={Authentication(SuppDataRetailers)} />
+              <Route path='/suppDataPrice/:id' component={Authentication(SuppDataPrice)} />
+              <Route path='/suppDataGender/:id' component={Authentication(SuppDataGender)} />
+              <Route path='/suppDataTypes/:id' component={Authentication(SuppDataTypes)} />
+              <Route path='/suppDataAlias/:id' component={Authentication(SuppDataAlias)} />
+              <Route path='/suppDataSocialMedia/:id' component={Authentication(SuppDataSocialMedia)} />
+              <Route path='/suppDataImage/:id' component={Authentication(SuppDataImage)} />
             </Switch>
           </div>
           <Footer/>

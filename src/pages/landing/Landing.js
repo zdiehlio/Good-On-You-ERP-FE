@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Brand, BrandSearchBar, UserSearchBar, DetailedList } from '../../components'
+import { Brand, UserSearchBar, DetailedList } from '../../components'
 import './Landing.css'
 import { connect } from 'react-redux'
 import { fetchBrands, fetchUsers } from '../../actions'
@@ -70,7 +70,6 @@ class Landing extends Component {
               <span><Link to='/createBrand' className="landingButton">
                 Create Brand
               </Link></span>
-              <BrandSearchBar/>
             </div>
             { this.props.user.role == 'admin' ? (
               <div className="button-and-search">

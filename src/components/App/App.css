@@ -113,13 +113,24 @@ li {
 
 .not-editing {
   width: 100%;
-  background-color: #F2F2F2;
+  background-color: white;
   padding: 2em;
 }
 
 .ui.form {
   margin-top: 1em;
   width: 80%;
+}
+
+input {
+  width: 20em;
+}
+
+textarea {
+  width: 35em;
+}
+.ui.label {
+  width: 15em;
 }
 
 .chip {

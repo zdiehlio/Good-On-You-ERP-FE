@@ -32,7 +32,7 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.data !== this.props.data) {
-      if(nextProps.data.accessToken) {
+      if(nextProps.data.token) {
         this.props.history.push('/searchBrand')
       }
     }

@@ -24,11 +24,9 @@ class SuppDataStyles extends Component {
     }
 
 
-    this.handleKids = this.handleKids.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
-    this.handleKidsEdit = this.handleKidsEdit.bind(this)
     this.handlePercentage = this.handlePercentage.bind(this)
     this.handleCheckbox = this.handleCheckbox.bind(this)
   }
@@ -41,10 +39,6 @@ class SuppDataStyles extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.qa !== this.props.qa) {
       _.map(nextProps.qa, compare => {
-        if(compare.style_qa.question === 'kids') {
-          this.setState({originalkids: compare.style_qa.tag, kids: compare.style_qa.tag})
-          this.state.progressBar++
-        }
         if(compare.style_qa.question === 'style-scores') {
           this.setState({
             [`original${compare.style_qa.question}`]: compare.style_qa.question,
@@ -95,18 +89,6 @@ class SuppDataStyles extends Component {
     }
   }
 
-  handleKidsEdit(event) {
-    event.preventDefault()
-    const { id }  = this.props.match.params
-    if(!this.state.kids) {
-      _.map(this.props.qa, check => {
-        if(check.style_qa.question === event.target.name) {
-          this.setState({kids: check.style_qa.tag})
-        }
-      })
-    }
-    this.setState({isEditing: event.target.name})
-  }
 
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
@@ -141,12 +123,6 @@ class SuppDataStyles extends Component {
         this.state.progressBar++
       }
     })
-    if(this.state.kids && event.target.name === 'kids') {
-      this.props.createStyles({brand: id, style: this.state.kids})
-      if(!this.state.originalkids) {
-        this.state.progressBar++
-      }
-    }
     if(event.target.name === 'style-scores') {
       this.props.createStyles({brand: id, style: event.target.name, score: this.state[event.target.name]})
       if(!this.state[event.target.name]) {
@@ -154,20 +130,6 @@ class SuppDataStyles extends Component {
       }
     }
     this.setState({isEditing: null})
-  }
-
-  handleKids(event, {name}){
-    this.setState({kids: name})
-  }
-
-  renderKids() {
-    if(this.state.kids === 'no-kids') {
-      return (<p>No</p>)
-    } else if(this.state.kids === 'kids') {
-      return (<p>Yes</p>)
-    } else {
-      return
-    }
   }
 
   handlePercentage(event) {
@@ -318,43 +280,8 @@ class SuppDataStyles extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={13} value={state.progressBar} progress />
+        <Progress total={12} value={state.progressBar} progress />
         <form className='brand-form'>
-          {isEditing === 'kids' ? (
-            <div className='editing'>
-              <h4>Does the Brand sell Clothes for kids?</h4>
-              <Form.Field inline>
-                <Radio
-                  label='Yes'
-                  onChange={this.handleKids}
-                  checked={state.kids === 'kids' ? true : false}
-                  name='kids'
-                />
-              </Form.Field>
-              <Form.Field inline>
-                <Radio
-                  label='No'
-                  onChange={this.handleKids}
-                  checked={state.kids === 'no-kids' ? true : false}
-                  name='no-kids'
-                />
-              </Form.Field>
-              <div className='button-container'>
-                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-                <div><button onClick={this.handleSave} name='kids'>Save</button></div>
-              </div>
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the Brand sell Clothes for kids?</h4>
-              {this.renderKids()}
-              <div className='button-container'>
-                <div></div>
-                <div><button name='kids' onClick={this.handleKidsEdit}>Edit</button></div>
-              </div>
-            </div>
-          )}
-
-
           {isEditing === 'men' ? (
             <div className='editing'>
               <h4>Does the Brand sell clothes for men?</h4>
