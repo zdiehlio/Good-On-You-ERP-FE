@@ -3,11 +3,9 @@ import { connect } from 'react-redux'
 
 export default function(ComposedComponent) {
   class Authentication extends Component {
-    static contextTypes = {
-      router: React.PropTypes.object
-    }
+
     componentWillMount() {
-      if(!sessionStorage.jwt) {
+      if(!this.props.token) {
         this.props.history.push('/')
       }
     }
@@ -18,7 +16,7 @@ export default function(ComposedComponent) {
   // }
     // }
     render() {
-      console.log('context', this.props.token)
+      console.log('auth', this.props.token)
       return <ComposedComponent {...this.props} />
     }
   }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import logo from '../../assets/good-on-you-logo.png'
 import logoText from '../../assets/good-on-you-logo-text.png'
 import './Header.css'
@@ -8,9 +9,10 @@ import { login, logout, clearSearch } from '../../actions'
 
 class Header extends Component {
 
-  onLogout(event) {
-    this.props.logout()
-  }
+  // onLogout(event) {
+  //   event.preventDefault()
+  //   this.props.logout()
+  // }
   render() {
     console.log('header', this.props)
     return (
@@ -23,22 +25,22 @@ class Header extends Component {
 
 
           <div className="links-container-left">
-            <a href="/searchBrand">Home</a>
+            <Link to="/searchBrand">Home</Link>
           </div>)
 
-          {sessionStorage.jwt ? (
+          {this.props.token ? (
             <div className="links-container-left">
-              <a href="/searchBrand">Brand</a>
+              <Link to="/searchBrand">Brand</Link>
             </div>) : (
             <div>''</div>
           )}
 
-          {!sessionStorage.jwt ? (
+          {!this.props.token ? (
             <div className="links-container-left">
-              <a href="/login">Login</a>
+              <Link to="/login">Login</Link>
             </div>) : (
             <div className='links-container-left'>
-              <a onClick={this.onLogout} href="/login">Logout</a>
+              <Link onClick={this.props.logout} to="/login">Logout</Link>
             </div>
           )}
         </div>

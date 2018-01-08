@@ -98,7 +98,7 @@ class SearchBrand extends Component {
 
 
 function mapStateToProps(state) {
-  return {search: state.search, state}
+  return {search: state.search}
 }
 
 export default connect(mapStateToProps, { fetchBrands, fetchUserInfo })( SearchBrand )

@@ -8,14 +8,22 @@ import { createStore, applyMiddleware } from 'redux'
 import reducers from './reducers'
 import promise from 'redux-promise'
 import thunk from 'redux-thunk'
+import { AUTH_USER } from './actions'
+
 
 import 'semantic-ui-css/semantic.min.css'
 
 const createStoreWithMiddleware = applyMiddleware(promise, thunk)(createStore)
+const store = createStoreWithMiddleware(reducers)
 
+const token = sessionStorage.getItem('jwt')
+
+if(token) {
+  store.dispatch({type: AUTH_USER, payload: token})
+}
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <Provider store={store}>
     <App />
   </Provider>
   , document.getElementById('root')

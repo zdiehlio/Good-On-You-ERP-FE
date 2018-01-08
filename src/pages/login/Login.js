@@ -43,7 +43,6 @@ class Login extends Component {
   }
 
   render() {
-    console.log('props', this.props.data)
     const { handleSubmit } = this.props
 
     return (

@@ -5,6 +5,7 @@ import { push } from 'react-router-redux'
 export const ROOT_URL = 'https://goy-ed-2079.nodechef.com'
 
 export const LOG_IN = 'log_in'
+export const AUTH_USER = 'auth_user'
 export const LOG_OUT = 'log_out'
 export const CREATE_BRAND = 'create_brand'
 export const FETCH_USERS = 'fetch_users'
@@ -72,10 +73,20 @@ export function login(values) {
         type: LOG_IN,
         payload: res,
       })
+      console.log('res', res)
+      sessionStorage.setItem('jwt', res.data.accessToken)
+
     })
       // .catch(() => {
       //   return {type: AUTH_ERROR, payload: error}
       // })
+  }
+}
+
+export function logout() {
+  sessionStorage.removeItem('jwt')
+  return {
+    type: LOG_OUT,
   }
 }
 
@@ -86,12 +97,6 @@ export function fetchUserInfo(email) {
   return {
     type: FETCH_USER_INFO,
     payload: request,
-  }
-}
-
-export function logout() {
-  return {
-    type: LOG_OUT,
   }
 }
 
