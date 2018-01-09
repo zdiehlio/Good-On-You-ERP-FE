@@ -5,6 +5,7 @@ import CreateBrandReducer from './reducer_create_brand'
 import SearchReducer from './reducer_search'
 import QAReducer from './reducer_qa'
 import PreQAReducer from './reducer_pre_qa'
+import UploadReducer from './reducer_upload'
 
 
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   qa: QAReducer,
   preQa: PreQAReducer,
   form: formReducer,
+  upload: UploadReducer,
 })
 
 export default rootReducer

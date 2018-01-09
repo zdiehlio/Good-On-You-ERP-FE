@@ -25,6 +25,7 @@ import {
   UPDATE_RETAILER,
   FETCH_IMAGE,
   FETCH_RATING,
+  UPLOAD_IMAGE,
 } from '../actions'
 import _ from 'lodash'
 
@@ -125,6 +126,12 @@ export default function(state = {}, action) {
     if (!action.error) {
       console.log('fetch, image', action.payload.data.data)
       return action.payload.data.data
+    }
+    return {error: action.error}
+  case UPLOAD_IMAGE:
+    if(!action.error) {
+      console.log('upload image', action.payload.data)
+      return {...state, [action.payload.data.id]: action.payload.data}
     }
     return {error: action.error}
   default:

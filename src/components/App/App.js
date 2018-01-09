@@ -53,7 +53,6 @@ class App extends Component {
   }
 
   render() {
-    console.log('app', sessionStorage)
     return (
       <Router>
         <div>

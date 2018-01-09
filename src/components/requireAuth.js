@@ -6,17 +6,16 @@ export default function(ComposedComponent) {
 
     componentWillMount() {
       if(!this.props.token) {
-        this.props.history.push('/')
+        this.props.history.push('/login')
       }
     }
 
-    // componentWillUpdate(nextProps) {
-    //   if(!nextProps.token) {
-  //   this.context.router.push('/')
-  // }
-    // }
+    componentWillUpdate(nextProps) {
+      if(!nextProps.token) {
+        this.context.router.push('/login')
+      }
+    }
     render() {
-      console.log('auth', this.props.token)
       return <ComposedComponent {...this.props} />
     }
   }

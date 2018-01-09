@@ -9,12 +9,7 @@ import { login, logout, clearSearch } from '../../actions'
 
 class Header extends Component {
 
-  // onLogout(event) {
-  //   event.preventDefault()
-  //   this.props.logout()
-  // }
   render() {
-    console.log('header', this.props)
     return (
       <div className="header">
         <div className="header-container">

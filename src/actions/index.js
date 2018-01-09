@@ -58,8 +58,59 @@ export const FETCH_RATING = 'fetch_rating'
 export const UPDATE_RATING = 'update_rating'
 export const CREATE_RATING = 'create_rating'
 export const FETCH_BRAND_INFO = 'fetch_brand_info'
+export const UPLOAD_IMAGE = 'upload_image'
+export const UPLOAD_LOGO = 'upload_logo'
 
+export function uploadImage(value, data) {
+  // axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
+  const formData = new FormData()
+  formData.append('image', value)
+  const config = {
+    headers: {
+      'Authorization': 'Bearer ' + sessionStorage.getItem('jwt'),
+      'Cache-Control': 'no-cache',
+      'Content-Type': 'multipart/form-data',
+      // 'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+    },
+  }
+  const request = axios.post(`${ROOT_URL}/upload?type=cover`, formData, config)
+  return function(dispatch) {
+    request.then(res => {
+      console.log('res', res)
+      dispatch({
+        type: UPLOAD_IMAGE,
+        payload: res,
+      })
+      axios.patch(`${ROOT_URL}/brands-covers/${res.data.id}`, data)
+    })
+  }
+}
 
+export function uploadLogo(value, data) {
+  // axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
+  const formData = new FormData()
+  formData.append('image', value)
+  const config = {
+    headers: {
+      'Authorization': 'Bearer ' + sessionStorage.getItem('jwt'),
+      'Cache-Control': 'no-cache',
+      'Content-Type': 'multipart/form-data',
+      // 'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+    },
+  }
+  const request = axios.post(`${ROOT_URL}/upload?type=logo`, formData, config)
+  return function(dispatch) {
+    request.then(res => {
+      console.log('res', res)
+      dispatch({
+        type: UPLOAD_LOGO,
+        payload: res,
+      })
+      axios.patch(`${ROOT_URL}/brands-logos/${res.data.id}`, data)
+    })
+  }
+
+}
 
 export function login(values) {
   const strategy = {
@@ -73,13 +124,12 @@ export function login(values) {
         type: LOG_IN,
         payload: res,
       })
-      console.log('res', res)
       sessionStorage.setItem('jwt', res.data.accessToken)
 
     })
-      // .catch(() => {
-      //   return {type: AUTH_ERROR, payload: error}
-      // })
+    // .catch(() => {
+    //   return {type: AUTH_ERROR, payload: error}
+    // })
   }
 }
 

@@ -21,6 +21,11 @@ class SuppDataStyles extends Component {
       styles: [],
       'style-scores': 0,
       progressBar: 0,
+      casual: 0,
+      classic: 0,
+      feminine: 0,
+      sporty: 0,
+      trendy: 0,
     }
 
 
@@ -46,45 +51,54 @@ class SuppDataStyles extends Component {
             [compare.style_qa.tag]: compare.score,
             [compare.style_qa.question]: 0,
           })
-          this.state.progressBar++
+          if(!this.state[compare.style_qa.question]) {
+            console.log('style progress')
+            this.state.progressBar++
+          }
+        } else {
+          if(!this.state[compare.style_qa.question]) {
+            console.log('reg progress')
+            this.state.progressBar++
+          }
+          this.setState({[`original${compare.style_qa.tag}`]: compare.style_qa.tag, [compare.style_qa.tag]: compare.style_qa.tag})
         }
-        if(compare.style_qa.question === 'men') {
-          this.state.progressBar++
-        }
-        if(compare.style_qa.question === 'fitness') {
-          this.state.progressBar++
-        }
-        if(compare.style_qa.question === 'designer') {
-          this.state.progressBar++
-        }
-        if(compare.style_qa.question === 'bags') {
-          this.state.progressBar++
-        }
-        if(compare.style_qa.question === 'basics') {
-          this.state.progressBar++
-        }
-        if(compare.style_qa.question === 'accessories') {
-          this.state.progressBar++
-        }
-        if(compare.style_qa.question === 'luxury') {
-          this.state.progressBar++
-        }
-        if(compare.style_qa.question === 'outdoor') {
-          this.state.progressBar++
-        }
-        if(compare.style_qa.question === 'shoes') {
-          this.state.progressBar++
-        }
-        if(compare.style_qa.question === 'underwear') {
-          this.state.progressBar++
-        }
-        if(compare.style_qa.question === 'older-women') {
-          this.state.progressBar++
-        }
-        if(compare.style_qa.question === 'young-women') {
-          this.state.progressBar++
-        }
-        this.setState({[`original${compare.style_qa.tag}`]: compare.style_qa.tag, [compare.style_qa.tag]: compare.style_qa.tag})
+        // if(compare.style_qa.question === 'men') {
+        //   console.log('men')
+        //   this.state.progressBar++
+        // }
+        // if(compare.style_qa.question === 'fitness') {
+        //   this.state.progressBar++
+        // }
+        // if(compare.style_qa.question === 'designer') {
+        //   this.state.progressBar++
+        // }
+        // if(compare.style_qa.question === 'bags') {
+        //   this.state.progressBar++
+        // }
+        // if(compare.style_qa.question === 'basics') {
+        //   this.state.progressBar++
+        // }
+        // if(compare.style_qa.question === 'accessories') {
+        //   this.state.progressBar++
+        // }
+        // if(compare.style_qa.question === 'luxury') {
+        //   this.state.progressBar++
+        // }
+        // if(compare.style_qa.question === 'outdoor') {
+        //   this.state.progressBar++
+        // }
+        // if(compare.style_qa.question === 'shoes') {
+        //   this.state.progressBar++
+        // }
+        // if(compare.style_qa.question === 'underwear') {
+        //   this.state.progressBar++
+        // }
+        // if(compare.style_qa.question === 'older-women') {
+        //   this.state.progressBar++
+        // }
+        // if(compare.style_qa.question === 'young-women') {
+        //   this.state.progressBar++
+        // }
       })
     }
   }
@@ -94,18 +108,19 @@ class SuppDataStyles extends Component {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    _.map(this.props.pre_qa, check => {
-      if(!this.state[check.tag])
-        this.setState({[check.tag]: 0})
-    })
+    // _.map(this.props.pre_qa, check => {
+    //   if(!this.state[check.tag])
+    //     this.setState({[check.tag]: 0})
+    // })
     this.setState({
       isEditing: event.target.name,
-      [event.target.name]: _.reduce(this.props.qa, (sum, check) => {
-        if(check.style_qa.question === event.target.name) {
-          return sum.score + check.score
-        }
-      }),
+      // [event.target.name]: _.reduce(this.props.qa, (sum, check) => {
+      //   if(check.style_qa.question === event.target.name) {
+      //     return sum.score + check.score
+      //   }
+      // }),
     })
+    console.log(this.state[event.target.name])
   }
 
   //sets state for isEditing to null which will toggle the ability to edit
@@ -118,16 +133,18 @@ class SuppDataStyles extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     _.map(this.state.styles, check => {
-      this.props.createStyles({brand: id, style: check})
+      this.props.createStyles(check)
       if(!this.state[`original${check}`]) {
         this.state.progressBar++
       }
     })
     if(event.target.name === 'style-scores') {
-      this.props.createStyles({brand: id, style: event.target.name, score: this.state[event.target.name]})
-      if(!this.state[event.target.name]) {
-        this.state.progressBar++
-      }
+      _.map(this.state.progress, style => {
+        this.props.createStyles({brand: id, style: style, score: this.state[style]})
+        if(!this.state[`originalstyle-scores`]) {
+          this.state.progressBar++
+        }
+      })
     }
     this.setState({isEditing: null})
   }
@@ -137,13 +154,16 @@ class SuppDataStyles extends Component {
     if(!this.state[event.target.name]) {
       this.setState({[event.target.name]: 0})
     }
-    if(event.target.value === 'add' && this.state[event.target.name] < 1 && this.state[event.target.class] < 1) {
-      this.setState({[event.target.name]: this.state[event.target.name] + 0.25, [event.target.class]: this.state[event.target.class] + 0.25})
+    if(event.target.value === 'add' && this.state[event.target.name] < 1 && this.state['style-scores'] < 1) {
+      console.log('add', this.state[event.target.name], this.state[event.target.class])
+      this.setState({[event.target.name]: this.state[event.target.name] + 0.25, [event.target.class]: this.state['style-scores'] + 0.25})
     }
     if(event.target.value === 'subtract' && this.state[event.target.name] > 0) {
-      this.setState({[event.target.name]: this.state[event.target.name] - 0.25, [event.target.class]: this.state[event.target.class] - 0.25})
+      console.log('subtract')
+      this.setState({[event.target.name]: this.state[event.target.name] - 0.25, [event.target.class]: this.state['style-scores'] - 0.25})
     }
     if(this.state.progress.includes(event.target.name)) {
+      console.log('return', this.state[event.target.name], this.state['style-scores'])
       return
     } else {
       this.setState({progress: [...this.state.progress, event.target.name]})
@@ -156,7 +176,7 @@ class SuppDataStyles extends Component {
         {_.map(this.props.pre_qa, check => {
           if(check.question === el) {
             return(
-              <p key={check.tag}>{this.state[check.tag] ? this.state[check.answer] : ''}</p>
+              <p key={check.tag}>{this.state[check.tag] ? check.answer : ''}</p>
             )
           }
         })}
@@ -280,7 +300,7 @@ class SuppDataStyles extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={12} value={state.progressBar} progress />
+        <Progress total={13} value={state.progressBar} progress />
         <form className='brand-form'>
           {isEditing === 'men' ? (
             <div className='editing'>
