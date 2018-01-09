@@ -6,7 +6,11 @@
 
 .summary-view div {
   display: inline-block;
-  width: calc(80%/2);
+  width: calc(80%/3);
+}
+
+.progress {
+  float: right;
 }
 
 .summary-view button {

@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { fetchGeneral } from '../../actions'
+import { fetchGeneral, fetchContact } from '../../actions'
+import { Icon } from 'semantic-ui-react'
+import _ from 'lodash'
 
 import './brandLanding.css'
 
@@ -12,6 +14,8 @@ class BrandLanding extends Component {
 
     this.state = {
       show: null,
+      generalProgress: 0,
+      contactProgress: 0,
     }
     this.handleShow = this.handleShow.bind(this)
     this.handleHide = this.handleHide.bind(this)
@@ -20,6 +24,29 @@ class BrandLanding extends Component {
   componentWillMount() {
     const { id } = this.props.match.params
     this.props.fetchGeneral(id, 'general')
+    this.props.fetchContact(id)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.general !== this.props.general) {
+      if(nextProps.general.name) {
+        this.state.generalProgress++
+      }
+      if(nextProps.general.review_date) {
+        this.state.generalProgress++
+      }
+      if(nextProps.general.sustainability_report_date) {
+        this.state.generalProgress++
+      }
+      if(nextProps.general.size) {
+        this.state.generalProgress++
+      }
+    }
+    if(nextProps.contact !== this.props.contact) {
+      if(nextProps.contact.contact) {
+        this.state.contactProgress++
+      }
+    }
   }
 
   handleShow(event) {
@@ -34,26 +61,28 @@ class BrandLanding extends Component {
 
   render() {
     const  id   = this.props.match.params.id
-    const props = this.props.qa
+    const props = this.props
     const state = this.state
     console.log('state', state)
-    console.log('props', this.props.qa)
+    console.log('props', props)
     return(
       <div className='summary-container'>
-        <div className='summary-heading'>Create a brand for: <h1>{props.name}</h1></div>
+        <div className='summary-heading'>Create a brand for: <h1>{props.general.name}</h1></div>
         <p className='small-divider'></p>
-        <div className='summary-heading'>URL: <h5>{props.website}</h5></div>
+        <div className='summary-heading'>URL: <h5>{props.general.website}</h5></div>
         <p className='small-divider'></p>
         <div className='summary-heading'><h1>Brand Overview</h1></div>
         <p className='divider'></p>
         <div className='summary-view'>
           <div>General</div>
-          <div><Link to={`/brandGeneral/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.generalProgress >= 4 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/brandGeneral/${id}`}><button>{state.generalProgress >= 4 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
           <div>Contact Details</div>
-          <div><Link to={`/brandContact/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.contactProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/brandContact/${id}`}><button>{state.contactProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
 
@@ -301,7 +330,10 @@ class BrandLanding extends Component {
 }
 
 function mapStateToProps(state) {
-  return {qa: state.qa}
+  return {
+    contact: state.contactSumm,
+    general: state.generalSumm,
+  }
 }
 
-export default connect(mapStateToProps, { fetchGeneral })(BrandLanding)
+export default connect(mapStateToProps, { fetchGeneral, fetchContact })(BrandLanding)

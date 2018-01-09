@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Form, TextArea, Progress} from 'semantic-ui-react'
-import { fetchSummary, createSummary, updateSummary } from '../../actions'
+import { fetchSummary, createSummary, updateSummary, fetchRawRating } from '../../actions'
 import { QualiHeading } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
@@ -30,6 +30,7 @@ class BrandSummary extends Component {
   componentWillMount() {
     const { id } = this.props.match.params
     this.props.fetchSummary(id)
+    this.props.fetchRawRating(id)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -71,6 +72,14 @@ class BrandSummary extends Component {
     this.setState({textlength: event.target.value.length, currentAnswer: event.target.value})
   }
 
+  renderRawRatings() {
+    return _.map(this.props.pre_qa, answer => {
+      return(
+        <li key={answer.text}>{answer.text}</li>
+      )
+    })
+  }
+
   // renderSummary() {
   //   return _.map(this.props.qa, summary => {
   //     if(summary.id)
@@ -83,6 +92,7 @@ class BrandSummary extends Component {
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.qa)
+    console.log('pre props', this.props.pre_qa)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
     const props = this.props.qa
@@ -129,6 +139,8 @@ class BrandSummary extends Component {
           )}
           <h4>{state.renderSummary ? 'Current Brand Summary' : ''}</h4>
           {state.renderSummary}
+          <h4>Rating Answers</h4>
+          <ul>{this.renderRawRatings()}</ul>
         </Form>
       </div>
     )
@@ -136,7 +148,10 @@ class BrandSummary extends Component {
 }
 
 function mapStateToProps(state) {
-  return {qa: state.qa}
+  return {
+    qa: state.qa,
+    pre_qa: state.preQa,
+  }
 }
 
-export default connect(mapStateToProps, { updateSummary, fetchSummary, createSummary })(BrandSummary)
+export default connect(mapStateToProps, { updateSummary, fetchSummary, createSummary, fetchRawRating })(BrandSummary)

@@ -199,7 +199,7 @@ class SuppDataImage extends Component {
               </Form.Field>
               <div className='button-container'>
                 <div></div>
-                <div><button onClick={this.handleLogoUpload}>Upload</button></div>
+                <div><button onClick={this.handleImageUpload}>Upload</button></div>
               </div>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='image'>Cancel</button></div>

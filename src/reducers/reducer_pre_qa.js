@@ -1,4 +1,4 @@
-import { FETCHALL_STYLES, FETCH_TERRITORY, FETCH_LOGO, FETCHALL_CAUSE, FETCHALL_CATEGORY, FETCHALL_RATING, UPLOAD_LOGO } from '../actions'
+import { FETCHALL_STYLES, FETCH_TERRITORY, FETCH_LOGO, FETCHALL_CAUSE, FETCHALL_CATEGORY, FETCHALL_RATING, UPLOAD_LOGO, FETCHRAW_RATING } from '../actions'
 import _ from 'lodash'
 import jwtDecode from 'jwt-decode'
 
@@ -45,6 +45,12 @@ export default function(state = null, action) {
     if(!action.error) {
       console.log('upload logo', action.payload.data)
       return {...state, [action.payload.data.id]: action.payload.data}
+    }
+    return {error: action.error}
+  case FETCHRAW_RATING:
+    if(!action.error) {
+      console.log('raw rating', action.payload.data)
+      return action.payload.data.data
     }
     return {error: action.error}
   default:

@@ -60,6 +60,8 @@ export const CREATE_RATING = 'create_rating'
 export const FETCH_BRAND_INFO = 'fetch_brand_info'
 export const UPLOAD_IMAGE = 'upload_image'
 export const UPLOAD_LOGO = 'upload_logo'
+export const FETCHRAW_RATING = 'fetchraw_rating'
+
 
 export function uploadImage(value, data) {
   // axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
@@ -232,7 +234,7 @@ export function deleteBrandSize(id, values) {
   }
 }
 
-export function fetchContact(id, values) {
+export function fetchContact(id) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands/${id}?section=contact`)
   return {
@@ -264,6 +266,15 @@ export function fetchAllRating(theme) {
   const request = axios.get(`${ROOT_URL}/themes?name=${theme}`)
   return {
     type: FETCHALL_RATING,
+    payload: request,
+  }
+}
+
+export function fetchRawRating(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
+  const request = axios.get(`${ROOT_URL}/brands-ratings-answers?brand=${id}&all=true`)
+  return {
+    type: FETCHRAW_RATING,
     payload: request,
   }
 }

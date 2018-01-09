@@ -11,6 +11,7 @@ import moment from 'moment'
 import './brandGeneral.css'
 
 const moments = date => moment(new Date(date)).format('MM/YYYY')
+const dayMoment = date => moment(new Date(date)).format('DD/MM/YYYY')
 
 class BrandGeneral extends Component {
   constructor(props){
@@ -120,7 +121,7 @@ class BrandGeneral extends Component {
       return this.state.progressBar++
     } else {
       if(this.state.dateValid === true) {
-        this.props.updateGeneral(id, {sustainability_report_date: this.state.sustainability_report_date, review_date: this.state.review_date})
+        this.props.updateGeneral(id, {sustainability_report_date: dayMoment(`02/${this.state.sustainability_report_date}`), review_date: dayMoment(`02/${this.state.review_date}`)})
         this.setState({renderError: false, isEditing: null})
         return this.state.progressBar++
       } else {
