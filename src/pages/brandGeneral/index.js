@@ -234,7 +234,7 @@ class BrandGeneral extends Component {
           {isEditing === '3' ? (
             <div className='editing'>
               <h5>Which month does the brand release its sustainability report?</h5>
-              <Form.Field inline>
+              <Form.Field inline className={state.renderError === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Sustainability Report Date'
                   placeholder='MM/YYYY'
@@ -262,7 +262,7 @@ class BrandGeneral extends Component {
           {isEditing === '4' ? (
             <div className='editing'>
               <h5>Which month does Good On You need to review the Brand?</h5>
-              <Form.Field inline>
+              <Form.Field inline className={state.renderError === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Brand Review Date'
                   placeholder='MM/YYYY'

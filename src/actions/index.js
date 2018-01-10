@@ -62,6 +62,8 @@ export const UPLOAD_IMAGE = 'upload_image'
 export const UPLOAD_LOGO = 'upload_logo'
 export const FETCHRAW_RATING = 'fetchraw_rating'
 export const BRAND_INFO = 'brand_info'
+export const AUTH_ERROR = 'auth_error'
+
 
 
 export function uploadImage(value, data) {
@@ -130,9 +132,10 @@ export function login(values) {
       sessionStorage.setItem('jwt', res.data.accessToken)
 
     })
-    // .catch(() => {
-    //   return {type: AUTH_ERROR, payload: error}
-    // })
+      .catch(error => {
+        console.log('error', error)
+        dispatch({type: AUTH_ERROR, payload: error})
+      })
   }
 }
 

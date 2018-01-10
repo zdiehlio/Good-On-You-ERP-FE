@@ -47,9 +47,9 @@ class BrandContact extends Component {
 
   validateEmail(val) {
     if (/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(val) || /^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(this.state.email)) {
-      this.setState({emailValid: true})
+      this.setState({error_email: false})
     } else {
-      this.setState({emailValid: false})
+      this.setState({error_email: true})
     }
   }
 
@@ -73,21 +73,25 @@ class BrandContact extends Component {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state.emailValid === true) {
+    if(this.state.error_email === false && this.state.error_relationship_manager === false && this.state.error_name === false) {
       if(this.props.qa.contact) {
         this.props.updateContact(id, {name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
       } else {
         this.props.createContact({brand: id, name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
       }
-      this.setState({isEditing: null, renderError: false})
+      this.setState({isEditing: null, renderError: false, error_email: false, error_name: false, error_relationship_manager: false})
       return this.state.progressBar++
     } else {
       this.setState({renderError: true})
     }
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
-  handleInput(event, { value }) {
-    this.setState({[event.target.name]: value})
+  handleInput(event, { value, name }) {
+    if(value === '') {
+      this.setState({[`error_${name}`]: true, [name]: value})
+    } else {
+      this.setState({[`error_${name}`]: false, [name]: value})
+    }
     this.validateEmail(value)
   }
 
@@ -116,7 +120,7 @@ class BrandContact extends Component {
         <Form>
           {isEditing === '1' ? (
             <div className='editing'>
-              <Form.Field inline>
+              <Form.Field inline className={state.renderError === true && state.error_name === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Brand contact name'
                   placeholder='contact name'
@@ -125,8 +129,8 @@ class BrandContact extends Component {
                   value={state.name}
                 />
               </Form.Field>
-              <div className='error-message'>{state.renderError === true ? 'Please enter Valid Email' : ''}</div>
-              <Form.Field inline>
+              <p className='error-message'>{state.renderError === true && state.error_name === true ? 'Please enter a Contact name' : ''}</p>
+              <Form.Field inline className={state.renderError === true && state.error_email === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Brand contact email'
                   placeholder='email'
@@ -135,7 +139,8 @@ class BrandContact extends Component {
                   value={state.email}
                 />
               </Form.Field>
-              <Form.Field inline>
+              <p className='error-message'>{state.renderError === true && state.error_email === true ? 'Please enter Valid Email' : ''}</p>
+              <Form.Field inline className={state.renderError === true && state.error_relationship_manager === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Brand GOY Relationship Manager'
                   placeholder='manager name'
@@ -144,6 +149,7 @@ class BrandContact extends Component {
                   value={state.relationship_manager}
                 />
               </Form.Field>
+              <p className='error-message'>{state.renderError === true && state.error_relationship_manager === true ? 'Please enter your GOY Manager\'s name' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>

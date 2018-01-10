@@ -1,4 +1,4 @@
-import { LOG_IN, LOG_OUT, FETCH_USER_INFO, AUTH_USER } from '../actions'
+import { LOG_IN, LOG_OUT, FETCH_USER_INFO, AUTH_USER, AUTH_ERROR } from '../actions'
 import _ from 'lodash'
 import jwtDecode from 'jwt-decode'
 import axios from 'axios'
@@ -12,6 +12,9 @@ export default function(state = {}, action) {
     return {error: action.error}
   case AUTH_USER:
     return {...state, token: action.payload}
+  case AUTH_ERROR:
+    console.log('error', action.payload)
+    return {...state, error: 'Username or Password is Incorrect'}
   case LOG_OUT:
     return {...state, token: null}
   case FETCH_USER_INFO:

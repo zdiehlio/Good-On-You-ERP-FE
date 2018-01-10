@@ -309,7 +309,7 @@ class Rating extends Component {
                         <div className='evidence'>
                           <h5>Evidence</h5>
                           <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
-                          <Form.Field className='evidence-url' inline>
+                          <Form.Field className={this.state[`errorWebsite${ans.id}`] === true ? 'ui error input evidence-url' : 'ui input evidence-url'} inline>
                             <Input
                               label='Source URL'
                               onChange={this.handleUrl}

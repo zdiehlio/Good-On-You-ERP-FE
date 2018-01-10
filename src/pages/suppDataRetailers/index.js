@@ -203,24 +203,24 @@ class SuppDataRetailers extends Component {
           {isEditing === 'retailer' ? (
             <div className='editing'>
               <h5>What is the main retailer?</h5>
-              <Form.Field inline>
+              <Form.Field inline className={state.errorname === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Retailer Name'
                   value={state.name}
                   onChange={this.handleInput}
                   name='name'
                 />
-                <div className='error-message'>{state.errorname === true ? 'Please enter retailer name' : ''}</div>
               </Form.Field>
-              <Form.Field inline>
+              <p className='error-message'>{state.errorname === true ? 'Please enter retailer name' : ''}</p>
+              <Form.Field inline className={state.errorwebsite === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Retailer Website'
                   value={state.website}
                   onChange={this.handleInput}
                   name='website'
                 />
-                <div className='error-message'>{state.errorwebsite === true ? 'Please enter valid website' : ''}</div>
               </Form.Field>
+              <p className='error-message'>{state.errorwebsite === true ? 'Please enter valid website' : ''}</p>
               <h5>Select one or more Retailer territories</h5>
               <Form.Field>
                 <Select
@@ -229,8 +229,8 @@ class SuppDataRetailers extends Component {
                   onChange={this.handleDropDown}
                   options={this.state.territoryOptions}
                 />
-                <div className='error-message'>{state.errorTerritory === true ? 'Territory already added' : ''}</div>
               </Form.Field>
+              <p className='error-message'>{state.errorTerritory === true ? 'Territory already added' : ''}</p>
               <h5>List of Retailer Territories</h5>
               {this.renderTerritorries()}
               <div className='button-container'>
