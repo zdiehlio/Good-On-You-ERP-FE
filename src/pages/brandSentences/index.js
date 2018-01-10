@@ -135,7 +135,7 @@ class BrandSentences extends Component {
     const props = this.props.qa
     return(
       <div className='form-container'>
-        <QualiHeading id={id}/>
+        <QualiHeading id={id} brand={this.props.brand}/>
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -184,7 +184,10 @@ class BrandSentences extends Component {
 }
 
 function mapStateToProps(state) {
-  return {qa: state.qa}
+  return {
+    qa: state.qa,
+    brand: state.brandInfo,
+  }
 }
 
 export default connect(mapStateToProps, { updateSentence, fetchSentence, createSentence })(BrandSentences)

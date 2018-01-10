@@ -103,7 +103,7 @@ class SuppDataTypes extends Component {
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
-        <SuppHeading id={id} />
+        <SuppHeading id={id} brand={this.props.brand}/>
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -180,7 +180,10 @@ class SuppDataTypes extends Component {
 }
 
 function mapStateToProps(state) {
-  return {qa: state.qa}
+  return {
+    qa: state.qa,
+    brand: state.brandInfo,
+  }
 }
 
 export default connect(mapStateToProps, { fetchType, createType, deleteType})(SuppDataTypes)

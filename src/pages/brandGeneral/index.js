@@ -50,7 +50,6 @@ class BrandGeneral extends Component {
     const { id } = this.props.match.params
     if(nextProps.qa !== this.props.qa) {
       _.map(nextProps.qa.size, crit => {
-        console.log(crit)
         this.state.sizeValues.push({brand: id, criteria: crit.criteria})
         if(crit) {
           this.setState({[`original${crit.criteria}`]: crit.criteria, [crit.criteria]: crit.criteria})
@@ -140,10 +139,8 @@ class BrandGeneral extends Component {
     const { id }  = this.props.match.params
     if(this.state[value]) {
       this.setState({[value]: null, sizeValues: this.state.sizeValues.filter(select => {return select.criteria != value})})
-      console.log('remove', value)
     } else {
       this.setState({[value]: value, sizeValues: [...this.state.sizeValues, {brand: id, criteria: value}]})
-      console.log('add', value)
     }
   }
 
@@ -174,15 +171,16 @@ class BrandGeneral extends Component {
 
 
   render() {
-    console.log('props', this.props.qa)
+    console.log('props', this.props)
     console.log('state', this.state)
+    console.log('brand', this.props.brand)
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props.qa
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
-        <OverviewHeading id={id}/>
+        <OverviewHeading id={id} brand={this.props.brand}/>
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -394,7 +392,11 @@ class BrandGeneral extends Component {
 }
 
 function mapStateToProps(state) {
-  return {qa: state.qa}
+  console.log('app state', state)
+  return {
+    qa: state.qa,
+    brand: state.brandInfo,
+  }
 }
 
 export default connect(mapStateToProps, { updateGeneral, fetchGeneral, createBrandSize, deleteBrandSize})(BrandGeneral)

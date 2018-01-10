@@ -7,6 +7,7 @@ import QAReducer from './reducer_qa'
 import PreQAReducer from './reducer_pre_qa'
 import GeneralSummary from './summary_general'
 import ContactSummary from './summary_contact'
+import BrandInfo from './reducer_brand_info'
 
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   form: formReducer,
   generalSumm: GeneralSummary,
   contactSumm: ContactSummary,
+  brandInfo: BrandInfo,
 })
 
 export default rootReducer

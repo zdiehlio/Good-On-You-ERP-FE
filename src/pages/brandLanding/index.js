@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { fetchGeneral, fetchContact } from '../../actions'
+import { fetchGeneral, fetchContact, fetchBrandInfo } from '../../actions'
 import { Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 
@@ -23,6 +23,7 @@ class BrandLanding extends Component {
 
   componentWillMount() {
     const { id } = this.props.match.params
+    this.props.fetchBrandInfo(id, 'general')
     this.props.fetchGeneral(id, 'general')
     this.props.fetchContact(id)
   }
@@ -330,10 +331,11 @@ class BrandLanding extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log('app state', state)
   return {
     contact: state.contactSumm,
     general: state.generalSumm,
   }
 }
 
-export default connect(mapStateToProps, { fetchGeneral, fetchContact })(BrandLanding)
+export default connect(mapStateToProps, { fetchGeneral, fetchContact, fetchBrandInfo })(BrandLanding)

@@ -99,7 +99,7 @@ class SuppDataGender extends Component {
     const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
-        <SuppHeading id={id}/>
+        <SuppHeading id={id} brand={this.props.brand}/>
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -163,6 +163,7 @@ class SuppDataGender extends Component {
 function mapStateToProps(state) {
   return {
     qa: state.qa,
+    brand: state.brandInfo,
   }
 }
 

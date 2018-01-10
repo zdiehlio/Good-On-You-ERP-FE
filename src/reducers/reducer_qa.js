@@ -34,6 +34,8 @@ export default function(state = {}, action) {
   switch (action.type) {
   case FETCH_GENERAL:
     if (!action.error) {
+      sessionStorage.setItem('website', action.payload.data.website)
+      sessionStorage.setItem('name', action.payload.data.name)
       console.log('fetch, general', action.payload.data)
       return action.payload.data
     }

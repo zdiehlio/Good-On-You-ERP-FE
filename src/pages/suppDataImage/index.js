@@ -177,7 +177,7 @@ class SuppDataImage extends Component {
     const props = this.props.qa
     return(
       <div className='form-container'>
-        <SuppHeading id={id}/>
+        <SuppHeading id={id} brand={this.props.brand}/>
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -251,6 +251,7 @@ function mapStateToProps(state) {
   return {
     qa: state.qa,
     pre_qa: state.preQa,
+    brand: state.brandInfo,
   }
 }
 

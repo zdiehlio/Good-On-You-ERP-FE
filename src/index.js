@@ -8,7 +8,7 @@ import { createStore, applyMiddleware } from 'redux'
 import reducers from './reducers'
 import promise from 'redux-promise'
 import thunk from 'redux-thunk'
-import { AUTH_USER } from './actions'
+import { AUTH_USER, BRAND_INFO } from './actions'
 
 
 import 'semantic-ui-css/semantic.min.css'
@@ -17,9 +17,16 @@ const createStoreWithMiddleware = applyMiddleware(promise, thunk)(createStore)
 const store = createStoreWithMiddleware(reducers)
 
 const token = sessionStorage.getItem('jwt')
+const name = sessionStorage.getItem('name')
+const website = sessionStorage.getItem('website')
 
 if(token) {
   store.dispatch({type: AUTH_USER, payload: token})
+}
+
+if(name && website) {
+  console.log('session', website, name)
+  store.dispatch({type: BRAND_INFO, payload: {name, website}})
 }
 
 ReactDOM.render(

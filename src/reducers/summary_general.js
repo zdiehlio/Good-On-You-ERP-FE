@@ -1,4 +1,4 @@
-import { FETCH_GENERAL, FETCH_CONTACT } from '../actions'
+import { FETCH_GENERAL } from '../actions'
 import _ from 'lodash'
 
 export default function(state = {}, action) {

@@ -219,3 +219,22 @@ textarea {
 .progress {
   width: 80%;
 }
+
+.summary-heading {
+  color: #17CABE !important;
+  margin-top: 1em;
+}
+
+.summary-heading h1 {
+  display: inline-block !important;
+  margin-left: 1em;
+}
+
+.summary-heading h5 {
+  display: inline-block !important;
+  margin-left: 1em;
+}
+
+.page-header {
+  width: 100%;
+}

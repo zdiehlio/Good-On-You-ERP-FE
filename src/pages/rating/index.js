@@ -287,7 +287,7 @@ class Rating extends Component {
     let theme = this.props.match.path.slice(1, -4)
     return _.map(this.props.pre_qa, theme => {
       return _.map(theme.questions, type => {
-        if(this.state.isEditing === type.id) {
+        if(type.id && this.state.isEditing === type.id) {
           return(
             <div className='editing'>
               <div key={type.id}>
@@ -364,7 +364,7 @@ class Rating extends Component {
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
-        <RatingHeading id={id} />
+        <RatingHeading id={id} brand={this.props.brand}/>
         {this.renderHeader()}
         <form className='brand-form'>
           {this.renderQA()}
@@ -378,6 +378,7 @@ function mapStateToProps(state) {
   return {
     qa: state.qa,
     pre_qa: state.preQa,
+    brand: state.brandInfo,
   }
 }
 

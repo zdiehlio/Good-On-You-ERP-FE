@@ -61,6 +61,7 @@ export const FETCH_BRAND_INFO = 'fetch_brand_info'
 export const UPLOAD_IMAGE = 'upload_image'
 export const UPLOAD_LOGO = 'upload_logo'
 export const FETCHRAW_RATING = 'fetchraw_rating'
+export const BRAND_INFO = 'brand_info'
 
 
 export function uploadImage(value, data) {
@@ -165,36 +166,55 @@ export function createBrand(values, callback) {
 export function fetchUsers(value) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/users?$search=${value}`)
-  return {
-    type: FETCH_USERS,
-    payload: request,
+  return function(dispatch){
+    dispatch({
+      type: FETCH_USERS,
+      payload: request,
+    })
   }
 }
 
 export function fetchBrands(value) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands?name=${value}`)
-  return {
-    type: FETCH_BRANDS,
-    payload: request,
+  return function(dispatch){
+    request.then(res => {
+      dispatch({
+        type: FETCH_BRANDS,
+        payload: res,
+      })
+    })
   }
 }
 
 export function fetchBrandInfo(id, value) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands/${id}?section=${value}`)
-  return {
-    type: FETCH_BRAND_INFO,
-    payload: request,
+  return function(dispatch){
+    request.then(res => {
+      dispatch({
+        type: FETCH_BRAND_INFO,
+        payload: res,
+      })
+      dispatch({
+        type: BRAND_INFO,
+        payload: res.data,
+      })
+    })
   }
 }
 
 export function fetchGeneral(id, value) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.get(`${ROOT_URL}/brands/${id}?section=${value}`)
-  return {
-    type: FETCH_GENERAL,
-    payload: request,
+  return function(dispatch){
+    request.then(res => {
+      console.log('res', res)
+      dispatch({
+        type: FETCH_GENERAL,
+        payload: res,
+      })
+    })
   }
 }
 
