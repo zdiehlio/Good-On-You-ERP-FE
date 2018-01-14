@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Brand, UserSearchBar, DetailedList } from '../../components'
+import { Brand, DetailedList } from '../../components'
 import './Landing.css'
 import { connect } from 'react-redux'
 import { fetchBrands, fetchUsers } from '../../actions'
@@ -78,7 +78,6 @@ class Landing extends Component {
                     Create User
                   </Link>
                 </span>
-                <UserSearchBar/>
               </div>) : <div></div>}
           </div>
 

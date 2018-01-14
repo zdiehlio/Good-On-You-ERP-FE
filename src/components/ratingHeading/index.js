@@ -10,9 +10,10 @@ class RatingHeading extends Component {
     const brand = this.props.brand
     return(
       <div className='forms-header'>
-        <div className='summary-heading'>Brand: <h5>{brand.name}</h5></div>
+        <div className='qa-heading'>Rate a Brand for: <h1>{brand.name}</h1></div>
         <p className='small-divider'></p>
-        <div className='summary-heading'>URL: <h5>{brand.website}</h5></div>
+        <div className='qa-heading'>URL: <h5>{brand.website}</h5></div>
+        <p className='small-divider'></p>
         <Link to={`/brandGeneral/${id}`}><div>Brand Overview</div></Link>
         <div>>></div>
         <Link to={`/resource/${id}`}><div className='rating-header'>Rating</div></Link>

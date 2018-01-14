@@ -19,7 +19,7 @@ class SuppDataStyles extends Component {
       currentAnswer: null,
       progress: [],
       styles: [],
-      'style-scores': 0,
+      style_scores: 0,
       progressBar: 0,
       casual: 0,
       classic: 0,
@@ -51,6 +51,7 @@ class SuppDataStyles extends Component {
             [compare.style_qa.tag]: compare.score,
             [compare.style_qa.question]: 0,
           })
+          this.state.style_scores+=compare.score
           if(!this.state[compare.style_qa.question]) {
             console.log('style progress')
             this.state.progressBar++
@@ -154,16 +155,16 @@ class SuppDataStyles extends Component {
     if(!this.state[event.target.name]) {
       this.setState({[event.target.name]: 0})
     }
-    if(event.target.value === 'add' && this.state[event.target.name] < 1 && this.state['style-scores'] < 1) {
-      console.log('add', this.state[event.target.name], this.state[event.target.class])
-      this.setState({[event.target.name]: this.state[event.target.name] + 0.25, [event.target.class]: this.state['style-scores'] + 0.25})
+    if(event.target.value === 'add' && this.state[event.target.name] < 1 && this.state.style_scores < 1) {
+      console.log('add', this.state[event.target.name], this.state.style_scores)
+      this.setState({[event.target.name]: this.state[event.target.name] + 0.25, style_scores: this.state.style_scores + 0.25})
     }
     if(event.target.value === 'subtract' && this.state[event.target.name] > 0) {
-      console.log('subtract')
-      this.setState({[event.target.name]: this.state[event.target.name] - 0.25, [event.target.class]: this.state['style-scores'] - 0.25})
+      console.log('subtract', this.state[event.target.name], this.state.style_scores)
+      this.setState({[event.target.name]: this.state[event.target.name] - 0.25, style_scores: this.state.style_scores - 0.25})
     }
     if(this.state.progress.includes(event.target.name)) {
-      console.log('return', this.state[event.target.name], this.state['style-scores'])
+      console.log('return', this.state[event.target.name], this.state.style_scores)
       return
     } else {
       this.setState({progress: [...this.state.progress, event.target.name]})
@@ -401,14 +402,14 @@ class SuppDataStyles extends Component {
             </div>
           )}
 
-          {isEditing === 'outdoor-' ? (
+          {isEditing === 'outdoor' ? (
             <div className='editing'>
               <h4>Does the brand sell Outdoor Gear?</h4>
-              {this.renderStyles('outdoor-')}
+              {this.renderStyles('outdoor')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the brand sell Outdoor Gear?</h4>
-              {this.renderAnswers('outdoor-')}
+              {this.renderAnswers('outdoor')}
             </div>
           )}
 

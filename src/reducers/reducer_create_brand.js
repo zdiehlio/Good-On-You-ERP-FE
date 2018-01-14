@@ -7,8 +7,8 @@ export default function(state = {}, action) {
   switch (action.type) {
   case CREATE_BRAND:
     if (!action.error) {
-      sessionStorage.setItem('website', action.payload.data.website)
-      sessionStorage.setItem('name', action.payload.data.name)
+      sessionStorage.setItem('website', action.payload.website)
+      sessionStorage.setItem('name', action.payload.name)
       console.log(action.payload)
       return {}
     }

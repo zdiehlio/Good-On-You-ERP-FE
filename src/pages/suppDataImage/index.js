@@ -93,7 +93,7 @@ class SuppDataImage extends Component {
     event.preventDefault()
     if(this.state.logo) {
       this.setState({logos: []})
-      this.props.uploadLogo(this.state.logo, {brand: id, is_selected: false})
+      this.props.uploadLogo(this.state.logo, {brand: id, is_selected: true})
     }
   }
 

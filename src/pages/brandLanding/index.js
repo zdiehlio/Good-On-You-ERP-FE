@@ -68,7 +68,7 @@ class BrandLanding extends Component {
     console.log('props', props)
     return(
       <div className='summary-container'>
-        <div className='summary-heading'>Create a brand for: <h1>{props.general.name}</h1></div>
+        <div className='summary-heading'>Rate a brand for: <h1>{props.general.name}</h1></div>
         <p className='small-divider'></p>
         <div className='summary-heading'>URL: <h5>{props.general.website}</h5></div>
         <p className='small-divider'></p>

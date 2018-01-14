@@ -17,7 +17,19 @@
   text-align: right;
 }
 
+.summary-heading {
+  color: #17CABE;
+  margin-top: 1em;
+}
 
+.summary-heading h1 {
+  display: inline-block;
+  margin-left: 1em;
+}
+
+.summary-heading h5 {
+  display: inline-block;
+}
 
 .summary-container {
   width: 80%;

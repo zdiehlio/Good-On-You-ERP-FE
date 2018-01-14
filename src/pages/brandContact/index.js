@@ -15,6 +15,10 @@ class BrandContact extends Component {
     this.state = {
       isEditing: null,
       emailValid: false,
+      error_email: true,
+      error_name: true,
+      errorContact: false,
+      error_relationship_manager: true,
       progressBar: 0,
     }
 
@@ -32,7 +36,13 @@ class BrandContact extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.qa.contact !== this.props.qa.contact) {
       if(nextProps.qa.contact) {
+        if(nextProps.qa.contact.length > 1) {
+          this.setState({errorContact: true})
+        }
         this.setState({
+          error_relationship_manager: nextProps.qa.contact.relationship_manager ? false : true,
+          error_name: nextProps.qa.contact.name ? false : true,
+          error_email: nextProps.qa.contact.email ? false : true,
           name: nextProps.qa.contact.name,
           email: nextProps.qa.contact.email,
           relationship_manager: nextProps.qa.contact.relationship_manager,
@@ -45,13 +55,15 @@ class BrandContact extends Component {
     }
   }
 
-  validateEmail(val) {
-    if (/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(val) || /^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(this.state.email)) {
-      this.setState({error_email: false})
-    } else {
-      this.setState({error_email: true})
-    }
-  }
+  // validateEmail(val) {
+  //   if (/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(val) || /^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(this.state.email)) {
+  //     this.setState({error_email: false})
+  //   } else if(val === '') {
+  //     this.setState({error_email: true})
+  //   } else {
+  //     this.setState({error_email: true})
+  //   }
+  // }
 
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
@@ -92,7 +104,18 @@ class BrandContact extends Component {
     } else {
       this.setState({[`error_${name}`]: false, [name]: value})
     }
-    this.validateEmail(value)
+    if(name === 'email') {
+      if (value=== '') {
+        console.log('email empty')
+        this.setState({error_email: true})
+      } else if(/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(value)) {
+        console.log('email invalid')
+        this.setState({error_email: false})
+      } else {
+        console.log('email error')
+        this.setState({error_email: true})
+      }
+    }
   }
 
   //render contains conditional statements based on state of isEditing as described in functions above.
@@ -160,6 +183,7 @@ class BrandContact extends Component {
               <p>{state.name ? `Contact Name: ${state.name}` : ''}</p>
               <p>{state.email ? `Contact Email: ${state.email}` : ''}</p>
               <p>{state.relationship_manager ? `GOY Manager: ${state.relationship_manager}` : ''}</p>
+              <p className='error-message'>{state.errorContact === true ? 'Multiple Contacts exists, invalid Test Account' : ''}</p>
               <div className='button-container'>
                 <div></div>
                 <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>

@@ -48,34 +48,34 @@ class BrandGeneral extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { id } = this.props.match.params
-    if(nextProps.qa !== this.props.qa) {
-      _.map(nextProps.qa.size, crit => {
+    if(nextProps.general !== this.props.general) {
+      _.map(nextProps.general.size, crit => {
         this.state.sizeValues.push({brand: id, criteria: crit.criteria})
         if(crit) {
           this.setState({[`original${crit.criteria}`]: crit.criteria, [crit.criteria]: crit.criteria})
         }
       })
       this.setState({
-        name: nextProps.qa.name,
-        originalname: nextProps.qa.name,
-        website: nextProps.qa.website,
-        sustainability_report_date: nextProps.qa.sustainability_report_date ? moments(nextProps.qa.sustainability_report_date) : '',
-        originalsustainability_report_date: nextProps.qa.review_date ? moments(nextProps.qa.sustainability_report_date) : '',
-        review_date: nextProps.qa.review_date ? moments(nextProps.qa.review_date) : '',
-        originalreview_date: nextProps.qa.review_date ? moments(nextProps.qa.review_date) : '',
-        parent_company: nextProps.qa.parent_company,
-        originalparent_company: nextProps.qa.parent_company,
+        name: nextProps.general.name,
+        originalname: nextProps.general.name,
+        website: nextProps.general.website,
+        sustainability_report_date: nextProps.general.sustainability_report_date ? moments(nextProps.general.sustainability_report_date) : '',
+        originalsustainability_report_date: nextProps.general.review_date ? moments(nextProps.general.sustainability_report_date) : '',
+        review_date: nextProps.general.review_date ? moments(nextProps.general.review_date) : '',
+        originalreview_date: nextProps.general.review_date ? moments(nextProps.general.review_date) : '',
+        parent_company: nextProps.general.parent_company,
+        originalparent_company: nextProps.general.parent_company,
       })
-      if(nextProps.qa.name) {
+      if(nextProps.general.name) {
         this.state.progressBar++
       }
-      if(nextProps.qa.review_date) {
+      if(nextProps.general.review_date) {
         this.state.progressBar++
       }
-      if(nextProps.qa.sustainability_report_date) {
+      if(nextProps.general.sustainability_report_date) {
         this.state.progressBar++
       }
-      if(nextProps.qa.size) {
+      if(nextProps.general.size) {
         this.state.progressBar++
       }
     }
@@ -176,7 +176,7 @@ class BrandGeneral extends Component {
     console.log('brand', this.props.brand)
     const isEditing = this.state.isEditing
     const state = this.state
-    const props = this.props.qa
+    const props = this.props.general
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
@@ -394,7 +394,7 @@ class BrandGeneral extends Component {
 function mapStateToProps(state) {
   console.log('app state', state)
   return {
-    qa: state.qa,
+    general: state.generalSumm,
     brand: state.brandInfo,
   }
 }
