@@ -21,11 +21,12 @@ const name = sessionStorage.getItem('name')
 const website = sessionStorage.getItem('website')
 
 if(token) {
+  console.log('index w token', store.getState())
   store.dispatch({type: AUTH_USER, payload: token})
 }
 
+
 if(name && website) {
-  console.log('session', website, name)
   store.dispatch({type: BRAND_INFO, payload: {name, website}})
 }
 

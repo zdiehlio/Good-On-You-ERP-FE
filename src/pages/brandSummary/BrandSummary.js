@@ -122,6 +122,7 @@ class BrandSummary extends Component {
                 placeholder={this.currentAnswer}
                 onFocus={this.handleInput}
                 onChange={this.handleInput}
+                value={state.renderSummary}
                 name='summary'/>
               <p>{this.state.textlength}/3000</p>
               <div className='button-container'>

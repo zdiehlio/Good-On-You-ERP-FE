@@ -7,6 +7,7 @@ export default function(state = {}, action) {
   switch (action.type) {
   case LOG_IN:
     if (!action.error) {
+      sessionStorage.setItem('jwt', action.payload.data.accessToken)
       return {...state, token: action.payload.data.accessToken}
     }
     return {error: action.error}

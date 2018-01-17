@@ -43,11 +43,6 @@ class BrandCauses extends Component {
         })
         return this.state.progressBar++
       })
-      // this.setState({
-      //   progressBar: _.forEach(nextProps.qa, () => {
-      //     return this.state.progressBar + 1
-      //   }),
-      // })
     }
   }
 
@@ -77,7 +72,7 @@ class BrandCauses extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     this.props.updateCause(id, event.target.name, {answer: this.state.currentAnswer})
-    this.setState({isEditing: null, save: true})
+    this.setState({isEditing: null, save: true, [`${event.target.name}Answer`]: this.state.tempAnswer})
     if(!this.state[`${event.target.name}OriginalAnswer`]) {
       this.props.createCause({brand: id, question: event.target.name, answer: this.state.currentAnswer})
       return this.state.progressBar++
@@ -87,7 +82,7 @@ class BrandCauses extends Component {
   handleChange(event, { value, name }){
     _.map(this.props.pre_qa, check => {
       if(check.id === parseInt(value)) {
-        this.setState({[`${name}Answer`]: check.text})
+        this.setState({tempAnswer: check.text})
       }
     })
     this.setState({

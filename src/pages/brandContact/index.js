@@ -40,8 +40,6 @@ class BrandContact extends Component {
           this.setState({errorContact: true})
         }
         this.setState({
-          error_relationship_manager: nextProps.qa.contact.relationship_manager ? false : true,
-          error_name: nextProps.qa.contact.name ? false : true,
           error_email: nextProps.qa.contact.email ? false : true,
           name: nextProps.qa.contact.name,
           email: nextProps.qa.contact.email,
@@ -54,16 +52,6 @@ class BrandContact extends Component {
       }
     }
   }
-
-  // validateEmail(val) {
-  //   if (/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(val) || /^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(this.state.email)) {
-  //     this.setState({error_email: false})
-  //   } else if(val === '') {
-  //     this.setState({error_email: true})
-  //   } else {
-  //     this.setState({error_email: true})
-  //   }
-  // }
 
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
@@ -85,13 +73,15 @@ class BrandContact extends Component {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state.error_email === false && this.state.error_relationship_manager === false && this.state.error_name === false) {
+    if(this.state.error_email === false) {
       if(this.props.qa.contact) {
+        console.log('update')
         this.props.updateContact(id, {name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
       } else {
+        console.log('create')
         this.props.createContact({brand: id, name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
       }
-      this.setState({isEditing: null, renderError: false, error_email: false, error_name: false, error_relationship_manager: false})
+      this.setState({isEditing: null, renderError: false, error_email: false})
       return this.state.progressBar++
     } else {
       this.setState({renderError: true})
@@ -99,11 +89,6 @@ class BrandContact extends Component {
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event, { value, name }) {
-    if(value === '') {
-      this.setState({[`error_${name}`]: true, [name]: value})
-    } else {
-      this.setState({[`error_${name}`]: false, [name]: value})
-    }
     if(name === 'email') {
       if (value=== '') {
         console.log('email empty')
@@ -116,6 +101,7 @@ class BrandContact extends Component {
         this.setState({error_email: true})
       }
     }
+    this.setState({[name]: value})
   }
 
   //render contains conditional statements based on state of isEditing as described in functions above.
@@ -143,7 +129,7 @@ class BrandContact extends Component {
         <Form>
           {isEditing === '1' ? (
             <div className='editing'>
-              <Form.Field inline className={state.renderError === true && state.error_name === true ? 'ui error input' : 'ui input'}>
+              <Form.Field inline>
                 <Input
                   label='Brand contact name'
                   placeholder='contact name'
@@ -152,7 +138,6 @@ class BrandContact extends Component {
                   value={state.name}
                 />
               </Form.Field>
-              <p className='error-message'>{state.renderError === true && state.error_name === true ? 'Please enter a Contact name' : ''}</p>
               <Form.Field inline className={state.renderError === true && state.error_email === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Brand contact email'
@@ -163,7 +148,7 @@ class BrandContact extends Component {
                 />
               </Form.Field>
               <p className='error-message'>{state.renderError === true && state.error_email === true ? 'Please enter Valid Email' : ''}</p>
-              <Form.Field inline className={state.renderError === true && state.error_relationship_manager === true ? 'ui error input' : 'ui input'}>
+              <Form.Field inline>
                 <Input
                   label='Brand GOY Relationship Manager'
                   placeholder='manager name'
@@ -172,7 +157,6 @@ class BrandContact extends Component {
                   value={state.relationship_manager}
                 />
               </Form.Field>
-              <p className='error-message'>{state.renderError === true && state.error_relationship_manager === true ? 'Please enter your GOY Manager\'s name' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>

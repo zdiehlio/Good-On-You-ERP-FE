@@ -81,12 +81,14 @@ export function uploadImage(value, data) {
   const request = axios.post(`${ROOT_URL}/upload?type=cover`, formData, config)
   return function(dispatch) {
     request.then(res => {
-      console.log('res', res)
-      dispatch({
-        type: UPLOAD_IMAGE,
-        payload: res,
-      })
       axios.patch(`${ROOT_URL}/brands-covers/${res.data.id}`, data)
+        .then(response => {
+          console.log('res', response)
+          dispatch({
+            type: UPLOAD_IMAGE,
+            payload: response,
+          })
+        })
     })
   }
 }
@@ -100,18 +102,19 @@ export function uploadLogo(value, data) {
       'Authorization': 'Bearer ' + sessionStorage.getItem('jwt'),
       'Cache-Control': 'no-cache',
       'Content-Type': 'multipart/form-data',
-      // 'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
     },
   }
   const request = axios.post(`${ROOT_URL}/upload?type=logo`, formData, config)
   return function(dispatch) {
     request.then(res => {
-      console.log('res', res)
-      dispatch({
-        type: UPLOAD_LOGO,
-        payload: res,
-      })
       axios.patch(`${ROOT_URL}/brands-logos/${res.data.id}`, data)
+        .then(response => {
+          console.log('res', response)
+          dispatch({
+            type: UPLOAD_LOGO,
+            payload: response,
+          })
+        })
     })
   }
 
@@ -129,8 +132,6 @@ export function login(values) {
         type: LOG_IN,
         payload: res,
       })
-      sessionStorage.setItem('jwt', res.data.accessToken)
-
     })
       .catch(error => {
         console.log('error', error)

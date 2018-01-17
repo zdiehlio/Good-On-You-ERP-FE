@@ -6,7 +6,6 @@ import { Form, Radio, Input, Checkbox, Progress } from 'semantic-ui-react'
 import { fetchAllStyles, fetchStyles, createStyles, updateStyles } from '../../actions'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
-import { ProgressBar, Line } from 'react-progressbar.js'
 
 import './suppDataStyles.css'
 
@@ -26,6 +25,7 @@ class SuppDataStyles extends Component {
       feminine: 0,
       sporty: 0,
       trendy: 0,
+      tempAnswers: [],
     }
 
 
@@ -55,51 +55,19 @@ class SuppDataStyles extends Component {
           if(!this.state[compare.style_qa.question]) {
             console.log('style progress')
             this.state.progressBar++
+            this.setState({[compare.style_qa.question]: compare.style_qa.question})
           }
         } else {
           if(!this.state[compare.style_qa.question]) {
             console.log('reg progress')
             this.state.progressBar++
           }
-          this.setState({[`original${compare.style_qa.tag}`]: compare.style_qa.tag, [compare.style_qa.tag]: compare.style_qa.tag})
+          this.setState({
+            [compare.style_qa.question]: compare.style_qa.question,
+            [`original${compare.style_qa.tag}`]: compare.style_qa.tag,
+            [compare.style_qa.tag]: compare.style_qa.tag,
+          })
         }
-        // if(compare.style_qa.question === 'men') {
-        //   console.log('men')
-        //   this.state.progressBar++
-        // }
-        // if(compare.style_qa.question === 'fitness') {
-        //   this.state.progressBar++
-        // }
-        // if(compare.style_qa.question === 'designer') {
-        //   this.state.progressBar++
-        // }
-        // if(compare.style_qa.question === 'bags') {
-        //   this.state.progressBar++
-        // }
-        // if(compare.style_qa.question === 'basics') {
-        //   this.state.progressBar++
-        // }
-        // if(compare.style_qa.question === 'accessories') {
-        //   this.state.progressBar++
-        // }
-        // if(compare.style_qa.question === 'luxury') {
-        //   this.state.progressBar++
-        // }
-        // if(compare.style_qa.question === 'outdoor') {
-        //   this.state.progressBar++
-        // }
-        // if(compare.style_qa.question === 'shoes') {
-        //   this.state.progressBar++
-        // }
-        // if(compare.style_qa.question === 'underwear') {
-        //   this.state.progressBar++
-        // }
-        // if(compare.style_qa.question === 'older-women') {
-        //   this.state.progressBar++
-        // }
-        // if(compare.style_qa.question === 'young-women') {
-        //   this.state.progressBar++
-        // }
       })
     }
   }
@@ -109,19 +77,10 @@ class SuppDataStyles extends Component {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    // _.map(this.props.pre_qa, check => {
-    //   if(!this.state[check.tag])
-    //     this.setState({[check.tag]: 0})
-    // })
     this.setState({
       isEditing: event.target.name,
-      // [event.target.name]: _.reduce(this.props.qa, (sum, check) => {
-      //   if(check.style_qa.question === event.target.name) {
-      //     return sum.score + check.score
-      //   }
-      // }),
     })
-    console.log(this.state[event.target.name])
+    console.log('edit', this.state[event.target.name])
   }
 
   //sets state for isEditing to null which will toggle the ability to edit
@@ -136,13 +95,18 @@ class SuppDataStyles extends Component {
     _.map(this.state.styles, check => {
       this.props.createStyles(check)
       if(!this.state[`original${check}`]) {
+        console.log('check')
         this.state.progressBar++
       }
+    })
+    _.map(this.state.tempAnswers, temp => {
+      this.setState({[temp]: temp})
     })
     if(event.target.name === 'style-scores') {
       _.map(this.state.progress, style => {
         this.props.createStyles({brand: id, style: style, score: this.state[style]})
         if(!this.state[`originalstyle-scores`]) {
+          console.log('styles')
           this.state.progressBar++
         }
       })
@@ -210,9 +174,9 @@ class SuppDataStyles extends Component {
   handleCheckbox(event, { name }){
     const { id }  = this.props.match.params
     if(this.state[name] === name) {
-      this.setState({[name]: null, styles: this.state.styles.filter(check => {return check.style !== name})})
+      this.setState({[`temp${name}`]: name, tempAnswers: this.state.tempAnswers.filter(check => {return check !== name}), styles: this.state.styles.filter(check => {return check.style !== name})})
     } else {
-      this.setState({[name]: name, styles: [...this.state.styles, {brand: id, style: name}]})
+      this.setState({tempAnswers: [...this.state.tempAnswers, name], styles: [...this.state.styles, {brand: id, style: name}]})
     }
   }
 
@@ -227,7 +191,7 @@ class SuppDataStyles extends Component {
                 <Checkbox
                   label={style.answer}
                   onChange={this.handleCheckbox}
-                  checked={state[style.tag] ? true : false}
+                  checked={state[style.tag] || state.tempAnswers.includes(style.tag) ? true : false}
                   name={style.tag}
                 />
               </Form.Field>
@@ -259,14 +223,10 @@ class SuppDataStyles extends Component {
         {_.map(this.props.pre_qa, style => {
           if(style.question === el) {
             return(<div key={style.tag} className='percentage-container'>
-              <p>{style.answer}</p>
-              <button onClick={this.handlePercentage} name={style.tag} value='subtract' className={style.question}>-</button>
-              <Line
-                progress={state[style.tag]}
-                text={state[style.tag] ? `${(state[style.tag] * 100)}%` : '0%'}
-                options={options}
-                containerClassName={'progress-container'}/>
-              <button onClick={this.handlePercentage} name={style.tag} value='add' className={style.question}>+</button>
+              <div className='progress-container'><button onClick={this.handlePercentage} name={style.tag} value='subtract'>-</button></div>
+              <div className='progress-container'><Progress className='progress-bar' total={1} value={this.state[style.tag]} progress /></div>
+              <div className='progress-container'><button onClick={this.handlePercentage} name={style.tag} value='add'>+</button></div>
+              <div className='progress-container'><p>{style.answer}</p></div>
             </div>
             )
           }
@@ -301,7 +261,7 @@ class SuppDataStyles extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={13} value={state.progressBar} progress />
+        <Progress percent={Math.floor((this.state.progressBar/13) * 100)} progress />
         <form className='brand-form'>
           {isEditing === 'men' ? (
             <div className='editing'>

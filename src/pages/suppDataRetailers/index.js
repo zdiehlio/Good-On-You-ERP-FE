@@ -106,6 +106,7 @@ class SuppDataRetailers extends Component {
     const { id }  = this.props.match.params
     if(this.state.name && this.state.website && this.state.errorwebsite === false){
       if(!this.state.id) {
+        console.log('create')
         new Promise((resolve, reject) => {
           resolve(this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website, territories: this.state.territories}))
         }).then(this.props.fetchRetailers(id))
@@ -158,6 +159,13 @@ class SuppDataRetailers extends Component {
     }
   }
 
+  renderOnline() {
+    if(this.state.online_only === 'true') {
+      return <p>Online Only: Yes</p>
+    } else if(this.state.online_only === 'false') {
+      return <p>Online Only: No</p>
+    }
+  }
   handleDropDownError() {
     this.setState({errorTerritory: true})
   }
@@ -167,7 +175,19 @@ class SuppDataRetailers extends Component {
   }
 
   renderTerritorries() {
-    return _.map(this.state.territories, select => {
+    let sorted = this.state.territories.sort((a, b) => {
+      let nameA=a.name.toLowerCase()
+      let nameB=b.name.toLowerCase()
+      if(nameA < nameB) {
+        return -1
+      }
+      if(nameA > nameB) {
+        return 1
+      }
+      return 0
+    })
+    console.log('sorted', sorted)
+    return _.map(sorted, select => {
       return(
         <button key={select.name} value={select.name} className='chip' onClick={this.handleRemove}>
           {select.name} {'x'}
@@ -185,6 +205,17 @@ class SuppDataRetailers extends Component {
     const { id }  = this.props.match.params
     const state = this.state
     const props = this.props.qa
+    let sorted = this.state.territories.sort((a, b) => {
+      let nameA=a.name.toLowerCase()
+      let nameB=b.name.toLowerCase()
+      if(nameA < nameB) {
+        return -1
+      }
+      if(nameA > nameB) {
+        return 1
+      }
+      return 0
+    })
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
@@ -227,7 +258,18 @@ class SuppDataRetailers extends Component {
                   name='territories'
                   placeholder='Choose Territory'
                   onChange={this.handleDropDown}
-                  options={this.state.territoryOptions}
+                  options={
+                    this.state.territoryOptions.sort((a, b) => {
+                      let nameA=a.text.toLowerCase()
+                      let nameB=b.text.toLowerCase()
+                      if(nameA < nameB) {
+                        return -1
+                      }
+                      if(nameA > nameB) {
+                        return 1
+                      }
+                      return 0
+                    })}
                 />
               </Form.Field>
               <p className='error-message'>{state.errorTerritory === true ? 'Territory already added' : ''}</p>
@@ -245,7 +287,7 @@ class SuppDataRetailers extends Component {
               <p>Retailer Name: {state.name}</p>
               <p>Retailer Website: {state.website}</p>
               <h5>Retailer Territorries</h5>
-              <ul>{_.map(state.territories, list => {return (<li key={list.name}>{list.name}</li>)})}</ul>
+              <ul>{_.map(sorted, list => {return (<li key={list.name}>{list.name}</li>)})}</ul>
               <div className='button-container'>
                 <div></div>
                 <div><button name='retailer' onClick={this.handleEdit}>Edit</button></div>
@@ -281,7 +323,7 @@ class SuppDataRetailers extends Component {
             </div>) : (
             <div className='not-editing'>
               <h5>Is the brand sold online only?</h5>
-              <p>Online only: {state.online_only === 'true' ? 'Yes' : 'No'}</p>
+              {this.renderOnline()}
               <div className='button-container'>
                 <div></div>
                 <div><button name='online' onClick={this.handleEdit}>Edit</button></div>
