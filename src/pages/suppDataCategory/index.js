@@ -206,11 +206,14 @@ class SuppDataCategory extends Component {
                 <div></div>
                 <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
           {isEditing === '2' ? (
             <div className='editing'>
               <h5>What is the Brands dominant category?</h5>
+              {this.state.dominantOptions.length <= 0 ? <p className='error-message'>Please select categories at the previous question first</p> : ''}
+              {this.state.dominantOptions.length > 0 && !this.state.current_dominant_id ? <p className='error-message'>No dominant category selected, pick one</p> : ''}
               <ul>
                 {this.renderDominant()}
               </ul>

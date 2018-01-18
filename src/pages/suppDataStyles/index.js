@@ -271,6 +271,7 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Does the Brand sell clothes for men?</h4>
               {this.renderAnswers('men')}
+              <p className='small-divider'></p>
             </div>
           )}
 
@@ -282,6 +283,7 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Does the Brand sell clothes for older-women?</h4>
               {this.renderAnswers('older-women')}
+              <p className='small-divider'></p>
             </div>
           )}
 
@@ -293,6 +295,7 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Does the Brand sell clothes for young-women?</h4>
               {this.renderAnswers('young-women')}
+              <p className='small-divider'></p>
             </div>
           )}
 
@@ -304,6 +307,7 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Where is the brand designed?</h4>
               {this.renderAnswers('designer')}
+              <p className='small-divider'></p>
             </div>
           )}
 
@@ -315,6 +319,7 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Does the brand sell basics?</h4>
               {this.renderAnswers('basics')}
+              <p className='small-divider'></p>
             </div>
           )}
 
@@ -326,6 +331,7 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Does the brand sell Luxury clothes?</h4>
               {this.renderAnswers('luxury')}
+              <p className='small-divider'></p>
             </div>
           )}
 
@@ -337,6 +343,7 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Does the brand sell accessories?</h4>
               {this.renderAnswers('accessories')}
+              <p className='small-divider'></p>
             </div>
           )}
 
@@ -348,6 +355,7 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Does the brand sell bags?</h4>
               {this.renderAnswers('bags')}
+              <p className='small-divider'></p>
             </div>
           )}
 
@@ -359,6 +367,7 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Does the brand sell Fitness clothing?</h4>
               {this.renderAnswers('fitness')}
+              <p className='small-divider'></p>
             </div>
           )}
 
@@ -370,6 +379,7 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Does the brand sell Outdoor Gear?</h4>
               {this.renderAnswers('outdoor')}
+              <p className='small-divider'></p>
             </div>
           )}
 
@@ -381,6 +391,7 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Does the Brand sell shoes?</h4>
               {this.renderAnswers('shoes')}
+              <p className='small-divider'></p>
             </div>
           )}
 
@@ -392,6 +403,7 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Does the Brand sell underwear?</h4>
               {this.renderAnswers('underwear')}
+              <p className='small-divider'></p>
             </div>
           )}
 

@@ -350,6 +350,7 @@ class Rating extends Component {
                 <div></div>
                 <div><button name={type.id} onClick={this.handleEdit}>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
       })

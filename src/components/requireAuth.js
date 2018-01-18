@@ -8,7 +8,6 @@ export default function(ComposedComponent) {
 
     componentWillMount() {
       if(!this.props.token || !sessionStorage.jwt) {
-        console.log('history router')
         this.context.router.history.push('/login')
         this.props.logout()
       }
@@ -16,7 +15,6 @@ export default function(ComposedComponent) {
 
     componentWillUpdate(nextProps) {
       if(!nextProps.token || !sessionStorage.jwt) {
-        console.log('context router')
         this.context.router.history.push('/login')
         this.props.logout()
       }

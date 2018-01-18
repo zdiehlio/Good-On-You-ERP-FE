@@ -140,7 +140,7 @@ class BrandContact extends Component {
               </Form.Field>
               <Form.Field inline className={state.renderError === true && state.error_email === true ? 'ui error input' : 'ui input'}>
                 <Input
-                  label='Brand contact email'
+                  label='Brand contact email *'
                   placeholder='email'
                   onChange={this.handleInput}
                   name='email'
@@ -163,7 +163,7 @@ class BrandContact extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h5>Brand Contact Information</h5>
+              <h5>Brand Contact Information *</h5>
               <p>{state.name ? `Contact Name: ${state.name}` : ''}</p>
               <p>{state.email ? `Contact Email: ${state.email}` : ''}</p>
               <p>{state.relationship_manager ? `GOY Manager: ${state.relationship_manager}` : ''}</p>

@@ -118,7 +118,7 @@ class SuppDataTypes extends Component {
         <form className='brand-form'>
           {isEditing === '1' ? (
             <div className='editing'>
-              <h5>What are the product types?  Select one or more</h5>
+              <h5>What are the product types?  Select one or more *</h5>
               <Form.Field inline>
                 <Checkbox
                   label='Workwear'
@@ -165,7 +165,7 @@ class SuppDataTypes extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h5>What are the product types?</h5>
+              <h5>What are the product types? *</h5>
               <p>{this.renderSelected()}</p>
               <div className='button-container'>
                 <div></div>

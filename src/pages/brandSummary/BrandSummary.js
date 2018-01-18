@@ -115,7 +115,7 @@ class BrandSummary extends Component {
         <Form>
           {isEditing === '1' ? (
             <div className='editing'>
-              <h5>What is the Summary for the Brand?</h5>
+              <h5>What is the Summary for the Brand? *</h5>
               <TextArea
                 autoHeight
                 maxLength='3000'

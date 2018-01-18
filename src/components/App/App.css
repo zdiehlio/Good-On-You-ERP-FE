@@ -113,7 +113,7 @@ li {
 
 .not-editing {
   width: 100%;
-  background-color: white;
+  background-color: #F2F2F2;
   padding: 2em;
 }
 
@@ -242,4 +242,15 @@ textarea {
 
 .page-header {
   width: 100%;
+}
+
+.searchlist-container {
+  width: 60%;
+  padding: 1em;
+  margin-top: 2em;
+  background-color: white;
+}
+
+.searchlist-container a {
+  color: black;
 }

@@ -61,13 +61,24 @@ class SuppDataSocialMedia extends Component {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.updateSocial(id, {facebook_url: `https://www.facebook.com/${this.state.facebook_url}`, instagram_url:`https://www.instagram.com/${this.state.instagram_url}`})
-    this.setState({isEditing: null})
-    this.state.progressBar++
+    if(this.state.facebook_url === '' || this.state.instagram_url === '') {
+      if(this.state.facebook_url === '') {
+        this.setState({facebook_urlError: true})
+      }
+      if(this.state.instagram_url === '') {
+        this.setState({instagram_urlError: true})
+      }
+    } else {
+      this.props.updateSocial(id, {facebook_url: `https://www.facebook.com/${this.state.facebook_url}`, instagram_url:`https://www.instagram.com/${this.state.instagram_url}`})
+      this.setState({isEditing: null, facebook_urlError: false, instagram_urlError: false})
+      this.state.progressBar++
+    }
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
-  handleInput(event) {
-    this.setState({[event.target.name]: event.target.value})
+  handleInput(event, {name, value}) {
+    this.setState({[name]: value})
+    if(event.target.value.length >= 1)
+      this.setState({[`${name}Error`]: false})
   }
 
   //render contains conditional statements based on state of isEditing as described in functions above.
@@ -91,33 +102,35 @@ class SuppDataSocialMedia extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={2} value={state.progressBar} progress />
+        <Progress total={1} value={state.progressBar} progress />
         <Form>
           {isEditing === 'social' ? (
             <div className='editing'>
-              <Form.Field>
+              <Form.Field className={state.facebook_urlError === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='www.facebook.com/'
-                  placeholder='facebook page name'
+                  placeholder='facebook page name *'
                   onChange={this.handleInput}
                   name='facebook_url'
                   value={state.facebook_url}/>
               </Form.Field>
-              <Form.Field>
+              {state.facebook_urlError === true ? <p className='error-message'>Please enter a valid facbook url</p> : ''}
+              <Form.Field className={state.instagram_urlError === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='www.instagram.com/'
-                  placeholder='instagram account name'
+                  placeholder='instagram account name *'
                   onChange={this.handleInput}
                   name='instagram_url'
                   value={state.instagram_url}/>
               </Form.Field>
+              {state.instagram_urlError === true ? <p className='error-message'>Please enter a valid instagram url</p> : ''}
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='social'>Save</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h5>Brand Social Media</h5>
+              <h5>Brand Social Media *</h5>
               <p>www.facebook.com/{state.facebook_url}</p>
               <p>www.instagram.com/{state.instagram_url}</p>
               <div className='button-container'>

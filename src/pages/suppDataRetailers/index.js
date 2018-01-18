@@ -233,10 +233,10 @@ class SuppDataRetailers extends Component {
         <form className='brand-form'>
           {isEditing === 'retailer' ? (
             <div className='editing'>
-              <h5>What is the main retailer?</h5>
+              <h5>What is the main retailer? *</h5>
               <Form.Field inline className={state.errorname === true ? 'ui error input' : 'ui input'}>
                 <Input
-                  label='Retailer Name'
+                  label='Retailer Name *'
                   value={state.name}
                   onChange={this.handleInput}
                   name='name'
@@ -283,7 +283,7 @@ class SuppDataRetailers extends Component {
                 'Please fill out all required fields' : ''}</div>
             </div>) : (
             <div className='not-editing'>
-              <h5>Main Retailer</h5>
+              <h5>What is the Main Retailer? *</h5>
               <p>Retailer Name: {state.name}</p>
               <p>Retailer Website: {state.website}</p>
               <h5>Retailer Territorries</h5>
@@ -292,6 +292,7 @@ class SuppDataRetailers extends Component {
                 <div></div>
                 <div><button name='retailer' onClick={this.handleEdit}>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
 

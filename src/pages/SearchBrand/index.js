@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { fetchBrands, fetchUsers } from '../../actions'
 import { Field, reduxForm } from 'redux-form'
 import { fetchUserInfo } from '../../actions'
-import { Input, Grid, Header, Label } from 'semantic-ui-react'
+import { Input, Header, Label, List } from 'semantic-ui-react'
 import _ from 'lodash'
 
 import './searchbrand.css'
@@ -59,24 +59,31 @@ class SearchBrand extends Component {
 
   render() {
     return (
-      <div className="page-container">
-        <div className="search-container">
-          <div className="button-and-search">
+      <div className='page-container'>
+        <div className='form-container'>
+          <div className='button-and-search'>
             <Link to='/createBrand'><button>Create Brand</button></Link>
-            <Grid>
-              <Grid.Column width={8}>
-                <Input
-                  onChange={this.handleChange}
-                />
-              </Grid.Column>
-            </Grid>
+            <Input
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className='searchlist-container'>
+            {this.state.results.length > 0 ? (this.state.results.map((brand) => {
+              return (
+                <List divided verticalAlign='middle'>
+                  <List.Item key={brand.id}>
+                    <List.Content floated='right'>
+                      <Link to={`/brandLanding/${brand.id}`}><button>Go</button></Link>
+                    </List.Content>
+                    <List.Content>
+                      <Link to={`/brandLanding/${brand.id}`}>{brand.name} </Link>
+                    </List.Content>
+                  </List.Item>
+                </List>
+              )
+            })) : <div></div>}
           </div>
         </div>
-        <ul className="list-container">
-          {this.state.results.length > 0 ? (this.state.results.map((brand) => {
-            return <li key={brand.id}> <Link to={`/brandLanding/${brand.id}`}>{brand.name} </Link></li>
-          })) : <div></div>}
-        </ul>
       </div>
     )
   }

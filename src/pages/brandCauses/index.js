@@ -134,7 +134,7 @@ class BrandCauses extends Component {
         <Form>
           {isEditing === '1' ? (
             <div className='editing'>
-              <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
+              <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in? *</h4>
               {this.renderQuestion('made-in')}
               <div className='button-container'>
                 <div><button className='cancel' name='made-in' onClick={this.handleCancel} >Cancel</button></div>
@@ -142,18 +142,18 @@ class BrandCauses extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in?</h4>
+              <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in? *</h4>
               <p>{state['made-inAnswer']}</p>
               <div className='button-container'>
                 <div></div>
                 <div><button name='made-in' onClick={this.handleEdit} value='1'>Edit</button></div>
               </div>
-
+              <p className='small-divider'></p>
             </div>
           )}
           {isEditing === '6' ? (
             <div className='editing'>
-              <h4>Is the Brand Certified B-Corp?</h4>
+              <h4>Is the Brand Certified B-Corp? *</h4>
               {this.renderQuestion('b-corp')}
               <div className='button-container'>
                 <div><button className='cancel' name='b-corp' onClick={this.handleCancel}>Cancel</button></div>
@@ -161,18 +161,19 @@ class BrandCauses extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h4>Is the Brand Certified B-Corp?</h4>
+              <h4>Is the Brand Certified B-Corp? *</h4>
               <div>{state['b-corpAnswer']}</div>
               <div className='button-container'>
                 <div></div>
                 <div><button name='b-corp' onClick={this.handleEdit} value='6'>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
 
           {isEditing === '8'? (
             <div className='editing'>
-              <h4>Is the brand a social enterprise that provides employment for people from a disadvantaged background?</h4>
+              <h4>Is the brand a social enterprise that provides employment for people from a disadvantaged background? *</h4>
               {this.renderQuestion('social-enterprise')}
               <div className='button-container'>
                 <div><button className='cancel' name='social-enterprise' onClick={this.handleCancel}>Cancel</button></div>
@@ -180,18 +181,19 @@ class BrandCauses extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h4>Is the brand a social enterprise that provides employment for people from a disadvantaged background?</h4>
+              <h4>Is the brand a social enterprise that provides employment for people from a disadvantaged background? *</h4>
               <div>{state['social-enterpriseAnswer']}</div>
               <div className='button-container'>
                 <div></div>
                 <div><button name='social-enterprise' onClick={this.handleEdit} value='8'>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
 
           {isEditing === '10' ? (
             <div className='editing'>
-              <h4>Does the brand have a 1 for 1 model?</h4>
+              <h4>Does the brand have a 1 for 1 model? *</h4>
               {this.renderQuestion('1-for-1')}
               <div className='button-container'>
                 <div><button className='cancel' name='1-for-1' onClick={this.handleCancel}>Cancel</button></div>
@@ -199,18 +201,19 @@ class BrandCauses extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h4>Does the brand have a 1 for 1 model?</h4>
+              <h4>Does the brand have a 1 for 1 model? *</h4>
               <div>{state['1-for-1Answer']}</div>
               <div className='button-container'>
                 <div></div>
                 <div><button name='1-for-1' onClick={this.handleEdit} value='10'>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
 
           {isEditing === '12' ? (
             <div className='editing'>
-              <h4>Is the brand Vegan?</h4>
+              <h4>Is the brand Vegan? *</h4>
               {this.renderQuestion('vegan')}
               <div className='button-container'>
                 <div><button className='cancel' name='vegan' onClick={this.handleCancel}>Cancel</button></div>
@@ -218,18 +221,19 @@ class BrandCauses extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h4>Is the brand Vegan?</h4>
+              <h4>Is the brand Vegan? *</h4>
               <div>{state.veganAnswer}</div>
               <div className='button-container'>
                 <div></div>
                 <div><button name='vegan' onClick={this.handleEdit} value='12'>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
 
           {isEditing === '14' ? (
             <div className='editing'>
-              <h4>What Percentage of the brands products are certified Fair Trade?</h4>
+              <h4>What Percentage of the brands products are certified Fair Trade? *</h4>
               {this.renderQuestion('fair-trade')}
               <div className='button-container'>
                 <div><button className='cancel' name='fair-trade' onClick={this.handleCancel}>Cancel</button></div>
@@ -237,18 +241,19 @@ class BrandCauses extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h4>What Percentage of the brands products are certified Fair Trade?</h4>
+              <h4>What Percentage of the brands products are certified Fair Trade? *</h4>
               <div>{state['fair-tradeAnswer']}</div>
               <div className='button-container'>
                 <div></div>
                 <div><button name='fair-trade' onClick={this.handleEdit} value='14'>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
 
           {isEditing === '16' ? (
             <div className='editing'>
-              <h4>What percentage of products are made from certified Organic materials?</h4>
+              <h4>What percentage of products are made from certified Organic materials? *</h4>
               {this.renderQuestion('organic')}
               <div className='button-container'>
                 <div><button className='cancel' name='organic' onClick={this.handleCancel}>Cancel</button></div>
@@ -256,17 +261,18 @@ class BrandCauses extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h4>What percentage of products are made from certified Organic materials?</h4>
+              <h4>What percentage of products are made from certified Organic materials? *</h4>
               <div>{state.organicAnswer}</div>
               <div className='button-container'>
                 <div></div>
                 <div><button name='organic' onClick={this.handleEdit} value='16'>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
           {isEditing === '18' ? (
             <div className='editing'>
-              <h4>What percentage of products are made from a substantial proportion(-50%) of recycled/upcycled materials?</h4>
+              <h4>What percentage of products are made from a substantial proportion(-50%) of recycled/upcycled materials? *</h4>
               {this.renderQuestion('recycled')}
               <div className='button-container'>
                 <div><button className='cancel' name='recycled' onClick={this.handleCancel}>Cancel</button></div>
@@ -274,7 +280,7 @@ class BrandCauses extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h4>What percentage of products are made from a substantial proportion(-50%) of recycled/upcycled materials?</h4>
+              <h4>What percentage of products are made from a substantial proportion(-50%) of recycled/upcycled materials? *</h4>
               <div>{state.recycledAnswer}</div>
               <div className='button-container'>
                 <div></div>

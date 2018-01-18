@@ -198,7 +198,7 @@ class BrandGeneral extends Component {
               <h5>What is the Brand Name and Website?</h5>
               <Form.Field inline>
                 <Input
-                  label='Brand name'
+                  label='Brand name *'
                   value={state.name ? state.name : ''}
                   onChange={this.handleInput}
                   name='name'
@@ -207,7 +207,7 @@ class BrandGeneral extends Component {
               <Form.Field inline>
                 <Input
                   disabled
-                  label='Brand Website'
+                  label='Brand Website *'
                   value={props.website}
                 />
               </Form.Field>
@@ -217,19 +217,21 @@ class BrandGeneral extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h5>What is the Brand Name and Website?</h5>
+              <h5>What is the Brand Name and Website? *</h5>
               <p>{state.name}</p>
               <p>{state.website}</p>
               <div className='button-container'>
                 <div></div>
                 <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
           <div className='not-editing'>
             <h5>Rating date and verification date</h5>
             <div>{props.rating_date ? moments(props.rating_date) : ''}</div>
             <div>{props.verification_date ? moments(props.verification_date) : ''}</div>
+            <p className='small-divider'></p>
           </div>
           {isEditing === '3' ? (
             <div className='editing'>
@@ -257,6 +259,7 @@ class BrandGeneral extends Component {
                 <div></div>
                 <div><button name='3' onClick={this.handleEdit} value='3'>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
           {isEditing === '4' ? (
@@ -285,6 +288,7 @@ class BrandGeneral extends Component {
                 <div></div>
                 <div><button name='4' onClick={this.handleEdit} value='4'>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
           {isEditing === '5' ? (
@@ -310,7 +314,7 @@ class BrandGeneral extends Component {
                 />
               </Form.Field>
 
-              <p>Does the Brand meet at least one of the following large brand criteria?</p>
+              <p>Does the Brand meet at least one of the following large brand criteria? *</p>
               <Form.Field>
                 <Checkbox
                   label='Listed Company'

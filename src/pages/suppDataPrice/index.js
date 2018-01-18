@@ -103,7 +103,7 @@ class SuppDataPrice extends Component {
         <form className='brand-form'>
           {isEditing === 'price' ? (
             <div className='editing'>
-              <h4>What is the price guideline?</h4>
+              <h4>What is the price guideline? *</h4>
               <Form.Field inline>
                 <Radio
                   label='$'
@@ -146,7 +146,7 @@ class SuppDataPrice extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h4>What is the price guideline?</h4>
+              <h4>What is the price guideline? *</h4>
               {this.renderPrice()}
               <div className='button-container'>
                 <div></div>

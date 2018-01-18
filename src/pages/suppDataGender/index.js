@@ -114,7 +114,7 @@ class SuppDataGender extends Component {
         <form className='brand-form'>
           {isEditing === 'gender' ? (
             <div className='editing'>
-              <h4>What are the Genders/Ages offered by the brand?</h4>
+              <h4>What are the Genders/Ages offered by the brand? *</h4>
               <Form.Field inline>
                 <Checkbox
                   label='Children'
@@ -145,7 +145,7 @@ class SuppDataGender extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h4>What are the Genders/Ages offered by the brand?</h4>
+              <h4>What are the Genders/Ages offered by the brand? *</h4>
               <p>{this.state['gender-children'] ? 'Children' : ''}</p>
               <p>{this.state['gender-women'] ? 'Women' : ''}</p>
               <p>{this.state['gender-men'] ? 'Men' : ''}</p>

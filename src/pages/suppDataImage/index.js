@@ -192,7 +192,7 @@ class SuppDataImage extends Component {
         <Form>
           {isEditing === 'image' ? (
             <div className='editing'>
-              <h5>What is the Brand Cover Image?</h5>
+              <h5>What is the Brand Cover Image? *</h5>
               {this.renderImage()}
               <Form.Field className='upload'>
                 <div><Input type='file' onChange={this.handleImageChange}  label='Upload New Image'/></div>
@@ -207,18 +207,19 @@ class SuppDataImage extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h5>Brand Cover Image</h5>
+              <h5>Brand Cover Image *</h5>
               <div className='image-container'>{state.image_selected ? <img src={state.image_url} className='cover-image' /> : ''}</div>
               <div className='button-container'>
                 <div></div>
                 <div><button name='image' onClick={this.handleEdit}>Edit</button></div>
               </div>
+              <p className='small-divider'></p>
             </div>
           )}
 
           {isEditing === 'logo' ? (
             <div className='editing'>
-              <h5>Select the Brand Logo?</h5>
+              <h5>Select the Brand Logo? *</h5>
               {this.renderLogo()}
               <Form.Field className='upload'>
                 <div><Input type='file' onChange={this.handleLogoChange}  label='Upload New Logo'/></div>
@@ -233,7 +234,7 @@ class SuppDataImage extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h5>Brand Logo</h5>
+              <h5>Brand Logo *</h5>
               <div className='image-container'>{this.state.logo_selected ? <img src={state.logo_url} className='logo' /> : ''}</div>
               <div className='button-container'>
                 <div></div>
