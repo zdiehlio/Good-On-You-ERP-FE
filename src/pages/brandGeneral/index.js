@@ -111,8 +111,12 @@ class BrandGeneral extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(event.target.name === '1') {
-      this.props.updateGeneral(id, {name: this.state.name})
-      this.setState({isEditing: null})
+      if(this.state.name.length <= 0) {
+        this.setState({nameError: true})
+      } else {
+        this.props.updateGeneral(id, {name: this.state.name})
+        this.setState({isEditing: null})
+      }
     } else if(event.target.name === '5') {
       this.props.createBrandSize(id, this.state.sizeValues)
       this.props.updateGeneral(id, {parent_company: this.state.parent_company})
@@ -164,9 +168,14 @@ class BrandGeneral extends Component {
     }
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
-  handleInput(event) {
+  handleInput(event, {name, value}) {
     this.validateDate(event)
-    this.setState({currentAnswer: event.target.name, [event.target.name]: event.target.value, input: event.target.value})
+    if(name === 'name') {
+      if(value.length >= 1) {
+        this.setState({nameError: false})
+      }
+    }
+    this.setState({currentAnswer: name, [name]: value, input: value})
   }
 
 
@@ -196,7 +205,7 @@ class BrandGeneral extends Component {
           {isEditing === '1' ? (
             <div className='editing'>
               <h5>What is the Brand Name and Website?</h5>
-              <Form.Field inline>
+              <Form.Field inline className={state.nameError === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Brand name *'
                   value={state.name ? state.name : ''}
@@ -204,6 +213,7 @@ class BrandGeneral extends Component {
                   name='name'
                 />
               </Form.Field>
+              <p className='error-message'>{state.nameError ? 'Please enter a brand name' : ''}</p>
               <Form.Field inline>
                 <Input
                   disabled

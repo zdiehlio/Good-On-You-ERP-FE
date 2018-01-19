@@ -35,6 +35,7 @@ class SuppDataTypes extends Component {
     if(nextProps.qa !== this.props.qa) {
       _.mapValues(nextProps.qa, type => {
         this.setState({[type.product]: type.product})
+        this.state.typeValues.push({brand: type.brand, product: type.product})
       })
       if(Object.keys(nextProps.qa).length > 0) {
         this.state.progressBar++
@@ -58,12 +59,16 @@ class SuppDataTypes extends Component {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    _.map(this.state.deleteValues, type => {
-      this.props.deleteType(id, type)
-    })
-    this.props.createType(this.state.typeValues)
-    this.setState({isEditing: null})
-    this.state.progressBar++
+    if(this.state.typeValues.length > 0 ) {
+      _.map(this.state.deleteValues, type => {
+        this.props.deleteType(id, type)
+      })
+      this.props.createType(this.state.typeValues)
+      this.setState({isEditing: null})
+      this.state.progressBar++
+    } else {
+      this.setState({error: true})
+    }
   }
 
   handleCheckbox(event, { name }) {
@@ -79,6 +84,7 @@ class SuppDataTypes extends Component {
         [name]: name,
         typeValues: [...this.state.typeValues, {brand: id, product: name}],
         deleteValues: this.state.deleteValues.filter(type => {return type !== name}),
+        error: false,
       })
     }
   }
@@ -119,7 +125,7 @@ class SuppDataTypes extends Component {
           {isEditing === '1' ? (
             <div className='editing'>
               <h5>What are the product types?  Select one or more *</h5>
-              <Form.Field inline>
+              <Form.Field inline className={state.error === true ? 'ui error checkbox' : 'ui checkbox'}>
                 <Checkbox
                   label='Workwear'
                   onChange={this.handleCheckbox}
@@ -159,6 +165,7 @@ class SuppDataTypes extends Component {
                   name='smartcasual'
                 />
               </Form.Field>
+              <p className='error-message'>{state.error === true ? 'Please select at least one option' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1'>Save</button></div>
