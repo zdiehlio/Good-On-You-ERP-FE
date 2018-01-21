@@ -29,8 +29,8 @@ class SuppDataPrice extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.qa !== this.props.qa) {
-      _.map(nextProps.qa, compare => {
+    if(nextProps.styles !== this.props.styles) {
+      _.map(nextProps.styles, compare => {
         console.log(compare.style_qa.question)
         if(compare.style_qa.question === 'price') {
           this.setState({price: compare.score, originalPrice: compare.score})
@@ -56,10 +56,12 @@ class SuppDataPrice extends Component {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.createStyles({brand: id, style: 'price', score: this.state.price})
-    this.setState({isEditing: null, originalPrice: this.state.price})
     if(this.state.price) {
+      this.props.createStyles({brand: id, style: 'price', score: this.state.price})
+      this.setState({isEditing: null, originalPrice: this.state.price})
       this.state.progressBar++
+    } else {
+      this.setState({error: true})
     }
   }
 
@@ -76,15 +78,15 @@ class SuppDataPrice extends Component {
   }
 
   handleChange(event, { value, name }){
-    this.setState({[name]: parseInt(value)})
+    this.setState({[name]: parseInt(value), error: false})
   }
 
   render() {
-    console.log('props', this.props.qa)
+    console.log('props', this.props.styles)
     console.log('state', this.state)
     const { id }  = this.props.match.params
     const state = this.state
-    const props = this.props.qa
+    const props = this.props.styles
     const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
@@ -104,7 +106,7 @@ class SuppDataPrice extends Component {
           {isEditing === 'price' ? (
             <div className='editing'>
               <h4>What is the price guideline? *</h4>
-              <Form.Field inline>
+              <Form.Field inline className={this.state.error === true ? 'ui error radio' : 'ui radio'}>
                 <Radio
                   label='$'
                   onChange={this.handleChange}
@@ -140,6 +142,7 @@ class SuppDataPrice extends Component {
                   value='4'
                 />
               </Form.Field>
+              <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='price'>Save</button></div>
@@ -162,7 +165,7 @@ class SuppDataPrice extends Component {
 
 function mapStateToProps(state) {
   return {
-    qa: state.qa,
+    styles: state.styles,
     brand: state.brandInfo,
   }
 }

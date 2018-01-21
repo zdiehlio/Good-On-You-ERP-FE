@@ -44,8 +44,8 @@ class SuppDataRetailers extends Component {
         this.state.territoryOptions.push({text: opt.name, value: opt.name, key: opt.id})
       })
     }
-    if(nextProps.qa !== this.props.qa) {
-      _.map(nextProps.qa, check => {
+    if(nextProps.retailer !== this.props.retailer) {
+      _.map(nextProps.retailer, check => {
         _.map(check.territories, ter => {
           this.state.territories.push({name: ter.name})
           this.state.originalTerritories.push({name: ter.name})
@@ -198,7 +198,7 @@ class SuppDataRetailers extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.qa)
+    console.log('props', this.props.retailer)
     console.log('preQA', this.props.pre_qa)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
@@ -339,7 +339,7 @@ class SuppDataRetailers extends Component {
 
 function mapStateToProps(state) {
   return {
-    qa: state.qa,
+    retailer: state.retailer,
     pre_qa: state.preQa,
     brand: state.brandInfo,
   }

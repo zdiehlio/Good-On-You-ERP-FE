@@ -32,35 +32,20 @@ class SuppDataGender extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { id } = this.props.match.params
-    if(nextProps.qa !== this.props.qa) {
-      _.map(nextProps.qa, compare => {
+    if(nextProps.styles !== this.props.styles) {
+      _.map(nextProps.styles, compare => {
         if(compare.style_qa.question === 'gender') {
           this.state.genders.push({brand: id, style: compare.style_qa.tag})
           this.setState({[compare.style_qa.tag]: compare.style_qa.tag})
           this.state.progressBar++
         }
       })
-      // this.setState({genders: _.map(nextProps.qa, check => {
-      //     if(check.style_qa.question === 'gender') {
-      //       return {brand: id, style: check.style_qa.tag}
-      //     }
-      //   }
-      // )})
     }
   }
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    // if(this.state['gender-children']) {
-    //   this.setState({genders: [...this.state.genders, {brand: id, style: this.state['gender-children']}]})
-    // }
-    // if(this.state['gender-women']) {
-    //   this.setState({genders: [...this.state.genders, {brand: id, style: this.state['gender-women']}]})
-    // }
-    // if(this.state['gender-men']) {
-    //   this.setState({genders: [...this.state.genders, {brand: id, style: this.state['gender-men']}]})
-    // }
     this.setState({isEditing: event.target.name})
   }
 
@@ -74,10 +59,12 @@ class SuppDataGender extends Component {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.createStyles(this.state.genders)
-    this.setState({isEditing: null})
-    if(this.state.genders) {
+    if(this.state.genders.length > 0) {
+      this.props.createStyles(this.state.genders)
+      this.setState({isEditing: null})
       this.state.progressBar++
+    } else {
+      this.setState({error: true})
     }
   }
 
@@ -86,16 +73,16 @@ class SuppDataGender extends Component {
     if(this.state[name] === name) {
       this.setState({[name]: null, genders: this.state.genders.filter(gender => {return gender.style !== name})})
     } else {
-      this.setState({[name]: name, genders: [...this.state.genders, {brand: id, style: name}]})
+      this.setState({[name]: name, genders: [...this.state.genders, {brand: id, style: name}], error: false})
     }
   }
 
   render() {
-    console.log('props', this.props.qa)
+    console.log('props', this.props.styles)
     console.log('state', this.state)
     const { id }  = this.props.match.params
     const state = this.state
-    const props = this.props.qa
+    const props = this.props.styles
     const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
@@ -115,7 +102,7 @@ class SuppDataGender extends Component {
           {isEditing === 'gender' ? (
             <div className='editing'>
               <h4>What are the Genders/Ages offered by the brand? *</h4>
-              <Form.Field inline>
+              <Form.Field inline className={this.state.error === true ? 'ui error checkbox' : 'ui checkbox'}>
                 <Checkbox
                   label='Children'
                   onChange={this.handleChange}
@@ -139,6 +126,7 @@ class SuppDataGender extends Component {
                   name='gender-men'
                 />
               </Form.Field>
+              <p className='error-message'>{state.error === true ? 'Please select at least one option' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='gender'>Save</button></div>
@@ -162,7 +150,7 @@ class SuppDataGender extends Component {
 
 function mapStateToProps(state) {
   return {
-    qa: state.qa,
+    styles: state.styles,
     brand: state.brandInfo,
   }
 }

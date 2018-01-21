@@ -30,17 +30,17 @@ class SuppDataSocialMedia extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.qa != this.props.qa) {
+    if(nextProps.general != this.props.general) {
       this.setState({
-        facebook_url: nextProps.qa.facebook_url ? nextProps.qa.facebook_url.slice(25) : '',
-        instagram_url: nextProps.qa.instagram_url ? nextProps.qa.instagram_url.slice(26) : '',
-        originalFacebook_url: nextProps.qa.facebook_url ? nextProps.qa.facebook_url.slice(25) : '',
-        originalInstagram_url: nextProps.qa.instagram_url ? nextProps.qa.instagram_url.slice(26) : '',
+        facebook_url: nextProps.general.facebook_url ? nextProps.general.facebook_url.slice(25) : '',
+        instagram_url: nextProps.general.instagram_url ? nextProps.general.instagram_url.slice(26) : '',
+        originalFacebook_url: nextProps.general.facebook_url ? nextProps.general.facebook_url.slice(25) : '',
+        originalInstagram_url: nextProps.general.instagram_url ? nextProps.general.instagram_url.slice(26) : '',
       })
-      if(nextProps.qa.facebook_url) {
+      if(nextProps.general.facebook_url) {
         this.state.progressBar++
       }
-      if(nextProps.qa.instagram_url) {
+      if(nextProps.general.instagram_url) {
         this.state.progressBar++
       }
     }
@@ -83,12 +83,12 @@ class SuppDataSocialMedia extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.qa)
+    console.log('props', this.props.general)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
     const state = this.state
-    const props = this.props.qa
+    const props = this.props.general
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
@@ -147,7 +147,7 @@ class SuppDataSocialMedia extends Component {
 
 function mapStateToProps(state) {
   return {
-    qa: state.qa,
+    general: state.general,
     brand: state.brandInfo,
   }
 }

@@ -333,8 +333,8 @@ class BrandLanding extends Component {
 function mapStateToProps(state) {
   console.log('app state', state)
   return {
-    contact: state.contactSumm,
-    general: state.generalSumm,
+    contact: state.contact,
+    general: state.general,
   }
 }
 

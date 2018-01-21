@@ -16,8 +16,9 @@ class BrandCauses extends Component {
     this.state = {
       isEditing: null,
       currentAnswer: null,
-      save: false,
+      changeError: false,
       progressBar: 0,
+      renderChangeError: false,
     }
 
 
@@ -33,8 +34,8 @@ class BrandCauses extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.qa !== this.props.qa) {
-      _.map(nextProps.qa, quest => {
+    if(nextProps.causes !== this.props.causes) {
+      _.map(nextProps.causes, quest => {
         this.setState({
           [quest.question]: quest.answer,
           [`${quest.question}Original`]: quest.answer,
@@ -50,13 +51,15 @@ class BrandCauses extends Component {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state[event.target.name]){
-      //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
-      this.setState({isEditing: event.target.value, currentAnswer: this.state[event.target.value]})
-    }
-    //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
-    else {
-      this.setState({isEditing: event.target.value, currentAnswer: null})
+    if(this.state.changeError === false) {
+      if(this.state[event.target.name]){
+        this.setState({isEditing: event.target.value, currentAnswer: this.state[event.target.value]})
+      } else {
+        this.setState({isEditing: event.target.value, currentAnswer: null})
+      }
+    } else {
+      this.setState({renderChangeError: true})
+      alert(`Please click Save on previously edited question to save your selected answers or Cancel to disregard your selections`)
     }
   }
   //sets state for isEditing to null which will toggle the ability to edit
@@ -65,7 +68,10 @@ class BrandCauses extends Component {
       isEditing: null,
       [`${event.target.name}Answer`]: this.state[`${event.target.name}OriginalAnswer`],
       [event.target.name]: this.state[`${event.target.name}Original`],
-      currentAnswer: null})
+      currentAnswer: null,
+      changeError: false,
+      renderChangeError: false,
+    })
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
@@ -75,7 +81,7 @@ class BrandCauses extends Component {
       this.setState({error: true})
     } else {
       this.props.updateCause(id, event.target.name, {answer: this.state.currentAnswer})
-      this.setState({isEditing: null, save: true, [`${event.target.name}Answer`]: this.state.tempAnswer})
+      this.setState({isEditing: null, [`${event.target.name}Answer`]: this.state.tempAnswer, changeError: false, renderChangeError: false})
       if(!this.state[`${event.target.name}OriginalAnswer`]) {
         this.props.createCause({brand: id, question: event.target.name, answer: this.state.currentAnswer})
         return this.state.progressBar++
@@ -93,6 +99,8 @@ class BrandCauses extends Component {
       [name]: parseInt(value),
       currentAnswer: parseInt(value),
       error: false,
+      changeError: true,
+      errorMessage: name,
     })
   }
 
@@ -115,13 +123,13 @@ class BrandCauses extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.qa)
+    console.log('props', this.props.causes)
     console.log('pre_qa', this.props.pre_qa)
     console.log('state', this.state.currentAnswer)
     const { id }  = this.props.match.params
     const isEditing = this.state.isEditing
     const state = this.state
-    const props = this.props.qa
+    const props = this.props.causes
     return(
       <div className='form-container'>
         <QualiHeading id={id} brand={this.props.brand}/>
@@ -142,6 +150,7 @@ class BrandCauses extends Component {
               <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in? *</h4>
               {this.renderQuestion('made-in')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' name='made-in' onClick={this.handleCancel} >Cancel</button></div>
                 <div><button name='made-in' onClick={this.handleSave}  value='1'>Save</button></div>
@@ -162,6 +171,7 @@ class BrandCauses extends Component {
               <h4>Is the Brand Certified B-Corp? *</h4>
               {this.renderQuestion('b-corp')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' name='b-corp' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='b-corp' onClick={this.handleSave} value='6'>Save</button></div>
@@ -183,6 +193,7 @@ class BrandCauses extends Component {
               <h4>Is the brand a social enterprise that provides employment for people from a disadvantaged background? *</h4>
               {this.renderQuestion('social-enterprise')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' name='social-enterprise' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='social-enterprise' onClick={this.handleSave} value='8'>Save</button></div>
@@ -204,6 +215,7 @@ class BrandCauses extends Component {
               <h4>Does the brand have a 1 for 1 model? *</h4>
               {this.renderQuestion('1-for-1')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' name='1-for-1' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='1-for-1' onClick={this.handleSave} value='10'>Save</button></div>
@@ -225,6 +237,7 @@ class BrandCauses extends Component {
               <h4>Is the brand Vegan? *</h4>
               {this.renderQuestion('vegan')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' name='vegan' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='vegan' onClick={this.handleSave} value='12'>Save</button></div>
@@ -246,6 +259,7 @@ class BrandCauses extends Component {
               <h4>What Percentage of the brands products are certified Fair Trade? *</h4>
               {this.renderQuestion('fair-trade')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' name='fair-trade' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='fair-trade' onClick={this.handleSave} value='14'>Save</button></div>
@@ -267,6 +281,7 @@ class BrandCauses extends Component {
               <h4>What percentage of products are made from certified Organic materials? *</h4>
               {this.renderQuestion('organic')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' name='organic' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='organic' onClick={this.handleSave} value='16'>Save</button></div>
@@ -287,6 +302,7 @@ class BrandCauses extends Component {
               <h4>What percentage of products are made from a substantial proportion(-50%) of recycled/upcycled materials? *</h4>
               {this.renderQuestion('recycled')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' name='recycled' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='recycled' onClick={this.handleSave} value='18'>Save</button></div>
@@ -309,7 +325,7 @@ class BrandCauses extends Component {
 
 function mapStateToProps(state) {
   return {
-    qa: state.qa,
+    causes: state.causes,
     pre_qa: state.preQa,
     brand: state.brandInfo,
   }

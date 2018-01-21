@@ -39,8 +39,8 @@ class SuppDataImage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.pre_qa !== this.props.pre_qa) {
-      _.map(nextProps.pre_qa, logo => {
+    if(nextProps.logo !== this.props.logo) {
+      _.map(nextProps.logo, logo => {
         if(logo.is_selected && logo.is_selected === true) {
           this.setState({logo_selected: logo.id, logo_url: logo.url, originalLogo_selected: logo.id, originalLogo_url: logo.url})
           this.state.progressBar++
@@ -49,8 +49,8 @@ class SuppDataImage extends Component {
         this.state.logos.push(logo)
       })
     }
-    if(nextProps.qa !== this.props.qa) {
-      _.map(nextProps.qa, image => {
+    if(nextProps.image !== this.props.image) {
+      _.map(nextProps.image, image => {
         if(image.is_selected && image.is_selected === true) {
           this.setState({image_selected: image.id, image_url: image.url, originalImage_selected: image.id, originalImage_url: image.url})
           this.state.progressBar++
@@ -133,7 +133,7 @@ class SuppDataImage extends Component {
         )
       })
     } else {
-      if(Object.keys(this.props.pre_qa).length > 0) {
+      if(Object.keys(this.props.logo).length > 0) {
         return(<p>...Loading New Images</p>)
       } else {
         return(<p>No Logos Found</p>)
@@ -159,7 +159,7 @@ class SuppDataImage extends Component {
         )
       })
     } else {
-      if(this.props.qa.length > 0) {
+      if(this.props.image.length > 0) {
         return(<p>...Loading New Images</p>)
       } else {
         return(<p>No Images Found</p>)
@@ -169,12 +169,12 @@ class SuppDataImage extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.qa)
-    console.log('preQA', this.props.pre_qa)
+    console.log('props', this.props.image)
+    console.log('preQA', this.props.logo)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
     const state = this.state
-    const props = this.props.qa
+    const props = this.props.image
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
@@ -250,8 +250,8 @@ class SuppDataImage extends Component {
 
 function mapStateToProps(state) {
   return {
-    qa: state.qa,
-    pre_qa: state.preQa,
+    image: state.image,
+    logo: state.logo,
     brand: state.brandInfo,
   }
 }

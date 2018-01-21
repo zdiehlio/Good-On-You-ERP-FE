@@ -1,4 +1,4 @@
-import { FETCH_CONTACT } from '../actions'
+import { FETCH_CONTACT, UPDATE_CONTACT } from '../actions'
 import _ from 'lodash'
 
 export default function(state = {}, action) {
@@ -7,6 +7,12 @@ export default function(state = {}, action) {
     if(!action.error) {
       console.log('contact summary', action.payload.data)
       return {...state.contactSumm, ...action.payload.data}
+    }
+    return {error: action.error}
+  case UPDATE_CONTACT:
+    if (!action.error) {
+      console.log('update, contact', action.payload.data)
+      return action.payload.data
     }
     return {error: action.error}
   default:

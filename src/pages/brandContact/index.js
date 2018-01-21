@@ -34,19 +34,19 @@ class BrandContact extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.qa.contact !== this.props.qa.contact) {
-      if(nextProps.qa.contact) {
-        if(nextProps.qa.contact.length > 1) {
+    if(nextProps.contact.contact !== this.props.contact.contact) {
+      if(nextProps.contact.contact) {
+        if(nextProps.contact.contact.length > 1) {
           this.setState({errorContact: true})
         }
         this.setState({
-          error_email: nextProps.qa.contact.email ? false : true,
-          name: nextProps.qa.contact.name,
-          email: nextProps.qa.contact.email,
-          relationship_manager: nextProps.qa.contact.relationship_manager,
-          originalName: nextProps.qa.contact.name,
-          originalEmail: nextProps.qa.contact.email,
-          originalRelationship_manager: nextProps.qa.contact.relationship_manager,
+          error_email: nextProps.contact.contact.email ? false : true,
+          name: nextProps.contact.contact.name,
+          email: nextProps.contact.contact.email,
+          relationship_manager: nextProps.contact.contact.relationship_manager,
+          originalName: nextProps.contact.contact.name,
+          originalEmail: nextProps.contact.contact.email,
+          originalRelationship_manager: nextProps.contact.contact.relationship_manager,
         })
         return this.state.progressBar++
       }
@@ -74,11 +74,9 @@ class BrandContact extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(this.state.error_email === false) {
-      if(this.props.qa.contact) {
-        console.log('update')
+      if(this.props.contact.contact) {
         this.props.updateContact(id, {name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
       } else {
-        console.log('create')
         this.props.createContact({brand: id, name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
       }
       this.setState({isEditing: null, renderError: false, error_email: false})
@@ -91,13 +89,10 @@ class BrandContact extends Component {
   handleInput(event, { value, name }) {
     if(name === 'email') {
       if (value=== '') {
-        console.log('email empty')
         this.setState({error_email: true})
       } else if(/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(value)) {
-        console.log('email invalid')
         this.setState({error_email: false})
       } else {
-        console.log('email error')
         this.setState({error_email: true})
       }
     }
@@ -106,12 +101,12 @@ class BrandContact extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.qa)
+    console.log('props', this.props.contact)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
     const state = this.state
-    const props = this.props.qa
+    const props = this.props.contact
     return(
       <div className='form-container'>
         <OverviewHeading id={id} brand={this.props.brand}/>
@@ -182,7 +177,7 @@ class BrandContact extends Component {
 
 function mapStateToProps(state) {
   return {
-    qa: state.qa,
+    contact: state.contact,
     brand: state.brandInfo,
   }
 }

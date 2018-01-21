@@ -36,9 +36,9 @@ class SuppDataAlias extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.qa !== this.props.qa) {
-      this.setState({aliasArr: _.map(nextProps.qa, ali => {return {id: ali.id, alias: ali.alias}})})
-      if(Object.keys(nextProps.qa).length > 0) {
+    if(nextProps.alias !== this.props.alias) {
+      this.setState({aliasArr: _.map(nextProps.alias, ali => {return {id: ali.id, alias: ali.alias}})})
+      if(Object.keys(nextProps.alias).length > 0) {
         this.state.progressBar++
       }
     }
@@ -62,7 +62,7 @@ class SuppDataAlias extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     //if a summary already exists, will set state of same target name to the current answer value and also toggle editing
-    _.map(this.props.qa, name=> {
+    _.map(this.props.alias, name=> {
       this.setState({[name.alias]: name.alias})
     })
     this.setState({isEditing: event.target.name, save: false})
@@ -113,10 +113,10 @@ class SuppDataAlias extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.qa)
+    console.log('props', this.props.alias)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
-    const prop = this.props.qa
+    const prop = this.props.alias
     const state = this.state
     const { id }  = this.props.match.params
     return(
@@ -176,7 +176,7 @@ class SuppDataAlias extends Component {
 
 function mapStateToProps(state) {
   return {
-    qa: state.qa,
+    alias: state.alias,
     brand: state.brandInfo,
   }
 }

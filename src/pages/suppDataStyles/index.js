@@ -26,6 +26,7 @@ class SuppDataStyles extends Component {
       sporty: 0,
       trendy: 0,
       tempAnswers: [],
+      changeError: false,
     }
 
 
@@ -42,8 +43,8 @@ class SuppDataStyles extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.qa !== this.props.qa) {
-      _.map(nextProps.qa, compare => {
+    if(nextProps.styles !== this.props.styles) {
+      _.map(nextProps.styles, compare => {
         if(compare.style_qa.question === 'style-scores') {
           this.setState({
             [`original${compare.style_qa.question}`]: compare.style_qa.question,
@@ -77,16 +78,20 @@ class SuppDataStyles extends Component {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.setState({
-      isEditing: event.target.name,
-    })
-    console.log('edit', this.state[event.target.name])
+    if(this.state.changeError === false) {
+      this.setState({
+        isEditing: event.target.name,
+      })
+    } else {
+      this.setState({renderChangeError: true})
+      alert(`Please click Save on previously edited question to save your selected answers or cancel to disregard your selections`)
+    }
   }
 
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.default()
-    this.setState({isEditing: null})
+    this.setState({isEditing: null, changeError: false, renderChangeError: false})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
@@ -111,7 +116,7 @@ class SuppDataStyles extends Component {
         }
       })
     }
-    this.setState({isEditing: null})
+    this.setState({isEditing: null, changeError: false, renderChangeError: false})
   }
 
   handlePercentage(event) {
@@ -133,6 +138,7 @@ class SuppDataStyles extends Component {
     } else {
       this.setState({progress: [...this.state.progress, event.target.name]})
     }
+    this.setState({changeError: true})
   }
 
   renderAnswers(el) {
@@ -178,6 +184,7 @@ class SuppDataStyles extends Component {
     } else {
       this.setState({tempAnswers: [...this.state.tempAnswers, name], styles: [...this.state.styles, {brand: id, style: name}]})
     }
+    this.setState({changeError: true})
   }
 
   renderStyles(el) {
@@ -198,6 +205,7 @@ class SuppDataStyles extends Component {
             )
           }
         })}
+        <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
         <div className='button-container'>
           <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
           <div><button name={el} onClick={this.handleSave}>Save</button></div>
@@ -241,13 +249,13 @@ class SuppDataStyles extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props qa', this.props.qa)
+    console.log('props styles', this.props.styles)
     console.log('props pre_qa', this.props.pre_qa)
     console.log('state', this.state)
     const { id }  = this.props.match.params
     const isEditing = this.state.isEditing
     const state = this.state
-    const props = this.props.qa
+    const props = this.props.styles
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
@@ -425,7 +433,7 @@ class SuppDataStyles extends Component {
 
 function mapStateToProps(state) {
   return {
-    qa: state.qa,
+    styles: state.styles,
     pre_qa: state.preQa,
     brand: state.brandInfo,
   }

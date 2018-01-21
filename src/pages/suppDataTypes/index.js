@@ -32,15 +32,15 @@ class SuppDataTypes extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { id } = this.props.match.params
-    if(nextProps.qa !== this.props.qa) {
-      _.mapValues(nextProps.qa, type => {
+    if(nextProps.types !== this.props.types) {
+      _.mapValues(nextProps.types, type => {
         this.setState({[type.product]: type.product})
         this.state.typeValues.push({brand: type.brand, product: type.product})
       })
-      if(Object.keys(nextProps.qa).length > 0) {
+      if(Object.keys(nextProps.types).length > 0) {
         this.state.progressBar++
       }
-      // this.setState({typeValues: _.map(nextProps.qa, type => {return {brand: id, product: type.product} })})
+      // this.setState({typeValues: _.map(nextProps.types, type => {return {brand: id, product: type.product} })})
     }
   }
 
@@ -101,11 +101,11 @@ class SuppDataTypes extends Component {
   }
 
   render() {
-    console.log('props', this.props.qa)
+    console.log('props', this.props.types)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
     const state = this.state
-    const props = this.props.qa
+    const props = this.props.types
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>
@@ -188,7 +188,7 @@ class SuppDataTypes extends Component {
 
 function mapStateToProps(state) {
   return {
-    qa: state.qa,
+    types: state.types,
     brand: state.brandInfo,
   }
 }

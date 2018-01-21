@@ -408,7 +408,7 @@ class BrandGeneral extends Component {
 function mapStateToProps(state) {
   console.log('app state', state)
   return {
-    general: state.generalSumm,
+    general: state.general,
     brand: state.brandInfo,
   }
 }
