@@ -106,19 +106,22 @@ class SuppDataSocialMedia extends Component {
         <Form>
           {isEditing === 'social' ? (
             <div className='editing'>
+              <h5>Brand Social Media</h5>
+              <p>What is the Facebook URL? *</p>
               <Form.Field className={state.facebook_urlError === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='www.facebook.com/'
-                  placeholder='facebook page name *'
+                  placeholder='facebook page name'
                   onChange={this.handleInput}
                   name='facebook_url'
                   value={state.facebook_url}/>
               </Form.Field>
               {state.facebook_urlError === true ? <p className='error-message'>Please enter a valid facbook url</p> : ''}
+              <p>What is the Instagram URL? *</p>
               <Form.Field className={state.instagram_urlError === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='www.instagram.com/'
-                  placeholder='instagram account name *'
+                  placeholder='instagram account name'
                   onChange={this.handleInput}
                   name='instagram_url'
                   value={state.instagram_url}/>
@@ -130,9 +133,9 @@ class SuppDataSocialMedia extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h5>Brand Social Media *</h5>
-              <p>www.facebook.com/{state.facebook_url}</p>
-              <p>www.instagram.com/{state.instagram_url}</p>
+              <h5>Brand Social Media</h5>
+              {state.facebook_url ? <p>Facebook Page Name: {state.facebook_url}</p> : ''}
+              {state.instagram_url ? <p>Instagram Tag Name: {state.instagram_url}</p> : ''}
               <div className='button-container'>
                 <div></div>
                 <div><button name='social' onClick={this.handleEdit}>Edit</button></div>

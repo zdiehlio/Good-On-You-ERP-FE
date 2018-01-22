@@ -46,25 +46,27 @@ class SuppDataCategory extends Component {
     const { id } = this.props.match.params
     if(nextProps.pre_qa !== this.props.pre_qa) {
       _.map(nextProps.pre_qa, cat => {
-        this.setState({[cat.name]: 'chip'})
+        this.setState({ [cat.name]: 'chip' })
       })
     }
     if(nextProps.categories !== this.props.categories) {
       _.map(nextProps.categories, check => {
+        console.log('chang props')
         this.setState({[check.category.name]: 'chip-selected'})
+        this.state.currentAnswer.push({ brand: id, category_id: check.id })
         if(check.dominant === true) {
+          this.setState({ current_dominant_id: check.id, dominant: true })
           this.state.progressBar++
-          console.log('dominant')
         }
       })
       _.map(nextProps.categories, check => {
         if(check.dominant === true) {
-          this.setState({current_dominant_id: check.category_id, current_dominant_name: check.category.name})
+          this.setState({ current_dominant_id: check.category_id, current_dominant_name: check.category.name })
         }
       })
       this.setState({
-        currentAnswer: _.map(nextProps.categories, cat => {return {brand: id, category_id: cat.category_id}}),
-        dominantOptions: _.map(nextProps.categories, dom => {return {name: dom.category.name, id: dom.category_id}}),
+        currentAnswer: _.map(nextProps.categories, cat => {return { brand: id, category_id: cat.category_id }}),
+        dominantOptions: _.map(nextProps.categories, dom => {return { name: dom.category.name, id: dom.category_id }}),
         dominant_id: _.map(nextProps.categories, check => {return check.category_id}),
       })
       if(Object.keys(nextProps.categories).length > 0) {
@@ -76,7 +78,11 @@ class SuppDataCategory extends Component {
   componentWillUpdate(nextProps, nextState) {
     const { id } = this.props.match.params
     if (nextState.save == true && this.state.save == false) {
-      this.setState({currentAnswer: _.map(nextProps.categories, cat => {return {brand: id, category_id: cat.category_id}})})
+      console.log('update')
+      this.setState({
+        currentAnswer: _.map(nextProps.categories, cat => {return { brand: id, category_id: cat.category_id }}),
+
+      })
     }
   }
 
@@ -122,9 +128,6 @@ class SuppDataCategory extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(event.target.name === '1') {
-      if(!this.state.current_dominant_id) {
-        this.setState({dominantError: true})
-      }
       this.props.createBrandCategory(id, this.state.currentAnswer)
       if(Object.keys(this.props.categories).length === 0) {
         this.state.progressBar++
@@ -140,8 +143,8 @@ class SuppDataCategory extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(this.state[event.target.name] === 'chip-selected') {
-      if(event.target.value === this.state.current_dominant_id) {
-        this.setState({current_dominant_id: null, dominantError: true})
+      if(parseInt(event.target.value) === this.state.current_dominant_id) {
+        this.setState({current_dominant_id: null})
       }
       this.setState({
         [event.target.name]: 'chip',
@@ -167,14 +170,13 @@ class SuppDataCategory extends Component {
       current_dominant_id: parseInt(event.target.value),
       current_dominant_name: event.target.name,
       dominant: {dominant: true},
-      dominantError: false,
     })
   }
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.categories)
-    console.log('state', this.state.dominantError)
+    console.log('state', this.state)
     console.log('pre_qa', this.props.pre_qa)
     const state = this.state
     const props = this.props.categories
@@ -220,7 +222,7 @@ class SuppDataCategory extends Component {
             <div className='editing'>
               <h5>What is the Brands dominant category?</h5>
               {state.dominantOptions.length <= 0 ? <p className='error-message'>Please select categories at the previous question first</p> : ''}
-              {state.dominantError === true || !state.current_dominant_id ? <p className='error-message'>No dominant category selected, pick one</p> : ''}
+              {state.dominantOptions.length > 0 && !state.current_dominant_id ? <p className='error-message'>No dominant category selected, pick one</p> : ''}
               <ul>
                 {this.renderDominant()}
               </ul>

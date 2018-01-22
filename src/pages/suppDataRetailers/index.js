@@ -284,10 +284,12 @@ class SuppDataRetailers extends Component {
             </div>) : (
             <div className='not-editing'>
               <h5>What is the Main Retailer? *</h5>
-              <p>Retailer Name: {state.name}</p>
-              <p>Retailer Website: {state.website}</p>
-              <h5>Retailer Territorries</h5>
-              <ul>{_.map(sorted, list => {return (<li key={list.name}>{list.name}</li>)})}</ul>
+              {state.name ? <p>Retailer Name: {state.name}</p> : ''}
+              {state.website ? <p>Retailer Website: {state.website}</p> : ''}
+              {state.territories.length > 0 ? <h5>Retailer Territories</h5> : ''}
+              {state.territories.length > 0 ?
+                <ul>{_.map(sorted, list => {return (<li key={list.name}>{list.name}</li>)})}</ul> :
+                '' }
               <div className='button-container'>
                 <div></div>
                 <div><button name='retailer' onClick={this.handleEdit}>Edit</button></div>

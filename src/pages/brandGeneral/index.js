@@ -239,8 +239,8 @@ class BrandGeneral extends Component {
           )}
           <div className='not-editing'>
             <h5>Rating date and verification date</h5>
-            <div>{props.rating_date ? moments(props.rating_date) : ''}</div>
-            <div>{props.verification_date ? moments(props.verification_date) : ''}</div>
+            <div>{props.rating_date ? moments(props.rating_date) : 'No rating date, the rating hasn\'t been submitted yet'}</div>
+            <div>{props.verification_date ? moments(props.verification_date) : 'No verification date, the brand hasn\'t been verified yet'}</div>
             <p className='small-divider'></p>
           </div>
           {isEditing === '3' ? (

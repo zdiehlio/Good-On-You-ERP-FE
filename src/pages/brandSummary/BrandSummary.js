@@ -34,8 +34,8 @@ class BrandSummary extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.qa !== this.props.qa) {
-      _.map(nextProps.qa, summary=> {
+    if(nextProps.summary !== this.props.summary) {
+      _.map(nextProps.summary, summary=> {
         this.setState({renderSummary: summary.text, currentAnswer: summary.text})
         if(summary.text) {
           this.state.progressBar++
@@ -73,11 +73,17 @@ class BrandSummary extends Component {
   }
 
   renderRawRatings() {
-    return _.map(this.props.pre_qa, answer => {
-      return(
-        <li key={answer.text}>{answer.text}</li>
-      )
-    })
+    if(this.props.pre_qa) {
+      if(this.props.pre_qa.length > 0) {
+        return _.map(this.props.pre_qa, answer => {
+          return(
+            <div key={answer.text}>{answer.text}</div>
+          )
+        })
+      } else {
+        return <p>There is no answer at the rating section yet</p>
+      }
+    }
   }
 
   // renderSummary() {
@@ -91,11 +97,11 @@ class BrandSummary extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.qa)
+    console.log('props', this.props.summary)
     console.log('pre props', this.props.pre_qa)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
-    const props = this.props.qa
+    const props = this.props.summary
     const state = this.state
     const { id }  = this.props.match.params
     return(
@@ -138,10 +144,15 @@ class BrandSummary extends Component {
               </div>
             </div>
           )}
-          <h4>{state.renderSummary ? 'Current Brand Summary' : ''}</h4>
-          {state.renderSummary}
-          <h4>Rating Answers</h4>
-          <ul>{this.renderRawRatings()}</ul>
+          <div className='not-editing'>
+            <h4>{state.renderSummary ? 'Current Brand Summary' : ''}</h4>
+            <div>{state.renderSummary}</div>
+          </div>
+          <div className='not-editing'>
+            <p className='small-divider'></p>
+            <h4>Rating Answers</h4>
+            {this.renderRawRatings()}
+          </div>
         </Form>
       </div>
     )
@@ -150,7 +161,7 @@ class BrandSummary extends Component {
 
 function mapStateToProps(state) {
   return {
-    qa: state.qa,
+    summary: state.summary,
     pre_qa: state.preQa,
     brand: state.brandInfo,
   }

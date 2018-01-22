@@ -38,9 +38,9 @@ class BrandSentences extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { id } = this.props.match.params
-    if(nextProps.qa !== this.props.qa) {
-      if(nextProps.qa) {
-        _.map(nextProps.qa, ident => {
+    if(nextProps.sentence !== this.props.sentence) {
+      if(nextProps.sentence) {
+        _.map(nextProps.sentence, ident => {
           if(ident.is_selected === true) {
             this.setState({originalSource: ident.source, originalSelect: ident.slug, originalId: ident.id, originalAnswer: ident.text, currentSelect: ident.slug, currentId: ident.id, finalAnswer: ident.text, finalSource: ident.source})
             this.state.progressBar++
@@ -78,7 +78,7 @@ class BrandSentences extends Component {
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     const { id }  = this.props.match.params
-    if(this.props.qa[this.state.currentSelect]) {
+    if(this.props.sentence[this.state.currentSelect]) {
       this.props.updateSentence(id, this.state.currentId, {text: this.state.finalAnswer, is_selected: true})
     } else {
       this.props.createSentence({brand: id, text: this.state.finalAnswer, is_selected: true})
@@ -88,8 +88,8 @@ class BrandSentences extends Component {
   }
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
   handleRadio(event){
-    if(this.props.qa.length > 0) {
-      _.map(this.props.qa, check => {
+    if(this.props.sentence.length > 0) {
+      _.map(this.props.sentence, check => {
         if(event.target.name === check.slug) {
           this.setState({textlength: event.target.value.length, currentSelect: check.slug, finalAnswer: event.target.value, currentId: check.id, finalSource: check.source})
         }
@@ -100,7 +100,7 @@ class BrandSentences extends Component {
   }
 
   renderField() {
-    return _.map(this.props.qa, check => {
+    return _.map(this.props.sentence, check => {
       if(check.slug === 'default-1' || check.slug === 'default-2') {
         return(
           <Form>
@@ -127,12 +127,12 @@ class BrandSentences extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.qa)
+    console.log('props', this.props.sentence)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
     const state = this.state
-    const props = this.props.qa
+    const props = this.props.sentence
     return(
       <div className='form-container'>
         <QualiHeading id={id} brand={this.props.brand}/>
@@ -151,8 +151,8 @@ class BrandSentences extends Component {
           {isEditing === '1' ? (
             <div className='editing'>
               <h5>What is the one sentence that describes the brand best?</h5>
-              <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p>
-              {state['default-1'] || state['default-2'] ? this.renderField() : this.renderNone()}
+              {state['default-1'] || state['default-2'] ? <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p> : <p>No default sentences found, Please create one</p>}
+              {state['default-1'] || state['default-2'] ? this.renderField() : ''}
               <h5>Edit the one you chose or write a new one</h5>
               <TextArea
                 autoHeight
@@ -185,7 +185,7 @@ class BrandSentences extends Component {
 
 function mapStateToProps(state) {
   return {
-    qa: state.qa,
+    sentence: state.sentence,
     brand: state.brandInfo,
   }
 }
