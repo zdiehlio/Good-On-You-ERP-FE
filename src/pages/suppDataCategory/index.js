@@ -20,6 +20,7 @@ class SuppDataCategory extends Component {
       currentAnswer: [],
       catOptions: [],
       categories: [],
+      originalSelected: [],
       finalAnswer: null,
       input: null,
       save: false,
@@ -51,11 +52,11 @@ class SuppDataCategory extends Component {
     }
     if(nextProps.categories !== this.props.categories) {
       _.map(nextProps.categories, check => {
-        console.log('chang props')
         this.setState({[check.category.name]: 'chip-selected'})
+        this.state.originalSelected.push(check.category.name)
         this.state.currentAnswer.push({ brand: id, category_id: check.id })
         if(check.dominant === true) {
-          this.setState({ current_dominant_id: check.id, dominant: true })
+          this.setState({ originalDominant: check.id, current_dominant_id: check.id, dominant: true })
           this.state.progressBar++
         }
       })
@@ -67,6 +68,7 @@ class SuppDataCategory extends Component {
       this.setState({
         currentAnswer: _.map(nextProps.categories, cat => {return { brand: id, category_id: cat.category_id }}),
         dominantOptions: _.map(nextProps.categories, dom => {return { name: dom.category.name, id: dom.category_id }}),
+        originalDominantOptions: _.map(nextProps.categories, dom => {return { name: dom.category.name, id: dom.category_id }}),
         dominant_id: _.map(nextProps.categories, check => {return check.category_id}),
       })
       if(Object.keys(nextProps.categories).length > 0) {
@@ -78,7 +80,6 @@ class SuppDataCategory extends Component {
   componentWillUpdate(nextProps, nextState) {
     const { id } = this.props.match.params
     if (nextState.save == true && this.state.save == false) {
-      console.log('update')
       this.setState({
         currentAnswer: _.map(nextProps.categories, cat => {return { brand: id, category_id: cat.category_id }}),
 
@@ -120,8 +121,15 @@ class SuppDataCategory extends Component {
   }
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    event.default()
-    this.setState({isEditing: null, save: true})
+    event.preventDefault()
+    _.map(this.props.pre_qa, cat => {
+      if(this.state.originalSelected.includes(cat.name)) {
+        this.setState({[cat.name]: 'chip-selected'})
+      } else {
+        this.setState({[cat.name]: 'chip'})
+      }
+    })
+    this.setState({dominantOptions: this.state.originalDominantOptions, current_dominant_id: this.state.originalDominant, isEditing: null, save: true})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleCatSave(event) {
@@ -129,6 +137,7 @@ class SuppDataCategory extends Component {
     const { id }  = this.props.match.params
     if(event.target.name === '1') {
       this.props.createBrandCategory(id, this.state.currentAnswer)
+      this.setState({originalSelected: _.map(this.state.currentAnswer, check => check.name)})
       if(Object.keys(this.props.categories).length === 0) {
         this.state.progressBar++
       }
@@ -176,7 +185,7 @@ class SuppDataCategory extends Component {
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.categories)
-    console.log('state', this.state)
+    console.log('state', this.state.originalDominantOptions)
     console.log('pre_qa', this.props.pre_qa)
     const state = this.state
     const props = this.props.categories

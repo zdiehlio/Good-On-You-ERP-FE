@@ -21,6 +21,7 @@ class BrandGeneral extends Component {
       isEditing: null,
       currentAnswer: '',
       sizeValues: [],
+      originalSizeValues: [],
       deleteSize: [],
       currentValues: [],
       parent_company: '',
@@ -51,6 +52,7 @@ class BrandGeneral extends Component {
     if(nextProps.general !== this.props.general) {
       _.map(nextProps.general.size, crit => {
         this.state.sizeValues.push({brand: id, criteria: crit.criteria})
+        this.state.originalSizeValues.push({brand: id, criteria: crit.criteria})
         if(crit) {
           this.setState({[`original${crit.criteria}`]: crit.criteria, [crit.criteria]: crit.criteria})
         }
@@ -104,7 +106,7 @@ class BrandGeneral extends Component {
     _.map(this.state.sizeOptions, size => {
       this.setState({[size]: this.state[`original${size}`]})
     })
-    this.setState({isEditing: null, parent_company: this.state.originalparent_company})
+    this.setState({sizeValues: this.state.originalSizeValues, isEditing: null, parent_company: this.state.originalparent_company})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
@@ -168,7 +170,7 @@ class BrandGeneral extends Component {
     }
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
-  handleInput(event, {name, value}) {
+  handleInput(event, {value, name}) {
     this.validateDate(event)
     if(name === 'name') {
       if(value.length >= 1) {
@@ -376,10 +378,9 @@ class BrandGeneral extends Component {
               <Form.Field inline>
                 <Input
                   label='Parent Company Name'
-                  onFocus={this.handleInput}
                   onChange={this.handleInput}
                   name='parent_company'
-                  value={state.parent_company ? state.parent_company : ''}
+                  value={state.parent_company}
                 />
               </Form.Field>
               <div className='button-container'>

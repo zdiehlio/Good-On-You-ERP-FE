@@ -390,9 +390,9 @@ export function fetchStyles(id) {
   }
 }
 
-export function createStyles(values) {
+export function createStyles(values, id) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
-  const request = axios.post(`${ROOT_URL}/brands-styles`, values)
+  const request = axios.post(`${ROOT_URL}/brands-styles`, values).then(() => axios.get(`${ROOT_URL}/brands-styles?brand=${id}`))
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: CREATE_STYLES, payload: data})

@@ -15,7 +15,7 @@ class SuppDataAlias extends Component {
 
     this.state = {
       isEditing: null,
-      currentAnswer: null,
+      currentAnswer: '',
       renderAlias: null,
       save: false,
       aliasArr: [],
@@ -66,12 +66,11 @@ class SuppDataAlias extends Component {
       this.setState({[name.alias]: name.alias})
     })
     this.setState({isEditing: event.target.name, save: false})
-    console.log('set state', this.state)
   }
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    event.default()
-    this.setState({isEditing: null, renderCurrent: null})
+    event.preventDefault()
+    this.setState({isEditing: null, renderCurrent: null, currentAnswer: ''})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
@@ -141,6 +140,7 @@ class SuppDataAlias extends Component {
                 <Input
                   label='Brand Alias'
                   placeholder={this.currentAnswer}
+                  value={state.currentAnswer}
                   onChange={this.handleInput}
                   name='summary'
                 />

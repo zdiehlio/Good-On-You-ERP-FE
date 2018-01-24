@@ -15,7 +15,11 @@ class SuppDataGender extends Component {
     this.state = {
       isEditing: null,
       genders: [],
+      originalGenders: [],
       progressBar: 0,
+      'gender-men': '',
+      'gender-women': '',
+      'gender-children': '',
     }
 
 
@@ -36,7 +40,9 @@ class SuppDataGender extends Component {
       _.map(nextProps.styles, compare => {
         if(compare.style_qa.question === 'gender') {
           this.state.genders.push({brand: id, style: compare.style_qa.tag})
+          // this.state.originalGenders.push({brand: id, style: compare.style_qa.tag})
           this.setState({[compare.style_qa.tag]: compare.style_qa.tag})
+          // this.setState({[`original${compare.style_qa.tag}`]: compare.style_qa.tag})
           this.state.progressBar++
         }
       })
@@ -51,8 +57,16 @@ class SuppDataGender extends Component {
 
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    event.default()
-    this.setState({isEditing: null})
+    event.preventDefault()
+    const { id } = this.props.match.params
+    this.props.fetchStyles(id)
+    _.map(this.state.genders, check => {
+      this.setState({[check.style]: null})
+    })
+    this.setState({
+      isEditing: null,
+      genders: [],
+    })
   }
 
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -60,7 +74,7 @@ class SuppDataGender extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(this.state.genders.length > 0) {
-      this.props.createStyles(this.state.genders)
+      this.props.createStyles(this.state.genders, id)
       this.setState({isEditing: null})
       this.state.progressBar++
     } else {
@@ -102,7 +116,7 @@ class SuppDataGender extends Component {
           {isEditing === 'gender' ? (
             <div className='editing'>
               <h4>What are the Genders/Ages offered by the brand? *</h4>
-              <Form.Field inline className={this.state.error === true ? 'ui error checkbox' : 'ui checkbox'}>
+              <Form.Field inline className={state.error === true ? 'ui error checkbox' : 'ui checkbox'}>
                 <Checkbox
                   label='Children'
                   onChange={this.handleChange}
@@ -134,9 +148,11 @@ class SuppDataGender extends Component {
             </div>) : (
             <div className='not-editing'>
               <h4>What are the Genders/Ages offered by the brand? *</h4>
-              <p>{this.state['gender-children'] ? 'Children' : ''}</p>
-              <p>{this.state['gender-women'] ? 'Women' : ''}</p>
-              <p>{this.state['gender-men'] ? 'Men' : ''}</p>
+              {_.map(this.state.genders, check => {
+                let gender = check.style.slice(7)
+                return(<div key={check.style}>{gender}</div>)
+              }
+              )}
               <div className='button-container'>
                 <div><button name='gender' onClick={this.handleEdit}>Edit</button></div>
               </div>

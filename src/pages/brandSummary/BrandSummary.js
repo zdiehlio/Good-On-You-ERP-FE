@@ -36,7 +36,7 @@ class BrandSummary extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.summary !== this.props.summary) {
       _.map(nextProps.summary, summary=> {
-        this.setState({renderSummary: summary.text, currentAnswer: summary.text})
+        this.setState({renderSummary: summary.text, originalAnswer: summary.text, currentAnswer: summary.text})
         if(summary.text) {
           this.state.progressBar++
         }
@@ -52,7 +52,7 @@ class BrandSummary extends Component {
   }
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    this.setState({isEditing: null, currentAnswer: null})
+    this.setState({isEditing: null, currentAnswer: this.state.originalAnswer})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
@@ -126,9 +126,8 @@ class BrandSummary extends Component {
                 autoHeight
                 maxLength='3000'
                 placeholder={this.currentAnswer}
-                onFocus={this.handleInput}
                 onChange={this.handleInput}
-                value={state.renderSummary}
+                value={state.currentAnswer}
                 name='summary'/>
               <p>{this.state.textlength}/3000</p>
               <div className='button-container'>
