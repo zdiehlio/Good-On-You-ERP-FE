@@ -18,6 +18,8 @@ class SuppDataStyles extends Component {
       currentAnswer: null,
       progress: [],
       styles: [],
+      validateStyles: [],
+      deleteStyles: [],
       style_scores: 0,
       progressBar: 0,
       casual: 0,
@@ -43,6 +45,7 @@ class SuppDataStyles extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { id }  = this.props.match.params
     if(nextProps.styles !== this.props.styles) {
       _.map(nextProps.styles, compare => {
         if(compare.style_qa.question === 'style-scores') {
@@ -54,15 +57,14 @@ class SuppDataStyles extends Component {
           })
           this.state.style_scores+=compare.score
           if(!this.state[compare.style_qa.question]) {
-            console.log('style progress')
             this.state.progressBar++
             this.setState({[compare.style_qa.question]: compare.style_qa.question})
           }
-        } else {
+        } else if(compare.style_qa.question !== 'kids') {
           if(!this.state[compare.style_qa.question]) {
-            console.log('reg progress')
             this.state.progressBar++
           }
+          this.state.styles.push({brand: id, style: compare.style_qa.tag})
           this.setState({
             [compare.style_qa.question]: compare.style_qa.question,
             [`original${compare.style_qa.tag}`]: compare.style_qa.tag,
@@ -90,28 +92,31 @@ class SuppDataStyles extends Component {
 
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    event.default()
-    this.setState({isEditing: null, changeError: false, renderChangeError: false})
+    event.preventDefault()
+    const { id }  = this.props.match.params
+    _.map(this.state.styles, val => {
+      this.setState({[val.style]: null})
+    })
+    this.setState({tempAnswers: [], styles: [], isEditing: null, changeError: false, renderChangeError: false})
+    this.props.fetchStyles(id)
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
+    this.props.createStyles(this.state.styles)
     _.map(this.state.styles, check => {
-      this.props.createStyles(check)
       if(!this.state[`original${check}`]) {
-        console.log('check')
         this.state.progressBar++
       }
     })
-    _.map(this.state.tempAnswers, temp => {
-      this.setState({[temp]: temp})
-    })
+    // _.map(this.state.tempAnswers, temp => {
+    //   this.setState({[temp]: temp})
+    // })
     if(event.target.name === 'style-scores') {
       _.map(this.state.progress, style => {
         this.props.createStyles({brand: id, style: style, score: this.state[style]})
         if(!this.state[`originalstyle-scores`]) {
-          console.log('styles')
           this.state.progressBar++
         }
       })
@@ -125,15 +130,12 @@ class SuppDataStyles extends Component {
       this.setState({[event.target.name]: 0})
     }
     if(event.target.value === 'add' && this.state[event.target.name] < 1 && this.state.style_scores < 1) {
-      console.log('add', this.state[event.target.name], this.state.style_scores)
       this.setState({[event.target.name]: this.state[event.target.name] + 0.25, style_scores: this.state.style_scores + 0.25})
     }
     if(event.target.value === 'subtract' && this.state[event.target.name] > 0) {
-      console.log('subtract', this.state[event.target.name], this.state.style_scores)
       this.setState({[event.target.name]: this.state[event.target.name] - 0.25, style_scores: this.state.style_scores - 0.25})
     }
     if(this.state.progress.includes(event.target.name)) {
-      console.log('return', this.state[event.target.name], this.state.style_scores)
       return
     } else {
       this.setState({progress: [...this.state.progress, event.target.name]})
@@ -180,9 +182,22 @@ class SuppDataStyles extends Component {
   handleCheckbox(event, { name }){
     const { id }  = this.props.match.params
     if(this.state[name] === name) {
-      this.setState({[`temp${name}`]: name, tempAnswers: this.state.tempAnswers.filter(check => {return check !== name}), styles: this.state.styles.filter(check => {return check.style !== name})})
+      this.setState({
+        // [`temp${name}`]: name,
+        [name]: null,
+        // tempAnswers: this.state.tempAnswers.filter(check => {return check !== name}),
+        deleteValues: [...this.state.styles, {brand: id, style: name}],
+        validateStyles: this.state.styles.filter(check => {return check.style !== name}),
+        styles: this.state.styles.filter(check => {return check.style !== name}),
+      })
     } else {
-      this.setState({tempAnswers: [...this.state.tempAnswers, name], styles: [...this.state.styles, {brand: id, style: name}]})
+      this.setState({
+        // tempAnswers: [...this.state.tempAnswers, name],
+        [name]: name,
+        deleteValues: this.state.styles.filter(check => {return check.style !== name}),
+        validateStyles: [...this.state.styles, {brand: id, style: name}],
+        styles: [...this.state.styles, {brand: id, style: name}],
+      })
     }
     this.setState({changeError: true})
   }
@@ -198,7 +213,7 @@ class SuppDataStyles extends Component {
                 <Checkbox
                   label={style.answer}
                   onChange={this.handleCheckbox}
-                  checked={state[style.tag] || state.tempAnswers.includes(style.tag) ? true : false}
+                  checked={state[style.tag] ? true : false}
                   name={style.tag}
                 />
               </Form.Field>

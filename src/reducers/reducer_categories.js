@@ -9,12 +9,12 @@ export default function(state = {}, action) {
       return _.mapKeys(action.payload.data.data, 'category_id')
     }
     return {error: action.error}
-  case UPDATE_CATEGORY:
-    if (!action.error) {
-      console.log('update, category', action.payload)
-      return action.payload
-    }
-    return {error: action.error}
+  // case UPDATE_CATEGORY:
+  //   if (!action.error) {
+  //     console.log('update, category', action.payload)
+  //     return {...state, [action.payload]}
+  //   }
+  //   return {error: action.error}
   default:
     return state
   }

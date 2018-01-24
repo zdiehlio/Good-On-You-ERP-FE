@@ -15,6 +15,7 @@ class SuppDataTypes extends Component {
       isEditing: null,
       typeValues: [],
       deleteValues: [],
+      validateTypes: [],
       typeOptions: ['activewear', 'casualwear', 'eveningwear', 'smartcasual', 'workwear'],
       save: false,
       progressBar: 0,
@@ -35,7 +36,7 @@ class SuppDataTypes extends Component {
     if(nextProps.types !== this.props.types) {
       _.mapValues(nextProps.types, type => {
         this.setState({[type.product]: type.product})
-        this.state.typeValues.push({brand: type.brand, product: type.product})
+        this.state.validateTypes.push(type.product)
       })
       if(Object.keys(nextProps.types).length > 0) {
         this.state.progressBar++
@@ -52,22 +53,36 @@ class SuppDataTypes extends Component {
   }
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    event.default()
-    this.setState({isEditing: null})
+    event.preventDefault()
+    const { id }  = this.props.match.params
+    _.map(this.state.typeValues, val => {
+      this.setState({[val.product]: null})
+    })
+    this.setState({isEditing: null, typeValues: []})
+    this.props.fetchType(id)
   }
+
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state.typeValues.length > 0 ) {
-      _.map(this.state.deleteValues, type => {
-        this.props.deleteType(id, type)
-      })
-      this.props.createType(this.state.typeValues)
-      this.setState({isEditing: null})
-      this.state.progressBar++
+    if(this.state.typeValues.length > 0 || this.state.deleteValues.length > 0 ) {
+      if(this.state.validateTypes.length <= 0) {
+        this.setState({error: true})
+      } else {
+        _.map(this.state.deleteValues, type => {
+          this.props.deleteType(id, type)
+        })
+        this.props.createType(this.state.typeValues)
+        this.setState({isEditing: null})
+        this.state.progressBar++
+      }
     } else {
-      this.setState({error: true})
+      if(this.state.validateTypes.length > 0) {
+        this.setState({isEditing: null})
+      } else {
+        this.setState({error: true})
+      }
     }
   }
 
@@ -77,11 +92,13 @@ class SuppDataTypes extends Component {
       this.setState({
         [name]: null,
         typeValues: this.state.typeValues.filter(type => {return type.product !== name}),
+        validateTypes: this.state.validateTypes.filter(type => {return type !== name}),
         deleteValues: [...this.state.deleteValues, name],
       })
     } else {
       this.setState({
         [name]: name,
+        validateTypes: [...this.state.validateTypes, name],
         typeValues: [...this.state.typeValues, {brand: id, product: name}],
         deleteValues: this.state.deleteValues.filter(type => {return type !== name}),
         error: false,

@@ -186,14 +186,19 @@ class SuppDataRetailers extends Component {
       }
       return 0
     })
-    console.log('sorted', sorted)
-    return _.map(sorted, select => {
+    if(this.state.territories.length > 0) {
+      return _.map(sorted, select => {
+        return(
+          <button key={select.name} value={select.name} className='chip' onClick={this.handleRemove}>
+            {select.name} {'x'}
+          </button>
+        )
+      })
+    } else {
       return(
-        <button key={select.name} value={select.name} className='chip' onClick={this.handleRemove}>
-          {select.name} {'x'}
-        </button>
+        <p>No retailer{'\''}s territory selected</p>
       )
-    })
+    }
   }
 
   //render contains conditional statements based on state of isEditing as described in functions above.

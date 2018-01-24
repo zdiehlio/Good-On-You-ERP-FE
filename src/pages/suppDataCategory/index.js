@@ -122,14 +122,12 @@ class SuppDataCategory extends Component {
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
+    const { id }  = this.props.match.params
     _.map(this.props.pre_qa, cat => {
-      if(this.state.originalSelected.includes(cat.name)) {
-        this.setState({[cat.name]: 'chip-selected'})
-      } else {
-        this.setState({[cat.name]: 'chip'})
-      }
+      this.setState({[cat.name]: 'chip'})
     })
-    this.setState({dominantOptions: this.state.originalDominantOptions, current_dominant_id: this.state.originalDominant, isEditing: null, save: true})
+    this.setState({dominantOptions: [], current_dominant_id: null, current_dominant_name: null, isEditing: null, save: true})
+    this.props.fetchBrandCategory(id)
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleCatSave(event) {
@@ -145,7 +143,7 @@ class SuppDataCategory extends Component {
       this.props.updateBrandCategory(id, this.state.current_dominant_id, this.state.dominant)
       this.state.progressBar++
     }
-    this.setState({isEditing: null, save: true})
+    this.setState({isEditing: null})
   }
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
   handleCateChange(event){
