@@ -43,3 +43,11 @@
 .hide-summary {
   display: none;
 }
+
+.rating-summary {
+  width: 100% !important;
+}
+
+.rating-summary div {
+  width: calc(100%/4);
+}

@@ -63,6 +63,8 @@ export const UPLOAD_LOGO = 'upload_logo'
 export const FETCHRAW_RATING = 'fetchraw_rating'
 export const BRAND_INFO = 'brand_info'
 export const AUTH_ERROR = 'auth_error'
+export const FETCH_RATING_SCORE = 'fetch_rating_score'
+
 
 
 
@@ -290,6 +292,15 @@ export function fetchAllRating(theme) {
   const request = axios.get(`${ROOT_URL}/themes?name=${theme}`)
   return {
     type: FETCHALL_RATING,
+    payload: request,
+  }
+}
+
+export function fetchRatingScore(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
+  const request = axios.get(`${ROOT_URL}/brands-ratings?brand=${id}`)
+  return {
+    type: FETCH_RATING_SCORE,
     payload: request,
   }
 }

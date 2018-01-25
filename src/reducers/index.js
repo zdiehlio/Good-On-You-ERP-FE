@@ -18,6 +18,7 @@ import styles from './reducer_styles'
 import types from './reducer_types'
 import retailer from './reducer_retailer'
 import alias from './reducer_alias'
+import ratingScore from './reducer_rating_score'
 
 
 const rootReducer = combineReducers({
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
   types,
   retailer,
   alias,
+  ratingScore,
 })
 
 export default rootReducer

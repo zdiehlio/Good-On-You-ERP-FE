@@ -1,6 +1,7 @@
 import {
   FETCH_GENERAL,
   FETCH_RATING,
+  FETCH_RATING_SCORE,
 } from '../actions'
 import _ from 'lodash'
 

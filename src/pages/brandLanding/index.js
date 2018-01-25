@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { fetchGeneral, fetchContact, fetchBrandInfo } from '../../actions'
+import { fetchGeneral, fetchContact, fetchBrandInfo, fetchRatingScore } from '../../actions'
 import { Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 
@@ -26,6 +26,7 @@ class BrandLanding extends Component {
     this.props.fetchBrandInfo(id, 'general')
     this.props.fetchGeneral(id, 'general')
     this.props.fetchContact(id)
+    this.props.fetchRatingScore(id)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,12 +61,56 @@ class BrandLanding extends Component {
     this.setState({show: null})
   }
 
+  capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+  }
+
+  handleHeadline(head) {
+    return _.map(this.props.score.headlines, check => {
+      if(head === check.name) {
+        return(
+          <div key={check.name} className='rating-summary'>
+            <div>{this.capitalize(check.name)}</div>
+            {check.score ? (
+              <div>{check.score}{check.max_score ? `/${check.max_score}` : ''}</div>
+            ) : (
+              <div><Icon name='remove' color='red' /></div>
+            )}
+            <div>{this.state.show !== head ?
+              (<button name={head} onClick={this.handleShow}>Show</button>) :
+              (<button name={head} onClick={this.handleHide}>Hide</button>)}
+            </div>
+            <div>{check.label}</div>
+          </div>
+        )
+      }
+    })
+  }
+
+  handleThemeScore(head, id) {
+    return _.map(this.props.score.headlines, check => {
+      if(check.name === head) {
+        return _.map(check.themes, val => {
+          if(val.id === id) {
+            return(
+              val.score ? (
+                <div key={val.id}>{val.score}{val.max_score ? `/${val.max_score}` : ''}</div>
+              ) : (
+                <div><Icon name='remove' color='red' /></div>
+              )
+            )
+          }
+        })
+      }
+    })
+  }
+
   render() {
     const  id   = this.props.match.params.id
     const props = this.props
     const state = this.state
     console.log('state', state)
-    console.log('props', props)
+    console.log('props', props.score.headlines)
     return(
       <div className='summary-container'>
         <div className='summary-heading'>Rate a brand for: <h1>{props.general.name}</h1></div>
@@ -90,16 +135,13 @@ class BrandLanding extends Component {
         <div className='summary-heading'><h1>Ratings</h1></div>
         <p className='divider'></p>
         <div className='summary-view'>
-          <div>Environment</div>
-          <div>{this.state.show !== 'environment' ?
-            (<button name='environment' onClick={this.handleShow}>Show</button>) :
-            (<button name='environment' onClick={this.handleHide}>Hide</button>)}
-          </div>
+          {this.handleHeadline('environment')}
           {this.state.show === 'environment' ? (
             <span className='show-summary'>
               <p className='small-divider'></p>
               <span className='summary-view'>
                 <div>Resource</div>
+                {this.handleThemeScore('environment', 2)}
                 <div><Link to={`/resource/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
@@ -109,6 +151,7 @@ class BrandLanding extends Component {
             <span className='show-summary'>
               <span className='summary-view'>
                 <div>Climate Change</div>
+                {this.handleThemeScore('environment', 3)}
                 <div><Link to={`/energy/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
@@ -118,6 +161,7 @@ class BrandLanding extends Component {
             <span className='show-summary'>
               <span className='summary-view'>
                 <div>Chemical</div>
+                {this.handleThemeScore('environment', 4)}
                 <div><Link to={`/chemical/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
@@ -127,6 +171,7 @@ class BrandLanding extends Component {
             <span className='show-summary'>
               <span className='summary-view'>
                 <div>Water</div>
+                {this.handleThemeScore('environment', 5)}
                 <div><Link to={`/water/${id}`}><button>Start</button></Link></div>
               </span>
             </span> ) :
@@ -135,16 +180,13 @@ class BrandLanding extends Component {
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
-          <div>Labour</div>
-          <div>{this.state.show !== 'labour' ?
-            (<button name='labour' onClick={this.handleShow}>Show</button>) :
-            (<button name='labour' onClick={this.handleHide}>Hide</button>)}
-          </div>
+          {this.handleHeadline('labour')}
           {this.state.show === 'labour' ? (
             <span className='show-summary'>
               <p className='small-divider'></p>
               <span className='summary-view'>
                 <div>Worker Policies</div>
+                {this.handleThemeScore('labour', 10)}
                 <div><Link to={`/worker_policies/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
@@ -154,6 +196,7 @@ class BrandLanding extends Component {
             <span className='show-summary'>
               <span className='summary-view'>
                 <div>Wages</div>
+                {this.handleThemeScore('labour', 13)}
                 <div><Link to={`/wages/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
@@ -163,6 +206,7 @@ class BrandLanding extends Component {
             <span className='show-summary'>
               <span className='summary-view'>
                 <div>Suppliers</div>
+                {this.handleThemeScore('labour', 14)}
                 <div><Link to={`/suppliers/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
@@ -172,6 +216,7 @@ class BrandLanding extends Component {
             <span className='show-summary'>
               <span className='summary-view'>
                 <div>Practices</div>
+                {this.handleThemeScore('labour', 10)}
                 <div><Link to={`/practices/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
@@ -189,11 +234,7 @@ class BrandLanding extends Component {
         <p className='small-divider'></p>
 
         <div className='summary-view'>
-          <div>Animal</div>
-          <div>{this.state.show !== 'animal' ?
-            (<button name='animal' onClick={this.handleShow}>Show</button>) :
-            (<button name='animal' onClick={this.handleHide}>Hide</button>)}
-          </div>
+          {this.handleHeadline('animal')}
           {this.state.show === 'animal' ? (
             <span className='show-summary'>
               <p className='small-divider'></p>
@@ -246,7 +287,7 @@ class BrandLanding extends Component {
                 <div>Hairs</div>
                 <div><Link to={`/hairs/${id}`}><button>Start</button></Link></div>
               </span>
-              <p className='small-divider'></p>span
+              <p className='small-divider'></p>
             </span> ) :
             (<span className='hide-summary'></span>)}
           {this.state.show === 'animal' ? (
@@ -331,11 +372,11 @@ class BrandLanding extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('app state', state)
   return {
     contact: state.contact,
     general: state.general,
+    score: state.ratingScore,
   }
 }
 
-export default connect(mapStateToProps, { fetchGeneral, fetchContact, fetchBrandInfo })(BrandLanding)
+export default connect(mapStateToProps, { fetchGeneral, fetchContact, fetchBrandInfo, fetchRatingScore })(BrandLanding)
