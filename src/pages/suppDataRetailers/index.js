@@ -14,7 +14,6 @@ class SuppDataRetailers extends Component {
     this.state = {
       isEditing: null,
       errorname: false,
-      errorwebsite: false,
       territories: [],
       originalTerritories: [],
       territoryOptions: [],
@@ -97,27 +96,26 @@ class SuppDataRetailers extends Component {
       online_only: this.state.originalOnline_only,
       territories: this.state.originalTerritories,
       errorname: false,
-      errorwebsite: false,
     })
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state.name && this.state.website && this.state.errorwebsite === false){
+    if(this.state.name){
       if(!this.state.id) {
         console.log('create')
         new Promise((resolve, reject) => {
           resolve(this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website, territories: this.state.territories}))
         }).then(this.props.fetchRetailers(id))
         this.state.progressBar++
-        this.setState({save: true, isEditing: null, errorwebsite: false, errorname: false})
+        this.setState({save: true, isEditing: null, errorname: false})
       } else {
         this.props.updateRetailer(this.state.id, {name: this.state.name, website: this.state.website, territories: this.state.territories})
-        this.setState({isEditing: null, errorwebsite: false, errorname: false})
+        this.setState({isEditing: null, errorname: false})
       }
     } else {
-      this.setState({errorwebsite: this.state.website &&  this.state.errorwebsite === false ? false : true, errorname: this.state.name ? false : true})
+      this.setState({errorname: this.state.name ? false : true})
     }
   }
 
@@ -134,13 +132,13 @@ class SuppDataRetailers extends Component {
     } else {
       this.setState({[`error${name}`]: false})
     }
-    if(name === 'website') {
-      if(/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(value) && value !== ''){
-        this.setState({errorwebsite: false})
-      } else {
-        this.setState({[`error${name}`]: true})
-      }
-    }
+    // if(name === 'website') {
+    //   if(/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(value) && value !== ''){
+    //     this.setState({errorwebsite: false})
+    //   } else {
+    //     this.setState({[`error${name}`]: true})
+    //   }
+    // }
   }
 
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
@@ -248,7 +246,7 @@ class SuppDataRetailers extends Component {
                 />
               </Form.Field>
               <p className='error-message'>{state.errorname === true ? 'Please enter retailer name' : ''}</p>
-              <Form.Field inline className={state.errorwebsite === true ? 'ui error input' : 'ui input'}>
+              <Form.Field inline>
                 <Input
                   label='Retailer Website'
                   value={state.website}
@@ -256,7 +254,6 @@ class SuppDataRetailers extends Component {
                   name='website'
                 />
               </Form.Field>
-              <p className='error-message'>{state.errorwebsite === true ? 'Please enter valid website' : ''}</p>
               <h5>Select one or more Retailer territories</h5>
               <Form.Field>
                 <Select
@@ -284,7 +281,7 @@ class SuppDataRetailers extends Component {
                 <div><button className='button-container' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='retailer'>Save</button></div>
               </div>
-              <div className='error-message'>{this.state.errorname === true || this.state.errorwebsite === true ?
+              <div className='error-message'>{this.state.errorname === true ?
                 'Please fill out all required fields' : ''}</div>
             </div>) : (
             <div className='not-editing'>
