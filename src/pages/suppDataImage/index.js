@@ -183,7 +183,7 @@ class SuppDataImage extends Component {
           <span className='form-navigation'>
             <div><Link to={`/suppDataSocialMedia/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Image</h3></div>
-            <div><Link to={`/suppDataCategory/${id}`}><button className='next'>Next</button></Link></div>
+            <div><Link to={`/suppDataGender/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
         <p className='small-divider'></p>

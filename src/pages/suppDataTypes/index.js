@@ -132,7 +132,7 @@ class SuppDataTypes extends Component {
           <span className='form-navigation'>
             <div><Link to={`/suppDataStyles/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Product Types</h3></div>
-            <div><Link to={`/suppDataRetailers/${id}`}><button className='next'>Next</button></Link></div>
+            <div><Link to={`/suppDataPrice/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
         <p className='small-divider'></p>

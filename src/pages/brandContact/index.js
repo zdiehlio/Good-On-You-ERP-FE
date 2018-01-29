@@ -115,7 +115,7 @@ class BrandContact extends Component {
           <span className='form-navigation'>
             <div><Link to={`/brandGeneral/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Brand Contact</h3></div>
-            <div><Link to={`/resource/${id}`}><button className='next'>Next</button></Link></div>
+            <div><Link to={`/suppDataAlias/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
         <p className='small-divider'></p>

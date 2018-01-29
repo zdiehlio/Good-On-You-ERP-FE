@@ -195,7 +195,7 @@ class SuppDataCategory extends Component {
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/suppDataImage/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><Link to={`/suppDataGender/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Brand Categories</h3></div>
             <div><Link to={`/suppDataStyles/${id}`}><button className='next'>Next</button></Link></div>
           </span>

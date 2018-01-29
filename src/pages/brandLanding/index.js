@@ -160,6 +160,11 @@ class BrandLanding extends Component {
           <div><Link to={`/brandContact/${id}`}><button>{state.contactProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
+        <div className='summary-view'>
+          <div>Alternative Names / Spelling</div>
+          <div><Link to={`/suppDataAlias/${id}`}><button>Start</button></Link></div>
+        </div>
+        <p className='small-divider'></p>
 
         <div className='summary-heading'><h1>Ratings</h1></div>
         <p className='divider'></p>
@@ -361,6 +366,11 @@ class BrandLanding extends Component {
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
+          <div>Gender</div>
+          <div><Link to={`/suppDataGender/${id}`}><button>Start</button></Link></div>
+        </div>
+        <p className='small-divider'></p>
+        <div className='summary-view'>
           <div>Categories</div>
           <div><Link to={`/suppDataCategory/${id}`}><button>Start</button></Link></div>
         </div>
@@ -376,25 +386,14 @@ class BrandLanding extends Component {
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
-          <div>Retailers</div>
-          <div><Link to={`/suppDataRetailers/${id}`}><button>Start</button></Link></div>
-        </div>
-        <p className='small-divider'></p>
-        <div className='summary-view'>
           <div>Price</div>
           <div><Link to={`/suppDataPrice/${id}`}><button>Start</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
-          <div>Gender</div>
-          <div><Link to={`/suppDataGender/${id}`}><button>Start</button></Link></div>
+          <div>Retailers</div>
+          <div><Link to={`/suppDataRetailers/${id}`}><button>Start</button></Link></div>
         </div>
-        <p className='small-divider'></p>
-        <div className='summary-view'>
-          <div>Alternative Names / Spelling</div>
-          <div><Link to={`/suppDataAlias/${id}`}><button>Start</button></Link></div>
-        </div>
-        <p className='small-divider'></p>
       </div>
     )
   }

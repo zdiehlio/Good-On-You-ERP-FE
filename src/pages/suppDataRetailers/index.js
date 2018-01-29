@@ -225,9 +225,9 @@ class SuppDataRetailers extends Component {
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/suppDataTypes/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><Link to={`/suppDataPrice/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Retailer</h3></div>
-            <div><Link to={`/suppDataPrice/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button disabled className='next disabled'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>

@@ -136,7 +136,7 @@ class BrandCauses extends Component {
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/brandContact/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><Link to={`/Skins/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Brand Causes</h3></div>
             <div><Link to={`/brandSentences/${id}`}><button className='next'>Next</button></Link></div>
           </span>

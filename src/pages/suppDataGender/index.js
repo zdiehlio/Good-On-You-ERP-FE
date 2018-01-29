@@ -104,9 +104,9 @@ class SuppDataGender extends Component {
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/suppDataPrice/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><Link to={`/suppDataImage/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Gender</h3></div>
-            <div><Link to={`/suppDataAlias/${id}`}><button className='next'>Next</button></Link></div>
+            <div><Link to={`/suppDataCategory/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
         <p className='small-divider'></p>
