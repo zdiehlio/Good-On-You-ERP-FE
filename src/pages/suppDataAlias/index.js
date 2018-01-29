@@ -125,7 +125,7 @@ class SuppDataAlias extends Component {
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><Link to={`/suppDataGender/${id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Alternative Names</h3></div>
+            <div><h3>Alternative Names / Spelling</h3></div>
             <div><button className='next disabled'>Next</button></div>
           </span>
         </div>

@@ -16,11 +16,11 @@ class OverviewHeading extends Component {
         <div className='qa-heading'>URL: <h5>{brand.website}</h5></div>
         <p className='small-divider'></p>
         <Link to={`/brandGeneral/${id}`}><div className='overview-header'>Brand Overview</div></Link>
-        <div>>></div>
+        <div className='arrow-divider'>>></div>
         <Link to={`/resource/${id}`}><div>Rating</div></Link>
-        <div>>></div>
+        <div className='arrow-divider'>>></div>
         <Link to={`/brandCauses/${id}`}><div>Qualitative Ratings</div></Link>
-        <div>>></div>
+        <div className='arrow-divider'>>></div>
         <Link to={`/suppDataSocialMedia/${id}`}><div>Supplementary Data</div></Link>
         <p className='divider'></p>
       </div>

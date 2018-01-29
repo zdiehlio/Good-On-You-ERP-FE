@@ -113,10 +113,39 @@ class BrandLanding extends Component {
     console.log('props', props.score.headlines)
     return(
       <div className='summary-container'>
-        <div className='summary-heading'>Rate a brand for: <h1>{props.general.name}</h1></div>
-        <p className='small-divider'></p>
-        <div className='summary-heading'>URL: <h5>{props.general.website}</h5></div>
-        <p className='small-divider'></p>
+        <div className='landing-header'>
+          <span className='landing-brand'>
+            <div className='summary-heading'>Rate a brand for: <h1>{props.general.name}</h1></div>
+            <p className='small-divider'></p>
+            <div className='summary-heading'>URL: <h5>{props.general.website}</h5></div>
+            <p className='small-divider'></p>
+          </span>
+          <span className='landing-status'>
+            <div>Rating status: Under Development</div>
+            <p className='small-divider'></p>
+            <div>Supplementary data: Under Development</div>
+            <p className='small-divider'></p>
+            <div>Last modified by: Under Development</div>
+            <p className='small-divider'></p>
+            <div>Verified by: Under Development</div>
+            <p className='small-divider'></p>
+          </span>
+        </div>
+
+        <div className='status-header'>
+          <div>Draft</div>
+          <div className='arrow-divider'>>></div>
+          <div>Scraped</div>
+          <div className='arrow-divider'>>></div>
+          <div>Rated</div>
+          <div className='arrow-divider'>>></div>
+          <div>Verified</div>
+          <div className='arrow-divider'>>></div>
+          <div>Approved</div>
+          <div className='arrow-divider'>>></div>
+          <div>Published</div>
+        </div>
+
         <div className='summary-heading'><h1>Brand Overview</h1></div>
         <p className='divider'></p>
         <div className='summary-view'>
@@ -362,7 +391,7 @@ class BrandLanding extends Component {
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
-          <div>Brand Alias</div>
+          <div>Alternative Names / Spelling</div>
           <div><Link to={`/suppDataAlias/${id}`}><button>Start</button></Link></div>
         </div>
         <p className='small-divider'></p>

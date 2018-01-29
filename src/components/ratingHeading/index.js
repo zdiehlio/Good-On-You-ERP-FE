@@ -15,11 +15,11 @@ class RatingHeading extends Component {
         <div className='qa-heading'>URL: <h5>{brand.website}</h5></div>
         <p className='small-divider'></p>
         <Link to={`/brandGeneral/${id}`}><div>Brand Overview</div></Link>
-        <div>>></div>
+        <div className='arrow-divider'>>></div>
         <Link to={`/resource/${id}`}><div className='rating-header'>Rating</div></Link>
-        <div>>></div>
+        <div className='arrow-divider'>>></div>
         <Link to={`/brandCauses/${id}`}><div>Qualitative Ratings</div></Link>
-        <div>>></div>
+        <div className='arrow-divider'>>></div>
         <Link to={`/suppDataSocialMedia/${id}`}><div>Supplementary Data</div></Link>
         <p className='divider'></p>
       </div>

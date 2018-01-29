@@ -254,3 +254,8 @@ textarea {
 .searchlist-container a {
   color: black;
 }
+
+.arrow-divider {
+  color: #17CABE !important;
+  font-weight: bold;
+}

@@ -18,17 +18,19 @@
 }
 
 .summary-heading {
-  color: #17CABE;
   margin-top: 1em;
 }
 
 .summary-heading h1 {
   display: inline-block;
   margin-left: 1em;
+  color: #17CABE;
 }
 
 .summary-heading h5 {
   display: inline-block;
+  margin-left: 1em;
+  color: #17CABE
 }
 
 .summary-container {
@@ -50,4 +52,27 @@
 
 .rating-summary div {
   width: calc(100%/4);
+}
+
+.status-header {
+  width: 100%;
+  margin: 3em 0em;
+}
+
+.status-header div {
+  display: inline-block;
+  width: calc(100%/11);
+}
+
+.landing-brand {
+  vertical-align: top;
+}
+
+.landing-status {
+  padding: 2em;
+}
+
+.landing-header span {
+  width: calc(100%/2);
+  display: inline-block;
 }
