@@ -176,7 +176,7 @@ class BrandLanding extends Component {
               <span className='summary-view'>
                 <div>Resource</div>
                 {this.handleThemeScore('environment', 2)}
-                <div><Link to={`/resource/${id}`}><button>Start</button></Link></div>
+                <div><Link to={`/env-resource/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
             </span> ) :

@@ -96,14 +96,13 @@ class Rating extends Component {
     event.preventDefault()
     _.map(this.state.ratingValues, val => {
       this.setState({
-        isEditing: null,
         [`answer${val.id}`]: this.state[`originalAnswer${val.id}`],
         [`url${val.id}`]: this.state[`originalUrl${val.id}`],
         [`comment${val.id}`]: this.state[`originalComment${val.id}`],
         [`show${val.id}`]: this.state[`originalShow${val.id}`],
       })
     })
-    this.setState({ratingValues: this.state.originalRatingValues})
+    this.setState({isEditing: null, ratingValues: this.state.originalRatingValues})
   }
 
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -202,7 +201,7 @@ class Rating extends Component {
     if(theme === 'practices') {
       return(<HeaderPractices id={id} />)
     }
-    if(theme === 'resource') {
+    if(theme === 'env-resource') {
       return(<HeaderResource id={id} />)
     }
     if(theme === 'rights') {

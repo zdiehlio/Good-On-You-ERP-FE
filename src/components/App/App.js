@@ -66,7 +66,7 @@ class App extends Component {
             <Route path='/createBrand' component={Authentication(CreateBrands)} />
             <Route path='/brandGeneral/:id' component={Authentication(BrandGeneral)}/>
             <Route path='/brandContact/:id' component={Authentication(BrandContact)} />
-            <Route path='/resource/:id' component={Authentication(Rating)} />
+            <Route path='/env-resource/:id' component={Authentication(Rating)} />
             <Route path='/energy/:id' component={Authentication(Rating)} />
             <Route path='/chemical/:id' component={Authentication(Rating)} />
             <Route path='/water/:id' component={Authentication(Rating)} />
