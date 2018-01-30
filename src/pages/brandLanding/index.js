@@ -174,6 +174,16 @@ class BrandLanding extends Component {
             <span className='show-summary'>
               <p className='small-divider'></p>
               <span className='summary-view'>
+                <div>Standards Compliance</div>
+                {this.handleThemeScore('environment', 1)}
+                <div><Link to={`/env-standards-compliance/${id}`}><button>Start</button></Link></div>
+              </span>
+              <p className='small-divider'></p>
+            </span> ) :
+            (<span className='hide-summary'></span>)}
+          {this.state.show === 'environment' ? (
+            <span className='show-summary'>
+              <span className='summary-view'>
                 <div>Resource</div>
                 {this.handleThemeScore('environment', 2)}
                 <div><Link to={`/env-resource/${id}`}><button>Start</button></Link></div>
@@ -186,7 +196,7 @@ class BrandLanding extends Component {
               <span className='summary-view'>
                 <div>Climate Change</div>
                 {this.handleThemeScore('environment', 3)}
-                <div><Link to={`/energy/${id}`}><button>Start</button></Link></div>
+                <div><Link to={`/env-climate-change/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
             </span> ) :
@@ -194,9 +204,9 @@ class BrandLanding extends Component {
           {this.state.show === 'environment' ? (
             <span className='show-summary'>
               <span className='summary-view'>
-                <div>Chemical</div>
+                <div>Chemicals</div>
                 {this.handleThemeScore('environment', 4)}
-                <div><Link to={`/chemical/${id}`}><button>Start</button></Link></div>
+                <div><Link to={`/env-chemicals/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
             </span> ) :
@@ -206,8 +216,29 @@ class BrandLanding extends Component {
               <span className='summary-view'>
                 <div>Water</div>
                 {this.handleThemeScore('environment', 5)}
-                <div><Link to={`/water/${id}`}><button>Start</button></Link></div>
+                <div><Link to={`/env-water/${id}`}><button>Start</button></Link></div>
               </span>
+              <p className='small-divider'></p>
+            </span> ) :
+            (<span className='hide-summary'></span>)}
+          {this.state.show === 'environment' ? (
+            <span className='show-summary'>
+              <span className='summary-view'>
+                <div>Positive Citizenship</div>
+                {this.handleThemeScore('environment', 6)}
+                <div><Link to={`/env-positive-citizenship/${id}`}><button>Start</button></Link></div>
+              </span>
+              <p className='small-divider'></p>
+            </span> ) :
+            (<span className='hide-summary'></span>)}
+          {this.state.show === 'environment' ? (
+            <span className='show-summary'>
+              <span className='summary-view'>
+                <div>Negative Citizenship</div>
+                {this.handleThemeScore('environment', 7)}
+                <div><Link to={`/env-negative-citizenship/${id}`}><button>Start</button></Link></div>
+              </span>
+              <p className='small-divider'></p>
             </span> ) :
             (<span className='hide-summary'></span>)}
 
@@ -219,9 +250,9 @@ class BrandLanding extends Component {
             <span className='show-summary'>
               <p className='small-divider'></p>
               <span className='summary-view'>
-                <div>Worker Policies</div>
-                {this.handleThemeScore('labour', 10)}
-                <div><Link to={`/worker_policies/${id}`}><button>Start</button></Link></div>
+                <div>Ethical Fashion Report</div>
+                {this.handleThemeScore('labour', 8)}
+                <div><Link to={`/labour-ethical-fashion-report/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
             </span> ) :
@@ -229,9 +260,48 @@ class BrandLanding extends Component {
           {this.state.show === 'labour' ? (
             <span className='show-summary'>
               <span className='summary-view'>
-                <div>Wages</div>
+                <div>Certification</div>
+                {this.handleThemeScore('labour', 9)}
+                <div><Link to={`/labour-certification/${id}`}><button>Start</button></Link></div>
+              </span>
+              <p className='small-divider'></p>
+            </span> ) :
+            (<span className='hide-summary'></span>)}
+          {this.state.show === 'labour' ? (
+            <span className='show-summary'>
+              <span className='summary-view'>
+                <div>Policies & Worker Empowerment</div>
+                {this.handleThemeScore('labour', 10)}
+                <div><Link to={`/labour-policies-worker-empowerment/${id}`}><button>Start</button></Link></div>
+              </span>
+              <p className='small-divider'></p>
+            </span> ) :
+            (<span className='hide-summary'></span>)}
+          {this.state.show === 'labour' ? (
+            <span className='show-summary'>
+              <span className='summary-view'>
+                <div>Supply Chain</div>
+                {this.handleThemeScore('labour', 11)}
+                <div><Link to={`/labour-supply-chain/${id}`}><button>Start</button></Link></div>
+              </span>
+              <p className='small-divider'></p>
+            </span> ) :
+            (<span className='hide-summary'></span>)}
+          {this.state.show === 'labour' ? (
+            <span className='show-summary'>
+              <span className='summary-view'>
+                <div>Low Risk Production</div>
+                {this.handleThemeScore('labour', 12)}
+                <div><Link to={`/labour-low-risk-production/${id}`}><button>Start</button></Link></div>
+              </span>
+            </span> ) :
+            (<span className='hide-summary'></span>)}
+          {this.state.show === 'labour' ? (
+            <span className='show-summary'>
+              <span className='summary-view'>
+                <div>Living Wage</div>
                 {this.handleThemeScore('labour', 13)}
-                <div><Link to={`/wages/${id}`}><button>Start</button></Link></div>
+                <div><Link to={`/labour-living-wage/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
             </span> ) :
@@ -239,9 +309,9 @@ class BrandLanding extends Component {
           {this.state.show === 'labour' ? (
             <span className='show-summary'>
               <span className='summary-view'>
-                <div>Suppliers</div>
+                <div>Knowing Suppliers</div>
                 {this.handleThemeScore('labour', 14)}
-                <div><Link to={`/suppliers/${id}`}><button>Start</button></Link></div>
+                <div><Link to={`/labour-knowing-suppliers/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
             </span> ) :
@@ -249,9 +319,9 @@ class BrandLanding extends Component {
           {this.state.show === 'labour' ? (
             <span className='show-summary'>
               <span className='summary-view'>
-                <div>Practices</div>
-                {this.handleThemeScore('labour', 10)}
-                <div><Link to={`/practices/${id}`}><button>Start</button></Link></div>
+                <div>Supplier Relationships & Auditing</div>
+                {this.handleThemeScore('labour', 15)}
+                <div><Link to={`/labour-supplier-relationships-auditing/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
             </span> ) :
@@ -259,9 +329,21 @@ class BrandLanding extends Component {
           {this.state.show === 'labour' ? (
             <span className='show-summary'>
               <span className='summary-view'>
-                <div>Rights</div>
-                <div><Link to={`/rights/${id}`}><button>Start</button></Link></div>
+                <div>Positive Citizenship</div>
+                {this.handleThemeScore('labour', 16)}
+                <div><Link to={`/labour-positive-citizenship/${id}`}><button>Start</button></Link></div>
               </span>
+              <p className='small-divider'></p>
+            </span> ) :
+            (<span className='hide-summary'></span>)}
+          {this.state.show === 'labour' ? (
+            <span className='show-summary'>
+              <span className='summary-view'>
+                <div>Negative Citizenship</div>
+                {this.handleThemeScore('labour', 17)}
+                <div><Link to={`/labour-negative-citizenship/${id}`}><button>Start</button></Link></div>
+              </span>
+              <p className='small-divider'></p>
             </span> ) :
             (<span className='hide-summary'></span>)}
         </div>
@@ -273,8 +355,9 @@ class BrandLanding extends Component {
             <span className='show-summary'>
               <p className='small-divider'></p>
               <span className='summary-view'>
-                <div>Fur</div>
-                <div><Link to={`/fur/${id}`}><button>Start</button></Link></div>
+                <div>Animal Products</div>
+                {this.handleThemeScore('animal', 18)}
+                <div><Link to={`/animal-animal-products/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
             </span> ) :
@@ -282,8 +365,9 @@ class BrandLanding extends Component {
           {this.state.show === 'animal' ? (
             <span className='show-summary'>
               <span className='summary-view'>
-                <div>Leather</div>
-                <div><Link to={`/leather/${id}`}><button>Start</button></Link></div>
+                <div>Positive Citizenship</div>
+                {this.handleThemeScore('animal', 19)}
+                <div><Link to={`/animal-positive-citizenship/${id}`}><button>Start</button></Link></div>
               </span>
               <p className='small-divider'></p>
             </span> ) :
@@ -291,44 +375,9 @@ class BrandLanding extends Component {
           {this.state.show === 'animal' ? (
             <span className='show-summary'>
               <span className='summary-view'>
-                <div>Wool</div>
-                <div><Link to={`/wool/${id}`}><button>Start</button></Link></div>
-              </span>
-              <p className='small-divider'></p>
-            </span> ) :
-            (<span className='hide-summary'></span>)}
-          {this.state.show === 'animal' ? (
-            <span className='show-summary'>
-              <span className='summary-view'>
-                <div>Feathers</div>
-                <div><Link to={`/feathers/${id}`}><button>Start</button></Link></div>
-              </span>
-              <p className='small-divider'></p>
-            </span> ) :
-            (<span className='hide-summary'></span>)}
-          {this.state.show === 'animal' ? (
-            <span className='show-summary'>
-              <span className='summary-view'>
-                <div>Angora</div>
-                <div><Link to={`/angora/${id}`}><button>Start</button></Link></div>
-              </span>
-              <p className='small-divider'></p>
-            </span> ) :
-            (<span className='hide-summary'></span>)}
-          {this.state.show === 'animal' ? (
-            <span className='show-summary'>
-              <span className='summary-view'>
-                <div>Hairs</div>
-                <div><Link to={`/hairs/${id}`}><button>Start</button></Link></div>
-              </span>
-              <p className='small-divider'></p>
-            </span> ) :
-            (<span className='hide-summary'></span>)}
-          {this.state.show === 'animal' ? (
-            <span className='show-summary'>
-              <span className='summary-view'>
-                <div>Skins</div>
-                <div><Link to={`/skins/${id}`}><button>Start</button></Link></div>
+                <div>Negative Citizenship</div>
+                {this.handleThemeScore('animal', 20)}
+                <div><Link to={`/animal-negative-citizenship/${id}`}><button>Start</button></Link></div>
               </span>
             </span> ) :
             (<span className='hide-summary'></span>)}

@@ -67,21 +67,25 @@ class App extends Component {
             <Route path='/brandGeneral/:id' component={Authentication(BrandGeneral)}/>
             <Route path='/brandContact/:id' component={Authentication(BrandContact)} />
             <Route path='/env-resource/:id' component={Authentication(Rating)} />
-            <Route path='/energy/:id' component={Authentication(Rating)} />
-            <Route path='/chemical/:id' component={Authentication(Rating)} />
-            <Route path='/water/:id' component={Authentication(Rating)} />
-            <Route path='/worker_policies/:id' component={Authentication(Rating)} />
-            <Route path='/wages/:id' component={Authentication(Rating)} />
-            <Route path='/suppliers/:id' component={Authentication(Rating)} />
-            <Route path='/practices/:id' component={Authentication(Rating)} />
-            <Route path='/rights/:id' component={Authentication(Rating)} />
-            <Route path='/fur/:id' component={Authentication(Rating)} />
-            <Route path='/leather/:id' component={Authentication(Rating)} />
-            <Route path='/wool/:id' component={Authentication(Rating)} />
-            <Route path='/feathers/:id' component={Authentication(Rating)} />
-            <Route path='/angora/:id' component={Authentication(Rating)} />
-            <Route path='/hairs/:id' component={Authentication(Rating)} />
-            <Route path='/skins/:id' component={Authentication(Rating)} />
+            <Route path='/env-standards-compliance/:id' component={Authentication(Rating)} />
+            <Route path='/env-climate-change/:id' component={Authentication(Rating)} />
+            <Route path='/env-chemicals/:id' component={Authentication(Rating)} />
+            <Route path='/env-water/:id' component={Authentication(Rating)} />
+            <Route path='/env-positive-citezenship/:id' component={Authentication(Rating)} />
+            <Route path='/env-negative-citezenship/:id' component={Authentication(Rating)} />
+            <Route path='/labour-ethical-fashion-report/:id' component={Authentication(Rating)} />
+            <Route path='/labour-certification/:id' component={Authentication(Rating)} />
+            <Route path='/labour-policies-worker-empowerment/:id' component={Authentication(Rating)} />
+            <Route path='/labour-supply-chain/:id' component={Authentication(Rating)} />
+            <Route path='/labour-low-risk-production/:id' component={Authentication(Rating)} />
+            <Route path='/labour-living-wage/:id' component={Authentication(Rating)} />
+            <Route path='/labour-knowing-suppliers/:id' component={Authentication(Rating)} />
+            <Route path='/labour-supplier-relationships-auditing/:id' component={Authentication(Rating)} />
+            <Route path='/labour-positive-citizenship/:id' component={Authentication(Rating)} />
+            <Route path='/labour-negative-citizenship/:id' component={Authentication(Rating)} />
+            <Route path='/animal-animal-products/:id' component={Authentication(Rating)} />
+            <Route path='/animal-positive-citizenship/:id' component={Authentication(Rating)} />
+            <Route path='/animal-negative-citizenship/:id' component={Authentication(Rating)} />
             <Route path='/brandCauses/:id' component={Authentication(BrandCauses)} />
             <Route path='/brandSentences/:id' component={Authentication(BrandSentences)} />
             <Route path='/suppDataCategory/:id' component={Authentication(SuppDataCategory)} />

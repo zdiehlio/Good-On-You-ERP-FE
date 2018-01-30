@@ -2,25 +2,29 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Form, Input, Checkbox, TextArea, Progress} from 'semantic-ui-react'
-import { fetchAllRating, fetchRating, createRating, updateRating } from '../../actions'
+import { fetchAllRating, fetchRating, createRating, updateRating, fetchRatingScore } from '../../actions'
 import { RatingHeading } from '../../components'
 import {
-  HeaderAngora,
-  HeaderChemical,
-  HeaderEnergy,
-  HeaderFeathers,
-  HeaderFur,
-  HeaderHairs,
-  HeaderLeather,
-  HeaderPractices,
-  HeaderResource,
-  HeaderRights,
-  HeaderSkins,
-  HeaderSuppliers,
-  HeaderWages,
-  HeaderWater,
-  HeaderWool,
-  HeaderWorker,
+  EnvStandards,
+  EnvResource,
+  EnvClimate,
+  EnvChemicals,
+  EnvWater,
+  EnvPositiveCitizen,
+  EnvNegativeCitizen,
+  LabourEthicalFashion,
+  LabourCertification,
+  LabourPolicies,
+  LabourSupplyChain,
+  LabourProduction,
+  LabourWage,
+  LabourSuppliers,
+  LabourSupplierAudit,
+  LabourPositiveCitizen,
+  LabourNegativeCitizen,
+  AnimalProducts,
+  AnimalPositiveCitizen,
+  AnimalNegativeCitizen,
 } from '../../components'
 import _ from 'lodash'
 
@@ -49,6 +53,7 @@ class Rating extends Component {
     let theme = this.props.match.path.slice(1, -4)
     this.props.fetchAllRating(theme)
     this.props.fetchRating(id, theme)
+    this.props.fetchRatingScore(id)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -177,53 +182,65 @@ class Rating extends Component {
   renderHeader() {
     const id  = this.props.match.params.id
     let theme = this.props.match.path.slice(1, -4)
-    if(theme === 'angora') {
-      return(<HeaderAngora id={id} />)
-    }
-    if(theme === 'chemical') {
-      return(<HeaderChemical id={id} />)
-    }
-    if(theme === 'energy') {
-      return(<HeaderEnergy id={id} />)
-    }
-    if(theme === 'feathers') {
-      return(<HeaderFeathers id={id} />)
-    }
-    if(theme === 'fur') {
-      return(<HeaderFur id={id} />)
-    }
-    if(theme === 'hairs') {
-      return(<HeaderHairs id={id} />)
-    }
-    if(theme === 'leather') {
-      return(<HeaderLeather id={id} />)
-    }
-    if(theme === 'practices') {
-      return(<HeaderPractices id={id} />)
+    if(theme === 'env-standards-compliance') {
+      return(<EnvStandards id={id} />)
     }
     if(theme === 'env-resource') {
-      return(<HeaderResource id={id} />)
+      return(<EnvResource id={id} />)
     }
-    if(theme === 'rights') {
-      return(<HeaderRights id={id} />)
+    if(theme === 'env-climate-change') {
+      return(<EnvClimate id={id} />)
     }
-    if(theme === 'skins') {
-      return(<HeaderSkins id={id} />)
+    if(theme === 'env-chemicals') {
+      return(<EnvChemicals id={id} />)
     }
-    if(theme === 'suppliers') {
-      return(<HeaderSuppliers id={id} />)
+    if(theme === 'env-water') {
+      return(<EnvWater id={id} />)
     }
-    if(theme === 'wages') {
-      return(<HeaderWages id={id} />)
+    if(theme === 'env-positive-citizenship') {
+      return(<EnvPositiveCitizen id={id} />)
     }
-    if(theme === 'water') {
-      return(<HeaderWater id={id} />)
+    if(theme === 'env-negative-citizenship') {
+      return(<EnvNegativeCitizen id={id} />)
     }
-    if(theme === 'wool') {
-      return(<HeaderWool id={id} />)
+    if(theme === 'labour-ethical-fashion-report') {
+      return(<LabourEthicalFashion id={id} />)
     }
-    if(theme === 'worker_policies') {
-      return(<HeaderWorker id={id} />)
+    if(theme === 'labour-certification') {
+      return(<LabourCertification id={id} />)
+    }
+    if(theme === 'labour-policies-worker-empowerment') {
+      return(<LabourPolicies id={id} />)
+    }
+    if(theme === 'labour-supply-chain') {
+      return(<LabourSupplyChain id={id} />)
+    }
+    if(theme === 'labour-low-risk-production') {
+      return(<LabourProduction id={id} />)
+    }
+    if(theme === 'labour-living-wage') {
+      return(<LabourWage id={id} />)
+    }
+    if(theme === 'labour-knowing-suppliers') {
+      return(<LabourSuppliers id={id} />)
+    }
+    if(theme === 'labour-supplier-relationships-auditing') {
+      return(<LabourSupplierAudit id={id} />)
+    }
+    if(theme === 'labour-positive-citizenship') {
+      return(<LabourPositiveCitizen id={id} />)
+    }
+    if(theme === 'labour-negative-citizenship') {
+      return(<LabourNegativeCitizen id={id} />)
+    }
+    if(theme === 'animal-animal-products') {
+      return(<AnimalProducts id={id} />)
+    }
+    if(theme === 'animal-positive-citizenship') {
+      return(<AnimalPositiveCitizen id={id} />)
+    }
+    if(theme === 'animal-negative-citizenship') {
+      return(<AnimalNegativeCitizen id={id} />)
     }
   }
 
@@ -359,6 +376,7 @@ class Rating extends Component {
   render() {
     console.log('pre qa props', this.props.pre_qa)
     console.log('props', this.props.qa)
+    console.log('rating', this.props.rating)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
@@ -379,7 +397,8 @@ function mapStateToProps(state) {
     qa: state.qa,
     pre_qa: state.preQa,
     brand: state.brandInfo,
+    rating: state.ratingScore,
   }
 }
 
-export default connect(mapStateToProps, { fetchAllRating, fetchRating, createRating, updateRating })(Rating)
+export default connect(mapStateToProps, { fetchAllRating, fetchRating, createRating, updateRating, fetchRatingScore })(Rating)
