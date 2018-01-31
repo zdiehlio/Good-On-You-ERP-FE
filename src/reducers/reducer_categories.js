@@ -1,4 +1,4 @@
-import { FETCH_CATEGORY, UPDATE_CATEGORY } from '../actions'
+import { FETCH_CATEGORY, UPDATE_CATEGORY } from '../actions/category'
 import _ from 'lodash'
 
 export default function(state = {}, action) {

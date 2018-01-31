@@ -1,4 +1,4 @@
-import { FETCH_SENTENCE } from '../actions'
+import { FETCH_SENTENCE } from '../actions/sentence'
 import _ from 'lodash'
 
 export default function(state = {}, action) {

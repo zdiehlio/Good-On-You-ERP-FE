@@ -1,4 +1,4 @@
-import { FETCH_SUMMARY } from '../actions'
+import { FETCH_SUMMARY } from '../actions/summary'
 import _ from 'lodash'
 
 export default function(state = {}, action) {

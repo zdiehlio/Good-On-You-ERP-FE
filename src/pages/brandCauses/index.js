@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchCause, fetchAllCause, createCause, updateCause } from '../../actions'
+import { fetchCause, fetchAllCause, createCause, updateCause } from '../../actions/cause'
 import { QualiHeading } from '../../components'
 import { Form, Radio, Progress} from 'semantic-ui-react'
 import _ from 'lodash'

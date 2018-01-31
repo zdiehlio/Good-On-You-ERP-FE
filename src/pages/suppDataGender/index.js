@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Form, Checkbox, Progress } from 'semantic-ui-react'
-import { fetchStyles, createStyles } from '../../actions'
+import { fetchStyles, createStyles } from '../../actions/style'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
 

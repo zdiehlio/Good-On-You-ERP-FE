@@ -1,4 +1,4 @@
-import { FETCH_IMAGE, UPLOAD_IMAGE } from '../actions'
+import { FETCH_IMAGE, UPLOAD_IMAGE } from '../actions/image'
 import _ from 'lodash'
 
 export default function(state = {}, action) {

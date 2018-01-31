@@ -1,8 +1,5 @@
-import {
-  FETCH_GENERAL,
-  FETCH_RATING,
-  FETCH_RATING_SCORE,
-} from '../actions'
+import {FETCH_RATING,FETCH_RATING_SCORE} from '../actions/rating'
+import { FETCH_GENERAL } from '../actions'
 import _ from 'lodash'
 
 //fetches all questions for brand and maps through each unique key value returning the brand and answer tied to the question

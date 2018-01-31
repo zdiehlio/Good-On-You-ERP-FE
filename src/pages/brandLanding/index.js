@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { fetchGeneral, fetchContact, fetchBrandInfo, fetchRatingScore } from '../../actions'
+import { fetchBrandInfo } from '../../actions'
+import { fetchRatingScore } from '../../actions/rating'
+import { fetchGeneral } from '../../actions/general'
+import { fetchContact } from '../../actions/contact'
 import { Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 
@@ -62,7 +65,7 @@ class BrandLanding extends Component {
   }
 
   capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1)
+    return string[0].toUpperCase() + string.slice(1)
   }
 
   handleHeadline(head) {

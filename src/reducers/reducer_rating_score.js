@@ -1,6 +1,6 @@
 import {
   FETCH_RATING_SCORE,
-} from '../actions'
+} from '../actions/rating'
 import _ from 'lodash'
 
 //fetches all questions for brand and maps through each unique key value returning the brand and answer tied to the question

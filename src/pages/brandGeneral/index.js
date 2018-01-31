@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchGeneral, updateGeneral, createBrandSize, deleteBrandSize } from '../../actions'
+import { fetchGeneral, updateGeneral, createBrandSize } from '../../actions/general'
 import { OverviewHeading } from '../../components'
 import { Form, Input, Radio, Checkbox, Progress} from 'semantic-ui-react'
 import _ from 'lodash'
@@ -30,10 +30,10 @@ class BrandGeneral extends Component {
       dateValid: false,
       renderError: false,
       progressBar: 0,
+      name: '',
     }
 
 
-    this.handleRadio = this.handleRadio.bind(this)
     this.handleInput = this.handleInput.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
@@ -50,7 +50,8 @@ class BrandGeneral extends Component {
   componentWillReceiveProps(nextProps) {
     const { id } = this.props.match.params
     if(nextProps.general !== this.props.general) {
-      _.map(nextProps.general.size, crit => {
+      _.map(nextProps.general.size_criteria, crit => {
+        console.log('val', crit.criteria)
         this.state.sizeValues.push({brand: id, criteria: crit.criteria})
         this.state.originalSizeValues.push({brand: id, criteria: crit.criteria})
         if(crit) {
@@ -67,6 +68,7 @@ class BrandGeneral extends Component {
         originalreview_date: nextProps.general.review_date ? moments(nextProps.general.review_date) : '',
         parent_company: nextProps.general.parent_company,
         originalparent_company: nextProps.general.parent_company,
+        size: nextProps.general.size,
       })
       if(nextProps.general.name) {
         this.state.progressBar++
@@ -98,10 +100,12 @@ class BrandGeneral extends Component {
     const { id }  = this.props.match.params
     this.setState({isEditing: event.target.value})
   }
+
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     this.setState({isEditing: null, currentAnswer: null, [event.target.name]: this.state[`original${event.target.name}`]})
   }
+
   handleSizeCancel(event) {
     _.map(this.state.sizeOptions, size => {
       this.setState({[size]: this.state[`original${size}`]})
@@ -120,7 +124,7 @@ class BrandGeneral extends Component {
         this.setState({isEditing: null})
       }
     } else if(event.target.name === '5') {
-      this.props.createBrandSize(id, this.state.sizeValues)
+      this.props.createBrandSize(id, this.state.sizeValues.length > 0 ? this.state.sizeValues : this.state.noValues)
       this.props.updateGeneral(id, {parent_company: this.state.parent_company})
       this.setState({isEditing: null})
       return this.state.progressBar++
@@ -143,10 +147,20 @@ class BrandGeneral extends Component {
 
   handleCheckbox(event, { value }) {
     const { id }  = this.props.match.params
-    if(this.state[value]) {
-      this.setState({[value]: null, sizeValues: this.state.sizeValues.filter(select => {return select.criteria != value})})
+    if(value === 'none') {
+      console.log('none', value)
+      this.state.sizeOptions.map(val => this.setState({[val]: null}))
+      this.setState({none: value, sizeValues: [], noValues: {brand: id, criteria: 'none'}})
+      if(this.state.parent_company.length === 0) {
+        this.setState({size: 'small'})
+      }
     } else {
-      this.setState({[value]: value, sizeValues: [...this.state.sizeValues, {brand: id, criteria: value}]})
+      if(this.state[value]) {
+        this.setState({[value]: null, sizeValues: this.state.sizeValues.filter(select => {return select.criteria != value})})
+      } else {
+        this.setState({[value]: value, size: 'large', sizeValues: [...this.state.sizeValues, {brand: id, criteria: value}]})
+      }
+      this.setState({none: null, noValues: []})
     }
   }
 
@@ -160,15 +174,6 @@ class BrandGeneral extends Component {
     })
   }
 
-  //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
-  handleRadio(event){
-    if(event.target.name ==='small') {
-      this.setState({is_large: false})
-    }
-    if(event.target.name === 'large') {
-      this.setState({is_large: true})
-    }
-  }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event, {value, name}) {
     this.validateDate(event)
@@ -177,14 +182,24 @@ class BrandGeneral extends Component {
         this.setState({nameError: false})
       }
     }
+    if(name === 'parent_company') {
+      if(value.length >= 1) {
+        this.setState({size: 'large'})
+      } else if(this.state.none && value.length === 0) {
+        this.setState({size: 'small'})
+      }
+    }
     this.setState({currentAnswer: name, [name]: value, input: value})
+  }
+
+  capitalize(string) {
+    return string[0].toUpperCase() + string.slice(1)
   }
 
 
   render() {
-    console.log('props', this.props)
+    console.log('props', this.props.general)
     console.log('state', this.state)
-    console.log('brand', this.props.brand)
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props.general
@@ -253,7 +268,6 @@ class BrandGeneral extends Component {
                   label='Sustainability Report Date'
                   placeholder='MM/YYYY'
                   value={state.sustainability_report_date ? state.sustainability_report_date : ''}
-                  onFocus={this.handleInput}
                   onChange={this.handleInput}
                   name='sustainability_report_date'
                 />
@@ -282,7 +296,6 @@ class BrandGeneral extends Component {
                   label='Brand Review Date'
                   placeholder='MM/YYYY'
                   value={state.review_date ? state.review_date : ''}
-                  onFocus={this.handleInput}
                   onChange={this.handleInput}
                   name='review_date'
                 />
@@ -313,7 +326,7 @@ class BrandGeneral extends Component {
                   label='Small'
                   onChange={this.handleRadio}
                   name='small'
-                  checked={state.sizeValues.length === 0 && (state.parent_company === null || state.parent_company === '')}
+                  checked={state.size === 'small' ? true : false}
                 />
               </Form.Field>
               <Form.Field>
@@ -322,7 +335,7 @@ class BrandGeneral extends Component {
                   label='Large'
                   onChange={this.handleRadio}
                   name='large'
-                  checked={state.sizeValues.length > 0 || state.parent_company}
+                  checked={state.size === 'large' ? true : false}
                 />
               </Form.Field>
 
@@ -375,6 +388,14 @@ class BrandGeneral extends Component {
                   value='manual'
                 />
               </Form.Field>
+              <Form.Field>
+                <Checkbox
+                  label='None of the Above'
+                  onChange={this.handleCheckbox}
+                  checked={state['none'] ? true : false}
+                  value='none'
+                />
+              </Form.Field>
               <Form.Field inline>
                 <Input
                   label='Parent Company Name'
@@ -390,7 +411,7 @@ class BrandGeneral extends Component {
             </div>) : (
             <div className='not-editing'>
               <h5>What is the size of the Brand?</h5>
-              <p>{state.sizeValues.length > 0 || state.parent_company ? 'Large' : 'Small'}</p>
+              <p>{state.size === 'small' || state.size === 'large' ? this.capitalize(state.size) : ''}</p>
               <p>{state.sizeValues.length > 0 ? 'Criteria:' : ''}</p>
               <ul>{this.renderCriteria()}</ul>
               <p>{state.parent_company ? `Parent Company: ${state.parent_company}` : ''}</p>
@@ -414,4 +435,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { updateGeneral, fetchGeneral, createBrandSize, deleteBrandSize})(BrandGeneral)
+export default connect(mapStateToProps, { updateGeneral, fetchGeneral, createBrandSize })(BrandGeneral)

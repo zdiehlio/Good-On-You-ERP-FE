@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Form, Input, Select, Radio, Progress } from 'semantic-ui-react'
-import { fetchRetailers, createRetailer, fetchTerritories, updateRetailer } from '../../actions'
+import { fetchRetailers, createRetailer, fetchTerritories, updateRetailer } from '../../actions/retailer'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
 
@@ -102,7 +102,7 @@ class SuppDataRetailers extends Component {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state.name){
+    if(this.state.name && this.state.errorwebsite === false){
       if(!this.state.id) {
         console.log('create')
         new Promise((resolve, reject) => {
@@ -115,7 +115,7 @@ class SuppDataRetailers extends Component {
         this.setState({isEditing: null, errorname: false})
       }
     } else {
-      this.setState({errorname: this.state.name ? false : true})
+      this.setState({errorname: this.state.name ? false : true, errorwebsite: this.state.name ? false : true})
     }
   }
 
@@ -127,18 +127,20 @@ class SuppDataRetailers extends Component {
   }
 
   handleError(value, name) {
-    if(value === '') {
+    if(name === 'name' && value === '') {
       this.setState({[`error${name}`]: true})
     } else {
       this.setState({[`error${name}`]: false})
     }
-    // if(name === 'website') {
-    //   if(/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(value) && value !== ''){
-    //     this.setState({errorwebsite: false})
-    //   } else {
-    //     this.setState({[`error${name}`]: true})
-    //   }
-    // }
+    if(name === 'website' && value.length > 0) {
+      if(/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(value) && value !== ''){
+        this.setState({errorwebsite: false})
+      } else {
+        this.setState({[`error${name}`]: true})
+      }
+    } else {
+      this.setState({[`error${name}`]: false})
+    }
   }
 
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
@@ -246,7 +248,7 @@ class SuppDataRetailers extends Component {
                 />
               </Form.Field>
               <p className='error-message'>{state.errorname === true ? 'Please enter retailer name' : ''}</p>
-              <Form.Field inline>
+              <Form.Field inline className={state.errorwebsite === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Retailer Website'
                   value={state.website}
@@ -254,6 +256,7 @@ class SuppDataRetailers extends Component {
                   name='website'
                 />
               </Form.Field>
+              <p className='error-message'>{state.errorwebsite === true ? 'Please enter a valid URL' : ''}</p>
               <h5>Select one or more Retailer territories</h5>
               <Form.Field>
                 <Select

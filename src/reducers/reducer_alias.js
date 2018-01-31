@@ -1,4 +1,4 @@
-import { FETCH_ALIAS, DELETE_ALIAS } from '../actions'
+import { FETCH_ALIAS, DELETE_ALIAS } from '../actions/alias'
 import _ from 'lodash'
 
 export default function(state = {}, action) {

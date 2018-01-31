@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Form, Input, Checkbox, TextArea, Progress} from 'semantic-ui-react'
-import { fetchAllRating, fetchRating, createRating, updateRating, fetchRatingScore } from '../../actions'
+import { fetchAllRating, fetchRating, createRating, updateRating, fetchRatingScore } from '../../actions/rating'
 import { RatingHeading } from '../../components'
 import {
   EnvStandards,
@@ -51,7 +51,7 @@ class Rating extends Component {
   componentWillMount() {
     const { id } = this.props.match.params
     let theme = this.props.match.path.slice(1, -4)
-    this.props.fetchAllRating(theme)
+    this.props.fetchAllRating(theme, id)
     this.props.fetchRating(id, theme)
     this.props.fetchRatingScore(id)
   }
@@ -257,20 +257,6 @@ class Rating extends Component {
       })
     }
   }
-
-  // handleValidComment(e) {
-  //   if(e.target.value === '') {
-  //     this.setState({
-  //       [`errorComment${e.target.name}`]: true,
-  //       errorsComment: [...this.state.errorsComment, parseInt(e.target.name)],
-  //     })
-  //   } else {
-  //     this.setState({
-  //       [`errorComment${e.target.name}`]: false,
-  //       errorsComment: this.state.errorsComment.filter(rate => {return rate !== parseInt(e.target.name)}),
-  //     })
-  //   }
-  // }
 
   handleValidUrl(e) {
     if(e.target.value === '') {

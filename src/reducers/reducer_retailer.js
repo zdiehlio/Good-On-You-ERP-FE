@@ -1,4 +1,4 @@
-import { FETCH_RETAILER } from '../actions'
+import { FETCH_RETAILER } from '../actions/retailer'
 import _ from 'lodash'
 
 export default function(state = {}, action) {

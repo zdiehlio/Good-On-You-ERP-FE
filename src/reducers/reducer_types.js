@@ -1,4 +1,4 @@
-import { FETCH_TYPE } from '../actions'
+import { FETCH_TYPE } from '../actions/type'
 import _ from 'lodash'
 
 export default function(state = {}, action) {

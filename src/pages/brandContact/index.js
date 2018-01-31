@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Form, Input, Progress } from 'semantic-ui-react'
-import { fetchContact, createContact, updateContact } from '../../actions'
+import { fetchContact, createContact, updateContact } from '../../actions/contact'
 import { OverviewHeading } from '../../components'
 import _ from 'lodash'
 

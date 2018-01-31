@@ -1,4 +1,4 @@
-import { FETCH_STYLES, UPDATE_STYLES } from '../actions'
+import { FETCH_STYLES, UPDATE_STYLES } from '../actions/style'
 import _ from 'lodash'
 
 export default function(state = {}, action) {

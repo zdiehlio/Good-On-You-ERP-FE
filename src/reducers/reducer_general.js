@@ -1,4 +1,4 @@
-import { FETCH_GENERAL, DELETE_SIZE } from '../actions'
+import { FETCH_GENERAL } from '../actions/general'
 import _ from 'lodash'
 
 export default function(state = {}, action) {
@@ -7,12 +7,6 @@ export default function(state = {}, action) {
     if(!action.error) {
       console.log('general summary', action.payload.data)
       return {...state.summary, ...action.payload.data}
-    }
-    return {error: action.error}
-  case DELETE_SIZE:
-    if (!action.error) {
-      console.log('delete, size', action.payload.data)
-      return _.omit(state, action.payload.data)
     }
     return {error: action.error}
   default:

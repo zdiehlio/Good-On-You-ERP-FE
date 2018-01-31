@@ -1,4 +1,8 @@
-import { FETCHALL_STYLES, FETCH_TERRITORY, FETCH_LOGO, FETCHALL_CAUSE, FETCHALL_CATEGORY, FETCHALL_RATING, UPLOAD_LOGO, FETCHRAW_RATING } from '../actions'
+import { FETCHALL_RATING, FETCHRAW_RATING } from '../actions/rating'
+import { FETCHALL_CAUSE } from '../actions/cause'
+import { FETCHALL_STYLES } from '../actions/style'
+import { FETCHALL_CATEGORY } from '../actions/category'
+import { FETCH_TERRITORY } from '../actions/retailer'
 import _ from 'lodash'
 import jwtDecode from 'jwt-decode'
 

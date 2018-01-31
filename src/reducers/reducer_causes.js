@@ -1,4 +1,4 @@
-import { FETCH_CAUSE } from '../actions'
+import { FETCH_CAUSE } from '../actions/cause'
 import _ from 'lodash'
 
 export default function(state = {}, action) {

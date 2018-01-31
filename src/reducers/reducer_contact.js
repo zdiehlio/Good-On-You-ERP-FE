@@ -1,4 +1,4 @@
-import { FETCH_CONTACT, UPDATE_CONTACT } from '../actions'
+import { FETCH_CONTACT, UPDATE_CONTACT } from '../actions/contact'
 import _ from 'lodash'
 
 export default function(state = {}, action) {

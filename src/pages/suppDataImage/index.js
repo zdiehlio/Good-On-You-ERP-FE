@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Form, Progress, Input } from 'semantic-ui-react'
-import { fetchImage, updateImage, uploadLogo, fetchLogo, updateLogo, uploadImage } from '../../actions'
+import { fetchImage, updateImage, uploadLogo, fetchLogo, updateLogo, uploadImage } from '../../actions/image'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
 
