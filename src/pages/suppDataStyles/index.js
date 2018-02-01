@@ -165,7 +165,7 @@ class SuppDataStyles extends Component {
     return(
       <div>
         {_.map(this.props.pre_qa, check => {
-          if(check.question === el) {
+          if(check.question === el && this.state[check.tag] > 0) {
             return(
               <p key={check.tag}>{check.answer}: {this.state[check.tag] ? `${(this.state[check.tag] * 100)}%` : '0%'}</p>
             )

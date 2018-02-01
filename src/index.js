@@ -25,6 +25,7 @@ if(token) {
   store.dispatch({type: AUTH_USER, payload: token})
 }
 
+setTimeout(() => {sessionStorage.clear()}, 1000 * 60 * 60)
 
 if(name && website) {
   store.dispatch({type: BRAND_INFO, payload: {name, website}})

@@ -418,7 +418,7 @@ class BrandLanding extends Component {
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
-          <div>Gender</div>
+          <div>Gender/Ages</div>
           <div><Link to={`/suppDataGender/${id}`}><button>Start</button></Link></div>
         </div>
         <p className='small-divider'></p>

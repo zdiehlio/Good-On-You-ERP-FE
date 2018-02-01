@@ -40,9 +40,7 @@ class SuppDataGender extends Component {
       _.map(nextProps.styles, compare => {
         if(compare.style_qa.question === 'gender') {
           this.state.genders.push({brand: id, style: compare.style_qa.tag})
-          // this.state.originalGenders.push({brand: id, style: compare.style_qa.tag})
           this.setState({[compare.style_qa.tag]: compare.style_qa.tag})
-          // this.setState({[`original${compare.style_qa.tag}`]: compare.style_qa.tag})
           this.state.progressBar++
         }
       })
@@ -105,7 +103,7 @@ class SuppDataGender extends Component {
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><Link to={`/suppDataImage/${id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Gender</h3></div>
+            <div><h3>Gender/Ages</h3></div>
             <div><Link to={`/suppDataCategory/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>

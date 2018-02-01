@@ -41,6 +41,7 @@ class BrandGeneral extends Component {
     this.handleSubmitSize = this.handleSubmitSize.bind(this)
     this.handleCheckbox = this.handleCheckbox.bind(this)
     this.handleSizeCancel = this.handleSizeCancel.bind(this)
+    this.handleNA = this.handleNA.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -62,6 +63,7 @@ class BrandGeneral extends Component {
         name: nextProps.general.name,
         originalname: nextProps.general.name,
         website: nextProps.general.website,
+        sustainability_report: nextProps.general.sustainability_report,
         sustainability_report_date: nextProps.general.sustainability_report_date ? moments(nextProps.general.sustainability_report_date) : '',
         originalsustainability_report_date: nextProps.general.review_date ? moments(nextProps.general.sustainability_report_date) : '',
         review_date: nextProps.general.review_date ? moments(nextProps.general.review_date) : '',
@@ -130,7 +132,11 @@ class BrandGeneral extends Component {
       return this.state.progressBar++
     } else {
       if(this.state.dateValid === true) {
-        this.props.updateGeneral(id, {sustainability_report_date: dayMoment(`02/${this.state.sustainability_report_date}`), review_date: dayMoment(`02/${this.state.review_date}`)})
+        this.props.updateGeneral(id, {
+          sustainability_report: this.state.sustainability_report,
+          sustainability_report_date: this.state.sustainability_report === false ? null : dayMoment(`02/${this.state.sustainability_report_date}`),
+          review_date: dayMoment(`02/${this.state.review_date}`),
+        })
         this.setState({renderError: false, isEditing: null})
         return this.state.progressBar++
       } else {
@@ -174,6 +180,11 @@ class BrandGeneral extends Component {
     })
   }
 
+  handleNA(event) {
+    event.preventDefault()
+    this.setState({sustainability_report: false, sustainability_report_date: '', dateValid: true})
+  }
+
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event, {value, name}) {
     this.validateDate(event)
@@ -187,6 +198,11 @@ class BrandGeneral extends Component {
         this.setState({size: 'large'})
       } else if(this.state.none && value.length === 0) {
         this.setState({size: 'small'})
+      }
+    }
+    if(name === 'sustainability_report_date') {
+      if(value.length > 0) {
+        this.setState({sustainability_report: true})
       }
     }
     this.setState({currentAnswer: name, [name]: value, input: value})
@@ -262,7 +278,7 @@ class BrandGeneral extends Component {
           </div>
           {isEditing === '3' ? (
             <div className='editing'>
-              <h5>Which month does the brand release its sustainability report?</h5>
+              <h5>When will the brand release its next sustainability report?</h5>
               <Form.Field inline className={state.renderError === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Sustainability Report Date'
@@ -272,6 +288,14 @@ class BrandGeneral extends Component {
                   name='sustainability_report_date'
                 />
               </Form.Field>
+              <Form.Field inline>
+                <Checkbox
+                  label='N/A'
+                  onChange={this.handleNA}
+                  checked={state.sustainability_report === false ? true : false}
+                  name='NA'
+                />
+              </Form.Field>
               <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in MM/YYYY format' : ''}</div>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='sustainability_report_date'>Cancel</button></div>
@@ -279,8 +303,8 @@ class BrandGeneral extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h5>Which month does the brand release its sustainability report?</h5>
-              <p>{state.sustainability_report_date}</p>
+              <h5>When will the brand release its next sustainability report?</h5>
+              <p>{state.sustainability_report === false ? 'N/A' : state.sustainability_report_date}</p>
               <div className='button-container'>
                 <div></div>
                 <div><button name='3' onClick={this.handleEdit} value='3'>Edit</button></div>

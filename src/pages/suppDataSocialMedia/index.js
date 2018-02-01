@@ -33,10 +33,10 @@ class SuppDataSocialMedia extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.general != this.props.general) {
       this.setState({
-        facebook_url: nextProps.general.facebook_url ? nextProps.general.facebook_url.slice(25) : '',
-        instagram_url: nextProps.general.instagram_url ? nextProps.general.instagram_url.slice(26) : '',
-        originalFacebook_url: nextProps.general.facebook_url ? nextProps.general.facebook_url.slice(25) : '',
-        originalInstagram_url: nextProps.general.instagram_url ? nextProps.general.instagram_url.slice(26) : '',
+        facebook_url: nextProps.general.facebook_url,
+        instagram_url: nextProps.general.instagram_url,
+        originalFacebook_url: nextProps.general.facebook_url,
+        originalInstagram_url: nextProps.general.instagram_url,
       })
       if(nextProps.general.facebook_url) {
         this.state.progressBar++
@@ -70,7 +70,7 @@ class SuppDataSocialMedia extends Component {
         this.setState({instagram_urlError: true})
       }
     } else {
-      this.props.updateSocial(id, {facebook_url: `https://www.facebook.com/${this.state.facebook_url}`, instagram_url:`https://www.instagram.com/${this.state.instagram_url}`})
+      this.props.updateSocial(id, {facebook_url: this.state.facebook_url, instagram_url: this.state.instagram_url})
       this.setState({isEditing: null, facebook_urlError: false, instagram_urlError: false})
       this.state.progressBar++
     }
@@ -78,8 +78,11 @@ class SuppDataSocialMedia extends Component {
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event, {name, value}) {
     this.setState({[name]: value})
-    if(event.target.value.length >= 1)
+    if((/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value) && value !== '') || (/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(value) && value !== '') && value !== '') {
       this.setState({[`${name}Error`]: false})
+    } else {
+      this.setState({[`${name}Error`]: true})
+    }
   }
 
   //render contains conditional statements based on state of isEditing as described in functions above.
@@ -111,7 +114,7 @@ class SuppDataSocialMedia extends Component {
               <p>What is the Facebook URL? *</p>
               <Form.Field className={state.facebook_urlError === true ? 'ui error input' : 'ui input'}>
                 <Input
-                  label='www.facebook.com/'
+                  label='Facebook'
                   placeholder='facebook page name'
                   onChange={this.handleInput}
                   name='facebook_url'
@@ -121,7 +124,7 @@ class SuppDataSocialMedia extends Component {
               <p>What is the Instagram URL? *</p>
               <Form.Field className={state.instagram_urlError === true ? 'ui error input' : 'ui input'}>
                 <Input
-                  label='www.instagram.com/'
+                  label='Instagram'
                   placeholder='instagram account name'
                   onChange={this.handleInput}
                   name='instagram_url'
