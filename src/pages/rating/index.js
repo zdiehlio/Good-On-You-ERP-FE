@@ -93,7 +93,14 @@ class Rating extends Component {
       }
     }),
     })
-    this.setState({isEditing: parseInt(event.target.name)})
+    if(this.state.changeError === false) {
+      this.setState({
+        isEditing: parseInt(event.target.name),
+      })
+    } else {
+      this.setState({renderChangeError: true})
+      alert(`Please click Save on previously edited question to save your selected answers or cancel to disregard your selections`)
+    }
   }
 
   //sets state for isEditing to null which will toggle the ability to edit
@@ -107,7 +114,7 @@ class Rating extends Component {
         [`show${val.id}`]: this.state[`originalShow${val.id}`],
       })
     })
-    this.setState({isEditing: null, ratingValues: this.state.originalRatingValues})
+    this.setState({renderChangeError: false, isEditing: null, ratingValues: this.state.originalRatingValues})
   }
 
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -126,6 +133,7 @@ class Rating extends Component {
         })
       })
       this.setState({
+        renderChangeError: false,
         isEditing: null,
         originalRatingValues: this.state.ratingValues,
       })
@@ -331,6 +339,7 @@ class Rating extends Component {
                             />
                           </Form.Field>
                         </div>) : ('')}
+                      <p className='error-message'>{this.state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
                     </div>
                   )}
               )}

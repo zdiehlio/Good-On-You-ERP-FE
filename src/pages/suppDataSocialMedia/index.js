@@ -138,8 +138,8 @@ class SuppDataSocialMedia extends Component {
             </div>) : (
             <div className='not-editing'>
               <h5>Brand Social Media</h5>
-              {state.facebook_url ? <p>Facebook Page Name: {state.facebook_url}</p> : ''}
-              {state.instagram_url ? <p>Instagram Tag Name: {state.instagram_url}</p> : ''}
+              {state.facebook_url ? <p>Facebook URL: {state.facebook_url}</p> : ''}
+              {state.instagram_url ? <p>Instagram URL: {state.instagram_url}</p> : ''}
               <div className='button-container'>
                 <div></div>
                 <div><button name='social' onClick={this.handleEdit}>Edit</button></div>

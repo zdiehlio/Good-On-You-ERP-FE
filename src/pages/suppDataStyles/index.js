@@ -50,11 +50,10 @@ class SuppDataStyles extends Component {
       _.map(nextProps.styles, compare => {
         if(compare.style_qa.question === 'style-scores') {
           this.setState({
-            [`original${compare.style_qa.question}`]: compare.style_qa.question,
-            [`original${compare.style_qa.tag}`]: compare.score,
             [compare.style_qa.tag]: compare.score,
             [compare.style_qa.question]: 0,
           })
+          this.state.progress.push(compare.style_qa.tag)
           this.state.style_scores+=compare.score
           if(!this.state[compare.style_qa.question]) {
             this.state.progressBar++
@@ -67,7 +66,6 @@ class SuppDataStyles extends Component {
           this.state.styles.push({brand: id, style: compare.style_qa.tag})
           this.setState({
             [compare.style_qa.question]: compare.style_qa.question,
-            [`original${compare.style_qa.tag}`]: compare.style_qa.tag,
             [compare.style_qa.tag]: compare.style_qa.tag,
           })
         }
@@ -95,7 +93,11 @@ class SuppDataStyles extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     _.map(this.state.styles, val => {
+      console.log('styles', val)
       this.setState({[val.style]: null})
+    })
+    this.state.progress.map(score => {
+      this.setState({[score]: 0})
     })
     this.setState({tempAnswers: [], styles: [], isEditing: null, changeError: false, renderChangeError: false})
     this.props.fetchStyles(id)
@@ -129,7 +131,7 @@ class SuppDataStyles extends Component {
     if(!this.state[event.target.name]) {
       this.setState({[event.target.name]: 0})
     }
-    if(event.target.value === 'add' && this.state[event.target.name] < 1 && this.state.style_scores < 1) {
+    if(event.target.value === 'add' && this.state[event.target.name] < 1) {
       this.setState({[event.target.name]: this.state[event.target.name] + 0.25, style_scores: this.state.style_scores + 0.25})
     }
     if(event.target.value === 'subtract' && this.state[event.target.name] > 0) {

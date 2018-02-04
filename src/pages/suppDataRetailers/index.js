@@ -106,12 +106,12 @@ class SuppDataRetailers extends Component {
       if(!this.state.id) {
         console.log('create')
         new Promise((resolve, reject) => {
-          resolve(this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website, territories: this.state.territories}))
+          resolve(this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website.length > 0 ? this.state.website : null, territories: this.state.territories}))
         }).then(this.props.fetchRetailers(id))
         this.state.progressBar++
         this.setState({save: true, isEditing: null, errorname: false})
       } else {
-        this.props.updateRetailer(this.state.id, {name: this.state.name, website: this.state.website, territories: this.state.territories})
+        this.props.updateRetailer(this.state.id, {name: this.state.name, website: this.state.website.length > 0 ? this.state.website : null, territories: this.state.territories})
         this.setState({isEditing: null, errorname: false})
       }
     } else {
@@ -151,11 +151,9 @@ class SuppDataRetailers extends Component {
 
   handleDropDown(event, { value }) {
     if(this.state[value]) {
-      console.log('error')
       this.handleDropDownError()
     } else {
       this.setState({errorTerritory: false, [value]: value, territories: [...this.state.territories, {name: value}]})
-      console.log('drop', this.state.territories.name)
     }
   }
 
