@@ -27,7 +27,7 @@ class BrandGeneral extends Component {
       parent_company: '',
       sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'manual', 'subsidiary', 'listed'],
       input: null,
-      dateValid: false,
+      dateValid: true,
       renderError: false,
       progressBar: 0,
       name: '',
@@ -87,15 +87,6 @@ class BrandGeneral extends Component {
     }
   }
 
-  validateDate(val) {
-    let date = moment(`${val.target.value}`, 'MM/YYYY', true)
-    if (date.isValid()) {
-      this.setState({dateValid: true})
-    } else {
-      this.setState({dateValid: false})
-    }
-  }
-
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
@@ -121,23 +112,38 @@ class BrandGeneral extends Component {
     if(event.target.name === '1') {
       if(this.state.name.length <= 0) {
         this.setState({nameError: true})
+      } else if(event.target.value === 'next') {
+        if(event.target.name === '1') {
+          this.setState({isEditing: '2'})
+        }
+        this.props.updateGeneral(id, {name: this.state.name})
       } else {
         this.props.updateGeneral(id, {name: this.state.name})
         this.setState({isEditing: null})
       }
-    } else if(event.target.name === '5') {
+    } else if(event.target.name === '4') {
       this.props.createBrandSize(id, this.state.sizeValues.length > 0 ? this.state.sizeValues : this.state.noValues)
       this.props.updateGeneral(id, {parent_company: this.state.parent_company})
       this.setState({isEditing: null})
+      if(event.target.value === 'next') {
+        this.props.history.push(`/brandContact/${id}`)
+      }
       return this.state.progressBar++
     } else {
       if(this.state.dateValid === true) {
-        this.props.updateGeneral(id, {
-          sustainability_report: this.state.sustainability_report,
-          sustainability_report_date: this.state.sustainability_report === false ? null : dayMoment(`02/${this.state.sustainability_report_date}`),
-          review_date: dayMoment(`02/${this.state.review_date}`),
-        })
-        this.setState({renderError: false, isEditing: null})
+        if(event.target.name === '2' && event.target.value === 'next') {
+          console.log('2')
+          this.setState({renderError: false, isEditing: '3'})
+          this.props.updateGeneral(id, {
+            sustainability_report: this.state.sustainability_report,
+            sustainability_report_date: this.state.sustainability_report === false ? null : dayMoment(`02/${this.state.sustainability_report_date}`),
+          })
+        } else if(event.target.name === '3' && event.target.value === 'next') {
+          this.setState({renderError: false, isEditing: '4'})
+          this.props.updateGeneral(id, {review_date: dayMoment(`02/${this.state.review_date}`)})
+        } else {
+          this.setState({renderError: false, isEditing: null})
+        }
         return this.state.progressBar++
       } else {
         this.setState({renderError: true})
@@ -185,9 +191,18 @@ class BrandGeneral extends Component {
     this.setState({sustainability_report: false, sustainability_report_date: '', dateValid: true})
   }
 
+  validateDate(val) {
+    let date = moment(`${val}`, 'MM/YYYY', true)
+    if (date.isValid()) {
+      this.setState({dateValid: true})
+    } else {
+      this.setState({dateValid: false})
+    }
+  }
+
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event, {value, name}) {
-    this.validateDate(event)
+    this.validateDate(value)
     if(name === 'name') {
       if(value.length >= 1) {
         this.setState({nameError: false})
@@ -257,6 +272,7 @@ class BrandGeneral extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='name'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
+                <div><button onClick={this.handleSave} name='1' value='next'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -276,7 +292,7 @@ class BrandGeneral extends Component {
             <div>{props.verification_date ? moments(props.verification_date) : 'No verification date, the brand hasn\'t been verified yet'}</div>
             <p className='small-divider'></p>
           </div>
-          {isEditing === '3' ? (
+          {isEditing === '2' ? (
             <div className='editing'>
               <h5>When will the brand release its next sustainability report?</h5>
               <Form.Field inline className={state.renderError === true ? 'ui error input' : 'ui input'}>
@@ -299,7 +315,8 @@ class BrandGeneral extends Component {
               <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in MM/YYYY format' : ''}</div>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='sustainability_report_date'>Cancel</button></div>
-                <div><button onClick={this.handleSave} name='3' value='3'>Save</button></div>
+                <div><button onClick={this.handleSave} name='2' value='2'>Save</button></div>
+                <div><button onClick={this.handleSave} name='2' value='next'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -307,12 +324,12 @@ class BrandGeneral extends Component {
               <p>{state.sustainability_report === false ? 'N/A' : state.sustainability_report_date}</p>
               <div className='button-container'>
                 <div></div>
-                <div><button name='3' onClick={this.handleEdit} value='3'>Edit</button></div>
+                <div><button name='2' onClick={this.handleEdit} value='2'>Edit</button></div>
               </div>
               <p className='small-divider'></p>
             </div>
           )}
-          {isEditing === '4' ? (
+          {isEditing === '3' ? (
             <div className='editing'>
               <h5>Which month does Good On You need to review the Brand?</h5>
               <Form.Field inline className={state.renderError === true ? 'ui error input' : 'ui input'}>
@@ -327,7 +344,8 @@ class BrandGeneral extends Component {
               <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in MM/YYYY format' : ''}</div>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='review_date'>Cancel</button></div>
-                <div><button onClick={this.handleSave} name='4' value='4'>Save</button></div>
+                <div><button onClick={this.handleSave} name='3' value='3'>Save</button></div>
+                <div><button onClick={this.handleSave} name='3' value='next'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -335,12 +353,12 @@ class BrandGeneral extends Component {
               <p>{state.review_date? state.review_date : ''}</p>
               <div className='button-container'>
                 <div></div>
-                <div><button name='4' onClick={this.handleEdit} value='4'>Edit</button></div>
+                <div><button name='3' onClick={this.handleEdit} value='3'>Edit</button></div>
               </div>
               <p className='small-divider'></p>
             </div>
           )}
-          {isEditing === '5' ? (
+          {isEditing === '4' ? (
             <div className='editing'>
               <h5>What is the size of the Brand?</h5>
               <p>Brand Size: </p>
@@ -429,8 +447,9 @@ class BrandGeneral extends Component {
                 />
               </Form.Field>
               <div className='button-container'>
-                <div><button className='cancel' onClick={this.handleSizeCancel} name='5'>Cancel</button></div>
-                <div><button onClick={this.handleSave} name='5' value='5'>Save</button></div>
+                <div><button className='cancel' onClick={this.handleSizeCancel} name='4'>Cancel</button></div>
+                <div><button onClick={this.handleSave} name='4' value='4'>Save</button></div>
+                <div><Link to={`/brandContact/${id}`}><button onClick={this.handleSave} name='4' value='next'>Save & Next</button></Link></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -441,7 +460,7 @@ class BrandGeneral extends Component {
               <p>{state.parent_company ? `Parent Company: ${state.parent_company}` : ''}</p>
               <div className='button-container'>
                 <div></div>
-                <div><button name='5' onClick={this.handleEdit} value='5'>Edit</button></div>
+                <div><button name='4' onClick={this.handleEdit} value='4'>Edit</button></div>
               </div>
             </div>
           )}

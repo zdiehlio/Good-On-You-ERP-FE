@@ -35,7 +35,7 @@ button {
   display: inline-block;
   margin-top: 2em;
   margin-bottom: 2em;
-  width: calc(90%/2);
+  width: calc(90%/3);
 }
 .cancel {
   background-color: maroon;
