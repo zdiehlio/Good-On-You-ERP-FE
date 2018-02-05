@@ -37,8 +37,11 @@ class SuppDataAlias extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.alias !== this.props.alias) {
-      this.setState({aliasArr: _.map(nextProps.alias, ali => {return {id: ali.id, alias: ali.alias}})})
-      if(Object.keys(nextProps.alias).length > 0) {
+      nextProps.alias.map(val => {
+        this.state.aliasArr.push(val)
+      })
+      // this.setState({aliasArr: _.map(nextProps.alias, ali => {return {id: ali.id, alias: ali.alias}})})
+      if(nextProps.alias.length > 0) {
         this.state.progressBar++
       }
     }

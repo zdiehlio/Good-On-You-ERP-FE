@@ -6,6 +6,18 @@ import { fetchBrandInfo } from '../../actions'
 import { fetchRatingScore } from '../../actions/rating'
 import { fetchGeneral } from '../../actions/general'
 import { fetchContact } from '../../actions/contact'
+import { fetchAlias } from '../../actions/alias'
+import { fetchCause } from '../../actions/cause'
+import { fetchSentence } from '../../actions/sentence'
+import { fetchSummary } from '../../actions/summary'
+import { fetchSocial } from '../../actions/socialMedia'
+import { fetchImage, fetchLogo } from '../../actions/image'
+import { fetchStyles } from '../../actions/style'
+import { fetchBrandCategory } from '../../actions/category'
+import { fetchType} from '../../actions/type'
+import { fetchRetailers} from '../../actions/retailer'
+
+
 import { Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 
@@ -17,8 +29,20 @@ class BrandLanding extends Component {
 
     this.state = {
       show: null,
+      styleArr: [],
       generalProgress: 0,
       contactProgress: 0,
+      aliasProgress: 0,
+      causeProgress: 0,
+      sentenceProgress: 0,
+      summaryProgress: 0,
+      socialProgress: 0,
+      imageProgress: 0,
+      genderProgress: 0,
+      priceProgress: 0,
+      categoryProgress: 0,
+      typeProgress: 0,
+      retailerProgress: 0,
     }
     this.handleShow = this.handleShow.bind(this)
     this.handleHide = this.handleHide.bind(this)
@@ -30,6 +54,17 @@ class BrandLanding extends Component {
     this.props.fetchGeneral(id, 'general')
     this.props.fetchContact(id)
     this.props.fetchRatingScore(id)
+    this.props.fetchAlias(id)
+    this.props.fetchCause(id)
+    this.props.fetchSentence(id)
+    this.props.fetchSummary(id)
+    this.props.fetchSocial(id)
+    this.props.fetchImage(id)
+    this.props.fetchLogo(id)
+    this.props.fetchStyles(id)
+    this.props.fetchBrandCategory(id)
+    this.props.fetchType(id)
+    this.props.fetchRetailers(id)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,7 +75,7 @@ class BrandLanding extends Component {
       if(nextProps.general.review_date) {
         this.state.generalProgress++
       }
-      if(nextProps.general.sustainability_report_date) {
+      if(nextProps.general.sustainability_report_date || nextProps.general.sustainability_report === false) {
         this.state.generalProgress++
       }
       if(nextProps.general.size) {
@@ -50,6 +85,80 @@ class BrandLanding extends Component {
     if(nextProps.contact !== this.props.contact) {
       if(nextProps.contact.contact) {
         this.state.contactProgress++
+      }
+    }
+    if(nextProps.alias !== this.props.alias) {
+      if(nextProps.alias.length > 0) {
+        this.state.aliasProgress++
+      }
+    }
+    if(nextProps.cause !== this.props.cause) {
+      nextProps.cause.map(val => {
+        this.state.causeProgress++
+      })
+    }
+    if(nextProps.sentence !== this.props.sentence) {
+      if(nextProps.sentence.length > 0) {
+        this.state.sentenceProgress++
+      }
+    }
+    if(nextProps.summary !== this.props.summary) {
+      if(nextProps.summary.length > 0) {
+        this.state.summaryProgress++
+      }
+    }
+    if(nextProps.social !== this.props.social) {
+      if(nextProps.social.facebook_url || nextProps.social.instagram_url) {
+        this.state.socialProgress++
+      }
+    }
+    if(nextProps.image !== this.props.image) {
+      if(nextProps.image.length > 0) {
+        this.state.imageProgress++
+      }
+    }
+    if(nextProps.logo !== this.props.logo) {
+      if(nextProps.logo.length > 0) {
+        this.state.imageProgress++
+      }
+    }
+    if(nextProps.styles !== this.props.styles) {
+      nextProps.styles.map(style => {
+        if(style.style_qa.question === 'gender') {
+          this.state.genderProgress++
+        } else if(style.style_qa.question === 'price') {
+          this.state.priceProgress++
+        } else {
+          if(this.state.styleArr.includes(style.style_qa.question)) {
+            console.log('style array', this.state.styleArr)
+          } else {
+            this.state.styleArr.push(style.style_qa.question)
+          }
+        }
+      })
+    }
+    if(nextProps.categories !== this.props.categories) {
+      if(nextProps.categories.length > 0) {
+        this.state.categoryProgress++
+        nextProps.categories.map(val => {
+          if(val.dominant === true) {
+            this.state.categoryProgress++
+          }
+        })
+      }
+    }
+    if(nextProps.types !== this.props.types) {
+      if(nextProps.types.length > 0) {
+        this.state.typeProgress++
+      }
+    }
+    if(nextProps.retailer !== this.props.retailer) {
+      if(nextProps.retailer.length > 0) {
+        nextProps.retailer.map(val => {
+          if(val.name && val.online_only) {
+            this.state.retailerProgress++
+          }
+        })
       }
     }
   }
@@ -113,7 +222,7 @@ class BrandLanding extends Component {
     const props = this.props
     const state = this.state
     console.log('state', state)
-    console.log('props', props.score.headlines)
+    console.log('props', props.retailer)
     return(
       <div className='summary-container'>
         <div className='landing-header'>
@@ -165,7 +274,8 @@ class BrandLanding extends Component {
         <p className='small-divider'></p>
         <div className='summary-view'>
           <div>Alternative Names / Spelling</div>
-          <div><Link to={`/suppDataAlias/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.aliasProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/suppDataAlias/${id}`}><button>{state.aliasProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
 
@@ -391,17 +501,20 @@ class BrandLanding extends Component {
         <p className='divider'></p>
         <div className='summary-view'>
           <div>Causes</div>
-          <div><Link to={`/brandCauses/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.causeProgress >= 8 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/brandCauses/${id}`}><button>{state.causeProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
           <div>Sentence</div>
-          <div><Link to={`/brandSentences/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.sentenceProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/brandSentences/${id}`}><button>{state.sentenceProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
           <div>Summary</div>
-          <div><Link to={`/brandSummary/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.summaryProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/brandSummary/${id}`}><button>{state.summaryProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
 
@@ -409,42 +522,50 @@ class BrandLanding extends Component {
         <p className='divider'></p>
         <div className='summary-view'>
           <div>Social Media</div>
-          <div><Link to={`/suppDataSocialMedia/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.socialProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/suppDataSocialMedia/${id}`}><button>{state.socialProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
           <div>Images</div>
-          <div><Link to={`/suppDataImage/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.imageProgress >= 2 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/suppDataImage/${id}`}><button>{state.imageProgress >= 2 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
           <div>Genders/Ages</div>
-          <div><Link to={`/suppDataGender/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.genderProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/suppDataGender/${id}`}><button>{state.genderProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
           <div>Categories</div>
-          <div><Link to={`/suppDataCategory/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.categoryProgress >= 2 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/suppDataCategory/${id}`}><button>{state.categoryProgress >= 2 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
           <div>Styles</div>
-          <div><Link to={`/suppDataStyles/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.styleArr.length >= 13 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/suppDataStyles/${id}`}><button>{state.styleArr.length >= 13 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
           <div>Product Types</div>
-          <div><Link to={`/suppDataTypes/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.typeProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/suppDataTypes/${id}`}><button>{state.typeProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
           <div>Price</div>
-          <div><Link to={`/suppDataPrice/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.priceProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/suppDataPrice/${id}`}><button>{state.priceProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>
           <div>Retailers</div>
-          <div><Link to={`/suppDataRetailers/${id}`}><button>Start</button></Link></div>
+          <div><p className='progress'>{state.retailerProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/suppDataRetailers/${id}`}><button>{state.retailerProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
         </div>
       </div>
     )
@@ -456,7 +577,34 @@ function mapStateToProps(state) {
     contact: state.contact,
     general: state.general,
     score: state.ratingScore,
+    alias: state.alias,
+    cause: state.causes,
+    sentence: state.sentence,
+    summary: state.summary,
+    social: state.social,
+    image: state.image,
+    logo: state.logo,
+    styles: state.styles,
+    categories: state.categories,
+    types: state.types,
+    retailer: state.retailer,
   }
 }
 
-export default connect(mapStateToProps, { fetchGeneral, fetchContact, fetchBrandInfo, fetchRatingScore })(BrandLanding)
+export default connect(mapStateToProps, {
+  fetchGeneral,
+  fetchContact,
+  fetchBrandInfo,
+  fetchRatingScore,
+  fetchAlias,
+  fetchCause,
+  fetchSentence,
+  fetchSummary,
+  fetchSocial,
+  fetchImage,
+  fetchLogo,
+  fetchStyles,
+  fetchBrandCategory,
+  fetchType,
+  fetchRetailers,
+})(BrandLanding)

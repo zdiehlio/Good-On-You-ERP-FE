@@ -2,8 +2,7 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Form, Input, Progress } from 'semantic-ui-react'
-import { updateSocial } from '../../actions/socialMedia'
-import { fetchGeneral } from '../../actions/general'
+import { updateSocial, fetchSocial } from '../../actions/socialMedia'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
 
@@ -26,22 +25,22 @@ class SuppDataSocialMedia extends Component {
   }
   componentWillMount() {
     const { id } = this.props.match.params
-    this.props.fetchGeneral(id, 'social-media')
+    this.props.fetchSocial(id)
 
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.general != this.props.general) {
+    if(nextProps.social != this.props.social) {
       this.setState({
-        facebook_url: nextProps.general.facebook_url,
-        instagram_url: nextProps.general.instagram_url,
-        originalFacebook_url: nextProps.general.facebook_url,
-        originalInstagram_url: nextProps.general.instagram_url,
+        facebook_url: nextProps.social.facebook_url,
+        instagram_url: nextProps.social.instagram_url,
+        originalFacebook_url: nextProps.social.facebook_url,
+        originalInstagram_url: nextProps.social.instagram_url,
       })
-      if(nextProps.general.facebook_url) {
+      if(nextProps.social.facebook_url) {
         this.state.progressBar++
       }
-      if(nextProps.general.instagram_url) {
+      if(nextProps.social.instagram_url) {
         this.state.progressBar++
       }
     }
@@ -87,12 +86,12 @@ class SuppDataSocialMedia extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.general)
+    console.log('props', this.props.social)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
     const state = this.state
-    const props = this.props.general
+    const props = this.props.social
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
@@ -154,9 +153,9 @@ class SuppDataSocialMedia extends Component {
 
 function mapStateToProps(state) {
   return {
-    general: state.general,
+    social: state.social,
     brand: state.brandInfo,
   }
 }
 
-export default connect(mapStateToProps, { fetchGeneral, updateSocial })(SuppDataSocialMedia)
+export default connect(mapStateToProps, { fetchSocial, updateSocial })(SuppDataSocialMedia)

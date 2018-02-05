@@ -1,7 +1,7 @@
 import { FETCH_IMAGE, UPLOAD_IMAGE } from '../actions/image'
 import _ from 'lodash'
 
-export default function(state = {}, action) {
+export default function(state = [], action) {
   switch (action.type) {
   case FETCH_IMAGE:
     if (!action.error) {
@@ -12,7 +12,7 @@ export default function(state = {}, action) {
   case UPLOAD_IMAGE:
     if(!action.error) {
       console.log('upload image', action.payload.data)
-      return {...state, [action.payload.data.id]: action.payload.data}
+      return [...state, action.payload.data]
     }
     return {error: action.error}
   default:
