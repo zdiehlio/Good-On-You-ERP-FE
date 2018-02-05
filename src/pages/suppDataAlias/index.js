@@ -129,7 +129,7 @@ class SuppDataAlias extends Component {
           <span className='form-navigation'>
             <div><Link to={`/brandContact/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Alternative Names / Spelling</h3></div>
-            <div><Link to={`/resource/${id}`}><button className='next'>Next</button></Link></div>
+            <div><Link to={`/env-standards-compliance/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
         <p className='small-divider'></p>

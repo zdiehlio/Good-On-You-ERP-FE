@@ -29,6 +29,7 @@ class BrandGeneral extends Component {
       input: null,
       dateValid: true,
       renderError: false,
+      changeError: false,
       progressBar: 0,
       name: '',
     }
@@ -91,20 +92,34 @@ class BrandGeneral extends Component {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.setState({isEditing: event.target.value})
+    if(this.state.changeError === false) {
+      this.setState({isEditing: event.target.value})
+    } else {
+      this.setState({renderChangeError: true})
+      alert(`Please click Save on previously edited question to save your selected answers or Cancel to disregard your selections`)
+    }
   }
 
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    this.setState({isEditing: null, currentAnswer: null, [event.target.name]: this.state[`original${event.target.name}`]})
+    this.setState({
+      renderChangeError: false,
+      changeError: false,
+      isEditing: null,
+      currentAnswer: null, [event.target.name]: this.state[`original${event.target.name}`]})
   }
 
   handleSizeCancel(event) {
     _.map(this.state.sizeOptions, size => {
       this.setState({[size]: this.state[`original${size}`]})
     })
-    this.setState({sizeValues: this.state.originalSizeValues, isEditing: null, parent_company: this.state.originalparent_company})
+    this.setState({renderChangeError: false,
+      changeError: false,
+      sizeValues: this.state.originalSizeValues,
+      isEditing: null,
+      parent_company: this.state.originalparent_company})
   }
+
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
@@ -114,17 +129,17 @@ class BrandGeneral extends Component {
         this.setState({nameError: true})
       } else if(event.target.value === 'next') {
         if(event.target.name === '1') {
-          this.setState({isEditing: '2'})
+          this.setState({renderChangeError: false, changeError: false, isEditing: '2'})
         }
         this.props.updateGeneral(id, {name: this.state.name})
       } else {
         this.props.updateGeneral(id, {name: this.state.name})
-        this.setState({isEditing: null})
+        this.setState({renderChangeError: false, changeError: false, isEditing: null})
       }
     } else if(event.target.name === '4') {
       this.props.createBrandSize(id, this.state.sizeValues.length > 0 ? this.state.sizeValues : this.state.noValues)
       this.props.updateGeneral(id, {parent_company: this.state.parent_company})
-      this.setState({isEditing: null})
+      this.setState({renderChangeError: false, changeError: false, isEditing: null})
       if(event.target.value === 'next') {
         this.props.history.push(`/brandContact/${id}`)
       }
@@ -133,16 +148,16 @@ class BrandGeneral extends Component {
       if(this.state.dateValid === true) {
         if(event.target.name === '2' && event.target.value === 'next') {
           console.log('2')
-          this.setState({renderError: false, isEditing: '3'})
+          this.setState({renderChangeError: false, changeError: false, renderError: false, isEditing: '3'})
           this.props.updateGeneral(id, {
             sustainability_report: this.state.sustainability_report,
             sustainability_report_date: this.state.sustainability_report === false ? null : dayMoment(`02/${this.state.sustainability_report_date}`),
           })
         } else if(event.target.name === '3' && event.target.value === 'next') {
-          this.setState({renderError: false, isEditing: '4'})
+          this.setState({renderChangeError: false, changeError: false, renderError: false, isEditing: '4'})
           this.props.updateGeneral(id, {review_date: dayMoment(`02/${this.state.review_date}`)})
         } else {
-          this.setState({renderError: false, isEditing: null})
+          this.setState({renderChangeError: false, changeError: false, enderError: false, isEditing: null})
         }
         return this.state.progressBar++
       } else {
@@ -174,6 +189,7 @@ class BrandGeneral extends Component {
       }
       this.setState({none: null, noValues: []})
     }
+    this.setState({changeError: true})
   }
 
   renderCriteria() {
@@ -220,7 +236,7 @@ class BrandGeneral extends Component {
         this.setState({sustainability_report: true})
       }
     }
-    this.setState({currentAnswer: name, [name]: value, input: value})
+    this.setState({changeError: true, currentAnswer: name, [name]: value, input: value})
   }
 
   capitalize(string) {
@@ -269,6 +285,7 @@ class BrandGeneral extends Component {
                   value={props.website}
                 />
               </Form.Field>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='name'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
@@ -312,6 +329,7 @@ class BrandGeneral extends Component {
                   name='NA'
                 />
               </Form.Field>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in MM/YYYY format' : ''}</div>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='sustainability_report_date'>Cancel</button></div>
@@ -341,6 +359,7 @@ class BrandGeneral extends Component {
                   name='review_date'
                 />
               </Form.Field>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='error-message'>{state.renderError === true ? 'Please enter a valid Date in MM/YYYY format' : ''}</div>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='review_date'>Cancel</button></div>
@@ -446,6 +465,7 @@ class BrandGeneral extends Component {
                   value={state.parent_company}
                 />
               </Form.Field>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleSizeCancel} name='4'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='4' value='4'>Save</button></div>

@@ -28,6 +28,8 @@ class SuppDataCategory extends Component {
       dominant_id: [],
       dominant: null,
       progressBar: 0,
+      changeError: false,
+      renderChangeError: false,
     }
 
 
@@ -97,7 +99,12 @@ class SuppDataCategory extends Component {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.setState({isEditing: event.target.value})
+    if(this.state.changeError === false) {
+      this.setState({isEditing: event.target.value})
+    } else {
+      this.setState({renderChangeError: true})
+      alert(`Please click Save on previously edited question to save your selected answers or Cancel to disregard your selections`)
+    }
   }
 
   renderDominant() {
@@ -126,7 +133,15 @@ class SuppDataCategory extends Component {
     _.map(this.props.pre_qa, cat => {
       this.setState({[cat.name]: 'chip'})
     })
-    this.setState({dominantOptions: [], current_dominant_id: null, current_dominant_name: null, isEditing: null, save: true})
+    this.setState({
+      changeError: false,
+      renderChangeError: false,
+      dominantOptions: [],
+      current_dominant_id: null,
+      current_dominant_name: null,
+      isEditing: null,
+      save: true,
+    })
     this.props.fetchBrandCategory(id)
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -143,7 +158,7 @@ class SuppDataCategory extends Component {
       this.props.updateBrandCategory(id, this.state.current_dominant_id, this.state.dominant)
       this.state.progressBar++
     }
-    this.setState({isEditing: null})
+    this.setState({changeError: false, renderChangeError: false, isEditing: null})
   }
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
   handleCateChange(event){
@@ -168,6 +183,7 @@ class SuppDataCategory extends Component {
         dominantOptions: [...this.state.dominantOptions, {name: event.target.name, id: parseInt(event.target.value)}],
       })
     }
+    this.setState({changeError: true})
   }
 
   handleDominantChange(event) {
@@ -177,6 +193,7 @@ class SuppDataCategory extends Component {
       current_dominant_id: parseInt(event.target.value),
       current_dominant_name: event.target.name,
       dominant: {dominant: true},
+      changeError: true,
     })
   }
 
@@ -210,6 +227,7 @@ class SuppDataCategory extends Component {
               <ul>
                 {this.renderCategories()}
               </ul>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleCatSave} name='1' value='1'>Save</button></div>
@@ -233,6 +251,7 @@ class SuppDataCategory extends Component {
               <ul>
                 {this.renderDominant()}
               </ul>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleCatSave} name='2' value='2'>Save</button></div>

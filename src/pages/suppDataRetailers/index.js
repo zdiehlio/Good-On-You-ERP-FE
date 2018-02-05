@@ -19,6 +19,8 @@ class SuppDataRetailers extends Component {
       territoryOptions: [],
       save: false,
       progressBar: 0,
+      changeError: false,
+      renderChangeError: false,
     }
 
     const { id } = this.props.match.params
@@ -74,7 +76,12 @@ class SuppDataRetailers extends Component {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.setState({isEditing: event.target.name})
+    if(this.state.changeError === false) {
+      this.setState({isEditing: event.target.name})
+    } else {
+      this.setState({renderChangeError: true})
+      alert(`Please click Save on previously edited question to save your selected answers or cancel to disregard your selections`)
+    }
   }
 
   //sets state for isEditing to null which will toggle the ability to edit
@@ -96,6 +103,8 @@ class SuppDataRetailers extends Component {
       online_only: this.state.originalOnline_only,
       territories: this.state.originalTerritories,
       errorname: false,
+      changeError: false,
+      renderChangeError: false,
     })
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -104,15 +113,14 @@ class SuppDataRetailers extends Component {
     const { id }  = this.props.match.params
     if(this.state.name && this.state.errorwebsite === false){
       if(!this.state.id) {
-        console.log('create')
         new Promise((resolve, reject) => {
           resolve(this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website.length > 0 ? this.state.website : null, territories: this.state.territories}))
         }).then(this.props.fetchRetailers(id))
         this.state.progressBar++
-        this.setState({save: true, isEditing: null, errorname: false})
+        this.setState({renderChangeError: false, changeError: false, save: true, isEditing: null, errorname: false})
       } else {
         this.props.updateRetailer(this.state.id, {name: this.state.name, website: this.state.website.length > 0 ? this.state.website : null, territories: this.state.territories})
-        this.setState({isEditing: null, errorname: false})
+        this.setState({renderChangeError: false, changeError: false, isEditing: null, errorname: false})
       }
     } else {
       this.setState({errorname: this.state.name ? false : true, errorwebsite: this.state.name ? false : true})
@@ -145,7 +153,7 @@ class SuppDataRetailers extends Component {
 
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event, { value, name }) {
-    this.setState({[name]: value})
+    this.setState({changeError: true, [name]: value})
     this.handleError(value, name)
   }
 
@@ -153,7 +161,7 @@ class SuppDataRetailers extends Component {
     if(this.state[value]) {
       this.handleDropDownError()
     } else {
-      this.setState({errorTerritory: false, [value]: value, territories: [...this.state.territories, {name: value}]})
+      this.setState({changeError: true, errorTerritory: false, [value]: value, territories: [...this.state.territories, {name: value}]})
     }
   }
 
@@ -169,7 +177,7 @@ class SuppDataRetailers extends Component {
   }
 
   handleRemove(event) {
-    this.setState({[event.target.value]: null, territories: this.state.territories.filter(select => {return select.name !== event.target.value})})
+    this.setState({changeError: true, [event.target.value]: null, territories: this.state.territories.filter(select => {return select.name !== event.target.value})})
   }
 
   renderTerritorries() {
@@ -278,6 +286,7 @@ class SuppDataRetailers extends Component {
               <p className='error-message'>{state.errorTerritory === true ? 'Territory already added' : ''}</p>
               <h5>List of Retailer Territories</h5>
               {this.renderTerritorries()}
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='button-container' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='retailer'>Save</button></div>
@@ -322,6 +331,7 @@ class SuppDataRetailers extends Component {
                   checked={state.online_only === 'false' ? true : false}
                 />
               </Form.Field>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleOnlineSave} name='online'>Save</button></div>

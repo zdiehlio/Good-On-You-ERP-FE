@@ -18,6 +18,8 @@ class SuppDataImage extends Component {
       progressBar: 0,
       images: [],
       logos: [],
+      renderChangeError: false,
+      changeError: false,
     }
 
 
@@ -66,15 +68,20 @@ class SuppDataImage extends Component {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.setState({isEditing: event.target.name})
+    if(this.state.changeError === false) {
+      this.setState({isEditing: event.target.name})
+    } else {
+      this.setState({renderChangeError: true})
+      alert(`Please click Save on previously edited question to save your selected answers or Cancel to disregard your selections`)
+    }
   }
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
     if(event.target.name === 'image') {
-      this.setState({image_selected: this.state.originalImage_selected, image_url: this.state.originalImage_url})
+      this.setState({renderChangeError: false, changeError: false, image_selected: this.state.originalImage_selected, image_url: this.state.originalImage_url})
     } else if(event.target.name === 'logo') {
-      this.setState({logo_selected: this.state.originalLogo_selected, logo_url: this.state.originalLogo_url})
+      this.setState({renderChangeError: false, changeError: false, logo_selected: this.state.originalLogo_selected, logo_url: this.state.originalLogo_url})
     }
     this.setState({isEditing: null, currentAnswer: null})
   }
@@ -108,7 +115,7 @@ class SuppDataImage extends Component {
       this.props.updateImage(this.state.image_selected, {is_selected: true})
       this.state.progressBar++
     }
-    this.setState({isEditing: null})
+    this.setState({renderChangeError: false, changeError: false, isEditing: null})
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
@@ -116,11 +123,11 @@ class SuppDataImage extends Component {
   }
 
   handleLogo(event) {
-    this.setState({logo_selected: parseInt(event.target.name), logo_url: event.target.src})
+    this.setState({changeError: true, logo_selected: parseInt(event.target.name), logo_url: event.target.src})
   }
 
   handleImage(event) {
-    this.setState({image_selected: parseInt(event.target.name), image_url: event.target.src})
+    this.setState({changeError: true, image_selected: parseInt(event.target.name), image_url: event.target.src})
   }
 
   renderLogo() {
@@ -201,6 +208,7 @@ class SuppDataImage extends Component {
                 <div></div>
                 <div><button onClick={this.handleImageUpload}>Upload</button></div>
               </div>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='image'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='image'>Save</button></div>
@@ -228,6 +236,7 @@ class SuppDataImage extends Component {
                 <div></div>
                 <div><button onClick={this.handleLogoUpload}>Upload</button></div>
               </div>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='logo'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='logo'>Save</button></div>
