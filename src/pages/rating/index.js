@@ -39,6 +39,8 @@ class Rating extends Component {
       ratingValues: [{}],
       errorsWebsite: [],
       errors: [],
+      changeError: false,
+      renderChangeError: false,
     }
 
     this.handleEdit = this.handleEdit.bind(this)
@@ -114,7 +116,7 @@ class Rating extends Component {
         [`show${val.id}`]: this.state[`originalShow${val.id}`],
       })
     })
-    this.setState({renderChangeError: false, isEditing: null, ratingValues: this.state.originalRatingValues})
+    this.setState({renderChangeError: false, changeError: false, isEditing: null, ratingValues: this.state.originalRatingValues})
   }
 
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -133,6 +135,7 @@ class Rating extends Component {
         })
       })
       this.setState({
+        changeError: false,
         renderChangeError: false,
         isEditing: null,
         originalRatingValues: this.state.ratingValues,
@@ -151,6 +154,7 @@ class Rating extends Component {
         this.setState({[`comment${val.id}`]: event.target.value})
       }
     })
+    this.setState({changeError: true})
   }
 
   handleUrl(event) {
@@ -160,6 +164,7 @@ class Rating extends Component {
         this.setState({[`url${val.id}`]: event.target.value})
       }
     })
+    this.setState({changeError: true})
     this.handleValidUrl(event)
   }
 
@@ -185,6 +190,7 @@ class Rating extends Component {
         }))
       }).then(() => this.handleSaveValidation(value))
     }
+    this.setState({changeError: true})
   }
 
   renderHeader() {
@@ -338,10 +344,10 @@ class Rating extends Component {
                             />
                           </Form.Field>
                         </div>) : ('')}
-                      <p className='error-message'>{this.state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
                     </div>
                   )}
               )}
+              <p className='error-message'>{this.state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name={type.id}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name={type.id}>Save</button></div>
