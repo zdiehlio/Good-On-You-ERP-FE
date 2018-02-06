@@ -76,8 +76,14 @@ class BrandContact extends Component {
     if(this.state.error_email === false) {
       if(this.props.contact.contact) {
         this.props.updateContact(id, {name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
+        if(event.target.value === 'next') {
+          this.props.history.push(`/suppDataAlias/${id}`)
+        }
       } else {
         this.props.createContact({brand: id, name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
+        if(event.target.value === 'next') {
+          this.props.history.push(`/suppDataAlias/${id}`)
+        }
       }
       this.setState({isEditing: null, renderError: false, error_email: false})
       return this.state.progressBar++
@@ -154,7 +160,8 @@ class BrandContact extends Component {
               </Form.Field>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-                <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
+                <div><button onClick={this.handleSave} name='1'>Save</button></div>
+                <div><button onClick={this.handleSave} name='1' value='next'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>

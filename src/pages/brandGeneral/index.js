@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Route, Router} from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
 import { fetchGeneral, updateGeneral, createBrandSize } from '../../actions/general'
 import { OverviewHeading } from '../../components'
@@ -289,7 +290,7 @@ class BrandGeneral extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='name'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
-                <div><button onClick={this.handleSave} name='1' value='next'>Save & Next</button></div>
+                <div><HashLink to='#sustainability'><button onClick={this.handleSave} name='1' value='next'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -310,7 +311,7 @@ class BrandGeneral extends Component {
             <p className='small-divider'></p>
           </div>
           {isEditing === '2' ? (
-            <div className='editing'>
+            <div className='editing' id='sustainability'>
               <h5>When will the brand release its next sustainability report?</h5>
               <Form.Field inline className={state.renderError === true ? 'ui error input' : 'ui input'}>
                 <Input
@@ -334,7 +335,7 @@ class BrandGeneral extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='sustainability_report_date'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='2' value='2'>Save</button></div>
-                <div><button onClick={this.handleSave} name='2' value='next'>Save & Next</button></div>
+                <div><HashLink to='#review'><button onClick={this.handleSave} name='2' value='next'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -348,7 +349,7 @@ class BrandGeneral extends Component {
             </div>
           )}
           {isEditing === '3' ? (
-            <div className='editing'>
+            <div className='editing' id='review'>
               <h5>Which month does Good On You need to review the Brand?</h5>
               <Form.Field inline className={state.renderError === true ? 'ui error input' : 'ui input'}>
                 <Input
@@ -364,7 +365,7 @@ class BrandGeneral extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='review_date'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='3' value='3'>Save</button></div>
-                <div><button onClick={this.handleSave} name='3' value='next'>Save & Next</button></div>
+                <div><HashLink to='#size'><button onClick={this.handleSave} name='3' value='next'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -378,7 +379,7 @@ class BrandGeneral extends Component {
             </div>
           )}
           {isEditing === '4' ? (
-            <div className='editing'>
+            <div className='editing' id='size'>
               <h5>What is the size of the Brand? *</h5>
 
               <p>Does it clearly meet at least one of the following 'large brand' criteria?</p>

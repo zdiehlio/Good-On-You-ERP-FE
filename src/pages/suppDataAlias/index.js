@@ -77,7 +77,12 @@ class SuppDataAlias extends Component {
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
+    event.preventDefault()
+    const { id }  = this.props.match.params
     this.setState({isEditing: null, renderCurrent: this.state.currentAnswer})
+    if(event.target.value === 'next') {
+      this.props.history.push(`/env-standards-compliance/${id}`)
+    }
     if(this.state.currentAnswer) {
       this.state.progressBar++
     }
@@ -153,7 +158,8 @@ class SuppDataAlias extends Component {
               <div className='alias-list'>{state.save === true ? this.renderAlias() : this.renderAlias()}</div>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-                <div><button onClick={this.handleSave} name='1' value='1'>Done</button></div>
+                <div><button onClick={this.handleSave}>Done</button></div>
+                <div><button onClick={this.handleSave} value='next'>Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>
