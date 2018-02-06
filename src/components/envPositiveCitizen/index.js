@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 class EnvPositiveCitizen extends Component {
 
   render() {
-    console.log('params', this.props)
+    console.log('positive', this.props)
     return(
       <div className='rating-header'>
         <div className='forms-header'><Link to={`/brandLanding/${this.props.id}`}><button>Back to Summary</button></Link></div>

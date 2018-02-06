@@ -74,12 +74,12 @@ class SuppDataTypes extends Component {
           this.props.deleteType(id, type)
         })
         this.props.createType(this.state.typeValues)
-        this.setState({isEditing: null})
+        event.target.value === 'next' ? this.props.history.push(`/suppDataPrice/${id}`) : this.setState({isEditing: null})
         this.state.progressBar++
       }
     } else {
       if(this.state.validateTypes.length > 0) {
-        this.setState({isEditing: null})
+        event.target.value === 'next' ? this.props.history.push(`/suppDataPrice/${id}`) : this.setState({isEditing: null})
       } else {
         this.setState({error: true})
       }
@@ -186,6 +186,7 @@ class SuppDataTypes extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1'>Save</button></div>
+                <div><button onClick={this.handleSave} name='1' value='next'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>

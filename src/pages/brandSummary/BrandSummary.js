@@ -61,11 +61,16 @@ class BrandSummary extends Component {
     const { id }  = this.props.match.params
     if(this.state.renderSummary) {
       this.props.updateSummary(id, {text: this.state.currentAnswer})
-      this.setState({isEditing: null, renderSummary: this.state.currentAnswer})
+      this.setState({renderSummary: this.state.currentAnswer})
     } else {
       this.props.createSummary({brand: id, text: this.state.currentAnswer})
-      this.setState({renderSummary: this.state.currentAnswer, isEditing: null})
+      this.setState({renderSummary: this.state.currentAnswer})
       this.state.progressBar++
+    }
+    if(event.target.value === 'next') {
+      this.props.history.push(`/suppDataSocialMedia/${id}`)
+    } else {
+      this.setState({isEditing: null})
     }
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
@@ -76,9 +81,10 @@ class BrandSummary extends Component {
   renderRawRatings() {
     if(this.props.pre_qa) {
       if(this.props.pre_qa.length > 0) {
+        let count = 0
         return _.map(this.props.pre_qa, answer => {
           return(
-            <div key={answer.text}>{answer.text}</div>
+            <div key={count++}>{answer.text}</div>
           )
         })
       } else {
@@ -86,15 +92,6 @@ class BrandSummary extends Component {
       }
     }
   }
-
-  // renderSummary() {
-  //   return _.map(this.props.qa, summary => {
-  //     if(summary.id)
-  //     return(
-  //       <li key={summary.id}>{summary.text}</li>
-  //     )
-  //   })
-  // }
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
@@ -133,7 +130,8 @@ class BrandSummary extends Component {
               <p>{this.state.textlength}/3000</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-                <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
+                <div><button onClick={this.handleSave}>Save</button></div>
+                <div><button onClick={this.handleSave} value='next'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>

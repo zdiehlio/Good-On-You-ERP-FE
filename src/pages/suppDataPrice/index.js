@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
 import { Form, Radio, Progress } from 'semantic-ui-react'
 import { fetchStyles, createStyles } from '../../actions/style'
@@ -31,7 +32,6 @@ class SuppDataPrice extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.styles !== this.props.styles) {
       _.map(nextProps.styles, compare => {
-        console.log(compare.style_qa.question)
         if(compare.style_qa.question === 'price') {
           this.setState({price: compare.score, originalPrice: compare.score})
           this.state.progressBar++
@@ -58,7 +58,8 @@ class SuppDataPrice extends Component {
     const { id }  = this.props.match.params
     if(this.state.price) {
       this.props.createStyles({brand: id, style: 'price', score: this.state.price})
-      this.setState({isEditing: null, originalPrice: this.state.price})
+      this.setState({originalPrice: this.state.price})
+      event.target.value === 'next' ? this.props.history.push(`/suppDataRetailers/${id}`) : this.setState({isEditing: null})
       this.state.progressBar++
     } else {
       this.setState({error: true})
@@ -146,6 +147,7 @@ class SuppDataPrice extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='price'>Save</button></div>
+                <div><button onClick={this.handleSave} name='price' value='next'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>

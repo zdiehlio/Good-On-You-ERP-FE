@@ -75,6 +75,7 @@ class SuppDataGender extends Component {
       this.props.createStyles(this.state.genders, id)
       this.setState({isEditing: null})
       this.state.progressBar++
+      event.target.value === 'next' ? this.props.history.push(`/suppDataCategory/${id}`) : this.setState({isEditing: null})
     } else {
       this.setState({error: true})
     }
@@ -142,6 +143,7 @@ class SuppDataGender extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='gender'>Save</button></div>
+                <div><button onClick={this.handleSave} name='gender' value='next'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>

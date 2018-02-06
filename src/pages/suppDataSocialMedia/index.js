@@ -70,8 +70,18 @@ class SuppDataSocialMedia extends Component {
       }
     } else {
       this.props.updateSocial(id, {facebook_url: this.state.facebook_url, instagram_url: this.state.instagram_url})
-      this.setState({isEditing: null, facebook_urlError: false, instagram_urlError: false})
-      this.state.progressBar++
+      this.setState({facebook_urlError: false, instagram_urlError: false})
+      if(this.state.instagram_url.length > 0) {
+        this.state.progressBar++
+      }
+      if(this.state.facebook_url.length > 0) {
+        this.state.progressBar++
+      }
+      if(event.target.value === 'next') {
+        this.props.history.push(`/suppDataImage/${id}`)
+      } else {
+        this.setState({isEditing: null})
+      }
     }
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
@@ -105,7 +115,7 @@ class SuppDataSocialMedia extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={1} value={state.progressBar} progress />
+        <Progress total={2} value={state.progressBar} progress />
         <Form>
           {isEditing === 'social' ? (
             <div className='editing'>
@@ -133,6 +143,7 @@ class SuppDataSocialMedia extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='social'>Save</button></div>
+                <div><button onClick={this.handleSave} name='social' value='next'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
 import { fetchCause, fetchAllCause, createCause, updateCause } from '../../actions/cause'
 import { QualiHeading } from '../../components'
@@ -53,7 +54,7 @@ class BrandCauses extends Component {
     const { id }  = this.props.match.params
     if(this.state.changeError === false) {
       if(this.state[event.target.name]){
-        this.setState({isEditing: event.target.value, currentAnswer: this.state[event.target.value]})
+        this.setState({isEditing: event.target.value, currentAnswer: this.state[event.target.name]})
       } else {
         this.setState({isEditing: event.target.value, currentAnswer: null})
       }
@@ -81,10 +82,27 @@ class BrandCauses extends Component {
       this.setState({error: true})
     } else {
       this.props.updateCause(id, event.target.name, {answer: this.state.currentAnswer})
-      this.setState({isEditing: null, [`${event.target.name}Answer`]: this.state.tempAnswer, changeError: false, renderChangeError: false})
+      this.setState({[`${event.target.name}Answer`]: this.state.tempAnswer, changeError: false, renderChangeError: false})
       if(!this.state[`${event.target.name}OriginalAnswer`]) {
         this.props.createCause({brand: id, question: event.target.name, answer: this.state.currentAnswer})
         return this.state.progressBar++
+      }
+      if(event.target.value === 'nextB-corp') {
+        this.setState({isEditing: '6'})
+      } else if(event.target.value === 'nextSocial') {
+        this.setState({isEditing: '8'})
+      } else if(event.target.value === 'nextModel') {
+        this.setState({isEditing: '10'})
+      } else if(event.target.value === 'nextVegan') {
+        this.setState({isEditing: '12'})
+      } else if(event.target.value === 'nextTrade') {
+        this.setState({isEditing: '14'})
+      } else if(event.target.value === 'nextOrganic') {
+        this.setState({isEditing: '16'})
+      } else if(event.target.value === 'nextRecycle') {
+        this.setState({isEditing: '18'})
+      } else if(event.target.value === 'nextPage') {
+        this.props.history.push(`/brandSentences/${id}`)
       }
     }
   }
@@ -125,7 +143,7 @@ class BrandCauses extends Component {
   render() {
     console.log('props', this.props.causes)
     console.log('pre_qa', this.props.pre_qa)
-    console.log('state', this.state.currentAnswer)
+    console.log('state', this.state)
     const { id }  = this.props.match.params
     const isEditing = this.state.isEditing
     const state = this.state
@@ -154,6 +172,7 @@ class BrandCauses extends Component {
               <div className='button-container'>
                 <div><button className='cancel' name='made-in' onClick={this.handleCancel} >Cancel</button></div>
                 <div><button name='made-in' onClick={this.handleSave}  value='1'>Save</button></div>
+                <div><HashLink to='#b-corp'><button name='made-in' onClick={this.handleSave}  value='nextB-corp'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -167,7 +186,7 @@ class BrandCauses extends Component {
             </div>
           )}
           {isEditing === '6' ? (
-            <div className='editing'>
+            <div className='editing' id='b-corp'>
               <h4>Is the Brand Certified B-Corp? *</h4>
               {this.renderQuestion('b-corp')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
@@ -175,6 +194,7 @@ class BrandCauses extends Component {
               <div className='button-container'>
                 <div><button className='cancel' name='b-corp' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='b-corp' onClick={this.handleSave} value='6'>Save</button></div>
+                <div><HashLink to='#social'><button name='b-corp' onClick={this.handleSave}  value='nextSocial'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -189,7 +209,7 @@ class BrandCauses extends Component {
           )}
 
           {isEditing === '8'? (
-            <div className='editing'>
+            <div className='editing' id='social'>
               <h4>Is the brand a social enterprise that provides employment for people from a disadvantaged background? *</h4>
               {this.renderQuestion('social-enterprise')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
@@ -197,6 +217,7 @@ class BrandCauses extends Component {
               <div className='button-container'>
                 <div><button className='cancel' name='social-enterprise' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='social-enterprise' onClick={this.handleSave} value='8'>Save</button></div>
+                <div><HashLink to='#model'><button name='social-enterprise' onClick={this.handleSave}  value='nextModel'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -211,7 +232,7 @@ class BrandCauses extends Component {
           )}
 
           {isEditing === '10' ? (
-            <div className='editing'>
+            <div className='editing' id='model'>
               <h4>Does the brand have a 1 for 1 model? *</h4>
               {this.renderQuestion('1-for-1')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
@@ -219,6 +240,7 @@ class BrandCauses extends Component {
               <div className='button-container'>
                 <div><button className='cancel' name='1-for-1' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='1-for-1' onClick={this.handleSave} value='10'>Save</button></div>
+                <div><HashLink to='#vegan'><button name='1-for-1' onClick={this.handleSave}  value='nextVegan'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -233,7 +255,7 @@ class BrandCauses extends Component {
           )}
 
           {isEditing === '12' ? (
-            <div className='editing'>
+            <div className='editing' id='vegan'>
               <h4>Is the brand Vegan? *</h4>
               {this.renderQuestion('vegan')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
@@ -241,6 +263,7 @@ class BrandCauses extends Component {
               <div className='button-container'>
                 <div><button className='cancel' name='vegan' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='vegan' onClick={this.handleSave} value='12'>Save</button></div>
+                <div><HashLink to='#trade'><button name='vegan' onClick={this.handleSave}  value='nextTrade'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -255,7 +278,7 @@ class BrandCauses extends Component {
           )}
 
           {isEditing === '14' ? (
-            <div className='editing'>
+            <div className='editing' id='trade'>
               <h4>What Percentage of the brands products are certified Fair Trade? *</h4>
               {this.renderQuestion('fair-trade')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
@@ -263,6 +286,7 @@ class BrandCauses extends Component {
               <div className='button-container'>
                 <div><button className='cancel' name='fair-trade' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='fair-trade' onClick={this.handleSave} value='14'>Save</button></div>
+                <div><HashLink to='#organic'><button name='fair-trade' onClick={this.handleSave}  value='nextOrganic'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -277,7 +301,7 @@ class BrandCauses extends Component {
           )}
 
           {isEditing === '16' ? (
-            <div className='editing'>
+            <div className='editing' id='organic'>
               <h4>What percentage of products are made from certified Organic materials? *</h4>
               {this.renderQuestion('organic')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
@@ -285,6 +309,7 @@ class BrandCauses extends Component {
               <div className='button-container'>
                 <div><button className='cancel' name='organic' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='organic' onClick={this.handleSave} value='16'>Save</button></div>
+                <div><HashLink to='#recycle'><button name='organic' onClick={this.handleSave}  value='nextRecycle'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -298,7 +323,7 @@ class BrandCauses extends Component {
             </div>
           )}
           {isEditing === '18' ? (
-            <div className='editing'>
+            <div className='editing' id='recycle'>
               <h4>What percentage of products are made from a substantial proportion(-50%) of recycled/upcycled materials? *</h4>
               {this.renderQuestion('recycled')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
@@ -306,6 +331,7 @@ class BrandCauses extends Component {
               <div className='button-container'>
                 <div><button className='cancel' name='recycled' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='recycled' onClick={this.handleSave} value='18'>Save</button></div>
+                <div><button name='recycled' onClick={this.handleSave}  value='nextPage'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>

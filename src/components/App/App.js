@@ -73,8 +73,8 @@ class App extends Component {
               <Route path='/env-climate-change/:id' component={Authentication(Rating)} />
               <Route path='/env-chemicals/:id' component={Authentication(Rating)} />
               <Route path='/env-water/:id' component={Authentication(Rating)} />
-              <Route path='/env-positive-citezenship/:id' component={Authentication(Rating)} />
-              <Route path='/env-negative-citezenship/:id' component={Authentication(Rating)} />
+              <Route path='/env-positive-citizenship/:id' component={Authentication(Rating)} />
+              <Route path='/env-negative-citizenship/:id' component={Authentication(Rating)} />
               <Route path='/labour-ethical-fashion-report/:id' component={Authentication(Rating)} />
               <Route path='/labour-certification/:id' component={Authentication(Rating)} />
               <Route path='/labour-policies-worker-empowerment/:id' component={Authentication(Rating)} />

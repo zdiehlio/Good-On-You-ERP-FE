@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
 import { Form, Radio, Input, Checkbox, Progress } from 'semantic-ui-react'
 import { fetchAllStyles, fetchStyles, createStyles, updateStyles } from '../../actions/style'
@@ -118,12 +119,42 @@ class SuppDataStyles extends Component {
     if(event.target.name === 'style-scores') {
       _.map(this.state.progress, style => {
         this.props.createStyles({brand: id, style: style, score: this.state[style]})
+        event.target.value === 'next' ? this.props.history.push(`/suppDataTypes/${id}`) :this.setState({isEditing: null})
         if(!this.state[`originalstyle-scores`]) {
           this.state.progressBar++
         }
       })
     }
-    this.setState({isEditing: null, changeError: false, renderChangeError: false})
+    if(event.target.value === 'next') {
+      if(event.target.name === 'men') {
+        this.setState({isEditing: 'older-women'})
+      } else if(event.target.name === 'older-women') {
+        this.setState({isEditing: 'young-women'})
+      } else if(event.target.name === 'young-women') {
+        this.setState({isEditing: 'designer'})
+      } else if(event.target.name === 'designer') {
+        this.setState({isEditing: 'basics'})
+      } else if(event.target.name === 'basics') {
+        this.setState({isEditing: 'luxury'})
+      } else if(event.target.name === 'luxury') {
+        this.setState({isEditing: 'accessories'})
+      } else if(event.target.name === 'accessories') {
+        this.setState({isEditing: 'bags'})
+      } else if(event.target.name === 'bags') {
+        this.setState({isEditing: 'fitness'})
+      } else if(event.target.name === 'fitness') {
+        this.setState({isEditing: 'outdoor'})
+      } else if(event.target.name === 'outdoor') {
+        this.setState({isEditing: 'shoes'})
+      } else if(event.target.name === 'shoes') {
+        this.setState({isEditing: 'underwear'})
+      } else if(event.target.name === 'underwear') {
+        this.setState({isEditing: 'style-scores'})
+      } else {
+        this.setState({isEditing: null})
+      }
+    }
+    this.setState({changeError: false, renderChangeError: false})
   }
 
   handlePercentage(event) {
@@ -204,7 +235,7 @@ class SuppDataStyles extends Component {
     this.setState({changeError: true})
   }
 
-  renderStyles(el) {
+  renderStyles(el, nextEl) {
     const state = this.state
     return(
       <div>
@@ -226,6 +257,7 @@ class SuppDataStyles extends Component {
         <div className='button-container'>
           <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
           <div><button name={el} onClick={this.handleSave}>Save</button></div>
+          <div><HashLink to={nextEl}><button name={el} value='next' onClick={this.handleSave}>Save & Next</button></HashLink></div>
         </div>
       </div>
     )
@@ -259,6 +291,7 @@ class SuppDataStyles extends Component {
         <div className='button-container'>
           <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
           <div><button name={el} onClick={this.handleSave}>Save</button></div>
+          <div><button name={el} value='next' onClick={this.handleSave}>Save & Next</button></div>
         </div>
       </div>
     )
@@ -291,7 +324,7 @@ class SuppDataStyles extends Component {
           {isEditing === 'men' ? (
             <div className='editing'>
               <h4>Does the Brand sell clothes for men?</h4>
-              {this.renderStyles('men')}
+              {this.renderStyles('men', '#older-women')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the Brand sell clothes for men?</h4>
@@ -301,9 +334,9 @@ class SuppDataStyles extends Component {
           )}
 
           {isEditing === 'older-women' ? (
-            <div className='editing'>
+            <div className='editing' id='older-women'>
               <h4>Does the Brand sell clothes for older-women?</h4>
-              {this.renderStyles('older-women')}
+              {this.renderStyles('older-women', '#young-women')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the Brand sell clothes for older-women?</h4>
@@ -313,9 +346,9 @@ class SuppDataStyles extends Component {
           )}
 
           {isEditing === 'young-women' ? (
-            <div className='editing'>
+            <div className='editing' id='young-women'>
               <h4>Does the Brand sell clothes for young women?</h4>
-              {this.renderStyles('young-women')}
+              {this.renderStyles('young-women', '#designer')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the Brand sell clothes for young-women?</h4>
@@ -325,9 +358,9 @@ class SuppDataStyles extends Component {
           )}
 
           {isEditing === 'designer' ? (
-            <div className='editing'>
+            <div className='editing' id='designer'>
               <h4>Where is the brand designed?</h4>
-              {this.renderStyles('designer')}
+              {this.renderStyles('designer', '#basics')}
             </div>) : (
             <div className='not-editing'>
               <h4>Where is the brand designed?</h4>
@@ -337,9 +370,9 @@ class SuppDataStyles extends Component {
           )}
 
           {isEditing === 'basics' ? (
-            <div className='editing'>
+            <div className='editing' id='basics'>
               <h4>Does the brand sell Basics?</h4>
-              {this.renderStyles('basics')}
+              {this.renderStyles('basics', '#luxury')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the brand sell basics?</h4>
@@ -349,9 +382,9 @@ class SuppDataStyles extends Component {
           )}
 
           {isEditing === 'luxury' ? (
-            <div className='editing'>
+            <div className='editing' id='luxury'>
               <h4>Does the brand sell Luxury clothes?</h4>
-              {this.renderStyles('luxury')}
+              {this.renderStyles('luxury', '#accessories')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the brand sell Luxury clothes?</h4>
@@ -361,9 +394,9 @@ class SuppDataStyles extends Component {
           )}
 
           {isEditing === 'accessories' ? (
-            <div className='editing'>
+            <div className='editing' id='accessories'>
               <h4>Does the brand sell accessories?</h4>
-              {this.renderStyles('accessories')}
+              {this.renderStyles('accessories', '#bags')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the brand sell accessories?</h4>
@@ -373,9 +406,9 @@ class SuppDataStyles extends Component {
           )}
 
           {isEditing === 'bags' ? (
-            <div className='editing'>
+            <div className='editing' id='bags'>
               <h4>Does the brand sell bags?</h4>
-              {this.renderStyles('bags')}
+              {this.renderStyles('bags', '#fitness')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the brand sell bags?</h4>
@@ -385,9 +418,9 @@ class SuppDataStyles extends Component {
           )}
 
           {isEditing === 'fitness' ? (
-            <div className='editing'>
+            <div className='editing' id='fitness'>
               <h4>Does the brand sell Fitness clothing?</h4>
-              {this.renderStyles('fitness')}
+              {this.renderStyles('fitness', '#outdoor')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the brand sell Fitness clothing?</h4>
@@ -397,9 +430,9 @@ class SuppDataStyles extends Component {
           )}
 
           {isEditing === 'outdoor' ? (
-            <div className='editing'>
+            <div className='editing' id='outdoor'>
               <h4>Does the brand sell Outdoor Gear?</h4>
-              {this.renderStyles('outdoor')}
+              {this.renderStyles('outdoor', '#shoes')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the brand sell Outdoor Gear?</h4>
@@ -409,9 +442,9 @@ class SuppDataStyles extends Component {
           )}
 
           {isEditing === 'shoes' ? (
-            <div className='editing'>
+            <div className='editing' id='shoes'>
               <h4>Does the Brand sell shoes?</h4>
-              {this.renderStyles('shoes')}
+              {this.renderStyles('shoes', '#underwear')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the Brand sell shoes?</h4>
@@ -421,9 +454,9 @@ class SuppDataStyles extends Component {
           )}
 
           {isEditing === 'underwear' ? (
-            <div className='editing'>
+            <div className='editing' id='underwear'>
               <h4>Does the Brand sell underwear?</h4>
-              {this.renderStyles('underwear')}
+              {this.renderStyles('underwear', '#style-scores')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the Brand sell underwear?</h4>
@@ -433,7 +466,7 @@ class SuppDataStyles extends Component {
           )}
 
           {isEditing === 'style-scores' ? (
-            <div className='editing'>
+            <div className='editing' id='style-scores'>
               <h4>Style Scores</h4>
               {this.renderScores('style-scores')}
             </div>) : (

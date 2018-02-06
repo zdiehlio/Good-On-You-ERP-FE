@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
 import { Form, Progress, Input } from 'semantic-ui-react'
 import { fetchImage, updateImage, uploadLogo, fetchLogo, updateLogo, uploadImage } from '../../actions/image'
@@ -111,12 +112,15 @@ class SuppDataImage extends Component {
     if(event.target.name === 'logo') {
       this.props.updateLogo(this.state.logo_selected, {is_selected: true})
       this.state.progressBar++
+      event.target.value === 'next' ? this.props.history.push(`/suppDataGender/${id}`) : this.setState({isEditing: null})
     } else if(event.target.name === 'image') {
       this.props.updateImage(this.state.image_selected, {is_selected: true})
       this.state.progressBar++
+      event.target.value === 'next' ? this.setState({isEditing: 'logo'}) : this.setState({isEditing: null})
     }
-    this.setState({renderChangeError: false, changeError: false, isEditing: null})
+    this.setState({renderChangeError: false, changeError: false})
   }
+
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
     this.setState({[event.target.name]: event.target.value})
@@ -212,6 +216,7 @@ class SuppDataImage extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='image'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='image'>Save</button></div>
+                <div><HashLink to='#logo'><button onClick={this.handleSave} name='image' value='next'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -226,7 +231,7 @@ class SuppDataImage extends Component {
           )}
 
           {isEditing === 'logo' ? (
-            <div className='editing'>
+            <div className='editing' id='logo'>
               <h5>Select the Brand Logo? *</h5>
               {this.renderLogo()}
               <Form.Field className='upload'>
@@ -240,6 +245,7 @@ class SuppDataImage extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='logo'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='logo'>Save</button></div>
+                <div><button onClick={this.handleSave} name='logo' value='next'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>

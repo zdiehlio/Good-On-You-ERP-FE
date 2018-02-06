@@ -108,7 +108,10 @@ class BrandLanding extends Component {
       }
     }
     if(nextProps.social !== this.props.social) {
-      if(nextProps.social.facebook_url || nextProps.social.instagram_url) {
+      if(nextProps.social.facebook_url) {
+        this.state.socialProgress++
+      }
+      if(nextProps.social.instagram_url) {
         this.state.socialProgress++
       }
     }
@@ -407,6 +410,7 @@ class BrandLanding extends Component {
                 {this.handleThemeScore('labour', 12)}
                 <div><Link to={`/labour-low-risk-production/${id}`}><button>Start</button></Link></div>
               </span>
+              <p className='small-divider'></p>
             </span> ) :
             (<span className='hide-summary'></span>)}
           {this.state.show === 'labour' ? (
@@ -522,8 +526,8 @@ class BrandLanding extends Component {
         <p className='divider'></p>
         <div className='summary-view'>
           <div>Social Media</div>
-          <div><p className='progress'>{state.socialProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
-          <div><Link to={`/suppDataSocialMedia/${id}`}><button>{state.socialProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
+          <div><p className='progress'>{state.socialProgress >= 2 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/suppDataSocialMedia/${id}`}><button>{state.socialProgress >= 2 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>

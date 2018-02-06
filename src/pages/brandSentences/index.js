@@ -84,8 +84,13 @@ class BrandSentences extends Component {
       this.props.createSentence({brand: id, text: this.state.finalAnswer, is_selected: true})
       this.state.progressBar++
     }
-    this.setState({isEditing: null, save: true})
+    if(event.target.value === 'next') {
+      this.props.history.push(`/brandSummary/${id}`)
+    } else {
+      this.setState({isEditing: null, save: true})
+    }
   }
+
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
   handleRadio(event){
     if(this.props.sentence.length > 0) {
@@ -164,7 +169,8 @@ class BrandSentences extends Component {
               <p>{this.state.textlength}/255</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-                <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
+                <div><button onClick={this.handleSave}>Save</button></div>
+                <div><button onClick={this.handleSave} value='next'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>

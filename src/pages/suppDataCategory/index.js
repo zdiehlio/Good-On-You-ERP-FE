@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
 import { Form, Input, Progress } from 'semantic-ui-react'
 import { fetchBrandCategory, createBrandCategory, updateBrandCategory, fetchAllCategory } from '../../actions/category'
@@ -151,14 +152,16 @@ class SuppDataCategory extends Component {
     if(event.target.name === '1') {
       this.props.createBrandCategory(id, this.state.currentAnswer)
       this.setState({originalSelected: _.map(this.state.currentAnswer, check => check.name)})
-      if(Object.keys(this.props.categories).length === 0) {
+      event.target.value === 'next' ? this.setState({isEditing: '2'}) : this.setState({isEditing: null})
+      if(this.props.categories.length === 0) {
         this.state.progressBar++
       }
     } else if(event.target.name === '2') {
       this.props.updateBrandCategory(id, this.state.current_dominant_id, this.state.dominant)
+      event.target.value === 'next' ? this.props.history.push(`/suppDataStyles/${id}`) : this.setState({isEditing: null})
       this.state.progressBar++
     }
-    this.setState({changeError: false, renderChangeError: false, isEditing: null})
+    this.setState({changeError: false, renderChangeError: false})
   }
   //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
   handleCateChange(event){
@@ -200,7 +203,7 @@ class SuppDataCategory extends Component {
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.categories)
-    console.log('state', this.state.originalDominantOptions)
+    console.log('state', this.state)
     console.log('pre_qa', this.props.pre_qa)
     const state = this.state
     const props = this.props.categories
@@ -230,7 +233,8 @@ class SuppDataCategory extends Component {
               <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-                <div><button onClick={this.handleCatSave} name='1' value='1'>Save</button></div>
+                <div><button onClick={this.handleCatSave} name='1'>Save</button></div>
+                <div><HashLink to='#dominant'><button onClick={this.handleCatSave} name='1' value='next'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -244,7 +248,7 @@ class SuppDataCategory extends Component {
             </div>
           )}
           {isEditing === '2' ? (
-            <div className='editing'>
+            <div className='editing' id='dominant'>
               <h5>What is the Brands dominant category?</h5>
               {state.dominantOptions.length <= 0 ? <p className='error-message'>Please select categories at the previous question first</p> : ''}
               {state.dominantOptions.length > 0 && !state.current_dominant_id ? <p className='error-message'>No dominant category selected, pick one</p> : ''}
@@ -254,7 +258,8 @@ class SuppDataCategory extends Component {
               <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-                <div><button onClick={this.handleCatSave} name='2' value='2'>Save</button></div>
+                <div><button onClick={this.handleCatSave} name='2'>Save</button></div>
+                <div><button onClick={this.handleCatSave} name='2' value='next'>Save & Next</button></div>
               </div>
             </div>) : (
             <div className='not-editing'>

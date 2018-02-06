@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
 import { Form, Input, Select, Radio, Progress } from 'semantic-ui-react'
 import { fetchRetailers, createRetailer, fetchTerritories, updateRetailer } from '../../actions/retailer'
@@ -117,20 +118,21 @@ class SuppDataRetailers extends Component {
           resolve(this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website.length > 0 ? this.state.website : null, territories: this.state.territories}))
         }).then(this.props.fetchRetailers(id))
         this.state.progressBar++
-        this.setState({renderChangeError: false, changeError: false, save: true, isEditing: null, errorname: false})
+        event.target.value === 'next' ? this.setState({isEditing: 'online'}) : this.setState({isEditing: null})
+        this.setState({renderChangeError: false, changeError: false, save: true, errorname: false})
       } else {
         this.props.updateRetailer(this.state.id, {name: this.state.name, website: this.state.website.length > 0 ? this.state.website : null, territories: this.state.territories})
-        this.setState({renderChangeError: false, changeError: false, isEditing: null, errorname: false})
+        event.target.value === 'next' ? this.setState({isEditing: 'online'}) : this.setState({isEditing: null})
+        this.setState({renderChangeError: false, changeError: false, errorname: false})
       }
     } else {
       this.setState({errorname: this.state.name ? false : true, errorwebsite: this.state.name ? false : true})
     }
   }
 
-  handleOnlineSave() {
+  handleOnlineSave(event) {
     const { id }  = this.props.match.params
     this.props.updateRetailer(this.state.id, {online_only: this.state.online_only})
-    this.setState({isEditing: null})
     this.state.progressBar++
   }
 
@@ -290,6 +292,7 @@ class SuppDataRetailers extends Component {
               <div className='button-container'>
                 <div><button className='button-container' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='retailer'>Save</button></div>
+                <div><HashLink to='#online'><button onClick={this.handleSave} name='retailer' value='next'>Save & Next</button></HashLink></div>
               </div>
               <div className='error-message'>{this.state.errorname === true ?
                 'Please fill out all required fields' : ''}</div>
@@ -311,7 +314,7 @@ class SuppDataRetailers extends Component {
           )}
 
           {isEditing === 'online' ? (
-            <div className='editing'>
+            <div className='editing' id='online'>
               <h5>Is the brand sold online only?</h5>
               <Form.Field inline>
                 <Radio
@@ -335,6 +338,7 @@ class SuppDataRetailers extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleOnlineSave} name='online'>Save</button></div>
+                <div><Link to={`/brandLanding/${id}`}><button onClick={this.handleOnlineSave} name='online'>Save & Finish</button></Link></div>
               </div>
             </div>) : (
             <div className='not-editing'>

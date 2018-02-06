@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
 import { Form, Input, Checkbox, TextArea, Progress} from 'semantic-ui-react'
 import { fetchAllRating, fetchRating, createRating, updateRating, fetchRatingScore } from '../../actions/rating'
@@ -90,6 +91,7 @@ class Rating extends Component {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
+    let num = parseInt(event.target.name)
     this.saveNext()
     this.setState({ratingValues: this.state.ratingValues.filter(rate => {
       if(rate.is_selected === true) {
@@ -100,6 +102,7 @@ class Rating extends Component {
     if(this.state.changeError === false) {
       this.setState({
         isEditing: parseInt(event.target.name),
+        nextQuestion: num += 1,
       })
     } else {
       this.setState({renderChangeError: true})
@@ -343,6 +346,7 @@ class Rating extends Component {
     if(this.state.errorsWebsite.length <= 0) {
       if(event.target.value === 'next') {
         this.state.isEditing++
+        this.state.nextQuestion++
       } else if(event.target.value === 'nextPage') {
         this.props.history.push(this.state.nextPage)
       } else {
@@ -369,22 +373,16 @@ class Rating extends Component {
     }
   }
 
-  handleSaveNext(event) {
-    console.log('next', event.target.name)
-
-  }
-
   renderQA() {
     const id  = this.props.match.params.id
     let theme = this.props.match.path.slice(1, -4)
     return _.map(this.props.pre_qa, theme => {
       let lastQuestion = theme.questions[theme.questions.length -1]
       return _.map(theme.questions, type => {
-        lastQuestion.id === type.id ? console.log('last value') : ''
         if(type.id && this.state.isEditing === type.id) {
           return(
             <div className='editing'>
-              <div key={type.id}>
+              <div key={type.id} id={`${type.id}`}>
                 <h5>{type.text}</h5>
               </div>
               {_.map(type.answers, ans => {
@@ -431,9 +429,9 @@ class Rating extends Component {
                 <div><button className='cancel' onClick={this.handleCancel} name={type.id}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name={type.id}>Save</button></div>
                 {lastQuestion.id === type.id ? (
-                  <div><button onClick={this.handleSave} name={type.id} value='nextPage'>Save & Next</button></div>
+                  <div><button onClick={this.handleSave} name={type.id} value='nextPage'>Save & Next Page</button></div>
                 ) : (
-                  <div><button onClick={this.handleSave} name={type.id} value='next'>Save & Next</button></div>
+                  <div><HashLink to={`#${this.state.nextQuestion}`}><button onClick={this.handleSave} name={type.id} value='next'>Save & Next</button></HashLink></div>
                 )}
               </div>
               {_.map(type.answers, ans => {
@@ -460,7 +458,8 @@ class Rating extends Component {
   render() {
     console.log('pre qa props', this.props.pre_qa)
     console.log('rating', this.props.rating)
-    console.log('state', this.state.nextPage)
+    console.log('state', this.state.isEditing)
+    console.log('next', this.state.nextQuestion)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
     return(
