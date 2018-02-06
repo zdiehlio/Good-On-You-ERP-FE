@@ -41,6 +41,7 @@ class Rating extends Component {
       errors: [],
       changeError: false,
       renderChangeError: false,
+      nextPage: '',
     }
 
     this.handleEdit = this.handleEdit.bind(this)
@@ -89,6 +90,7 @@ class Rating extends Component {
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
+    this.saveNext()
     this.setState({ratingValues: this.state.ratingValues.filter(rate => {
       if(rate.is_selected === true) {
         return rate.id !== this.state.ratingValues.id
@@ -117,34 +119,6 @@ class Rating extends Component {
       })
     })
     this.setState({renderChangeError: false, changeError: false, isEditing: null, ratingValues: this.state.originalRatingValues})
-  }
-
-  //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
-  handleSave(event) {
-    event.preventDefault()
-    const { id }  = this.props.match.params
-    if(this.state.errorsWebsite.length <= 0) {
-      this.props.createRating({question: event.target.name, brand: id, answers: this.state.ratingValues})
-      _.map(this.state.ratingValues, val => {
-        this.setState({
-          isEditing: null,
-          [`originalAnswer${val.id}`]: this.state[`answer${val.id}`],
-          [`originalUrl${val.id}`]: this.state[`url${val.id}`],
-          [`originalComment${val.id}`]: this.state[`comment${val.id}`],
-          [`originalShow${val.id}`]: this.state[`show${val.id}`],
-        })
-      })
-      this.setState({
-        changeError: false,
-        renderChangeError: false,
-        isEditing: null,
-        originalRatingValues: this.state.ratingValues,
-      })
-    } else {
-      _.map(this.state.errorsWebsite, check => {
-        this.setState({[`errorWebsite${check}`]: true})
-      })
-    }
   }
 
   handleComment(event) {
@@ -191,6 +165,71 @@ class Rating extends Component {
       }).then(() => this.handleSaveValidation(value))
     }
     this.setState({changeError: true})
+  }
+
+  saveNext() {
+    const id  = this.props.match.params.id
+    let theme = this.props.match.path.slice(1, -4)
+    if(theme === 'env-standards-compliance') {
+      this.setState({nextPage: `/env-resource/${id}`})
+    }
+    if(theme === 'env-resource') {
+      this.setState({nextPage: `/env-climate-change/${id}`})
+    }
+    if(theme === 'env-climate-change') {
+      this.setState({nextPage: `/env-chemicals/${id}`})
+    }
+    if(theme === 'env-chemicals') {
+      this.setState({nextPage: `/env-water/${id}`})
+    }
+    if(theme === 'env-water') {
+      this.setState({nextPage: `/env-positive-citizenship/${id}`})
+    }
+    if(theme === 'env-positive-citizenship') {
+      this.setState({nextPage: `/env-negative-citizenship/${id}`})
+    }
+    if(theme === 'env-negative-citizenship') {
+      this.setState({nextPage: `/labour-ethical-fashion-report/${id}`})
+    }
+    if(theme === 'labour-ethical-fashion-report') {
+      this.setState({nextPage: `/labour-certification/${id}`})
+    }
+    if(theme === 'labour-certification') {
+      this.setState({nextPage: `/labour-policies-worker-empowerment/${id}`})
+    }
+    if(theme === 'labour-policies-worker-empowerment') {
+      this.setState({nextPage: `/labour-supply-chain/${id}`})
+    }
+    if(theme === 'labour-supply-chain') {
+      this.setState({nextPage: `/labour-low-risk-production/${id}`})
+    }
+    if(theme === 'labour-low-risk-production') {
+      this.setState({nextPage: `/labour-living-wage/${id}`})
+    }
+    if(theme === 'labour-living-wage') {
+      this.setState({nextPage: `/labour-knowing-suppliers/${id}`})
+    }
+    if(theme === 'labour-knowing-suppliers') {
+      this.setState({nextPage: `/labour-supplier-relationships-auditing/${id}`})
+    }
+    if(theme === 'labour-supplier-relationships-auditing') {
+      this.setState({nextPage: `/labour-positive-citizenship/${id}`})
+    }
+    if(theme === 'labour-positive-citizenship') {
+      this.setState({nextPage: `/labour-negative-citizenship/${id}`})
+    }
+    if(theme === 'labour-negative-citizenship') {
+      this.setState({nextPage: `/animal-animal-products/${id}`})
+    }
+    if(theme === 'animal-animal-products') {
+      this.setState({nextPage: `/animal-positive-citizenship/${id}`})
+    }
+    if(theme === 'animal-positive-citizenship') {
+      this.setState({nextPage: `/animal-negative-citizenship/${id}`})
+    }
+    if(theme === 'animal-negative-citizenship') {
+      this.setState({nextPage: `/brandCauses/${id}`})
+    }
   }
 
   renderHeader() {
@@ -297,11 +336,51 @@ class Rating extends Component {
     }
   }
 
+  //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
+  handleSave(event) {
+    event.preventDefault()
+    const { id }  = this.props.match.params
+    if(this.state.errorsWebsite.length <= 0) {
+      if(event.target.value === 'next') {
+        this.state.isEditing++
+      } else if(event.target.value === 'nextPage') {
+        this.props.history.push(this.state.nextPage)
+      } else {
+        this.setState({isEditing: null})
+      }
+      this.props.createRating({question: event.target.name, brand: id, answers: this.state.ratingValues})
+      _.map(this.state.ratingValues, val => {
+        this.setState({
+          [`originalAnswer${val.id}`]: this.state[`answer${val.id}`],
+          [`originalUrl${val.id}`]: this.state[`url${val.id}`],
+          [`originalComment${val.id}`]: this.state[`comment${val.id}`],
+          [`originalShow${val.id}`]: this.state[`show${val.id}`],
+        })
+      })
+      this.setState({
+        changeError: false,
+        renderChangeError: false,
+        originalRatingValues: this.state.ratingValues,
+      })
+    } else {
+      _.map(this.state.errorsWebsite, check => {
+        this.setState({[`errorWebsite${check}`]: true})
+      })
+    }
+  }
+
+  handleSaveNext(event) {
+    console.log('next', event.target.name)
+
+  }
+
   renderQA() {
     const id  = this.props.match.params.id
     let theme = this.props.match.path.slice(1, -4)
     return _.map(this.props.pre_qa, theme => {
+      let lastQuestion = theme.questions[theme.questions.length -1]
       return _.map(theme.questions, type => {
+        lastQuestion.id === type.id ? console.log('last value') : ''
         if(type.id && this.state.isEditing === type.id) {
           return(
             <div className='editing'>
@@ -351,6 +430,11 @@ class Rating extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name={type.id}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name={type.id}>Save</button></div>
+                {lastQuestion.id === type.id ? (
+                  <div><button onClick={this.handleSave} name={type.id} value='nextPage'>Save & Next</button></div>
+                ) : (
+                  <div><button onClick={this.handleSave} name={type.id} value='next'>Save & Next</button></div>
+                )}
               </div>
               {_.map(type.answers, ans => {
                 return (<div key={ans.id} className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please fill out all required fields' : ''}</div>)
@@ -375,9 +459,8 @@ class Rating extends Component {
 
   render() {
     console.log('pre qa props', this.props.pre_qa)
-    console.log('props', this.props.qa)
     console.log('rating', this.props.rating)
-    console.log('state', this.state)
+    console.log('state', this.state.nextPage)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
     return(

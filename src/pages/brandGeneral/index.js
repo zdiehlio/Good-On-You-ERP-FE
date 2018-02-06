@@ -148,7 +148,6 @@ class BrandGeneral extends Component {
     } else {
       if(this.state.dateValid === true) {
         if(event.target.name === '2' && event.target.value === 'next') {
-          console.log('2')
           this.setState({renderChangeError: false, changeError: false, renderError: false, isEditing: '3'})
           this.props.updateGeneral(id, {
             sustainability_report: this.state.sustainability_report,
