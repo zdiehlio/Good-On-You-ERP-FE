@@ -379,47 +379,37 @@ class BrandGeneral extends Component {
           )}
           {isEditing === '4' ? (
             <div className='editing'>
-              <h5>What is the size of the Brand?</h5>
-              <p>Brand Size: </p>
-              <Form.Field inline>
-                <Radio
-                  disabled
-                  label='Small'
-                  onChange={this.handleRadio}
-                  name='small'
-                  checked={state.size === 'small' ? true : false}
-                />
-              </Form.Field>
-              <Form.Field>
-                <Radio
-                  disabled
-                  label='Large'
-                  onChange={this.handleRadio}
-                  name='large'
-                  checked={state.size === 'large' ? true : false}
-                />
-              </Form.Field>
+              <h5>What is the size of the Brand? *</h5>
 
-              <p>Does the Brand meet at least one of the following large brand criteria? *</p>
+              <p>Does it clearly meet at least one of the following 'large brand' criteria?</p>
               <Form.Field>
                 <Checkbox
-                  label='Listed Company'
+                  label='is listed on the stock exchange'
                   onChange={this.handleCheckbox}
                   checked={state.listed ? true : false}
                   value='listed'
                 />
               </Form.Field>
-              <Form.Field>
+              <Form.Field className='parent-company'>
                 <Checkbox
-                  label='Subsidiary Company'
+                  label='is a subsidiary company'
                   onChange={this.handleCheckbox}
                   checked={state.subsidiary ? true : false}
                   value='subsidiary'
                 />
               </Form.Field>
+              <Form.Field className='parent-company'>
+                <Input
+                  size='mini'
+                  placeholder='Provide the parent company name'
+                  onChange={this.handleInput}
+                  name='parent_company'
+                  value={state.parent_company}
+                />
+              </Form.Field>
               <Form.Field>
                 <Checkbox
-                  label='Alexa &#60; 200k'
+                  label='has Alexa rating &#60; 200k'
                   onChange={this.handleCheckbox}
                   checked={state.alexa ? true : false}
                   value='alexa'
@@ -427,7 +417,7 @@ class BrandGeneral extends Component {
               </Form.Field>
               <Form.Field>
                 <Checkbox
-                  label='Insta + FB &#62; 75k'
+                  label='has Insta + Facebook followers &#62; 75k'
                   onChange={this.handleCheckbox}
                   checked={state['insta-fb'] ? true : false}
                   value='insta-fb'
@@ -435,7 +425,7 @@ class BrandGeneral extends Component {
               </Form.Field>
               <Form.Field>
                 <Checkbox
-                  label='Linkedin employees &#62; 50'
+                  label='has Linkedin employees &#62; 50'
                   onChange={this.handleCheckbox}
                   checked={state['linked-in'] ? true : false}
                   value='linked-in'
@@ -443,7 +433,7 @@ class BrandGeneral extends Component {
               </Form.Field>
               <Form.Field>
                 <Checkbox
-                  label='Manual override after company provided data satisfying Good On You criteria'
+                  label='Is considered large according to other Good On You criteria'
                   onChange={this.handleCheckbox}
                   checked={state['manual'] ? true : false}
                   value='manual'
@@ -451,18 +441,29 @@ class BrandGeneral extends Component {
               </Form.Field>
               <Form.Field>
                 <Checkbox
-                  label='None of the Above'
+                  label='None of the above, therefore it is considered small'
                   onChange={this.handleCheckbox}
                   checked={state['none'] ? true : false}
                   value='none'
                 />
               </Form.Field>
-              <Form.Field inline>
-                <Input
-                  label='Parent Company Name'
-                  onChange={this.handleInput}
-                  name='parent_company'
-                  value={state.parent_company}
+              <p className='brand-size'>Brand Size: </p>
+              <Form.Field className='brand-size'>
+                <Radio
+                  readOnly
+                  label='Small'
+                  onChange={this.handleRadio}
+                  name='small'
+                  checked={state.size === 'small' ? true : false}
+                />
+              </Form.Field>
+              <Form.Field className='brand-size'>
+                <Radio
+                  readOnly
+                  label='Large'
+                  onChange={this.handleRadio}
+                  name='large'
+                  checked={state.size === 'large' ? true : false}
                 />
               </Form.Field>
               <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
@@ -473,7 +474,7 @@ class BrandGeneral extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h5>What is the size of the Brand?</h5>
+              <h5>What is the size of the Brand? *</h5>
               <p>{state.size === 'small' || state.size === 'large' ? this.capitalize(state.size) : ''}</p>
               <p>{state.sizeValues.length > 0 ? 'Criteria:' : ''}</p>
               <ul>{this.renderCriteria()}</ul>
