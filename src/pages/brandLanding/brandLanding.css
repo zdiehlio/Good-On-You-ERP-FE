@@ -9,21 +9,22 @@
   width: calc(100%/4);
 }
 
-.progress {
+/* .progress {
   float: right;
-}
+} */
 
 .summary-view button {
   text-align: right;
 }
 
 .summary-heading {
+  width: 100%;
   margin-top: 1em;
+  margin-left: 1em;
 }
 
 .summary-heading h1 {
   display: inline-block;
-  margin-left: 1em;
   color: #17CABE;
 }
 
@@ -31,6 +32,11 @@
   display: inline-block;
   margin-left: 1em;
   color: #17CABE
+}
+
+.summary-heading div {
+  display: inline-block;
+  width: calc(100%/4);
 }
 
 .summary-container {

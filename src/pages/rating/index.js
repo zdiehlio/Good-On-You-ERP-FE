@@ -379,10 +379,10 @@ class Rating extends Component {
     return _.map(this.props.pre_qa, theme => {
       let lastQuestion = theme.questions[theme.questions.length -1]
       return _.map(theme.questions, type => {
-        if(type.id && this.state.isEditing === type.id) {
+        if(this.state.isEditing === type.order) {
           return(
             <div className='editing'>
-              <div key={type.id} id={`${type.id}`}>
+              <div key={type.id} id={`${type.order}`}>
                 <h5>{type.text}</h5>
               </div>
               {_.map(type.answers, ans => {
@@ -446,7 +446,7 @@ class Rating extends Component {
               })}
               <div className='button-container'>
                 <div></div>
-                <div><button name={type.id} onClick={this.handleEdit}>Edit</button></div>
+                <div><button name={type.order} onClick={this.handleEdit}>Edit</button></div>
               </div>
               <p className='small-divider'></p>
             </div>

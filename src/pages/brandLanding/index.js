@@ -225,7 +225,7 @@ class BrandLanding extends Component {
     const props = this.props
     const state = this.state
     console.log('state', state)
-    console.log('props', props.retailer)
+    console.log('props', props.score)
     return(
       <div className='summary-container'>
         <div className='landing-header'>
@@ -282,8 +282,22 @@ class BrandLanding extends Component {
         </div>
         <p className='small-divider'></p>
 
-        <div className='summary-heading'><h1>Ratings</h1></div>
+        <div className='summary-heading'>
+          <div><h1>Ratings</h1></div>
+          <div>
+            {props.score.score ? <div>{props.score.score}{props.score.max_score ? `/${props.score.max_score}` : ''}</div> : <div><Icon name='remove' color='red' />
+            </div>}
+          </div>
+          <div>
+            {props.score.dots >= 1 ? <Icon name='circle'/> : <Icon name='circle thin' />}
+            {props.score.dots >= 2 ? <Icon name='circle'/> : <Icon name='circle thin' />}
+            {props.score.dots >= 3 ? <Icon name='circle'/> : <Icon name='circle thin' />}
+            {props.score.dots >= 4 ? <Icon name='circle'/> : <Icon name='circle thin' />}
+          </div>
+          <div>{props.score.label}</div>
+        </div>
         <p className='divider'></p>
+
         <div className='summary-view'>
           {this.handleHeadline('environment')}
           {this.state.show === 'environment' ? (
