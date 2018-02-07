@@ -293,6 +293,7 @@ class BrandLanding extends Component {
             {props.score.dots >= 2 ? <Icon name='circle'/> : <Icon name='circle thin' />}
             {props.score.dots >= 3 ? <Icon name='circle'/> : <Icon name='circle thin' />}
             {props.score.dots >= 4 ? <Icon name='circle'/> : <Icon name='circle thin' />}
+            {props.score.dots >= 5 ? <Icon name='circle'/> : <Icon name='circle thin' />}
           </div>
           <div>{props.score.label}</div>
         </div>
