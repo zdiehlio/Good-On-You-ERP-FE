@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import axios from 'axios'
+import { ROOT_URL } from '../../actions'
 import './SummaryBrandOverview.css';
 
 const muiTheme = getMuiTheme({
@@ -31,9 +32,10 @@ class SummaryBrandOverview extends Component {
     }
   }
 
-  getData() {
+  getData(id) {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/brand/summary/?brandId=k5mKrWygJ9RtQU0r`)
+    console.log('getdata', this.props);
+    axios.get(`${ROOT_URL}/brands-general-info/?brand=${id}`)
       .then(res => {
         this.setState({
           summaryData: res.data.data[0],
@@ -64,7 +66,7 @@ class SummaryBrandOverview extends Component {
             <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
-              containerElement={<Link to="/brandSummary" />}
+              containerElement={<Link to="/brandGeneral/:brandId" />}
               style={style}
               primary={true}
               label={!this.state.summaryData ? "start" : "view"}/>
@@ -75,7 +77,7 @@ class SummaryBrandOverview extends Component {
             <span className='flex-start'><i className="material-icons" style={{color: 'red'}} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
-              containerElement={<Link to="/brandSummary" />}
+              containerElement={<Link to="/brandContact" />}
               style={style}
               primary={true}
               label={!this.state.summaryData ? "start" : "view"}/>

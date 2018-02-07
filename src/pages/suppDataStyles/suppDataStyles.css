@@ -1,0 +1,50 @@
+.style-scores {
+  padding: 0.2em;
+  width: 2em;
+  display: inline-block;
+}
+
+.progress-container {
+  display: inline-block;
+  text-align: center;
+  height: 100%;
+  position: relative;
+  width: calc(100%/4);
+}
+
+h5 {
+  text-align: center;
+}
+
+.percentage-title {
+  text-align: center;
+  margin-top: 1em;
+}
+
+.percentage-container {
+  margin-bottom: 2em;
+  /* text-align: center; */
+}
+
+.ui.progress.progress-bar {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+/* .add-container {
+  float: right;
+  width: 10%;
+  display: inline-block;
+} */
+
+/* .add-button {
+  float: left;
+} */
+
+/* .subtract {
+  float: left;
+  width: 10%;
+  display: inline-block;
+} */

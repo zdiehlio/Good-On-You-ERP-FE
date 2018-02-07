@@ -1,19 +1,14 @@
 import React, { Component } from 'react'
-import logo from '../../assets/good-on-you-logo.png';
-import logoText from '../../assets/good-on-you-logo-text.png';
-import './Header.css';
-import { connect } from 'react-redux';
-import { login,logout,clearSearch } from '../../actions';
-
-// { this.props.login ? <h3>{this.props.user.email}</h3> : <a href="/login">Login</a>}
+import { Link } from 'react-router-dom'
+import logo from '../../assets/good-on-you-logo.png'
+import logoText from '../../assets/good-on-you-logo-text.png'
+import './Header.css'
+import { connect } from 'react-redux'
+import { login, logout, clearSearch } from '../../actions'
 
 
 class Header extends Component {
 
-  onLogout = () => {
-    this.props.clearSearch()
-    this.props.logout()
-  }
   render() {
     return (
       <div className="header">
@@ -23,31 +18,32 @@ class Header extends Component {
             <img className="logo-text" src={logoText} alt='logo text' />
           </div>
 
-          <div className="links-container-left">
-            <a href="/">Home</a>
-          </div>
 
           <div className="links-container-left">
-            <a href="/">Brand</a>
-          </div>
+            <Link to="/searchBrand">Home</Link>
+          </div>)
 
-          <div className="links-container-right">
-            { this.props.user ? (
-              <div className="dropdown">
-                <h3 className="username">{this.props.user.email}</h3>
-                <div className="dropdown-content">
-                  <p onClick={this.onLogout}>logout</p>
-                </div>
-              </div>
+          {this.props.token ? (
+            <div className="links-container-left">
+              <Link to="/searchBrand">Brand</Link>
+            </div>) : (
+            <div>''</div>
+          )}
 
-            ) : <div></div>
-            }
-          </div>
+          {!this.props.token ? (
+            <div className="links-container-left">
+              <Link to="/login">Login</Link>
+            </div>) : (
+            <div className='links-container-left'>
+              <Link onClick={this.props.logout} to="/login">Logout</Link>
+            </div>
+          )}
         </div>
       </div>
     )
   }
 }
+
 
 function mapStateToProps(state) {
   return state.login

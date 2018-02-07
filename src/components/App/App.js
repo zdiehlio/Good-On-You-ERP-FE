@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-} from 'react-router-dom';
-
+} from 'react-router-dom'
+import Authentication from '../requireAuth'
+import { ROOT_URL } from '../../actions'
 import { Header, Footer } from '../index'
 import {
   Landing,
@@ -12,98 +14,98 @@ import {
   Login,
   ViewBrands,
   CreateBrands,
-  BrandSummary
+  BrandSummary,
+  CategoryQuestions,
+  SuppDataCategory,
+  SuppDataStyles,
+  SuppDataRetailers,
+  SuppDataPrice,
+  SuppDataGender,
+  BrandFormContainer,
+  BrandLanding,
+  BrandSentences,
+  SuppDataTypes,
+  SuppDataAlias,
+  SuppDataSocialMedia,
+  SuppDataImage,
+  Rating,
+  SearchBrand,
+  BrandGeneral,
+  BrandContact,
+  BrandCauses,
 } from '../../pages'
-import './App.css';
+import ScrollToTop from '../scrollToTop'
 import axios from 'axios'
-import request from "request"
+import request from 'request'
 
-
-// <Route path=`/viewBrand/${this.state.currentBrand}` component={Summary} currentBrand={this.state.currentBrand} />
-
-
+import './App.css'
 
 class App extends Component {
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       currentBrand: {
-        'name': 'Nike',
-        'url': 'www.nike.com/us/en_us/'
-      }
-    };
-
-    // this.getData = this.getData.bind(this)
-  }
-
-  handleLogin = () => {
-
-    var headers = {
-      'Content-Type': 'application/json'
-    };
-
-    var dataString = '{ "strategy": "local", "email": "me@goodonyou.eco", "password": "myPassword" }';
-
-    var options = {
-      url: 'http://34.211.121.82:3030/authentication/',
-      method: 'POST',
-      headers: headers,
-      body: dataString
-    };
-
-    function callback(error, response, body) {
-      if (!error) {
-        if (JSON.parse(body).accessToken) {
-          console.log(JSON.parse(body).accessToken);
-        }
-      }
+        'name': '',
+        'url': '',
+      },
     }
-
-    request(options, callback);
-  }
-
-  onViewSummaryClicked = (id, name) => {
-    this.setState({
-      currentBrand: {
-        'name': name,
-        'id': id
-      }
-    })
-
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/brand/summary/?brandId=${id}`)
-      .then(res => {
-        this.setState({
-          currentBrand: {
-            'name': name,
-            'id': id,
-            summaryHeaderData: res.data.data[0]
-          }
-        })
-      })
   }
 
   render() {
     return (
       <Router>
         <div>
-          <Header/>
-          <div className="container-body">
-            <Switch>
-              <Route exact path='/' component={props => <Landing {...props} handleViewSummaryClick={this.onViewSummaryClicked}/>}/>
-              <Route path='/questionnaire/brands/:brandId/themes/:themeId' component={Questionnaire}/>
-              <Route path='/login' component={props => <Login {...props} handleLogin={this.handleLogin} />}/>
-              <Route path='/brandSummary/:brandId' component={props => <BrandSummary {...props} currentBrand={this.state.currentBrand} />}/>
-              <Route path='/createBrand' component={CreateBrands} />
-            </Switch>
-          </div>
+          <Header />
+          <ScrollToTop>
+            <div className="container-body">
+              <Route exact path='/' component={Login}/>
+              <Route path='/login' component={Login}/>
+              <Route path='/searchBrand' component={Authentication(SearchBrand)} />
+              <Route path='/brandLanding/:id' component={Authentication(BrandLanding)} />
+              <Route path='/brandSummary/:id' component={Authentication(BrandSummary)}/>
+              <Route path='/createBrand' component={Authentication(CreateBrands)} />
+              <Route path='/brandGeneral/:id' component={Authentication(BrandGeneral)}/>
+              <Route path='/brandContact/:id' component={Authentication(BrandContact)} />
+              <Route path='/env-resource/:id' component={Authentication(Rating)} />
+              <Route path='/env-standards-compliance/:id' component={Authentication(Rating)} />
+              <Route path='/env-climate-change/:id' component={Authentication(Rating)} />
+              <Route path='/env-chemicals/:id' component={Authentication(Rating)} />
+              <Route path='/env-water/:id' component={Authentication(Rating)} />
+              <Route path='/env-positive-citizenship/:id' component={Authentication(Rating)} />
+              <Route path='/env-negative-citizenship/:id' component={Authentication(Rating)} />
+              <Route path='/labour-ethical-fashion-report/:id' component={Authentication(Rating)} />
+              <Route path='/labour-certification/:id' component={Authentication(Rating)} />
+              <Route path='/labour-policies-worker-empowerment/:id' component={Authentication(Rating)} />
+              <Route path='/labour-supply-chain/:id' component={Authentication(Rating)} />
+              <Route path='/labour-low-risk-production/:id' component={Authentication(Rating)} />
+              <Route path='/labour-living-wage/:id' component={Authentication(Rating)} />
+              <Route path='/labour-knowing-suppliers/:id' component={Authentication(Rating)} />
+              <Route path='/labour-supplier-relationships-auditing/:id' component={Authentication(Rating)} />
+              <Route path='/labour-positive-citizenship/:id' component={Authentication(Rating)} />
+              <Route path='/labour-negative-citizenship/:id' component={Authentication(Rating)} />
+              <Route path='/animal-animal-products/:id' component={Authentication(Rating)} />
+              <Route path='/animal-positive-citizenship/:id' component={Authentication(Rating)} />
+              <Route path='/animal-negative-citizenship/:id' component={Authentication(Rating)} />
+              <Route path='/brandCauses/:id' component={Authentication(BrandCauses)} />
+              <Route path='/brandSentences/:id' component={Authentication(BrandSentences)} />
+              <Route path='/suppDataCategory/:id' component={Authentication(SuppDataCategory)} />
+              <Route path='/suppDataStyles/:id' component={Authentication(SuppDataStyles)} />
+              <Route path='/suppDataRetailers/:id' component={Authentication(SuppDataRetailers)} />
+              <Route path='/suppDataPrice/:id' component={Authentication(SuppDataPrice)} />
+              <Route path='/suppDataGender/:id' component={Authentication(SuppDataGender)} />
+              <Route path='/suppDataTypes/:id' component={Authentication(SuppDataTypes)} />
+              <Route path='/suppDataAlias/:id' component={Authentication(SuppDataAlias)} />
+              <Route path='/suppDataSocialMedia/:id' component={Authentication(SuppDataSocialMedia)} />
+              <Route path='/suppDataImage/:id' component={Authentication(SuppDataImage)} />
+            </div>
+          </ScrollToTop>
           <Footer/>
         </div>
       </Router>
-    );
+    )
   }
 }
 
-export default App;
+export default App

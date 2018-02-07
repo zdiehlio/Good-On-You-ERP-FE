@@ -4,6 +4,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import axios from 'axios'
+import { ROOT_URL } from '../../actions'
+
 import './SummarySupplementaryData.css';
 
 const muiTheme = getMuiTheme({
@@ -43,7 +45,7 @@ class SummarySupplementaryData extends Component {
     var brandID = this.props.currentBrand.id
 
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/suppdata/?brandId=/?brandId=${brandID}`)
+    axios.get(`${ROOT_URL}/suppdata/?brandId=/?brandId=${brandID}`)
       .then(res => {
         this.setState({
           summaryData: res.data.data[0],
@@ -86,7 +88,18 @@ class SummarySupplementaryData extends Component {
             <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
-              containerElement={<Link to="/brandSummary" />}
+              containerElement={<Link to="/suppDataCategory" />}
+              style={style}
+              primary={true}
+              label={!this.state.summaryData ? "start" : "view"}/>
+            </MuiThemeProvider>
+          </div>
+          <div className='rating-row slim-border row-right'>
+            <p className='label'>Styles *</p>
+            <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
+            <MuiThemeProvider muiTheme={muiTheme}>
+            <RaisedButton
+              containerElement={<Link to="/suppDataStyles" />}
               style={style}
               primary={true}
               label={!this.state.summaryData ? "start" : "view"}/>
@@ -97,18 +110,7 @@ class SummarySupplementaryData extends Component {
             <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
-              containerElement={<Link to="/brandSummary" />}
-              style={style}
-              primary={true}
-              label={!this.state.summaryData ? "start" : "view"}/>
-            </MuiThemeProvider>
-          </div>
-          <div className='rating-row slim-border row-right'>
-            <p className='label'>Similar Brands</p>
-            <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
-            <MuiThemeProvider muiTheme={muiTheme}>
-            <RaisedButton
-              containerElement={<Link to="/brandSummary" />}
+              containerElement={<Link to="/suppDataRetailers" />}
               style={style}
               primary={true}
               label={!this.state.summaryData ? "start" : "view"}/>
@@ -119,7 +121,29 @@ class SummarySupplementaryData extends Component {
             <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
             <MuiThemeProvider muiTheme={muiTheme}>
             <RaisedButton
-              containerElement={<Link to="/brandSummary" />}
+              containerElement={<Link to="/suppDataPrice" />}
+              style={style}
+              primary={true}
+              label={!this.state.summaryData ? "start" : "view"}/>
+            </MuiThemeProvider>
+          </div>
+          <div className='rating-row slim-border row-right'>
+            <p className='label'>Gender</p>
+            <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
+            <MuiThemeProvider muiTheme={muiTheme}>
+            <RaisedButton
+              containerElement={<Link to="/suppDataGender" />}
+              style={style}
+              primary={true}
+              label={!this.state.summaryData ? "start" : "view"}/>
+            </MuiThemeProvider>
+          </div>
+          <div className='rating-row slim-border row-right'>
+            <p className='label'>Similar Brands</p>
+            <span className='flex-start'><i className="material-icons" style={this.state.checkStyle} >close</i></span>
+            <MuiThemeProvider muiTheme={muiTheme}>
+            <RaisedButton
+              containerElement={<Link to="/suppDataSimilarBrands" />}
               style={style}
               primary={true}
               label={!this.state.summaryData ? "start" : "view"}/>

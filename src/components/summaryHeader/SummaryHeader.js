@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import axios from 'axios'
+import { ROOT_URL } from '../../actions'
 import './SummaryHeader.css';
 
 const muiTheme = getMuiTheme({
@@ -29,10 +30,11 @@ class BrandSummaryHeader extends Component {
     }
   }
 
-  getData() {
-    var brandID = this.props.brandId
+  getData(id) {
+    console.log('brand id', this.props.currentBrand.id);
+    var brandID = this.props.currentBrand.id
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/brand/summary/?brandId=${brandID}`)
+    axios.get(`${ROOT_URL}/brands/?id=${id}`)
       .then(res => {
         this.setState({
           summaryData: res.data.data[0],
@@ -40,7 +42,7 @@ class BrandSummaryHeader extends Component {
           checkStyle: !res.data.data[0] ? {color: 'red'} : {color: 'green'}
         })
 
-        axios.get(`http://34.211.121.82:3030/brands/${brandID}`)
+        axios.get(`${ROOT_URL}/brands/${brandID}`)
           .then(res => {
             this.setState({
               url: res.data.url,

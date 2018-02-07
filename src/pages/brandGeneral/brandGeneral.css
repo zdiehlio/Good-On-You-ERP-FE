@@ -1,0 +1,11 @@
+.parent-company {
+  display: inline-block;
+  width: 30%;
+}
+
+.brand-size {
+  width: 20%;
+  background-color: lightgrey;
+  display: inline-block;
+  padding: 0.5em;
+}

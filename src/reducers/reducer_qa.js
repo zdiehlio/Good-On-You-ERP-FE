@@ -1,17 +1,25 @@
-import { FETCH_QUESTIONS } from '../actions'
+import {FETCH_RATING,FETCH_RATING_SCORE} from '../actions/rating'
+import { FETCH_GENERAL } from '../actions'
 import _ from 'lodash'
-// import jwtDecode from 'jwt-decode'
 
-
-export default function(state = null, action) {
+//fetches all questions for brand and maps through each unique key value returning the brand and answer tied to the question
+export default function(state = {}, action) {
   switch (action.type) {
-  case FETCH_QUESTIONS:
+  case FETCH_GENERAL:
     if (!action.error) {
-      console.log(action.payload);
-      return {}
+      sessionStorage.setItem('website', action.payload.data.website)
+      sessionStorage.setItem('name', action.payload.data.name)
+      console.log('fetch, general', action.payload.data)
+      return action.payload.data
+    }
+    return {error: action.error}
+  case FETCH_RATING:
+    if (!action.error) {
+      console.log('fetch, rating', action.payload.data.data)
+      return action.payload.data.data
     }
     return {error: action.error}
   default:
-    return state;
+    return state
   }
 }

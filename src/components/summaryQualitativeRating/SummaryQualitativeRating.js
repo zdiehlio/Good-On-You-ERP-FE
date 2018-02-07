@@ -4,6 +4,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import axios from 'axios'
+import { ROOT_URL } from '../../actions'
+
 import './SummaryQualitativeRating.css';
 
 const muiTheme = getMuiTheme({
@@ -35,10 +37,10 @@ class BrandSummaryQualitativeRating extends Component {
   getData() {
 
     var brandID = this.props.currentBrand.id
-
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-    axios.get(`http://34.211.121.82:3030/qualitative-ratings/?brandId=${brandID}`)
+    axios.get(`${ROOT_URL}/qualitative-ratings/?id=${brandID}`)
       .then(res => {
+        console.log('res', res);
         this.setState({
           summaryData: res.data.data[0],
           state: 1,
@@ -71,7 +73,7 @@ class BrandSummaryQualitativeRating extends Component {
               <span className='flex-start'><i className="material-icons" style={checkStyle} >{!this.state.summaryData ? "close" : "check"}</i></span>
               <MuiThemeProvider muiTheme={muiTheme}>
               <RaisedButton
-                containerElement={<Link to="/brandSummary" />}
+                containerElement={<Link to="/brandCauses" />}
                 style={style}
                 primary={true}
                 label={!this.state.summaryData ? "start" : "view"}/>
