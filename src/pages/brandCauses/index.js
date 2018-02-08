@@ -103,6 +103,8 @@ class BrandCauses extends Component {
         this.setState({isEditing: '18'})
       } else if(event.target.value === 'nextPage') {
         this.props.history.push(`/brandSentences/${id}`)
+      } else {
+        this.setState({isEditing: null})
       }
     }
   }

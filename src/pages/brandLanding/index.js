@@ -284,7 +284,7 @@ class BrandLanding extends Component {
 
         <div className='summary-heading'>
           <div><h1>Ratings</h1></div>
-          <div>
+          <div className='rating-score'>
             {props.score.score ? <div>{props.score.score}{props.score.max_score ? `/${props.score.max_score}` : ''}</div> : <div><Icon name='remove' color='red' />
             </div>}
           </div>

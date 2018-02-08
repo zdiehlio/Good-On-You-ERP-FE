@@ -21,11 +21,10 @@ const name = sessionStorage.getItem('name')
 const website = sessionStorage.getItem('website')
 
 if(token) {
-  console.log('index w token', store.getState())
   store.dispatch({type: AUTH_USER, payload: token})
 }
 
-setTimeout(() => {sessionStorage.clear()}, 1000 * 60 * 60)
+setTimeout(() => {sessionStorage.clear()}, 1000 * 60 * 60 * 24)
 
 if(name && website) {
   store.dispatch({type: BRAND_INFO, payload: {name, website}})

@@ -6,6 +6,7 @@ import {grey900} from 'material-ui/styles/colors'
 import './CreateBrand.css'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
+import { Form, Input } from 'semantic-ui-react'
 import { createBrand } from '../../actions'
 import axios from 'axios'
 
@@ -17,6 +18,13 @@ const muiTheme = getMuiTheme({
 })
 
 class CreateBrand extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      createValue: '',
+    }
+  }
 
   renderField(field) {
     const { meta: { touched, error } } = field
@@ -27,6 +35,7 @@ class CreateBrand extends Component {
           <TextField
             floatingLabelText={field.label}
             type={field.type}
+            value={field.value}
             {...field.input}
           />
         </MuiThemeProvider>
@@ -59,7 +68,7 @@ class CreateBrand extends Component {
 
   render() {
     const { handleSubmit } = this.props
-
+    console.log('error', this.props.create)
     return (
       <div className="page-container">
         <h2 className="title">CreateBrand</h2>
@@ -69,8 +78,11 @@ class CreateBrand extends Component {
               label="Brand Name"
               name="name"
               type="text"
+              value={this.props.create ? this.props.create : ''}
               component={this.renderField}
             ></Field>
+            {this.props.create.error === true ?
+              <p className='error-message'>Brand already exists</p> : ''}
             <Field
               label="Brand URL"
               name="website"
@@ -112,8 +124,7 @@ function validate(values) {
 }
 
 function mapStateToProps(state) {
-  console.log(state)
-  return { error: state.error }
+  return { create: state.createBrand, state }
 }
 
 

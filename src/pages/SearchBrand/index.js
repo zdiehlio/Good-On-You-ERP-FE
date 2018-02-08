@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { fetchBrands, fetchUsers } from '../../actions'
 import { Field, reduxForm } from 'redux-form'
 import { fetchUserInfo } from '../../actions'
-import { Input, Header, Label, List } from 'semantic-ui-react'
+import { Form, Input, Header, Label, List } from 'semantic-ui-react'
 import _ from 'lodash'
 
 import './searchbrand.css'
@@ -58,14 +58,22 @@ class SearchBrand extends Component {
   }
 
   render() {
+    console.log('state', this.props)
     return (
       <div className='page-container'>
         <div className='form-container'>
           <div className='button-and-search'>
             <Link to='/createBrand'><button>Create Brand</button></Link>
-            <Input
-              onChange={this.handleChange}
-            />
+          </div>
+          <div className='button-and-search'>OR</div>
+          <div className='button-and-search'>
+            <Form.Field>
+              <Input
+                placeholder='Search Brands'
+                onChange={this.handleChange}
+                icon='search'
+              />
+            </Form.Field>
           </div>
           <div className='searchlist-container'>
             {this.state.results.length > 0 ? (this.state.results.map((brand) => {
@@ -95,7 +103,7 @@ class SearchBrand extends Component {
 
 
 function mapStateToProps(state) {
-  return {search: state.search}
+  return {search: state.search, state}
 }
 
 export default connect(mapStateToProps, { fetchBrands, fetchUserInfo })( SearchBrand )

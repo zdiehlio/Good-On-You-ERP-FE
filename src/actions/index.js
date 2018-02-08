@@ -83,6 +83,10 @@ export function fetchBrands(value) {
         type: FETCH_BRANDS,
         payload: res,
       })
+      dispatch({
+        type: CREATE_BRAND,
+        payload: value,
+      })
     })
   }
 }

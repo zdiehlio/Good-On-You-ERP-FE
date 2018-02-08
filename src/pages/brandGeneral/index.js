@@ -26,7 +26,7 @@ class BrandGeneral extends Component {
       deleteSize: [],
       currentValues: [],
       parent_company: '',
-      sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'manual', 'subsidiary', 'listed'],
+      sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'manual', 'subsidiary', 'listed', 'none'],
       input: null,
       dateValid: true,
       renderError: false,
@@ -53,14 +53,19 @@ class BrandGeneral extends Component {
   componentWillReceiveProps(nextProps) {
     const { id } = this.props.match.params
     if(nextProps.general !== this.props.general) {
-      _.map(nextProps.general.size_criteria, crit => {
-        console.log('val', crit.criteria)
-        this.state.sizeValues.push({brand: id, criteria: crit.criteria})
-        this.state.originalSizeValues.push({brand: id, criteria: crit.criteria})
-        if(crit) {
-          this.setState({[`original${crit.criteria}`]: crit.criteria, [crit.criteria]: crit.criteria})
-        }
-      })
+      if(nextProps.general.size_criteria.length > 0) {
+        console.log('mapping')
+        _.map(nextProps.general.size_criteria, crit => {
+          this.state.sizeValues.push({brand: id, criteria: crit.criteria})
+          this.state.originalSizeValues.push({brand: id, criteria: crit.criteria})
+          if(crit) {
+            this.setState({[`original${crit.criteria}`]: crit.criteria, [crit.criteria]: crit.criteria})
+          }
+        })
+      } else if(nextProps.general.size_criteria.criteria === 'none') {
+        console.log('none')
+        this.setState({none: 'none', noValues: {brand: id, criteria: 'none'}})
+      }
       this.setState({
         name: nextProps.general.name,
         originalname: nextProps.general.name,
@@ -72,7 +77,7 @@ class BrandGeneral extends Component {
         originalreview_date: nextProps.general.review_date ? moments(nextProps.general.review_date) : '',
         parent_company: nextProps.general.parent_company,
         originalparent_company: nextProps.general.parent_company,
-        size: nextProps.general.size,
+        size: nextProps.general.size_criteria.length > 0 ? 'large' : 'small',
       })
       if(nextProps.general.name) {
         this.state.progressBar++
@@ -398,15 +403,16 @@ class BrandGeneral extends Component {
                   value='subsidiary'
                 />
               </Form.Field>
-              <Form.Field className='parent-company'>
-                <Input
-                  size='mini'
-                  placeholder='Provide the parent company name'
-                  onChange={this.handleInput}
-                  name='parent_company'
-                  value={state.parent_company}
-                />
-              </Form.Field>
+              {state.subsidiary ?
+                <Form.Field className='parent-company'>
+                  <Input
+                    size='mini'
+                    placeholder='Provide the parent company name'
+                    onChange={this.handleInput}
+                    name='parent_company'
+                    value={state.parent_company}
+                  />
+                </Form.Field> : ''}
               <Form.Field>
                 <Checkbox
                   label='has Alexa rating &#60; 200k'
