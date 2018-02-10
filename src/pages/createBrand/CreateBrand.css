@@ -2,3 +2,15 @@
   color: red;
   font-size: 15px;
 }
+
+.create-brand {
+  text-align: center;
+}
+
+.create-brand p {
+  text-align: center;
+}
+
+.create-brand div {
+  margin-top: 1em;
+}

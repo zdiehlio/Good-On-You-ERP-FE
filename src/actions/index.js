@@ -55,7 +55,7 @@ export function fetchUserInfo(email) {
 
 export function createBrand(values, callback) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
-  const request = axios.post(`${ROOT_URL}/brands`, {...values})
+  const request = axios.post(`${ROOT_URL}/brands`, values)
     .then((res) => callback(res))
   return {
     type: CREATE_BRAND,
