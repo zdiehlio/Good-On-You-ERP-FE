@@ -155,7 +155,7 @@ class Rating extends Component {
           ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(value)}),
           [`show${value}`]: false,
         }))
-      }).then(() => this.handleSaveValidation(event))
+      }).then(() => this.handleSaveValidation(value))
     } else if(this.state[`answer${value}`] === false && this.state[`props${value}`] === parseInt(value)) {
       this.setState({[`show${value}`]: true, [`answer${value}`]: true})
     } else {
@@ -300,16 +300,17 @@ class Rating extends Component {
     }
   }
 
-  handleSaveValidation(e) {
-    if(this.state[`answer${e}`] === true) {
-      if(!this.state[`url${e}`]) {
-        this.setState({errorsWebsite: [...this.state.errorsWebsite, parseInt(e)]})
+  handleSaveValidation(value) {
+    if(this.state[`answer${value}`] === true) {
+      if(!this.state[`url${value}`]) {
+        this.setState({errorsWebsite: [...this.state.errorsWebsite, parseInt(value)]})
       } else {
-        this.setState({errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e)})})
+        this.setState({errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(value)}), [`errorWebsite${value}`]: false})
       }
-    } else if(this.state[`answer${e}`] === false){
+    } else if(this.state[`answer${value}`] === false){
       this.setState({
-        errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e)}),
+        errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(value)}),
+        [`errorWebsite${value}`]: false,
       })
     }
   }
@@ -458,8 +459,7 @@ class Rating extends Component {
   render() {
     console.log('pre qa props', this.props.pre_qa)
     console.log('rating', this.props.rating)
-    console.log('state', this.state.isEditing)
-    console.log('next', this.state.nextQuestion)
+    console.log('state', this.state)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
     return(

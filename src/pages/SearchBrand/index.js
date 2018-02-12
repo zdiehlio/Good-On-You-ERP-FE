@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { fetchBrands, fetchUsers } from '../../actions'
 import { Field, reduxForm } from 'redux-form'
 import { fetchUserInfo } from '../../actions'
-import { Form, Input, Header, Label, List, Loader } from 'semantic-ui-react'
+import { Form, Input, Header, Label, List, Loader, Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 
 import './searchbrand.css'
@@ -45,7 +45,7 @@ class SearchBrand extends Component {
     if(this.state.loading) {
       setTimeout(() => {
         this.setState({loading: false})
-      }, 1000 * 4)
+      }, 1000 * 3)
     }
   }
 

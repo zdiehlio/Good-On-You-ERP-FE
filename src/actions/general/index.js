@@ -29,7 +29,7 @@ export function updateGeneral(id, values) {
   }
 }
 
-export function createBrandSize(id, values) {
+export function createBrandSize(values) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
   const request = axios.post(`${ROOT_URL}/brands-sizes`, values)
   return {

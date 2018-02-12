@@ -26,7 +26,7 @@ class BrandGeneral extends Component {
       deleteSize: [],
       currentValues: [],
       parent_company: '',
-      sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'manual', 'subsidiary', 'listed', 'none'],
+      sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'goy-large', 'goy-small', 'subsidiary', 'listed', 'none'],
       input: null,
       dateValid: true,
       renderError: false,
@@ -53,18 +53,18 @@ class BrandGeneral extends Component {
   componentWillReceiveProps(nextProps) {
     const { id } = this.props.match.params
     if(nextProps.general !== this.props.general) {
-      if(nextProps.general.size_criteria.length > 0) {
+      if(nextProps.general.size_criteria) {
         console.log('mapping')
-        _.map(nextProps.general.size_criteria, crit => {
-          this.state.sizeValues.push({brand: id, criteria: crit.criteria})
-          this.state.originalSizeValues.push({brand: id, criteria: crit.criteria})
-          if(crit) {
+        if(nextProps.general.size_criteria.criteria === 'none') {
+          console.log('none')
+          this.setState({none: 'none', noValues: {name: 'none'}})
+        } else {
+          _.map(nextProps.general.size_criteria, crit => {
+            this.state.sizeValues.push({name: crit.criteria})
+            this.state.originalSizeValues.push({name: crit.criteria})
             this.setState({[`original${crit.criteria}`]: crit.criteria, [crit.criteria]: crit.criteria})
-          }
-        })
-      } else if(nextProps.general.size_criteria.criteria === 'none') {
-        console.log('none')
-        this.setState({none: 'none', noValues: {brand: id, criteria: 'none'}})
+          })
+        }
       }
       this.setState({
         name: nextProps.general.name,
@@ -77,7 +77,7 @@ class BrandGeneral extends Component {
         originalreview_date: nextProps.general.review_date ? moments(nextProps.general.review_date) : '',
         parent_company: nextProps.general.parent_company,
         originalparent_company: nextProps.general.parent_company,
-        size: nextProps.general.size_criteria.length > 0 ? 'large' : 'small',
+        size: nextProps.general.size,
       })
       if(nextProps.general.name) {
         this.state.progressBar++
@@ -143,11 +143,15 @@ class BrandGeneral extends Component {
         this.setState({renderChangeError: false, changeError: false, isEditing: null})
       }
     } else if(event.target.name === '4') {
-      this.props.createBrandSize(id, this.state.sizeValues.length > 0 ? this.state.sizeValues : this.state.noValues)
-      this.props.updateGeneral(id, {parent_company: this.state.parent_company})
-      this.setState({renderChangeError: false, changeError: false, isEditing: null})
-      if(event.target.value === 'next') {
-        this.props.history.push(`/brandContact/${id}`)
+      if(!this.state.size) {
+        this.setState({sizeError: true})
+      } else {
+        this.props.createBrandSize({brand: id, criteria: this.state.sizeValues.length > 0 ? this.state.sizeValues : this.state.noValues})
+        this.props.updateGeneral(id, {parent_company: this.state.parent_company})
+        this.setState({renderChangeError: false, changeError: false, isEditing: null})
+        if(event.target.value === 'next') {
+          this.props.history.push(`/brandContact/${id}`)
+        }
       }
       return this.state.progressBar++
     } else {
@@ -180,21 +184,17 @@ class BrandGeneral extends Component {
   handleCheckbox(event, { value }) {
     const { id }  = this.props.match.params
     if(value === 'none') {
-      console.log('none', value)
       this.state.sizeOptions.map(val => this.setState({[val]: null}))
-      this.setState({none: value, sizeValues: [], noValues: {brand: id, criteria: 'none'}})
-      if(this.state.parent_company.length === 0) {
-        this.setState({size: 'small'})
-      }
+      this.setState({none: value, sizeValues: [], noValues: [{name: 'none'}], size: 'small'})
     } else {
       if(this.state[value]) {
-        this.setState({[value]: null, sizeValues: this.state.sizeValues.filter(select => {return select.criteria != value})})
+        this.setState({[value]: null, sizeValues: this.state.sizeValues.filter(select => {return select.name != value})})
       } else {
-        this.setState({[value]: value, size: 'large', sizeValues: [...this.state.sizeValues, {brand: id, criteria: value}]})
+        this.setState({[value]: value, sizeValues: [...this.state.sizeValues, {name: value}]})
       }
-      this.setState({none: null, noValues: []})
+      this.setState({size: value === 'goy-small' ? 'small' : 'large', none: null, noValues: []})
     }
-    this.setState({changeError: true})
+    this.setState({changeError: true, sizeError: false})
   }
 
   renderCriteria() {
@@ -441,8 +441,8 @@ class BrandGeneral extends Component {
                 <Checkbox
                   label='Is considered large according to other Good On You criteria'
                   onChange={this.handleCheckbox}
-                  checked={state['manual'] ? true : false}
-                  value='manual'
+                  checked={state['goy-large'] ? true : false}
+                  value='goy-large'
                 />
               </Form.Field>
               <Form.Field>
@@ -453,6 +453,16 @@ class BrandGeneral extends Component {
                   value='none'
                 />
               </Form.Field>
+
+              <Form.Field>
+                <Checkbox
+                  label='Good On You is satisfied that the company is small, despite meeting some of the above criteria'
+                  onChange={this.handleCheckbox}
+                  checked={state['goy-small'] ? true : false}
+                  value='goy-small'
+                />
+              </Form.Field>
+
               <p className='brand-size'>Brand Size: </p>
               <Form.Field className='brand-size'>
                 <Radio
@@ -472,6 +482,7 @@ class BrandGeneral extends Component {
                   checked={state.size === 'large' ? true : false}
                 />
               </Form.Field>
+              <p className='error-message'>{state.sizeError === true ? 'Please make a selection' : ''}</p>
               <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleSizeCancel} name='4'>Cancel</button></div>
