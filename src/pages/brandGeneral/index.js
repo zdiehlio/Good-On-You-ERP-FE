@@ -83,12 +83,6 @@ class BrandGeneral extends Component {
       if(nextProps.general.name) {
         this.state.progressBar++
       }
-      if(nextProps.general.review_date) {
-        this.state.progressBar++
-      }
-      if(nextProps.general.sustainability_report_date) {
-        this.state.progressBar++
-      }
       if(nextProps.general.size) {
         this.state.progressBar++
       }
@@ -138,9 +132,11 @@ class BrandGeneral extends Component {
           this.setState({renderChangeError: false, changeError: false, isEditing: '2'})
         }
         this.props.updateGeneral(id, {name: this.state.name})
+        return this.state.progressBar++
       } else {
         this.props.updateGeneral(id, {name: this.state.name})
         this.setState({renderChangeError: false, changeError: false, isEditing: null})
+        return this.state.progressBar++
       }
     } else if(event.target.name === '4') {
       if(!this.state.size) {
@@ -154,8 +150,8 @@ class BrandGeneral extends Component {
         if(event.target.value === 'next') {
           this.props.history.push(`/brandContact/${id}`)
         }
+        return this.state.progressBar++
       }
-      return this.state.progressBar++
     } else {
       if(this.state.dateValid === true) {
         if(event.target.name === '2' && event.target.value === 'next') {
@@ -275,7 +271,7 @@ class BrandGeneral extends Component {
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress total={4} value={state.progressBar} progress />
+        <Progress total={2} value={state.progressBar} progress />
         {state.renderChangeError === true ? (
           <Portal open={state.portal} className='portal'>
             <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>

@@ -79,31 +79,36 @@ class BrandCauses extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(!this.state.currentAnswer) {
+      console.log('catch')
       this.setState({error: true})
     } else {
       this.props.updateCause(id, event.target.name, {answer: this.state.currentAnswer})
       this.setState({[`${event.target.name}Answer`]: this.state.tempAnswer, changeError: false, renderChangeError: false})
       if(!this.state[`${event.target.name}OriginalAnswer`]) {
         this.props.createCause({brand: id, question: event.target.name, answer: this.state.currentAnswer})
-        return this.state.progressBar++
+        this.state.progressBar++
       }
-      if(event.target.value === 'nextB-corp') {
-        this.setState({isEditing: '6'})
-      } else if(event.target.value === 'nextSocial') {
-        this.setState({isEditing: '8'})
-      } else if(event.target.value === 'nextModel') {
-        this.setState({isEditing: '10'})
-      } else if(event.target.value === 'nextVegan') {
-        this.setState({isEditing: '12'})
-      } else if(event.target.value === 'nextTrade') {
-        this.setState({isEditing: '14'})
-      } else if(event.target.value === 'nextOrganic') {
-        this.setState({isEditing: '16'})
-      } else if(event.target.value === 'nextRecycle') {
-        this.setState({isEditing: '18'})
-      } else if(event.target.value === 'nextPage') {
-        this.props.history.push(`/brandSentences/${id}`)
+      if(event.target.value.slice(0, 4) === 'next') {
+        console.log('next')
+        if(event.target.value === 'nextB-corp') {
+          this.setState({isEditing: '6'})
+        } else if(event.target.value === 'nextSocial') {
+          this.setState({isEditing: '8'})
+        } else if(event.target.value === 'nextModel') {
+          this.setState({isEditing: '10'})
+        } else if(event.target.value === 'nextVegan') {
+          this.setState({isEditing: '12'})
+        } else if(event.target.value === 'nextTrade') {
+          this.setState({isEditing: '14'})
+        } else if(event.target.value === 'nextOrganic') {
+          this.setState({isEditing: '16'})
+        } else if(event.target.value === 'nextRecycle') {
+          this.setState({isEditing: '18'})
+        } else if(event.target.value === 'nextPage') {
+          this.props.history.push(`/brandSentences/${id}`)
+        }
       } else {
+        console.log('save')
         this.setState({isEditing: null})
       }
     }

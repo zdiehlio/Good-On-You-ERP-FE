@@ -37,8 +37,8 @@ class SuppDataAlias extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.alias !== this.props.alias) {
-      nextProps.alias.map(val => {
-        this.state.aliasArr.push(val)
+      _.map(nextProps.alias, val => {
+        this.state.aliasArr.push({alias: val.alias})
       })
       // this.setState({aliasArr: _.map(nextProps.alias, ali => {return {id: ali.id, alias: ali.alias}})})
       if(nextProps.alias.length > 0) {
@@ -47,18 +47,18 @@ class SuppDataAlias extends Component {
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    const { id } = this.props.match.params
-    if (nextState.save == true && this.state.save == false) {
-      this.props.fetchAlias(id)
-    }
-  }
-
-  componentDidUpdate() {
-    if(this.state.save === true) {
-      this.setState({save: false})
-    }
-  }
+  // componentWillUpdate(nextProps, nextState) {
+  //   const { id } = this.props.match.params
+  //   if (nextState.save == true && this.state.save == false) {
+  //     this.props.fetchAlias(id)
+  //   }
+  // }
+  //
+  // componentDidUpdate() {
+  //   if(this.state.save === true) {
+  //     this.setState({save: false})
+  //   }
+  // }
 
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
@@ -83,8 +83,10 @@ class SuppDataAlias extends Component {
     if(event.target.value === 'next') {
       this.props.history.push(`/env-standards-compliance/${id}`)
     }
-    if(this.state.currentAnswer) {
+    if(this.state.aliasArr.length > 0) {
       this.state.progressBar++
+    } else {
+      this.setState({progressBar: 0})
     }
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
@@ -93,16 +95,17 @@ class SuppDataAlias extends Component {
   }
 
   handleDelete(event) {
+    const { id }  = this.props.match.params
     event.preventDefault()
-    this.props.deleteAlias(event.target.name)
-    this.setState({aliasArr: this.state.aliasArr.filter(ali => {return ali.id !== event.target.name}), [event.target.name]: null})
+    this.props.deleteAlias(id, event.target.name)
+    this.setState({aliasArr: this.state.aliasArr.filter(ali => {return ali.alias !== event.target.name}), [event.target.name]: null})
   }
 
   handleAdd(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
     this.props.createAlias({brand: id, alias: this.state.currentAnswer})
-    this.setState({aliasArr: [...this.state.aliasArr, event.target.name], save: true})
+    this.setState({aliasArr: [...this.state.aliasArr, {alias: this.state.currentAnswer}]})
   }
 
   renderAlias() {
@@ -155,7 +158,15 @@ class SuppDataAlias extends Component {
                 <button className='add' onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button>
               </Form.Field>
               <h5>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h5>
-              <div className='alias-list'>{state.save === true ? this.renderAlias() : this.renderAlias()}</div>
+              <div className='alias-list'>{
+                _.map(this.state.aliasArr, name => {
+                  return(
+                    <div className='alias-item' key={name.alias}>
+                      <div>{name.alias}</div>
+                      <div><button className='delete-alias' onClick={this.handleDelete} name={name.alias}>Delete</button></div>
+                    </div>
+                  )
+                })}</div>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave}>Done</button></div>
@@ -167,7 +178,7 @@ class SuppDataAlias extends Component {
               <h5>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h5>
               <ul>{_.map(state.aliasArr, ali => {
                 return(
-                  <li key={ali.id}>{ali.alias}</li>
+                  <li key={ali.alias}>{ali.alias}</li>
                 )}
               )}
               </ul>

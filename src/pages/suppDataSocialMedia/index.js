@@ -61,11 +61,11 @@ class SuppDataSocialMedia extends Component {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    if(this.state.facebook_url === '' || this.state.instagram_url === '') {
-      if(this.state.facebook_url === '') {
+    if(!this.state.facebook_url || !this.state.instagram_url || this.state.facebook_url === '' || this.state.instagram_url === '') {
+      if(this.state.facebook_url === '' || !this.state.facebook_url) {
         this.setState({facebook_urlError: true})
       }
-      if(this.state.instagram_url === '') {
+      if(this.state.instagram_url === '' || !this.state.instagram_url) {
         this.setState({instagram_urlError: true})
       }
     } else {

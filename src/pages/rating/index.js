@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { Form, Input, Checkbox, TextArea, Progress, Portal, Segment} from 'semantic-ui-react'
+import { Form, Input, Checkbox, TextArea, Progress, Portal, Segment, Loader} from 'semantic-ui-react'
 import { fetchAllRating, fetchRating, createRating, updateRating, fetchRatingScore } from '../../actions/rating'
 import { RatingHeading } from '../../components'
 import {
@@ -51,10 +51,12 @@ class Rating extends Component {
     this.handleCheckbox = this.handleCheckbox.bind(this)
     this.handleUrl = this.handleUrl.bind(this)
     this.handleComment = this.handleComment.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
     let theme = this.props.match.path.slice(1, -4)
+    this.setState({loading: true})
     this.props.fetchAllRating(theme, id)
     this.props.fetchRating(id, theme)
     this.props.fetchRatingScore(id)
@@ -76,13 +78,16 @@ class Rating extends Component {
           [`originalComment${rate.answer}`]: rate.comment,
         })
       })
-      this.setState({ratingValues: _.map(nextProps.qa, check => {
-        return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
-      }),
+      this.setState({
+        ratingValues: _.map(nextProps.qa, check => {
+          return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
+        }),
+        originalRatingValues: _.map(nextProps.qa, check => {
+          return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
+        }),
+        loading: false,
       })
-      this.setState({originalRatingValues: _.map(nextProps.qa, check => {
-        return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
-      }),
+      this.setState({
       })
     }
   }
@@ -105,8 +110,7 @@ class Rating extends Component {
         nextQuestion: num += 1,
       })
     } else {
-      this.setState({renderChangeError: true})
-      alert(`Please click Save on previously edited question to save your selected answers or cancel to disregard your selections`)
+      this.setState({renderChangeError: true, portal: true})
     }
   }
 
@@ -349,6 +353,7 @@ class Rating extends Component {
         this.state.isEditing++
         this.state.nextQuestion++
       } else if(event.target.value === 'nextPage') {
+        this.setState({loading: true})
         this.props.history.push(this.state.nextPage)
       } else {
         this.setState({isEditing: null})
@@ -374,98 +379,110 @@ class Rating extends Component {
     }
   }
 
+  handleLoading() {
+    this.setState({loading: true})
+  }
+
   renderQA() {
     const id  = this.props.match.params.id
     let theme = this.props.match.path.slice(1, -4)
-    if(!this.props.rating.size && theme === 'env-climate-change') {
-      return(
-        <Portal open={true} className='portal'>
-          <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
-            <p>This question requires a brand size</p>
-            <p>Please answer the brand size question in General to continue this rating section</p>
-            <Link to={`/brandGeneral/${id}`}><button>Brand General</button></Link>
-          </Segment>
-        </Portal>
-      )
+    if(this.state.loading === true) {
+      return(<Loader active inline='centered' />)
     } else {
-      return _.map(this.props.pre_qa, theme => {
-        let lastQuestion = theme.questions[theme.questions.length -1]
-        return _.map(theme.questions, type => {
-          if(this.state.isEditing === type.order) {
-            return(
-              <div className='editing'>
-                <div key={type.id} id={`${type.order}`}>
-                  <h5>{type.text}</h5>
-                </div>
-                {_.map(type.answers, ans => {
-                  if(this.state)
-                    return (
-                      <div key={ans.id}>
-                        <Form.Field>
-                          <Checkbox
-                            label={ans.text}
-                            value={ans.id}
-                            onChange={this.handleCheckbox}
-                            checked={this.state[`answer${ans.id}`] === true ? true : false}
-                          />
-                        </Form.Field>
-                        {this.state[`show${ans.id}`] === true ? (
-                          <div className='evidence'>
-                            <h5>Evidence</h5>
-                            <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
-                            <Form.Field className={this.state[`errorWebsite${ans.id}`] === true ? 'ui error input evidence-url' : 'ui input evidence-url'} inline>
-                              <Input
-                                label='Source URL'
-                                onChange={this.handleUrl}
-                                name={ans.id}
-                                value={this.state[`url${ans.id}`]}
-                              />
-                            </Form.Field>
-                            <Form.Field className='evidence-comments' inline>
-                              <TextArea
-                                autoHeight
-                                rows={4}
-                                label='Comments'
-                                placeholder='Comments'
-                                onChange={this.handleComment}
-                                name={ans.id}
-                                value={this.state[`comment${ans.id}`]}
-                              />
-                            </Form.Field>
-                          </div>) : ('')}
-                      </div>
-                    )}
-                )}
-                <p className='error-message'>{this.state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
-                <div className='button-container'>
-                  <div><button className='cancel' onClick={this.handleCancel} name={type.id}>Cancel</button></div>
-                  <div><button onClick={this.handleSave} name={type.id}>Save</button></div>
-                  {lastQuestion.id === type.id ? (
-                    <div><button onClick={this.handleSave} name={type.id} value='nextPage'>Save & Next Page</button></div>
-                  ) : (
-                    <div><HashLink to={`#${this.state.nextQuestion}`}><button onClick={this.handleSave} name={type.id} value='next'>Save & Next</button></HashLink></div>
+      if(!this.props.rating.size && theme === 'env-climate-change') {
+        return(
+          <Portal open={true} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>This question requires a brand size</p>
+              <p>Please answer the brand size question in General to continue this rating section</p>
+              <Link to={`/brandGeneral/${id}`}><button>Brand General</button></Link>
+            </Segment>
+          </Portal>
+        )
+      } else {
+        return _.map(this.props.pre_qa, theme => {
+          let lastQuestion = theme.questions[theme.questions.length -1]
+          return _.map(theme.questions, type => {
+            if(this.state.isEditing === type.order) {
+              return(
+                <div className='editing'>
+                  <div key={type.id} id={`${type.order}`}>
+                    <h5>{type.text} {type.is_mandatory === true ? '*' : ''}</h5>
+                  </div>
+                  {_.map(type.answers, ans => {
+                    if(this.state)
+                      return (
+                        <div key={ans.id}>
+                          <Form.Field>
+                            <Checkbox
+                              label={ans.text}
+                              value={ans.id}
+                              onChange={this.handleCheckbox}
+                              checked={this.state[`answer${ans.id}`] === true ? true : false}
+                            />
+                          </Form.Field>
+                          {this.state[`show${ans.id}`] === true ? (
+                            <div className='evidence'>
+                              <h5>Evidence</h5>
+                              <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
+                              <Form.Field className={this.state[`errorWebsite${ans.id}`] === true ? 'ui error input evidence-url' : 'ui input evidence-url'} inline>
+                                <Input
+                                  label='Source URL'
+                                  onChange={this.handleUrl}
+                                  name={ans.id}
+                                  value={this.state[`url${ans.id}`]}
+                                />
+                              </Form.Field>
+                              <Form.Field className='evidence-comments' inline>
+                                <TextArea
+                                  autoHeight
+                                  rows={4}
+                                  label='Comments'
+                                  placeholder='Comments'
+                                  onChange={this.handleComment}
+                                  name={ans.id}
+                                  value={this.state[`comment${ans.id}`]}
+                                />
+                              </Form.Field>
+                            </div>) : ('')}
+                        </div>
+                      )}
                   )}
+                  <p className='error-message'>{this.state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
+                  <div className='button-container'>
+                    <div><button className='cancel' onClick={this.handleCancel} name={type.id}>Cancel</button></div>
+                    <div><button onClick={this.handleSave} name={type.id}>Save</button></div>
+                    {lastQuestion.id === type.id ? (
+                      <div><button onClick={this.handleSave} name={type.id} value='nextPage'>Save & Next Page</button></div>
+                    ) : (
+                      <div><HashLink to={`#${this.state.nextQuestion}`}><button onClick={this.handleSave} name={type.id} value='next'>Save & Next</button></HashLink></div>
+                    )}
+                  </div>
+                  {_.map(type.answers, ans => {
+                    return (<div key={ans.id} className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please fill out all required fields' : ''}</div>)
+                  })}
+                </div>) } else {
+              return(
+                <div className='not-editing'>
+                  <h5>{type.text} {type.is_mandatory === true ? '*' : ''}</h5>
+                  {_.map(type.answers, ans => {
+                    return (this.state[`answer${ans.id}`] === true ? (<p key={ans.id}>{ans.text}</p>) : (''))
+                  })}
+                  <div className='button-container'>
+                    <div></div>
+                    <div><button name={type.order} onClick={this.handleEdit}>Edit</button></div>
+                  </div>
+                  <p className='small-divider'></p>
                 </div>
-                {_.map(type.answers, ans => {
-                  return (<div key={ans.id} className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please fill out all required fields' : ''}</div>)
-                })}
-              </div>) } else {
-            return(
-              <div className='not-editing'>
-                <h5>{type.text}</h5>
-                {_.map(type.answers, ans => {
-                  return (this.state[`answer${ans.id}`] === true ? (<p key={ans.id}>{ans.text}</p>) : (''))
-                })}
-                <div className='button-container'>
-                  <div></div>
-                  <div><button name={type.order} onClick={this.handleEdit}>Edit</button></div>
-                </div>
-                <p className='small-divider'></p>
-              </div>
-            )}
+              )}
+          })
         })
-      })
+      }
     }
+  }
+
+  handlePortal() {
+    this.setState({portal: false})
   }
 
   render() {
@@ -474,9 +491,18 @@ class Rating extends Component {
     console.log('state', this.state)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
+    const state = this.state
     return(
       <div className='form-container'>
         <RatingHeading id={id} brand={this.props.brand}/>
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <button onClick={this.handlePortal}>Ok</button>
+            </Segment>
+          </Portal>
+        ) : ''}
         {this.renderHeader()}
         <form className='brand-form'>
           {this.renderQA()}

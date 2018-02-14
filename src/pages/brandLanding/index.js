@@ -72,12 +72,6 @@ class BrandLanding extends Component {
       if(nextProps.general.name) {
         this.state.generalProgress++
       }
-      if(nextProps.general.review_date) {
-        this.state.generalProgress++
-      }
-      if(nextProps.general.sustainability_report_date || nextProps.general.sustainability_report === false) {
-        this.state.generalProgress++
-      }
       if(nextProps.general.size) {
         this.state.generalProgress++
       }
@@ -157,11 +151,14 @@ class BrandLanding extends Component {
     }
     if(nextProps.retailer !== this.props.retailer) {
       if(nextProps.retailer.length > 0) {
-        nextProps.retailer.map(val => {
-          if(val.name && val.online_only) {
-            this.state.retailerProgress++
-          }
-        })
+        if(nextProps.retailer[0].name) {
+          this.state.retailerProgress++
+        }
+        // nextProps.retailer.map(val => {
+        //   if(val.name && val.online_only) {
+        //     this.state.retailerProgress++
+        //   }
+        // })
       }
     }
   }
@@ -225,7 +222,7 @@ class BrandLanding extends Component {
     const props = this.props
     const state = this.state
     console.log('state', state)
-    console.log('props', props.score)
+    console.log('props', props.retailer)
     return(
       <div className='summary-container'>
         <div className='landing-header'>
@@ -265,8 +262,8 @@ class BrandLanding extends Component {
         <p className='divider'></p>
         <div className='summary-view'>
           <div>General</div>
-          <div><p className='progress'>{state.generalProgress >= 4 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
-          <div><Link to={`/brandGeneral/${id}`}><button>{state.generalProgress >= 4 ? 'View' : 'Start'}</button></Link></div>
+          <div><p className='progress'>{state.generalProgress >= 2 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+          <div><Link to={`/brandGeneral/${id}`}><button>{state.generalProgress >= 2 ? 'View' : 'Start'}</button></Link></div>
         </div>
         <p className='small-divider'></p>
         <div className='summary-view'>

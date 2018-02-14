@@ -1,4 +1,4 @@
-import { FETCH_ALIAS, DELETE_ALIAS } from '../actions/alias'
+import { FETCH_ALIAS, DELETE_ALIAS, CREATE_ALIAS } from '../actions/alias'
 import _ from 'lodash'
 
 export default function(state = [], action) {
@@ -8,11 +8,12 @@ export default function(state = [], action) {
       return action.payload.data.data
     }
     return {error: action.error}
-  case DELETE_ALIAS:
-    if (!action.error) {
-      return _.omit(state, action.payload.data.alias)
-    }
-    return {error: action.error}
+  // case CREATE_ALIAS:
+  //   if (!action.error) {
+  //     console.log('create, alias', action.payload)
+  //     return [...state, action.payload]
+  //   }
+  //   return {error: action.error}
   default:
     return state
   }
