@@ -259,3 +259,11 @@ textarea {
   color: #17CABE !important;
   font-weight: bold;
 }
+
+.portal {
+  text-align: center;
+}
+
+.portal p {
+  text-align: center;
+}

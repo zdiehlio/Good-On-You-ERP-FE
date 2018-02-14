@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { Form, Input, Progress } from 'semantic-ui-react'
+import { Form, Input, Progress, Portal, Segment } from 'semantic-ui-react'
 import { fetchBrandCategory, createBrandCategory, updateBrandCategory, fetchAllCategory } from '../../actions/category'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -39,6 +39,7 @@ class SuppDataCategory extends Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleCatSave = this.handleCatSave.bind(this)
     this.handleDominantChange = this.handleDominantChange.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -103,8 +104,7 @@ class SuppDataCategory extends Component {
     if(this.state.changeError === false) {
       this.setState({isEditing: event.target.value})
     } else {
-      this.setState({renderChangeError: true})
-      alert(`Please click Save on previously edited question to save your selected answers or Cancel to disregard your selections`)
+      this.setState({renderChangeError: true, portal: true})
     }
   }
 
@@ -200,6 +200,10 @@ class SuppDataCategory extends Component {
     })
   }
 
+  handlePortal() {
+    this.setState({portal: false})
+  }
+
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.categories)
@@ -223,6 +227,14 @@ class SuppDataCategory extends Component {
         <p className='small-divider'></p>
         <h5> Current:</h5>
         <Progress total={2} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <button onClick={this.handlePortal}>Ok</button>
+            </Segment>
+          </Portal>
+        ) : ''}
         <form className='brand-form'>
           {isEditing === '1' ? (
             <div className='editing'>

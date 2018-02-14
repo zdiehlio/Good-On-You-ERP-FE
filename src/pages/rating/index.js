@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { Form, Input, Checkbox, TextArea, Progress} from 'semantic-ui-react'
+import { Form, Input, Checkbox, TextArea, Progress, Portal, Segment} from 'semantic-ui-react'
 import { fetchAllRating, fetchRating, createRating, updateRating, fetchRatingScore } from '../../actions/rating'
 import { RatingHeading } from '../../components'
 import {
@@ -377,83 +377,95 @@ class Rating extends Component {
   renderQA() {
     const id  = this.props.match.params.id
     let theme = this.props.match.path.slice(1, -4)
-    return _.map(this.props.pre_qa, theme => {
-      let lastQuestion = theme.questions[theme.questions.length -1]
-      return _.map(theme.questions, type => {
-        if(this.state.isEditing === type.order) {
-          return(
-            <div className='editing'>
-              <div key={type.id} id={`${type.order}`}>
-                <h5>{type.text}</h5>
-              </div>
-              {_.map(type.answers, ans => {
-                if(this.state)
-                  return (
-                    <div key={ans.id}>
-                      <Form.Field>
-                        <Checkbox
-                          label={ans.text}
-                          value={ans.id}
-                          onChange={this.handleCheckbox}
-                          checked={this.state[`answer${ans.id}`] === true ? true : false}
-                        />
-                      </Form.Field>
-                      {this.state[`show${ans.id}`] === true ? (
-                        <div className='evidence'>
-                          <h5>Evidence</h5>
-                          <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
-                          <Form.Field className={this.state[`errorWebsite${ans.id}`] === true ? 'ui error input evidence-url' : 'ui input evidence-url'} inline>
-                            <Input
-                              label='Source URL'
-                              onChange={this.handleUrl}
-                              name={ans.id}
-                              value={this.state[`url${ans.id}`]}
-                            />
-                          </Form.Field>
-                          <Form.Field className='evidence-comments' inline>
-                            <TextArea
-                              autoHeight
-                              rows={4}
-                              label='Comments'
-                              placeholder='Comments'
-                              onChange={this.handleComment}
-                              name={ans.id}
-                              value={this.state[`comment${ans.id}`]}
-                            />
-                          </Form.Field>
-                        </div>) : ('')}
-                    </div>
-                  )}
-              )}
-              <p className='error-message'>{this.state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
-              <div className='button-container'>
-                <div><button className='cancel' onClick={this.handleCancel} name={type.id}>Cancel</button></div>
-                <div><button onClick={this.handleSave} name={type.id}>Save</button></div>
-                {lastQuestion.id === type.id ? (
-                  <div><button onClick={this.handleSave} name={type.id} value='nextPage'>Save & Next Page</button></div>
-                ) : (
-                  <div><HashLink to={`#${this.state.nextQuestion}`}><button onClick={this.handleSave} name={type.id} value='next'>Save & Next</button></HashLink></div>
+    if(!this.props.rating.size && theme === 'env-climate-change') {
+      return(
+        <Portal open={true} className='portal'>
+          <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+            <p>This question requires a brand size</p>
+            <p>Please answer the brand size question in General to continue this rating section</p>
+            <Link to={`/brandGeneral/${id}`}><button>Brand General</button></Link>
+          </Segment>
+        </Portal>
+      )
+    } else {
+      return _.map(this.props.pre_qa, theme => {
+        let lastQuestion = theme.questions[theme.questions.length -1]
+        return _.map(theme.questions, type => {
+          if(this.state.isEditing === type.order) {
+            return(
+              <div className='editing'>
+                <div key={type.id} id={`${type.order}`}>
+                  <h5>{type.text}</h5>
+                </div>
+                {_.map(type.answers, ans => {
+                  if(this.state)
+                    return (
+                      <div key={ans.id}>
+                        <Form.Field>
+                          <Checkbox
+                            label={ans.text}
+                            value={ans.id}
+                            onChange={this.handleCheckbox}
+                            checked={this.state[`answer${ans.id}`] === true ? true : false}
+                          />
+                        </Form.Field>
+                        {this.state[`show${ans.id}`] === true ? (
+                          <div className='evidence'>
+                            <h5>Evidence</h5>
+                            <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
+                            <Form.Field className={this.state[`errorWebsite${ans.id}`] === true ? 'ui error input evidence-url' : 'ui input evidence-url'} inline>
+                              <Input
+                                label='Source URL'
+                                onChange={this.handleUrl}
+                                name={ans.id}
+                                value={this.state[`url${ans.id}`]}
+                              />
+                            </Form.Field>
+                            <Form.Field className='evidence-comments' inline>
+                              <TextArea
+                                autoHeight
+                                rows={4}
+                                label='Comments'
+                                placeholder='Comments'
+                                onChange={this.handleComment}
+                                name={ans.id}
+                                value={this.state[`comment${ans.id}`]}
+                              />
+                            </Form.Field>
+                          </div>) : ('')}
+                      </div>
+                    )}
                 )}
+                <p className='error-message'>{this.state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
+                <div className='button-container'>
+                  <div><button className='cancel' onClick={this.handleCancel} name={type.id}>Cancel</button></div>
+                  <div><button onClick={this.handleSave} name={type.id}>Save</button></div>
+                  {lastQuestion.id === type.id ? (
+                    <div><button onClick={this.handleSave} name={type.id} value='nextPage'>Save & Next Page</button></div>
+                  ) : (
+                    <div><HashLink to={`#${this.state.nextQuestion}`}><button onClick={this.handleSave} name={type.id} value='next'>Save & Next</button></HashLink></div>
+                  )}
+                </div>
+                {_.map(type.answers, ans => {
+                  return (<div key={ans.id} className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please fill out all required fields' : ''}</div>)
+                })}
+              </div>) } else {
+            return(
+              <div className='not-editing'>
+                <h5>{type.text}</h5>
+                {_.map(type.answers, ans => {
+                  return (this.state[`answer${ans.id}`] === true ? (<p key={ans.id}>{ans.text}</p>) : (''))
+                })}
+                <div className='button-container'>
+                  <div></div>
+                  <div><button name={type.order} onClick={this.handleEdit}>Edit</button></div>
+                </div>
+                <p className='small-divider'></p>
               </div>
-              {_.map(type.answers, ans => {
-                return (<div key={ans.id} className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please fill out all required fields' : ''}</div>)
-              })}
-            </div>) } else {
-          return(
-            <div className='not-editing'>
-              <h5>{type.text}</h5>
-              {_.map(type.answers, ans => {
-                return (this.state[`answer${ans.id}`] === true ? (<p key={ans.id}>{ans.text}</p>) : (''))
-              })}
-              <div className='button-container'>
-                <div></div>
-                <div><button name={type.order} onClick={this.handleEdit}>Edit</button></div>
-              </div>
-              <p className='small-divider'></p>
-            </div>
-          )}
+            )}
+        })
       })
-    })
+    }
   }
 
   render() {

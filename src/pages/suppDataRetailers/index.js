@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { Form, Input, Select, Radio, Progress } from 'semantic-ui-react'
+import { Form, Input, Select, Radio, Progress, Portal, Segment } from 'semantic-ui-react'
 import { fetchRetailers, createRetailer, fetchTerritories, updateRetailer } from '../../actions/retailer'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -15,6 +15,7 @@ class SuppDataRetailers extends Component {
     this.state = {
       isEditing: null,
       errorname: false,
+      website: '',
       territories: [],
       originalTerritories: [],
       territoryOptions: [],
@@ -33,6 +34,7 @@ class SuppDataRetailers extends Component {
     this.handleDropDown = this.handleDropDown.bind(this)
     this.handleRemove = this.handleRemove.bind(this)
     this.handleOnlineSave = this.handleOnlineSave.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -80,8 +82,7 @@ class SuppDataRetailers extends Component {
     if(this.state.changeError === false) {
       this.setState({isEditing: event.target.name})
     } else {
-      this.setState({renderChangeError: true})
-      alert(`Please click Save on previously edited question to save your selected answers or cancel to disregard your selections`)
+      this.setState({renderChangeError: true, portal: true})
     }
   }
 
@@ -209,6 +210,10 @@ class SuppDataRetailers extends Component {
     }
   }
 
+  handlePortal() {
+    this.setState({portal: false})
+  }
+
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.retailer)
@@ -243,6 +248,14 @@ class SuppDataRetailers extends Component {
         <p className='small-divider'></p>
         <h5> Current:</h5>
         <Progress total={2} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <button onClick={this.handlePortal}>Ok</button>
+            </Segment>
+          </Portal>
+        ) : ''}
         <form className='brand-form'>
           {isEditing === 'retailer' ? (
             <div className='editing'>

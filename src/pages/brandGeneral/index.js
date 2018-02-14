@@ -4,7 +4,7 @@ import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
 import { fetchGeneral, updateGeneral, createBrandSize } from '../../actions/general'
 import { OverviewHeading } from '../../components'
-import { Form, Input, Radio, Checkbox, Progress} from 'semantic-ui-react'
+import { Form, Input, Radio, Checkbox, Progress, Portal, Segment} from 'semantic-ui-react'
 import _ from 'lodash'
 import axios from 'axios'
 import moment from 'moment'
@@ -44,6 +44,7 @@ class BrandGeneral extends Component {
     this.handleCheckbox = this.handleCheckbox.bind(this)
     this.handleSizeCancel = this.handleSizeCancel.bind(this)
     this.handleNA = this.handleNA.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -101,8 +102,7 @@ class BrandGeneral extends Component {
     if(this.state.changeError === false) {
       this.setState({isEditing: event.target.value})
     } else {
-      this.setState({renderChangeError: true})
-      alert(`Please click Save on previously edited question to save your selected answers or Cancel to disregard your selections`)
+      this.setState({renderChangeError: true, portal: true})
     }
   }
 
@@ -251,6 +251,9 @@ class BrandGeneral extends Component {
     return string[0].toUpperCase() + string.slice(1)
   }
 
+  handlePortal() {
+    this.setState({portal: false})
+  }
 
   render() {
     console.log('props', this.props.general)
@@ -273,9 +276,17 @@ class BrandGeneral extends Component {
         <p className='small-divider'></p>
         <h5> Current:</h5>
         <Progress total={4} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <button onClick={this.handlePortal}>Ok</button>
+            </Segment>
+          </Portal>
+        ) : ''}
         <Form>
           {isEditing === '1' ? (
-            <div className='editing'>
+            <div className='editing' id='name'>
               <h5>What is the Brand Name and Website?</h5>
               <Form.Field inline className={state.nameError === true ? 'ui error input' : 'ui input'}>
                 <Input
@@ -297,7 +308,7 @@ class BrandGeneral extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='name'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1' value='1'>Save</button></div>
-                <div><HashLink to='#sustainability'><button onClick={this.handleSave} name='1' value='next'>Save & Next</button></HashLink></div>
+                <div><HashLink to='#sustainability_report_date'><button onClick={this.handleSave} name='1' value='next'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -318,7 +329,7 @@ class BrandGeneral extends Component {
             <p className='small-divider'></p>
           </div>
           {isEditing === '2' ? (
-            <div className='editing' id='sustainability'>
+            <div className='editing' id='sustainability_report_date'>
               <h5>When will the brand release its next sustainability report?</h5>
               <Form.Field inline className={state.renderError === true ? 'ui error input' : 'ui input'}>
                 <Input
@@ -342,7 +353,7 @@ class BrandGeneral extends Component {
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel} name='sustainability_report_date'>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='2' value='2'>Save</button></div>
-                <div><HashLink to='#review'><button onClick={this.handleSave} name='2' value='next'>Save & Next</button></HashLink></div>
+                <div><HashLink to='#review_date'><button onClick={this.handleSave} name='2' value='next'>Save & Next</button></HashLink></div>
               </div>
             </div>) : (
             <div className='not-editing'>
@@ -356,7 +367,7 @@ class BrandGeneral extends Component {
             </div>
           )}
           {isEditing === '3' ? (
-            <div className='editing' id='review'>
+            <div className='editing' id='review_date'>
               <h5>Which month does Good On You need to review the Brand?</h5>
               <Form.Field inline className={state.renderError === true ? 'ui error input' : 'ui input'}>
                 <Input

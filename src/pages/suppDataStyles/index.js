@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { Form, Radio, Input, Checkbox, Progress } from 'semantic-ui-react'
+import { Form, Radio, Input, Checkbox, Progress, Portal, Segment } from 'semantic-ui-react'
 import { fetchAllStyles, fetchStyles, createStyles, updateStyles } from '../../actions/style'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -38,6 +38,7 @@ class SuppDataStyles extends Component {
     this.handleSave = this.handleSave.bind(this)
     this.handlePercentage = this.handlePercentage.bind(this)
     this.handleCheckbox = this.handleCheckbox.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -84,8 +85,7 @@ class SuppDataStyles extends Component {
         isEditing: event.target.name,
       })
     } else {
-      this.setState({renderChangeError: true})
-      alert(`Please click Save on previously edited question to save your selected answers or cancel to disregard your selections`)
+      this.setState({renderChangeError: true, portal: true})
     }
   }
 
@@ -150,9 +150,9 @@ class SuppDataStyles extends Component {
         this.setState({isEditing: 'underwear'})
       } else if(event.target.name === 'underwear') {
         this.setState({isEditing: 'style-scores'})
-      } else {
-        this.setState({isEditing: null})
       }
+    } else {
+      this.setState({isEditing: null})
     }
     this.setState({changeError: false, renderChangeError: false})
   }
@@ -297,6 +297,10 @@ class SuppDataStyles extends Component {
     )
   }
 
+  handlePortal() {
+    this.setState({portal: false})
+  }
+
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props styles', this.props.styles)
@@ -320,6 +324,14 @@ class SuppDataStyles extends Component {
         <p className='small-divider'></p>
         <h5> Current:</h5>
         <Progress percent={Math.floor((this.state.progressBar/13) * 100)} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <button onClick={this.handlePortal}>Ok</button>
+            </Segment>
+          </Portal>
+        ) : ''}
         <form className='brand-form'>
           {isEditing === 'men' ? (
             <div className='editing'>

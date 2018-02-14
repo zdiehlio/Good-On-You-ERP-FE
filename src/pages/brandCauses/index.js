@@ -4,7 +4,7 @@ import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
 import { fetchCause, fetchAllCause, createCause, updateCause } from '../../actions/cause'
 import { QualiHeading } from '../../components'
-import { Form, Radio, Progress} from 'semantic-ui-react'
+import { Form, Radio, Progress, Portal, Segment} from 'semantic-ui-react'
 import _ from 'lodash'
 import axios from 'axios'
 
@@ -27,6 +27,7 @@ class BrandCauses extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id }  = this.props.match.params
@@ -59,8 +60,7 @@ class BrandCauses extends Component {
         this.setState({isEditing: event.target.value, currentAnswer: null})
       }
     } else {
-      this.setState({renderChangeError: true})
-      alert(`Please click Save on previously edited question to save your selected answers or Cancel to disregard your selections`)
+      this.setState({renderChangeError: true, portal: true})
     }
   }
   //sets state for isEditing to null which will toggle the ability to edit
@@ -141,6 +141,10 @@ class BrandCauses extends Component {
     })
   }
 
+  handlePortal() {
+    this.setState({portal: false})
+  }
+
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.causes)
@@ -164,6 +168,14 @@ class BrandCauses extends Component {
         <p className='small-divider'></p>
         <h5> Current:</h5>
         <Progress total={8} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <button onClick={this.handlePortal}>Ok</button>
+            </Segment>
+          </Portal>
+        ) : ''}
         <Form>
           {isEditing === '1' ? (
             <div className='editing'>
