@@ -26,7 +26,7 @@ class BrandGeneral extends Component {
       deleteSize: [],
       currentValues: [],
       parent_company: '',
-      sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'goy-large', 'goy-small', 'subsidiary', 'listed', 'none'],
+      sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'goy-large', 'goy-small', 'subsidiary', 'listed', 'none', 'parent'],
       input: null,
       dateValid: true,
       renderError: false,
@@ -145,6 +145,8 @@ class BrandGeneral extends Component {
     } else if(event.target.name === '4') {
       if(!this.state.size) {
         this.setState({sizeError: true})
+      } else if(this.state.subsidiary && this.state.parent_company.length <=0) {
+        this.setState({parentError: true})
       } else {
         this.props.createBrandSize({brand: id, criteria: this.state.sizeValues.length > 0 ? this.state.sizeValues : this.state.noValues})
         this.props.updateGeneral(id, {parent_company: this.state.parent_company})
@@ -188,11 +190,14 @@ class BrandGeneral extends Component {
       this.setState({none: value, sizeValues: [], noValues: [{name: 'none'}], size: 'small'})
     } else {
       if(this.state[value]) {
+        if(value === 'subsidiary') {
+          this.setState({parentError: false})
+        }
         this.setState({[value]: null, sizeValues: this.state.sizeValues.filter(select => {return select.name != value})})
       } else {
         this.setState({[value]: value, sizeValues: [...this.state.sizeValues, {name: value}]})
       }
-      this.setState({size: value === 'goy-small' ? 'small' : 'large', none: null, noValues: []})
+      this.setState({size: value === 'goy-small' && this.state.size !== 'small' ? 'small' : 'large', none: null, noValues: []})
     }
     this.setState({changeError: true, sizeError: false})
   }
@@ -200,8 +205,8 @@ class BrandGeneral extends Component {
   renderCriteria() {
     return _.map(this.state.sizeValues, crit => {
       return (
-        <li key={crit.criteria}>
-          {crit.criteria}
+        <li key={crit.name}>
+          {crit.name}
         </li>
       )
     })
@@ -231,9 +236,7 @@ class BrandGeneral extends Component {
     }
     if(name === 'parent_company') {
       if(value.length >= 1) {
-        this.setState({size: 'large'})
-      } else if(this.state.none && value.length === 0) {
-        this.setState({size: 'small'})
+        this.setState({parentError: false})
       }
     }
     if(name === 'sustainability_report_date') {
@@ -413,6 +416,15 @@ class BrandGeneral extends Component {
                     value={state.parent_company}
                   />
                 </Form.Field> : ''}
+              <p className='error-message'>{state.parentError === true ? 'Please enter the parent company name' : ''}</p>
+              <Form.Field>
+                <Checkbox
+                  label='is a Parent company'
+                  onChange={this.handleCheckbox}
+                  checked={state.parent ? true : false}
+                  value='parent'
+                />
+              </Form.Field>
               <Form.Field>
                 <Checkbox
                   label='has Alexa rating &#60; 200k'
@@ -495,7 +507,7 @@ class BrandGeneral extends Component {
               <p>{state.size === 'small' || state.size === 'large' ? this.capitalize(state.size) : ''}</p>
               <p>{state.sizeValues.length > 0 ? 'Criteria:' : ''}</p>
               <ul>{this.renderCriteria()}</ul>
-              <p>{state.parent_company ? `Parent Company: ${state.parent_company}` : ''}</p>
+              <p>{state.parent_company && state.parent ? `Parent Company: ${state.parent_company}` : ''}</p>
               <div className='button-container'>
                 <div></div>
                 <div><button name='4' onClick={this.handleEdit} value='4'>Edit</button></div>
