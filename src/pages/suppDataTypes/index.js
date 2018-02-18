@@ -58,7 +58,7 @@ class SuppDataTypes extends Component {
     _.map(this.state.typeValues, val => {
       this.setState({[val.product]: null})
     })
-    this.setState({isEditing: null, typeValues: []})
+    this.setState({error: false, isEditing: null, typeValues: []})
     this.props.fetchType(id)
   }
 

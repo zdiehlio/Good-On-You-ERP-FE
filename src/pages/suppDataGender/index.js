@@ -64,6 +64,7 @@ class SuppDataGender extends Component {
     this.setState({
       isEditing: null,
       genders: [],
+      error: false,
     })
   }
 

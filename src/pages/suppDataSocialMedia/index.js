@@ -55,7 +55,14 @@ class SuppDataSocialMedia extends Component {
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
-    this.setState({isEditing: null, currentAnswer: null, facebook_url: this.state.originalFacebook_url, instagram_url: this.state.originalInstagram_url})
+    this.setState({
+      isEditing: null,
+      currentAnswer: null,
+      facebook_url: this.state.originalFacebook_url,
+      instagram_url: this.state.originalInstagram_url,
+      facebook_urlError: false,
+      instagram_urlError: false,
+    })
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {

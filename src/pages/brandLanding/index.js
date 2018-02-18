@@ -18,7 +18,7 @@ import { fetchType} from '../../actions/type'
 import { fetchRetailers} from '../../actions/retailer'
 
 
-import { Icon } from 'semantic-ui-react'
+import { Icon, Loader } from 'semantic-ui-react'
 import _ from 'lodash'
 
 import './brandLanding.css'
@@ -65,10 +65,27 @@ class BrandLanding extends Component {
     this.props.fetchBrandCategory(id)
     this.props.fetchType(id)
     this.props.fetchRetailers(id)
+    this.setState({
+      loadingHeader: true,
+      loadingGeneral: true,
+      loadingContact: true,
+      loadingAlias: true,
+      loadingRating: true,
+      loadingCause: true,
+      loadingSentence: true,
+      loadingSummary: true,
+      loadingSocial: true,
+      loadingImage: true,
+      loadingCategory: true,
+      loadingStyle: true,
+      loadingProduct: true,
+      loadingRetailer: true,
+    })
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.general !== this.props.general) {
+      this.setState({loadingGeneral: false})
       if(nextProps.general.name) {
         this.state.generalProgress++
       }
@@ -77,31 +94,40 @@ class BrandLanding extends Component {
       }
     }
     if(nextProps.contact !== this.props.contact) {
+      this.setState({loadingContact: false})
       if(nextProps.contact.contact) {
         this.state.contactProgress++
       }
     }
     if(nextProps.alias !== this.props.alias) {
+      this.setState({loadingAlias: false})
       if(nextProps.alias.length > 0) {
         this.state.aliasProgress++
       }
     }
+    if(nextProps.score !== this.props.score) {
+      this.setState({loadingRating: false})
+    }
     if(nextProps.cause !== this.props.cause) {
+      this.setState({loadingCause: false})
       nextProps.cause.map(val => {
         this.state.causeProgress++
       })
     }
     if(nextProps.sentence !== this.props.sentence) {
+      this.setState({loadingSentence: false})
       if(nextProps.sentence.length > 0) {
         this.state.sentenceProgress++
       }
     }
     if(nextProps.summary !== this.props.summary) {
+      this.setState({loadingSummary: false})
       if(nextProps.summary.length > 0) {
         this.state.summaryProgress++
       }
     }
     if(nextProps.social !== this.props.social) {
+      this.setState({loadingSocial: false})
       if(nextProps.social.facebook_url) {
         this.state.socialProgress++
       }
@@ -110,6 +136,7 @@ class BrandLanding extends Component {
       }
     }
     if(nextProps.image !== this.props.image) {
+      this.setState({loadingImage: false})
       if(nextProps.image.length > 0) {
         this.state.imageProgress++
       }
@@ -120,6 +147,7 @@ class BrandLanding extends Component {
       }
     }
     if(nextProps.styles !== this.props.styles) {
+      this.setState({loadingStyle: false})
       nextProps.styles.map(style => {
         if(style.style_qa.question === 'gender') {
           this.state.genderProgress++
@@ -135,6 +163,7 @@ class BrandLanding extends Component {
       })
     }
     if(nextProps.categories !== this.props.categories) {
+      this.setState({loadingCategory: false})
       if(nextProps.categories.length > 0) {
         this.state.categoryProgress++
         nextProps.categories.map(val => {
@@ -145,11 +174,13 @@ class BrandLanding extends Component {
       }
     }
     if(nextProps.types !== this.props.types) {
+      this.setState({loadingProduct: false})
       if(nextProps.types.length > 0) {
         this.state.typeProgress++
       }
     }
     if(nextProps.retailer !== this.props.retailer) {
+      this.setState({loadingRetailer: false})
       if(nextProps.retailer.length > 0) {
         if(nextProps.retailer[0].name) {
           this.state.retailerProgress++
@@ -227,9 +258,9 @@ class BrandLanding extends Component {
       <div className='summary-container'>
         <div className='landing-header'>
           <span className='landing-brand'>
-            <div className='summary-heading'>Rate a brand for: <h1>{props.general.name}</h1></div>
+            <div className='summary-heading'>Rate a brand for: {state.loadingGeneral === true ? <Loader active inline='centered' /> : <h1> {props.general.name}</h1>}</div>
             <p className='small-divider'></p>
-            <div className='summary-heading'>URL: <h5>{props.general.website}</h5></div>
+            <div className='summary-heading'>URL: {state.loadingGeneral === true ? <Loader active inline='centered' /> : <h5>{props.general.website}</h5>}</div>
             <p className='small-divider'></p>
           </span>
           <span className='landing-status'>
@@ -260,25 +291,29 @@ class BrandLanding extends Component {
 
         <div className='summary-heading'><h1>Brand Overview</h1></div>
         <p className='divider'></p>
+        {state.loadingGeneral === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>General</div>
           <div><p className='progress'>{state.generalProgress >= 2 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/brandGeneral/${id}`}><button>{state.generalProgress >= 2 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
+        {state.loadingContact === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Contact Details</div>
           <div><p className='progress'>{state.contactProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/brandContact/${id}`}><button>{state.contactProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
+        {state.loadingAlias === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Alternative Names / Spelling</div>
           <div><p className='progress'>{state.aliasProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/suppDataAlias/${id}`}><button>{state.aliasProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
 
+        {state.loadingRating === true ? <Loader active inline='centered' /> :
         <div className='summary-heading'>
           <div><h1>Ratings</h1></div>
           <div className='rating-score'>
@@ -293,9 +328,10 @@ class BrandLanding extends Component {
             {props.score.dots >= 5 ? <Icon name='circle'/> : <Icon name='circle thin' />}
           </div>
           <div>{props.score.label}</div>
-        </div>
+        </div>}
         <p className='divider'></p>
 
+        {state.loadingRating === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           {this.handleHeadline('environment')}
           {this.state.show === 'environment' ? (
@@ -369,9 +405,10 @@ class BrandLanding extends Component {
               <p className='small-divider'></p>
             </span> ) :
             (<span className='hide-summary'></span>)}
-
-        </div>
+        </div>}
         <p className='small-divider'></p>
+
+        {state.loadingRating === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           {this.handleHeadline('labour')}
           {this.state.show === 'labour' ? (
@@ -475,9 +512,10 @@ class BrandLanding extends Component {
               <p className='small-divider'></p>
             </span> ) :
             (<span className='hide-summary'></span>)}
-        </div>
+        </div>}
         <p className='small-divider'></p>
 
+        {state.loadingRating === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           {this.handleHeadline('animal')}
           {this.state.show === 'animal' ? (
@@ -510,79 +548,99 @@ class BrandLanding extends Component {
               </span>
             </span> ) :
             (<span className='hide-summary'></span>)}
-        </div>
+        </div>}
         <p className='small-divider'></p>
 
         <div className='summary-heading'><h1>Qualitative Ratings</h1></div>
         <p className='divider'></p>
+        {state.loadingCause === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Causes</div>
           <div><p className='progress'>{state.causeProgress >= 8 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/brandCauses/${id}`}><button>{state.causeProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
+
+        {state.loadingSentence === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Sentence</div>
           <div><p className='progress'>{state.sentenceProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/brandSentences/${id}`}><button>{state.sentenceProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
+
+        {state.loadingSummary === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Summary</div>
           <div><p className='progress'>{state.summaryProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/brandSummary/${id}`}><button>{state.summaryProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
 
         <div className='summary-heading'><h1>Supplementary Data</h1></div>
         <p className='divider'></p>
+        {state.loadingSocial === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Social Media</div>
           <div><p className='progress'>{state.socialProgress >= 2 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/suppDataSocialMedia/${id}`}><button>{state.socialProgress >= 2 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
+
+        {state.loadingImage === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Images</div>
           <div><p className='progress'>{state.imageProgress >= 2 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/suppDataImage/${id}`}><button>{state.imageProgress >= 2 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
+
+        {state.loadingStyle === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Genders/Ages</div>
           <div><p className='progress'>{state.genderProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/suppDataGender/${id}`}><button>{state.genderProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
+
+        {state.loadingCategory === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Categories</div>
           <div><p className='progress'>{state.categoryProgress >= 2 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/suppDataCategory/${id}`}><button>{state.categoryProgress >= 2 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
+
+        {state.loadingStyle === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Styles</div>
           <div><p className='progress'>{state.styleArr.length >= 13 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/suppDataStyles/${id}`}><button>{state.styleArr.length >= 13 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
+
+        {state.loadingProduct === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Product Types</div>
           <div><p className='progress'>{state.typeProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/suppDataTypes/${id}`}><button>{state.typeProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
+
+        {state.loadingStyle === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Price</div>
           <div><p className='progress'>{state.priceProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/suppDataPrice/${id}`}><button>{state.priceProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
         <p className='small-divider'></p>
+
+        {state.loadingRetailer === true ? <Loader active inline='centered' /> :
         <div className='summary-view'>
           <div>Retailers</div>
           <div><p className='progress'>{state.retailerProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
           <div><Link to={`/suppDataRetailers/${id}`}><button>{state.retailerProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
-        </div>
+        </div>}
       </div>
     )
   }

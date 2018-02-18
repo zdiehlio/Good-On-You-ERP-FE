@@ -43,7 +43,7 @@ class BrandSentences extends Component {
         _.map(nextProps.sentence, ident => {
           if(ident.is_selected === true) {
             this.setState({originalSource: ident.source, originalSelect: ident.slug, originalId: ident.id, originalAnswer: ident.text, currentSelect: ident.slug, currentId: ident.id, finalAnswer: ident.text, finalSource: ident.source})
-            this.state.progressBar++
+            ident.text === '' ? this.setState({progressBar: 0 }) : this.state.progressBar++
           }
           this.setState({[ident.slug]: ident.slug})
         })
@@ -75,6 +75,7 @@ class BrandSentences extends Component {
     event.preventDefault()
     this.setState({finalSource: this.state.originalSource, finalAnswer: this.state.originalAnswer, currentId: this.state.originalId, currentSelect: this.state.originalSelect, isEditing: null})
   }
+
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     const { id }  = this.props.match.params
@@ -83,6 +84,9 @@ class BrandSentences extends Component {
     } else {
       this.props.createSentence({brand: id, text: this.state.finalAnswer, is_selected: true})
       this.state.progressBar++
+    }
+    if(this.state.finalAnswer === '') {
+      this.setState({progressBar: 0})
     }
     if(event.target.value === 'next') {
       this.props.history.push(`/brandSummary/${id}`)

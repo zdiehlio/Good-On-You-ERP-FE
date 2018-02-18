@@ -39,7 +39,7 @@ class BrandSummary extends Component {
       _.map(nextProps.summary, summary=> {
         this.setState({renderSummary: summary.text, originalAnswer: summary.text, currentAnswer: summary.text})
         if(summary.text) {
-          this.state.progressBar++
+          summary.text === '' ? this.setState({progressBar: 0}) : this.state.progressBar++
         }
       })
     }
@@ -62,10 +62,11 @@ class BrandSummary extends Component {
     if(this.state.renderSummary) {
       this.props.updateSummary(id, {text: this.state.currentAnswer})
       this.setState({renderSummary: this.state.currentAnswer})
+      this.state.currentAnswer === '' ? this.setState({progressBar: 0}) : this.state.progressBar++
     } else {
       this.props.createSummary({brand: id, text: this.state.currentAnswer})
       this.setState({renderSummary: this.state.currentAnswer})
-      this.state.progressBar++
+      this.state.currentAnswer === '' ? this.setState({progressBar: 0}) : this.state.progressBar++
     }
     if(event.target.value === 'next') {
       this.props.history.push(`/suppDataSocialMedia/${id}`)
