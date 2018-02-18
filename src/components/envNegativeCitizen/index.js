@@ -11,7 +11,7 @@ class EnvNegativeCitizen extends Component {
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><Link to={`/env-positive-citizenship/${this.props.id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Negative Citizenship</h3></div>
+            <div><h3>Environment / Negative Citizenship</h3></div>
             <div><Link to={`/labour-ethical-fashion-report/${this.props.id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>

@@ -11,7 +11,7 @@ class AnimalPositiveCitizen extends Component {
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><Link to={`/animal-animal-products/${this.props.id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Positive Citizenship</h3></div>
+            <div><h3>Animal / Positive Citizenship</h3></div>
             <div><Link to={`/animal-negative-citizenship/${this.props.id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>

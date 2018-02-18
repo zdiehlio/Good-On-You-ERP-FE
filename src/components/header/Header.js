@@ -21,7 +21,7 @@ class Header extends Component {
 
           <div className="links-container-left">
             <Link to="/searchBrand">Home</Link>
-          </div>)
+          </div>
 
           {this.props.token ? (
             <div className="links-container-left">
