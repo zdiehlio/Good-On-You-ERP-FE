@@ -184,7 +184,7 @@ class BrandCauses extends Component {
         <Form>
           {isEditing === '1' ? (
             <div className='editing'>
-              <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in? *</h4>
+              <h4>Which of the following countries or union are 100% of the brands final stage of productions suppliers located in? *</h4>
               {this.renderQuestion('made-in')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
               <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
@@ -195,7 +195,7 @@ class BrandCauses extends Component {
               </div>
             </div>) : (
             <div className='not-editing'>
-              <h4>Which of the following countries are 100% of the brands final stage of productions suppliers located in? *</h4>
+              <h4>Which of the following countries or union are 100% of the brands final stage of productions suppliers located in? *</h4>
               <p>{state['made-inAnswer']}</p>
               <div className='button-container'>
                 <div></div>

@@ -39,6 +39,9 @@ class SuppDataStyles extends Component {
     this.handlePercentage = this.handlePercentage.bind(this)
     this.handleCheckbox = this.handleCheckbox.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
+    this.handleRadio = this.handleRadio.bind(this)
+    this.handleRadio = this.handleRadio.bind(this)
+    this.handleSaveRadio = this.handleSaveRadio.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -61,6 +64,10 @@ class SuppDataStyles extends Component {
             this.state.progressBar++
             this.setState({[compare.style_qa.question]: compare.style_qa.question})
           }
+        } else if(compare.style_qa.question === 'plus') {
+          this.setState({plus: compare.style_qa.tag})
+        } else if(compare.style_qa.question === 'maternity') {
+          this.setState({maternity: compare.style_qa.tag})
         } else if(compare.style_qa.question !== 'kids') {
           if(!this.state[compare.style_qa.question]) {
             this.state.progressBar++
@@ -129,7 +136,7 @@ class SuppDataStyles extends Component {
       if(event.target.name === 'men') {
         this.setState({isEditing: 'older-women'})
       } else if(event.target.name === 'older-women') {
-        this.setState({isEditing: 'young-women'})
+        this.setState({isEditing: 'plus'})
       } else if(event.target.name === 'young-women') {
         this.setState({isEditing: 'designer'})
       } else if(event.target.name === 'designer') {
@@ -155,6 +162,21 @@ class SuppDataStyles extends Component {
       this.setState({isEditing: null})
     }
     this.setState({changeError: false, renderChangeError: false})
+  }
+
+  handleSaveRadio(event) {
+    event.preventDefault()
+    const { id }  = this.props.match.params
+    this.props.createStyles({brand: id, style: this.state[event.target.name]})
+    if(event.target.value === 'next') {
+      if(event.target.name === 'plus') {
+        this.setState({isEditing: 'maternity'})
+      } else if(event.target.name === 'maternity') {
+        this.setState({isEditing: 'young-women'})
+      }
+    } else {
+      this.setState({isEditing: null})
+    }
   }
 
   handlePercentage(event) {
@@ -301,6 +323,10 @@ class SuppDataStyles extends Component {
     this.setState({portal: false})
   }
 
+  handleRadio(event, { value, name }) {
+    this.setState({[name]: value})
+  }
+
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props styles', this.props.styles)
@@ -348,11 +374,88 @@ class SuppDataStyles extends Component {
           {isEditing === 'older-women' ? (
             <div className='editing' id='older-women'>
               <h4>Does the Brand sell clothes for older-women?</h4>
-              {this.renderStyles('older-women', '#young-women')}
+              {this.renderStyles('older-women', '#plus')}
             </div>) : (
             <div className='not-editing'>
               <h4>Does the Brand sell clothes for older-women?</h4>
               {this.renderAnswers('older-women')}
+              <p className='small-divider'></p>
+            </div>
+          )}
+
+          {isEditing === 'plus' ? (
+            <div className='editing' id='plus'>
+              <h4>Does the Brand sell Plus size clothes?</h4>
+              <Form.Field inline>
+                <Radio
+                  label='Yes'
+                  checked={state.plus === 'plus' ? true : false}
+                  name='plus'
+                  onClick={this.handleRadio}
+                  value='plus'
+                />
+              </Form.Field>
+              <Form.Field inline>
+                <Radio
+                  label='No'
+                  checked={state.plus === 'no-plus' ? true : false}
+                  name='plus'
+                  onClick={this.handleRadio}
+                  value='no-plus'
+                />
+              </Form.Field>
+              <div className='button-container'>
+                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                <div><button name='plus' onClick={this.handleSaveRadio}>Save</button></div>
+                <div><HashLink to='#maternity'><button name='plus' value='next' onClick={this.handleSaveRadio}>Save & Next</button></HashLink></div>
+              </div>
+            </div>) : (
+            <div className='not-editing'>
+              <h4>Does the Brand sell Plus size clothes?</h4>
+              {state.plus ? <p>{state.plus === 'plus' ? 'Yes' : 'No'}</p> : ''}
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
+              <div className='button-container'>
+                <div></div>
+                <div><button name='plus' onClick={this.handleEdit}>Edit</button></div>
+              </div>
+              <p className='small-divider'></p>
+            </div>
+          )}
+
+          {isEditing === 'maternity' ? (
+            <div className='editing' id='maternity'>
+              <h4>Does the Brand sell Maternity clothes?</h4>
+              <Form.Field inline>
+                <Radio
+                  label='Yes'
+                  checked={state.maternity === 'maternity' ? true : false}
+                  name='maternity'
+                  onClick={this.handleRadio}
+                  value='maternity'
+                />
+              </Form.Field>
+              <Form.Field inline>
+                <Radio
+                  label='No'
+                  checked={state.maternity === 'no-maternity' ? true : false}
+                  name='maternity'
+                  onClick={this.handleRadio}
+                  value='no-maternity'
+                />
+              </Form.Field>
+              <div className='button-container'>
+                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                <div><button name='maternity' onClick={this.handleSaveRadio}>Save</button></div>
+                <div><HashLink to='#young-women'><button name='maternity' value='next' onClick={this.handleSaveRadio}>Save & Next</button></HashLink></div>
+              </div>
+            </div>) : (
+            <div className='not-editing'>
+              <h4>Does the Brand sell Maternity clothes?</h4>
+              {state.maternity ? <p>{state.maternity === 'maternity' ? 'Yes' : 'No'}</p> : ''}
+              <div className='button-container'>
+                <div></div>
+                <div><button name='maternity' onClick={this.handleEdit}>Edit</button></div>
+              </div>
               <p className='small-divider'></p>
             </div>
           )}
