@@ -16,7 +16,7 @@ class QualiHeading extends Component {
         <p className='small-divider'></p>
         <Link to={`/brandGeneral/${id}`}><div>Brand Overview</div></Link>
         <div className='arrow-divider'>>></div>
-        <Link to={`/resource/${id}`}><div>Rating</div></Link>
+        <Link to={`/env-standards-compliance/${id}`}><div>Rating</div></Link>
         <div className='arrow-divider'>>></div>
         <Link to={`/brandCauses/${id}`}><div className='qualitative-header'>Qualitative Ratings</div></Link>
         <div className='arrow-divider'>>></div>

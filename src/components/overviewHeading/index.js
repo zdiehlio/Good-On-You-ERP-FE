@@ -17,7 +17,7 @@ class OverviewHeading extends Component {
         <p className='small-divider'></p>
         <Link to={`/brandGeneral/${id}`}><div className='overview-header'>Brand Overview</div></Link>
         <div className='arrow-divider'>>></div>
-        <Link to={`/resource/${id}`}><div>Rating</div></Link>
+        <Link to={`/env-standards-compliance/${id}`}><div>Rating</div></Link>
         <div className='arrow-divider'>>></div>
         <Link to={`/brandCauses/${id}`}><div>Qualitative Ratings</div></Link>
         <div className='arrow-divider'>>></div>
