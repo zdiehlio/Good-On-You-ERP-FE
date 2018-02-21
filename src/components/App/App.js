@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
 } from 'react-router-dom'
 import Authentication from '../requireAuth'
@@ -33,6 +32,7 @@ import {
   BrandGeneral,
   BrandContact,
   BrandCauses,
+  SuppDataSku,
 } from '../../pages'
 import ScrollToTop from '../scrollToTop'
 import axios from 'axios'
@@ -99,6 +99,7 @@ class App extends Component {
               <Route path='/suppDataAlias/:id' component={Authentication(SuppDataAlias)} />
               <Route path='/suppDataSocialMedia/:id' component={Authentication(SuppDataSocialMedia)} />
               <Route path='/suppDataImage/:id' component={Authentication(SuppDataImage)} />
+              <Route path='/suppDataSku/:id' component={Authentication(SuppDataSku)} />
             </div>
           </ScrollToTop>
           <Footer/>

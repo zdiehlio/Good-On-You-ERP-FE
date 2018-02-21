@@ -16,6 +16,7 @@ import { fetchStyles } from '../../actions/style'
 import { fetchBrandCategory } from '../../actions/category'
 import { fetchType} from '../../actions/type'
 import { fetchRetailers} from '../../actions/retailer'
+import { fetchSku} from '../../actions/sku'
 
 
 import { Icon, Loader } from 'semantic-ui-react'
@@ -43,6 +44,7 @@ class BrandLanding extends Component {
       categoryProgress: 0,
       typeProgress: 0,
       retailerProgress: 0,
+      skuProgress: 0,
     }
     this.handleShow = this.handleShow.bind(this)
     this.handleHide = this.handleHide.bind(this)
@@ -65,6 +67,7 @@ class BrandLanding extends Component {
     this.props.fetchBrandCategory(id)
     this.props.fetchType(id)
     this.props.fetchRetailers(id)
+    this.props.fetchSku(id)
     this.setState({
       loadingHeader: true,
       loadingGeneral: true,
@@ -80,6 +83,7 @@ class BrandLanding extends Component {
       loadingStyle: true,
       loadingProduct: true,
       loadingRetailer: true,
+      loadingSku: true,
     })
   }
 
@@ -192,6 +196,12 @@ class BrandLanding extends Component {
         // })
       }
     }
+    if(nextProps.sku !== this.props.sku) {
+      this.setState({loadingSku: false})
+      if(nextProps.sku.sku) {
+        this.state.skuProgress++
+      }
+    }
   }
 
   handleShow(event) {
@@ -253,7 +263,7 @@ class BrandLanding extends Component {
     const props = this.props
     const state = this.state
     console.log('state', state)
-    console.log('props', props.retailer)
+    console.log('props', props.sku)
     return(
       <div className='summary-container'>
         <div className='landing-header'>
@@ -611,6 +621,14 @@ class BrandLanding extends Component {
           </div>}
         <p className='small-divider'></p>
 
+        {state.loadingSku === true ? <Loader active inline='centered' /> :
+          <div className='summary-view'>
+            <div>Number of SKUs</div>
+            <div><p className='progress'>{state.skuProgress >= 1 ? <Icon name='checkmark' color='green' /> : <Icon name='remove' color='red' />}</p></div>
+            <div><Link to={`/suppDataSku/${id}`}><button>{state.skuProgress >= 1 ? 'View' : 'Start'}</button></Link></div>
+          </div>}
+        <p className='small-divider'></p>
+
         {state.loadingStyle === true ? <Loader active inline='centered' /> :
           <div className='summary-view'>
             <div>Styles</div>
@@ -662,6 +680,7 @@ function mapStateToProps(state) {
     categories: state.categories,
     types: state.types,
     retailer: state.retailer,
+    sku: state.sku,
   }
 }
 
@@ -681,4 +700,5 @@ export default connect(mapStateToProps, {
   fetchBrandCategory,
   fetchType,
   fetchRetailers,
+  fetchSku,
 })(BrandLanding)

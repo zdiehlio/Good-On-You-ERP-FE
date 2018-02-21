@@ -342,7 +342,7 @@ class SuppDataStyles extends Component {
         <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/suppDataCategory/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><Link to={`/suppDataSku/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Brand Styles</h3></div>
             <div><Link to={`/suppDataTypes/${id}`}><button className='next'>Next</button></Link></div>
           </span>

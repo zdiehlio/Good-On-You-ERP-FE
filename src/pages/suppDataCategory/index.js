@@ -158,7 +158,7 @@ class SuppDataCategory extends Component {
       }
     } else if(event.target.name === '2') {
       this.props.updateBrandCategory(id, this.state.current_dominant_id, this.state.dominant)
-      event.target.value === 'next' ? this.props.history.push(`/suppDataStyles/${id}`) : this.setState({isEditing: null})
+      event.target.value === 'next' ? this.props.history.push(`/suppDataSku/${id}`) : this.setState({isEditing: null})
       this.state.progressBar++
     }
     this.setState({changeError: false, renderChangeError: false})
@@ -221,7 +221,7 @@ class SuppDataCategory extends Component {
           <span className='form-navigation'>
             <div><Link to={`/suppDataGender/${id}`}><button className='previous'>Previous</button></Link></div>
             <div><h3>Brand Categories</h3></div>
-            <div><Link to={`/suppDataStyles/${id}`}><button className='next'>Next</button></Link></div>
+            <div><Link to={`/suppDataSku/${id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
         <p className='small-divider'></p>
