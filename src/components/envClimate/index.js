@@ -11,7 +11,7 @@ class EnvClimate extends Component {
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><Link to={`/env-resource/${this.props.id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Climate Change</h3></div>
+            <div><h3>Environment / Climate Change</h3></div>
             <div><Link to={`/env-chemicals/${this.props.id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>

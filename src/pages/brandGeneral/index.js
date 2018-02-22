@@ -54,9 +54,9 @@ class BrandGeneral extends Component {
   componentWillReceiveProps(nextProps) {
     const { id } = this.props.match.params
     if(nextProps.general !== this.props.general) {
-      if(nextProps.general.size_criteria) {
+      if(nextProps.general.size_criteria.length > 0) {
         console.log('mapping')
-        if(nextProps.general.size_criteria.criteria === 'none') {
+        if(nextProps.general.size_criteria[0].criteria === 'none') {
           console.log('none')
           this.setState({none: 'none', noValues: {name: 'none'}})
         } else {
@@ -139,7 +139,7 @@ class BrandGeneral extends Component {
         return this.state.progressBar++
       }
     } else if(event.target.name === '4') {
-      if(!this.state.size) {
+      if(this.state.sizeValues.length <= 0 && this.state.noValues <= 0) {
         this.setState({sizeError: true})
       } else if(this.state.subsidiary && this.state.parent_company.length <=0) {
         this.setState({parentError: true})
@@ -183,7 +183,11 @@ class BrandGeneral extends Component {
     const { id }  = this.props.match.params
     if(value === 'none') {
       this.state.sizeOptions.map(val => this.setState({[val]: null}))
-      this.setState({none: value, sizeValues: [], noValues: [{name: 'none'}], size: 'small'})
+      this.setState({
+        none: !this.state.none ? value : null,
+        sizeValues: [],
+        noValues: [{name: 'none'}], size: 'small',
+      })
     } else {
       if(this.state[value]) {
         if(value === 'subsidiary') {
@@ -193,7 +197,12 @@ class BrandGeneral extends Component {
       } else {
         this.setState({[value]: value, sizeValues: [...this.state.sizeValues, {name: value}]})
       }
-      this.setState({size: value === 'goy-small' && this.state.size !== 'small' ? 'small' : 'large', none: null, noValues: []})
+      if(value === 'goy-small') {
+        this.setState({size: this.state.size !== 'small' ? 'small' : 'large'})
+      } else {
+        this.setState({size: this.state['goy-small'] ? 'small' : 'large'})
+      }
+      this.setState({none: null, noValues: []})
     }
     this.setState({changeError: true, sizeError: false})
   }
@@ -489,7 +498,7 @@ class BrandGeneral extends Component {
                   label='Small'
                   onChange={this.handleRadio}
                   name='small'
-                  checked={state.size === 'small' ? true : false}
+                  checked={(state.sizeValues.length <= 0 && state.noValues.length <= 0) || this.state['goy-small'] || this.state.none ? true : false}
                 />
               </Form.Field>
               <Form.Field className='brand-size'>
@@ -498,7 +507,7 @@ class BrandGeneral extends Component {
                   label='Large'
                   onChange={this.handleRadio}
                   name='large'
-                  checked={state.size === 'large' ? true : false}
+                  checked={state.sizeValues.length >= 1 && !this.state['goy-small'] ? true : false}
                 />
               </Form.Field>
               <p className='error-message'>{state.sizeError === true ? 'Please make a selection' : ''}</p>

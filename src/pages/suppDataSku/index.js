@@ -28,7 +28,7 @@ class SuppDataSku extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.sku !== this.props.sku) {
       console.log(nextProps)
-      if(nextProps.sku) {
+      if(nextProps.sku.sku) {
         this.setState({originalSku: nextProps.sku.sku, sku: nextProps.sku.sku})
         this.state.progressBar++
       }

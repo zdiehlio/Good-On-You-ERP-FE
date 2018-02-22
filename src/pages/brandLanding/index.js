@@ -398,7 +398,7 @@ class BrandLanding extends Component {
             {this.state.show === 'environment' ? (
               <span className='show-summary'>
                 <span className='summary-view'>
-                  <div>Environment / Positive Citizenship</div>
+                  <div>Positive Citizenship</div>
                   {this.handleThemeScore('environment', 6)}
                   <div><Link to={`/env-positive-citizenship/${id}`}><button>Start</button></Link></div>
                 </span>
@@ -408,7 +408,7 @@ class BrandLanding extends Component {
             {this.state.show === 'environment' ? (
               <span className='show-summary'>
                 <span className='summary-view'>
-                  <div>Environment / Negative Citizenship</div>
+                  <div>Negative Citizenship</div>
                   {this.handleThemeScore('environment', 7)}
                   <div><Link to={`/env-negative-citizenship/${id}`}><button>Start</button></Link></div>
                 </span>
@@ -505,7 +505,7 @@ class BrandLanding extends Component {
             {this.state.show === 'labour' ? (
               <span className='show-summary'>
                 <span className='summary-view'>
-                  <div>Labour / Positive Citizenship</div>
+                  <div>Positive Citizenship</div>
                   {this.handleThemeScore('labour', 16)}
                   <div><Link to={`/labour-positive-citizenship/${id}`}><button>Start</button></Link></div>
                 </span>
@@ -515,7 +515,7 @@ class BrandLanding extends Component {
             {this.state.show === 'labour' ? (
               <span className='show-summary'>
                 <span className='summary-view'>
-                  <div>Labour / Negative Citizenship</div>
+                  <div>Negative Citizenship</div>
                   {this.handleThemeScore('labour', 17)}
                   <div><Link to={`/labour-negative-citizenship/${id}`}><button>Start</button></Link></div>
                 </span>
@@ -542,7 +542,7 @@ class BrandLanding extends Component {
             {this.state.show === 'animal' ? (
               <span className='show-summary'>
                 <span className='summary-view'>
-                  <div>Animal / Positive Citizenship</div>
+                  <div>Positive Citizenship</div>
                   {this.handleThemeScore('animal', 19)}
                   <div><Link to={`/animal-positive-citizenship/${id}`}><button>Start</button></Link></div>
                 </span>
@@ -552,7 +552,7 @@ class BrandLanding extends Component {
             {this.state.show === 'animal' ? (
               <span className='show-summary'>
                 <span className='summary-view'>
-                  <div>Animal / Negative Citizenship</div>
+                  <div>Negative Citizenship</div>
                   {this.handleThemeScore('animal', 20)}
                   <div><Link to={`/animal-negative-citizenship/${id}`}><button>Start</button></Link></div>
                 </span>

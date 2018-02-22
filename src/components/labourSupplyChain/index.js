@@ -11,7 +11,7 @@ class LabourSupplyChain extends Component {
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><Link to={`/labour-policies-worker-empowerment/${this.props.id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Supply Chain</h3></div>
+            <div><h3>Labour / Supply Chain</h3></div>
             <div><Link to={`/labour-low-risk-production/${this.props.id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>

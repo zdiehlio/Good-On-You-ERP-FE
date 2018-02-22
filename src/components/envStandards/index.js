@@ -10,7 +10,7 @@ class EnvStandardsCompliance extends Component {
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><Link to={`/suppDataAlias/${this.props.id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Standards Compliance</h3></div>
+            <div><h3>Environment / Standards Compliance</h3></div>
             <div><Link to={`/env-resource/${this.props.id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>

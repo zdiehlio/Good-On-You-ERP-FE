@@ -11,7 +11,7 @@ class LabourSuppliers extends Component {
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><Link to={`/labour-living-wage/${this.props.id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Knowing Suppliers</h3></div>
+            <div><h3>Labour / Knowing Suppliers</h3></div>
             <div><Link to={`/labour-supplier-relationships-auditing/${this.props.id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>

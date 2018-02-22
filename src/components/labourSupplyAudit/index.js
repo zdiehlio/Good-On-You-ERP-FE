@@ -11,7 +11,7 @@ class LabourSupplierAudit extends Component {
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><Link to={`/labour-knowing-suppliers/${this.props.id}`}><button className='previous'>Previous</button></Link></div>
-            <div><h3>Suppliers Relationships & Auditing</h3></div>
+            <div><h3>Labour / Suppliers Relationships & Auditing</h3></div>
             <div><Link to={`/labour-positive-citizenship/${this.props.id}`}><button className='next'>Next</button></Link></div>
           </span>
         </div>
