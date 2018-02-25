@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Link, Route, Router} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
 import { fetchGeneral, updateGeneral, createBrandSize } from '../../actions/general'
@@ -25,6 +25,7 @@ class BrandGeneral extends Component {
       originalSizeValues: [],
       deleteSize: [],
       currentValues: [],
+      noValues: [],
       parent_company: '',
       sizeOptions: ['alexa', 'insta-fb', 'linked-in', 'goy-large', 'goy-small', 'subsidiary', 'listed', 'none', 'parent'],
       input: null,
@@ -49,6 +50,19 @@ class BrandGeneral extends Component {
   componentWillMount() {
     const { id } = this.props.match.params
     this.props.fetchGeneral(id, 'general')
+    if(this.props.location.hash === '#size') {
+      this.setState({isEditing: '4'})
+    }
+  }
+
+  componentDidUpdate() {
+    let hash = this.props.location.hash.replace('#', '')
+    if (hash) {
+      let node = document.getElementById(hash)
+      if (node) {
+        node.scrollIntoView()
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -261,11 +275,11 @@ class BrandGeneral extends Component {
   }
 
   render() {
-    console.log('props', this.props.general)
+    console.log('props', this.props)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
     const state = this.state
-    const props = this.props.general
+    const props = this.props
     const { id }  = this.props.match.params
     return(
       <div className='form-container'>

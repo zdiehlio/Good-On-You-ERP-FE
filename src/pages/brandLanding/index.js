@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { HashLink as Link } from 'react-router-hash-link'
+import { Icon, Loader, Segment, Portal } from 'semantic-ui-react'
 import { Field, reduxForm } from 'redux-form'
 import { fetchBrandInfo } from '../../actions'
 import { fetchRatingScore } from '../../actions/rating'
@@ -18,8 +20,6 @@ import { fetchType} from '../../actions/type'
 import { fetchRetailers} from '../../actions/retailer'
 import { fetchSku} from '../../actions/sku'
 
-
-import { Icon, Loader } from 'semantic-ui-react'
 import _ from 'lodash'
 
 import './brandLanding.css'
@@ -219,25 +219,36 @@ class BrandLanding extends Component {
   }
 
   handleHeadline(head) {
-    return _.map(this.props.score.headlines, check => {
-      if(head === check.name) {
-        return(
-          <div key={check.name} className='rating-summary'>
-            <div>{this.capitalize(check.name)}</div>
-            {check.score ? (
-              <div>{check.score}{check.max_score ? `/${check.max_score}` : ''}</div>
-            ) : (
-              <div><Icon name='remove' color='red' /></div>
-            )}
-            <div>{this.state.show !== head ?
-              (<button name={head} onClick={this.handleShow}>Show</button>) :
-              (<button name={head} onClick={this.handleHide}>Hide</button>)}
+    const  id   = this.props.match.params.id
+    // if(!this.props.general.size) {
+    //   return(
+    //     <div>
+    //       <p>A brand size should be selected first</p>
+    //       <p>Please answer the brand size question in Brand Overview/General to continue the rating section</p>
+    //       <Link to={`/brandGeneral/${id}`}><button>Brand General</button></Link>
+    //     </div>
+    //   )
+    // } else {
+      return _.map(this.props.score.headlines, check => {
+        if(head === check.name) {
+          return(
+            <div key={check.name} className='rating-summary'>
+              <div>{this.capitalize(check.name)}</div>
+              {check.score ? (
+                <div>{check.score}{check.max_score ? `/${check.max_score}` : ''}</div>
+              ) : (
+                <div><Icon name='remove' color='red' /></div>
+              )}
+              <div>{this.state.show !== head ?
+                (<button name={head} onClick={this.handleShow}>Show</button>) :
+                (<button name={head} onClick={this.handleHide}>Hide</button>)}
+              </div>
+              <div>{check.label}</div>
             </div>
-            <div>{check.label}</div>
-          </div>
-        )
-      }
-    })
+          )
+        }
+      })
+    // }
   }
 
   handleThemeScore(head, id) {
@@ -263,7 +274,7 @@ class BrandLanding extends Component {
     const props = this.props
     const state = this.state
     console.log('state', state)
-    console.log('props', props.sku)
+    console.log('props', props.general)
     return(
       <div className='summary-container'>
         <div className='landing-header'>
@@ -343,7 +354,12 @@ class BrandLanding extends Component {
 
         {state.loadingRating === true ? <Loader active inline='centered' /> :
           <div className='summary-view'>
-            {this.handleHeadline('environment')}
+            {props.general.size ? this.handleHeadline('environment') :
+              <span>
+                <p>A brand size should be selected first</p>
+                <p>Please answer the brand size question in Brand Overview/General to continue the rating section</p>
+                <Link to={`/brandGeneral/${id}#size`}><button>Brand General</button></Link>
+              </span>}
             {this.state.show === 'environment' ? (
               <span className='show-summary'>
                 <p className='small-divider'></p>
@@ -420,7 +436,7 @@ class BrandLanding extends Component {
 
         {state.loadingRating === true ? <Loader active inline='centered' /> :
           <div className='summary-view'>
-            {this.handleHeadline('labour')}
+            {props.general.size ? this.handleHeadline('labour') : ''}
             {this.state.show === 'labour' ? (
               <span className='show-summary'>
                 <p className='small-divider'></p>
@@ -523,11 +539,11 @@ class BrandLanding extends Component {
               </span> ) :
               (<span className='hide-summary'></span>)}
           </div>}
-        <p className='small-divider'></p>
+        {props.general.size ? <p className='small-divider'></p> : ''}
 
         {state.loadingRating === true ? <Loader active inline='centered' /> :
           <div className='summary-view'>
-            {this.handleHeadline('animal')}
+            {props.general.size ? this.handleHeadline('animal') : ''}
             {this.state.show === 'animal' ? (
               <span className='show-summary'>
                 <p className='small-divider'></p>
@@ -559,7 +575,7 @@ class BrandLanding extends Component {
               </span> ) :
               (<span className='hide-summary'></span>)}
           </div>}
-        <p className='small-divider'></p>
+        {props.general.size ? <p className='small-divider'></p> : ''}
 
         <div className='summary-heading'><h1>Qualitative Ratings</h1></div>
         <p className='divider'></p>
