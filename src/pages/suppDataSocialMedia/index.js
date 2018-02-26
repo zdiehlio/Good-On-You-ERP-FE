@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { Form, Input, Progress } from 'semantic-ui-react'
+import { Form, Input, Progress, Portal, Segment } from 'semantic-ui-react'
 import { updateSocial, fetchSocial } from '../../actions/socialMedia'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -17,6 +18,7 @@ class SuppDataSocialMedia extends Component {
       instagram_url: '',
       facebook_url: '',
       progressBar: 0,
+      renderChangeError: false,
     }
 
 
@@ -24,6 +26,8 @@ class SuppDataSocialMedia extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
+    this.handleNav = this.handleNav.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -72,6 +76,8 @@ class SuppDataSocialMedia extends Component {
       instagram_followers: this.state.originalInstagram_followers,
       facebook_followersError: false,
       instagram_followersError: false,
+      changeError: false,
+      renderChangeError: false,
     })
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -92,7 +98,7 @@ class SuppDataSocialMedia extends Component {
       if(event.target.value === 'next') {
         this.props.history.push(`/suppDataImage/${id}`)
       } else {
-        this.setState({isEditing: null})
+        this.setState({changeError: false, renderChangeError: false, isEditing: null})
       }
     }
   }
@@ -122,6 +128,26 @@ class SuppDataSocialMedia extends Component {
         this.setState({[`${name}Error`]: true})
       }
     }
+    this.setState({currentEditing: '#social', changeError: true})
+  }
+
+  handlePortal() {
+    this.setState({portal: false})
+  }
+
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/brandSummary/${id}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/suppDataImage/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
   }
 
   //render contains conditional statements based on state of isEditing as described in functions above.
@@ -135,20 +161,28 @@ class SuppDataSocialMedia extends Component {
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/brandSummary/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Social Media</h3></div>
-            <div><Link to={`/suppDataImage/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
         <Progress total={2} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
+            </Segment>
+          </Portal>
+        ) : ''}
         <Form>
           {isEditing === 'social' ? (
-            <div className='editing'>
+            <div className='editing' id='social'>
               <h5>Brand Social Media</h5>
               <p>What is the Facebook URL? *</p>
               <Form.Field className={state.renderError == true && state.facebook_urlError === true ? 'ui error input' : 'ui input'}>
@@ -190,6 +224,7 @@ class SuppDataSocialMedia extends Component {
                 {state.renderError == true && state.instagram_followersError === true ? <p className='error-message'>Please enter the # of Instagram followers</p> : ''}
               </div>
               {state.renderError == true && state.instagram_urlError === true ? <p className='error-message'>Please enter a valid instagram url</p> : ''}
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='social'>Save</button></div>

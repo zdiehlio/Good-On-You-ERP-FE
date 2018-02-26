@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { Form, Radio, Progress } from 'semantic-ui-react'
+import { Form, Radio, Progress, Portal, Segment } from 'semantic-ui-react'
 import { fetchStyles, createStyles } from '../../actions/style'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -14,6 +14,7 @@ class SuppDataPrice extends Component {
 
     this.state = {
       isEditing: null,
+      changeError: false,
       price: null,
       progressBar: 0,
     }
@@ -23,6 +24,8 @@ class SuppDataPrice extends Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleNav = this.handleNav.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -49,7 +52,7 @@ class SuppDataPrice extends Component {
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
-    this.setState({isEditing: null, price: this.state.originalPrice})
+    this.setState({changeError: false, renderChangeError: false, isEditing: null, price: this.state.originalPrice})
   }
 
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -58,7 +61,7 @@ class SuppDataPrice extends Component {
     const { id }  = this.props.match.params
     if(this.state.price) {
       this.props.createStyles({brand: id, style: 'price', score: this.state.price})
-      this.setState({originalPrice: this.state.price})
+      this.setState({changeError: false, renderChangeError: false, originalPrice: this.state.price})
       event.target.value === 'next' ? this.props.history.push(`/suppDataRetailers/${id}`) : this.setState({isEditing: null})
       this.state.progressBar++
     } else {
@@ -79,7 +82,26 @@ class SuppDataPrice extends Component {
   }
 
   handleChange(event, { value, name }){
-    this.setState({[name]: parseInt(value), error: false})
+    this.setState({changeError: true, currentEditing: '#price', [name]: parseInt(value), error: false})
+  }
+
+  handlePortal() {
+    this.setState({portal: false})
+  }
+
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/suppDataTypes/${id}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/suppDataRetailers/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
   }
 
   render() {
@@ -92,20 +114,28 @@ class SuppDataPrice extends Component {
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/suppDataTypes/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Price</h3></div>
-            <div><Link to={`/suppDataRetailers/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
         <Progress total={1} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
+            </Segment>
+          </Portal>
+        ) : ''}
         <form className='brand-form'>
           {isEditing === 'price' ? (
-            <div className='editing'>
+            <div className='editing' id='price'>
               <h4>What is the price guideline? *</h4>
               <Form.Field inline className={this.state.error === true ? 'ui error radio' : 'ui radio'}>
                 <Radio
@@ -144,6 +174,7 @@ class SuppDataPrice extends Component {
                 />
               </Form.Field>
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='price'>Save</button></div>

@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { Form, TextArea, Progress} from 'semantic-ui-react'
+import { Form, TextArea, Progress, Portal, Segment} from 'semantic-ui-react'
 import { fetchSummary, createSummary, updateSummary } from '../../actions/summary'
 import { fetchRawRating } from '../../actions/rating'
 import { QualiHeading } from '../../components'
@@ -17,6 +18,7 @@ class BrandSummary extends Component {
       isEditing: null,
       currentAnswer: null,
       renderSummary: null,
+      renderChangeError: false,
       save: false,
       textlength: 0,
       progressBar: 0,
@@ -27,6 +29,8 @@ class BrandSummary extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
+    this.handleNav = this.handleNav.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -53,7 +57,7 @@ class BrandSummary extends Component {
   }
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
-    this.setState({isEditing: null, currentAnswer: this.state.originalAnswer})
+    this.setState({changeError: false, renderChangeError: false, isEditing: null, currentAnswer: this.state.originalAnswer})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
@@ -71,12 +75,12 @@ class BrandSummary extends Component {
     if(event.target.value === 'next') {
       this.props.history.push(`/suppDataSocialMedia/${id}`)
     } else {
-      this.setState({isEditing: null})
+      this.setState({isEditing: null, changeError: false, renderChangeError: false})
     }
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event) {
-    this.setState({textlength: event.target.value.length, currentAnswer: event.target.value})
+    this.setState({currentEditing: '#summary', changeError: true, textlength: event.target.value.length, currentAnswer: event.target.value})
   }
 
   renderRawRatings() {
@@ -94,6 +98,25 @@ class BrandSummary extends Component {
     }
   }
 
+  handlePortal() {
+    this.setState({portal: false})
+  }
+
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/brandSentences/${id}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/suppDataSocialMedia/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
+  }
+
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.summary)
@@ -106,20 +129,28 @@ class BrandSummary extends Component {
     return(
       <div className='form-container'>
         <QualiHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/brandSentences/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Brand Summary</h3></div>
-            <div><Link to={`/suppDataSocialMedia/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
         <Progress total={1} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
+            </Segment>
+          </Portal>
+        ) : ''}
         <Form>
           {isEditing === '1' ? (
-            <div className='editing'>
+            <div className='editing' id='summary'>
               <h5>What is the Summary for the Brand? *</h5>
               <TextArea
                 autoHeight
@@ -129,6 +160,7 @@ class BrandSummary extends Component {
                 value={state.currentAnswer}
                 name='summary'/>
               <p>{this.state.textlength}/3000</p>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave}>Save</button></div>

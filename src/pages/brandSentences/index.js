@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
 import { fetchSentence, createSentence, updateSentence } from '../../actions/sentence'
-import { Form, TextArea, Radio, Progress} from 'semantic-ui-react'
+import { Form, TextArea, Radio, Progress, Portal, Segment} from 'semantic-ui-react'
 import { QualiHeading } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
@@ -16,6 +17,7 @@ class BrandSentences extends Component {
 
     this.state = {
       isEditing: null,
+      renderChangeError: false,
       currentSelect: '',
       currentId: '',
       finalAnswer: '',
@@ -30,6 +32,8 @@ class BrandSentences extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
+    this.handleNav = this.handleNav.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -73,7 +77,15 @@ class BrandSentences extends Component {
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
-    this.setState({finalSource: this.state.originalSource, finalAnswer: this.state.originalAnswer, currentId: this.state.originalId, currentSelect: this.state.originalSelect, isEditing: null})
+    this.setState({
+      changeError: false,
+      renderChangeError: false,
+      finalSource: this.state.originalSource,
+      finalAnswer: this.state.originalAnswer,
+      currentId: this.state.originalId,
+      currentSelect: this.state.originalSelect,
+      isEditing: null,
+    })
   }
 
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
@@ -91,7 +103,7 @@ class BrandSentences extends Component {
     if(event.target.value === 'next') {
       this.props.history.push(`/brandSummary/${id}`)
     } else {
-      this.setState({isEditing: null, save: true})
+      this.setState({changeError: false, renderChangeError: false, isEditing: null, save: true})
     }
   }
 
@@ -106,6 +118,7 @@ class BrandSentences extends Component {
     } else {
       this.setState({textlength: event.target.value.length, finalAnswer: event.target.value})
     }
+    this.setState({currentEditing: '#sentence', changeError: true})
   }
 
   renderField() {
@@ -134,6 +147,25 @@ class BrandSentences extends Component {
     )
   }
 
+  handlePortal() {
+    this.setState({portal: false})
+  }
+
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/brandCauses/${id}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/brandSummary/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
+  }
+
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.sentence)
@@ -145,20 +177,28 @@ class BrandSentences extends Component {
     return(
       <div className='form-container'>
         <QualiHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/brandCauses/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Brand Sentences</h3></div>
-            <div><Link to={`/brandSummary/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
         <Progress total={1} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
+            </Segment>
+          </Portal>
+        ) : ''}
         <Form>
           {isEditing === '1' ? (
-            <div className='editing'>
+            <div className='editing' id='sentence'>
               <h5>What is the one sentence that describes the brand best?</h5>
               {state['default-1'] || state['default-2'] ? <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p> : <p>No default sentences found, Please create one</p>}
               {state['default-1'] || state['default-2'] ? this.renderField() : ''}
@@ -171,6 +211,7 @@ class BrandSentences extends Component {
                 value={state.finalAnswer}
                 name='custom'/>
               <p>{this.state.textlength}/255</p>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave}>Save</button></div>

@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
-import { Form, Checkbox, Progress } from 'semantic-ui-react'
+import { HashLink } from 'react-router-hash-link'
+import { Form, Checkbox, Progress, Portal, Segment } from 'semantic-ui-react'
 import { fetchType, createType, deleteType } from '../../actions/type'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -18,6 +19,7 @@ class SuppDataTypes extends Component {
       validateTypes: [],
       typeOptions: ['activewear', 'casualwear', 'eveningwear', 'smartcasual', 'workwear'],
       save: false,
+      renderChangeError: false,
       progressBar: 0,
     }
 
@@ -25,6 +27,8 @@ class SuppDataTypes extends Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleCheckbox = this.handleCheckbox.bind(this)
+    this.handleNav = this.handleNav.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -58,7 +62,7 @@ class SuppDataTypes extends Component {
     _.map(this.state.typeValues, val => {
       this.setState({[val.product]: null})
     })
-    this.setState({error: false, isEditing: null, typeValues: []})
+    this.setState({changeError: false, renderChangeError: false, error: false, isEditing: null, typeValues: []})
     this.props.fetchType(id)
   }
 
@@ -74,12 +78,12 @@ class SuppDataTypes extends Component {
           this.props.deleteType(id, type)
         })
         this.props.createType(this.state.typeValues)
-        event.target.value === 'next' ? this.props.history.push(`/suppDataPrice/${id}`) : this.setState({isEditing: null})
+        event.target.value === 'next' ? this.props.history.push(`/suppDataPrice/${id}`) : this.setState({changeError: false, renderChangeError: false, isEditing: null})
         this.state.progressBar++
       }
     } else {
       if(this.state.validateTypes.length > 0) {
-        event.target.value === 'next' ? this.props.history.push(`/suppDataPrice/${id}`) : this.setState({isEditing: null})
+        event.target.value === 'next' ? this.props.history.push(`/suppDataPrice/${id}`) : this.setState({changeError: false, renderChangeError: false, isEditing: null})
       } else {
         this.setState({error: true})
       }
@@ -104,6 +108,7 @@ class SuppDataTypes extends Component {
         error: false,
       })
     }
+    this.setState({changeError: true, currentEditing: '#type'})
   }
 
   renderSelected() {
@@ -117,6 +122,25 @@ class SuppDataTypes extends Component {
     })
   }
 
+  handlePortal() {
+    this.setState({portal: false})
+  }
+
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/suppDataStyles/${id}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/suppDataPrice/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
+  }
+
   render() {
     console.log('props', this.props.types)
     console.log('state', this.state)
@@ -127,20 +151,28 @@ class SuppDataTypes extends Component {
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/suppDataStyles/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Product Types</h3></div>
-            <div><Link to={`/suppDataPrice/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
         <Progress total={1} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
+            </Segment>
+          </Portal>
+        ) : ''}
         <form className='brand-form'>
           {isEditing === '1' ? (
-            <div className='editing'>
+            <div className='editing' id='type'>
               <h5>What are the product types?  Select one or more *</h5>
               <Form.Field inline className={state.error === true ? 'ui error checkbox' : 'ui checkbox'}>
                 <Checkbox
@@ -183,6 +215,7 @@ class SuppDataTypes extends Component {
                 />
               </Form.Field>
               <p className='error-message'>{state.error === true ? 'Please select at least one option' : ''}</p>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1'>Save</button></div>
