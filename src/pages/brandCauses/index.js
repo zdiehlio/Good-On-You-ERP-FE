@@ -28,6 +28,7 @@ class BrandCauses extends Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
+    this.handleNav = this.handleNav.bind(this)
   }
   componentWillMount() {
     const { id }  = this.props.match.params
@@ -79,7 +80,6 @@ class BrandCauses extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(!this.state.currentAnswer) {
-      console.log('catch')
       this.setState({error: true})
     } else {
       this.props.updateCause(id, event.target.name, {answer: this.state.currentAnswer})
@@ -89,7 +89,6 @@ class BrandCauses extends Component {
         this.state.progressBar++
       }
       if(event.target.value.slice(0, 4) === 'next') {
-        console.log('next')
         if(event.target.value === 'nextB-corp') {
           this.setState({isEditing: '6'})
         } else if(event.target.value === 'nextSocial') {
@@ -108,7 +107,6 @@ class BrandCauses extends Component {
           this.props.history.push(`/brandSentences/${id}`)
         }
       } else {
-        console.log('save')
         this.setState({isEditing: null})
       }
     }
@@ -126,6 +124,7 @@ class BrandCauses extends Component {
       error: false,
       changeError: true,
       errorMessage: name,
+      currentEditing: `#${name}`,
     })
   }
 
@@ -150,6 +149,21 @@ class BrandCauses extends Component {
     this.setState({portal: false})
   }
 
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/animal-negative-citizenship/${id}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/brandSentences/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
+  }
+
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.causes)
@@ -162,12 +176,12 @@ class BrandCauses extends Component {
     return(
       <div className='form-container'>
         <QualiHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/animal-negative-citizenship/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Brand Causes</h3></div>
-            <div><Link to={`/brandSentences/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>
@@ -177,13 +191,13 @@ class BrandCauses extends Component {
           <Portal open={state.portal} className='portal'>
             <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
               <p>Please Save or Cancel your selected answers before proceeding</p>
-              <button onClick={this.handlePortal}>Ok</button>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
             </Segment>
           </Portal>
         ) : ''}
         <Form>
           {isEditing === '1' ? (
-            <div className='editing'>
+            <div className='editing' id='made-in'>
               <h4>Which of the following countries or union are 100% of the brands final stage of productions suppliers located in? *</h4>
               {this.renderQuestion('made-in')}
               <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>

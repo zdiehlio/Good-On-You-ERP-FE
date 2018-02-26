@@ -42,6 +42,7 @@ class SuppDataStyles extends Component {
     this.handleRadio = this.handleRadio.bind(this)
     this.handleRadio = this.handleRadio.bind(this)
     this.handleSaveRadio = this.handleSaveRadio.bind(this)
+    this.handleNav = this.handleNav.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -65,9 +66,11 @@ class SuppDataStyles extends Component {
             this.setState({[compare.style_qa.question]: compare.style_qa.question})
           }
         } else if(compare.style_qa.question === 'plus') {
-          this.setState({plus: compare.style_qa.tag})
+          this.setState({originalplus: compare.style_qa.tag, plus: compare.style_qa.tag})
+          this.state.progressBar++
         } else if(compare.style_qa.question === 'maternity') {
-          this.setState({maternity: compare.style_qa.tag})
+          this.setState({originalmaternity: compare.style_qa.tag, maternity: compare.style_qa.tag})
+          this.state.progressBar++
         } else if(compare.style_qa.question !== 'kids') {
           if(!this.state[compare.style_qa.question]) {
             this.state.progressBar++
@@ -110,6 +113,7 @@ class SuppDataStyles extends Component {
     this.setState({tempAnswers: [], styles: [], isEditing: null, changeError: false, renderChangeError: false})
     this.props.fetchStyles(id)
   }
+
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
@@ -120,9 +124,6 @@ class SuppDataStyles extends Component {
         this.state.progressBar++
       }
     })
-    // _.map(this.state.tempAnswers, temp => {
-    //   this.setState({[temp]: temp})
-    // })
     if(event.target.name === 'style-scores') {
       _.map(this.state.progress, style => {
         this.props.createStyles({brand: id, style: style, score: this.state[style]})
@@ -168,6 +169,8 @@ class SuppDataStyles extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     this.props.createStyles({brand: id, style: this.state[event.target.name]})
+    this.setState({[`original${event.target.name}`]: this.state[event.target.name]})
+    if(!this.state[`original${event.target.name}`]) { this.state.progressBar++ }
     if(event.target.value === 'next') {
       if(event.target.name === 'plus') {
         this.setState({isEditing: 'maternity'})
@@ -175,7 +178,7 @@ class SuppDataStyles extends Component {
         this.setState({isEditing: 'young-women'})
       }
     } else {
-      this.setState({isEditing: null})
+      this.setState({isEditing: null, changeError: false, renderChangeError: false})
     }
   }
 
@@ -195,7 +198,7 @@ class SuppDataStyles extends Component {
     } else {
       this.setState({progress: [...this.state.progress, event.target.name]})
     }
-    this.setState({changeError: true})
+    this.setState({changeError: true, currentEditing: '#style-scores'})
   }
 
   renderAnswers(el) {
@@ -234,27 +237,27 @@ class SuppDataStyles extends Component {
     )
   }
 
-  handleCheckbox(event, { name }){
+  handleCheckbox(event, { value, name }){
     const { id }  = this.props.match.params
-    if(this.state[name] === name) {
+    if(this.state[value] === value) {
       this.setState({
-        // [`temp${name}`]: name,
-        [name]: null,
-        // tempAnswers: this.state.tempAnswers.filter(check => {return check !== name}),
-        deleteValues: [...this.state.styles, {brand: id, style: name}],
-        validateStyles: this.state.styles.filter(check => {return check.style !== name}),
-        styles: this.state.styles.filter(check => {return check.style !== name}),
+        // [`temp${value}`]: value,
+        [value]: null,
+        // tempAnswers: this.state.tempAnswers.filter(check => {return check !== value}),
+        deleteValues: [...this.state.styles, {brand: id, style: value}],
+        validateStyles: this.state.styles.filter(check => {return check.style !== value}),
+        styles: this.state.styles.filter(check => {return check.style !== value}),
       })
     } else {
       this.setState({
-        // tempAnswers: [...this.state.tempAnswers, name],
-        [name]: name,
-        deleteValues: this.state.styles.filter(check => {return check.style !== name}),
-        validateStyles: [...this.state.styles, {brand: id, style: name}],
-        styles: [...this.state.styles, {brand: id, style: name}],
+        // tempAnswers: [...this.state.tempAnswers, value],
+        [value]: value,
+        deleteValues: this.state.styles.filter(check => {return check.style !== value}),
+        validateStyles: [...this.state.styles, {brand: id, style: value}],
+        styles: [...this.state.styles, {brand: id, style: value}],
       })
     }
-    this.setState({changeError: true})
+    this.setState({changeError: true, currentEditing: `#${name}`})
   }
 
   renderStyles(el, nextEl) {
@@ -269,7 +272,8 @@ class SuppDataStyles extends Component {
                   label={style.answer}
                   onChange={this.handleCheckbox}
                   checked={state[style.tag] ? true : false}
-                  name={style.tag}
+                  value={style.tag}
+                  name={style.question}
                 />
               </Form.Field>
             )
@@ -323,8 +327,23 @@ class SuppDataStyles extends Component {
     this.setState({portal: false})
   }
 
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/suppDataSku/${id}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/suppDataTypes/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
+  }
+
   handleRadio(event, { value, name }) {
-    this.setState({[name]: value})
+    this.setState({changeError: true, [name]: value, currentEditing: `#${name}`})
   }
 
   //render contains conditional statements based on state of isEditing as described in functions above.
@@ -339,28 +358,28 @@ class SuppDataStyles extends Component {
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/suppDataSku/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Brand Styles</h3></div>
-            <div><Link to={`/suppDataTypes/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
-        <Progress percent={Math.floor((this.state.progressBar/13) * 100)} progress />
+        <Progress percent={Math.floor((this.state.progressBar/15) * 100)} progress />
         {state.renderChangeError === true ? (
           <Portal open={state.portal} className='portal'>
             <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
               <p>Please Save or Cancel your selected answers before proceeding</p>
-              <button onClick={this.handlePortal}>Ok</button>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
             </Segment>
           </Portal>
         ) : ''}
         <form className='brand-form'>
           {isEditing === 'men' ? (
-            <div className='editing'>
+            <div className='editing' id='men'>
               <h4>Does the Brand sell clothes for men?</h4>
               {this.renderStyles('men', '#older-women')}
             </div>) : (
@@ -404,6 +423,7 @@ class SuppDataStyles extends Component {
                   value='no-plus'
                 />
               </Form.Field>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='plus' onClick={this.handleSaveRadio}>Save</button></div>
@@ -413,7 +433,6 @@ class SuppDataStyles extends Component {
             <div className='not-editing'>
               <h4>Does the Brand sell Plus size clothes?</h4>
               {state.plus ? <p>{state.plus === 'plus' ? 'Yes' : 'No'}</p> : ''}
-              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div></div>
                 <div><button name='plus' onClick={this.handleEdit}>Edit</button></div>
@@ -443,6 +462,7 @@ class SuppDataStyles extends Component {
                   value='no-maternity'
                 />
               </Form.Field>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button name='maternity' onClick={this.handleSaveRadio}>Save</button></div>

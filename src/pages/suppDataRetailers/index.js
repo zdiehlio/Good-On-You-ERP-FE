@@ -15,6 +15,7 @@ class SuppDataRetailers extends Component {
     this.state = {
       isEditing: null,
       errorname: false,
+      errorwebsite: false,
       website: '',
       territories: [],
       originalTerritories: [],
@@ -35,6 +36,7 @@ class SuppDataRetailers extends Component {
     this.handleRemove = this.handleRemove.bind(this)
     this.handleOnlineSave = this.handleOnlineSave.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
+    this.handleNav = this.handleNav.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -109,22 +111,21 @@ class SuppDataRetailers extends Component {
       renderChangeError: false,
     })
   }
+
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
     if(this.state.name && this.state.errorwebsite === false){
       if(!this.state.id) {
-        new Promise((resolve, reject) => {
-          resolve(this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website.length > 0 ? this.state.website : null, territories: this.state.territories}))
-        }).then(this.props.fetchRetailers(id))
+        this.props.createRetailer({brand: id, name: this.state.name, website:this.state.website.length > 0 ? this.state.website : null, territories: this.state.territories})
         this.state.progressBar++
         event.target.value === 'next' ? this.setState({isEditing: 'online'}) : this.setState({isEditing: null})
-        this.setState({renderChangeError: false, changeError: false, save: true, errorname: false})
+        this.setState({isEditing: null, renderChangeError: false, changeError: false, save: true, errorname: false})
       } else {
         this.props.updateRetailer(this.state.id, {name: this.state.name, website: this.state.website.length > 0 ? this.state.website : null, territories: this.state.territories})
         event.target.value === 'next' ? this.setState({isEditing: 'online'}) : this.setState({isEditing: null})
-        this.setState({renderChangeError: false, changeError: false, errorname: false})
+        this.setState({isEditing: null, renderChangeError: false, changeError: false, errorname: false})
       }
     } else {
       this.setState({errorname: this.state.name ? false : true, errorwebsite: this.state.name ? false : true})
@@ -132,8 +133,10 @@ class SuppDataRetailers extends Component {
   }
 
   handleOnlineSave(event) {
+    event.preventDefault()
     const { id }  = this.props.match.params
     this.props.updateRetailer(this.state.id, {online_only: this.state.online_only})
+    this.setState({renderChangeError: false, changeError: false, isEditing: null})
     this.state.progressBar++
   }
 
@@ -143,11 +146,13 @@ class SuppDataRetailers extends Component {
     } else {
       this.setState({[`error${name}`]: false})
     }
-    if(name === 'website' && value.length > 0) {
-      if((/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value) && value !== '') || (/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(value) && value !== '')){
+    if(name === 'website') {
+      let url = /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
+      // if((/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value) && value !== '') || (/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(value) && value !== '')){
+      if(url.test(value) && value !== '') {
         this.setState({errorwebsite: false})
       } else {
-        this.setState({[`error${name}`]: true})
+        this.setState({errorwebsite: true})
       }
     } else {
       this.setState({[`error${name}`]: false})
@@ -156,7 +161,7 @@ class SuppDataRetailers extends Component {
 
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event, { value, name }) {
-    this.setState({changeError: true, [name]: value})
+    this.setState({currentEditing: name === 'online_only' ? '#online' : '#retailer', changeError: true, [name]: value})
     this.handleError(value, name)
   }
 
@@ -164,7 +169,7 @@ class SuppDataRetailers extends Component {
     if(this.state[value]) {
       this.handleDropDownError()
     } else {
-      this.setState({changeError: true, errorTerritory: false, [value]: value, territories: [...this.state.territories, {name: value}]})
+      this.setState({currentEditing: '#retailer', changeError: true, errorTerritory: false, [value]: value, territories: [...this.state.territories, {name: value}]})
     }
   }
 
@@ -214,6 +219,19 @@ class SuppDataRetailers extends Component {
     this.setState({portal: false})
   }
 
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/suppDataPrice/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
+  }
+
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.retailer)
@@ -237,10 +255,10 @@ class SuppDataRetailers extends Component {
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/suppDataPrice/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Retailer</h3></div>
             <div><button disabled className='next disabled'>Next</button></div>
           </span>
@@ -252,13 +270,13 @@ class SuppDataRetailers extends Component {
           <Portal open={state.portal} className='portal'>
             <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
               <p>Please Save or Cancel your selected answers before proceeding</p>
-              <button onClick={this.handlePortal}>Ok</button>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
             </Segment>
           </Portal>
         ) : ''}
         <form className='brand-form'>
           {isEditing === 'retailer' ? (
-            <div className='editing'>
+            <div className='editing' id='retailer'>
               <h5>What is the main retailer? *</h5>
               <Form.Field inline className={state.errorname === true ? 'ui error input' : 'ui input'}>
                 <Input

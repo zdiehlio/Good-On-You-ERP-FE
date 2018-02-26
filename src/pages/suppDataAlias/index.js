@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, Input, Progress } from 'semantic-ui-react'
+import { Form, Input, Progress, Portal, Segment } from 'semantic-ui-react'
+import { HashLink } from 'react-router-hash-link'
 import { fetchAlias, createAlias, deleteAlias  } from '../../actions/alias'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -17,6 +18,7 @@ class SuppDataAlias extends Component {
       isEditing: null,
       currentAnswer: '',
       renderAlias: null,
+      renderChangeError: false,
       save: false,
       aliasArr: [],
       progressBar: 0,
@@ -29,6 +31,8 @@ class SuppDataAlias extends Component {
     this.handleSave = this.handleSave.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.handleAdd = this.handleAdd.bind(this)
+    this.handleNav = this.handleNav.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -40,31 +44,16 @@ class SuppDataAlias extends Component {
       _.map(nextProps.alias, val => {
         this.state.aliasArr.push({alias: val.alias})
       })
-      // this.setState({aliasArr: _.map(nextProps.alias, ali => {return {id: ali.id, alias: ali.alias}})})
       if(nextProps.alias.length > 0) {
         this.state.progressBar++
       }
     }
   }
 
-  // componentWillUpdate(nextProps, nextState) {
-  //   const { id } = this.props.match.params
-  //   if (nextState.save == true && this.state.save == false) {
-  //     this.props.fetchAlias(id)
-  //   }
-  // }
-  //
-  // componentDidUpdate() {
-  //   if(this.state.save === true) {
-  //     this.setState({save: false})
-  //   }
-  // }
-
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    //if a summary already exists, will set state of same target name to the current answer value and also toggle editing
     _.map(this.props.alias, name=> {
       this.setState({[name.alias]: name.alias})
     })
@@ -73,7 +62,7 @@ class SuppDataAlias extends Component {
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
-    this.setState({isEditing: null, renderCurrent: null, currentAnswer: ''})
+    this.setState({changeError: false, renderChangeError: false, isEditing: null, renderCurrent: null, currentAnswer: ''})
   }
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
@@ -88,10 +77,11 @@ class SuppDataAlias extends Component {
     } else {
       this.setState({progressBar: 0})
     }
+    this.setState({renderCurrent: null, currentAnswer: '', changeError: false, renderChangeError: false})
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event, { value }) {
-    this.setState({currentAnswer: value})
+    this.setState({currentEditing: '#alias', changeError: true,  currentAnswer: value})
   }
 
   handleDelete(event) {
@@ -121,6 +111,25 @@ class SuppDataAlias extends Component {
     })
   }
 
+  handlePortal() {
+    this.setState({portal: false})
+  }
+
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/brandContact/${id}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/env-standards-compliance/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
+  }
+
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.alias)
@@ -132,20 +141,28 @@ class SuppDataAlias extends Component {
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/brandContact/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Alternative Names / Spelling</h3></div>
-            <div><Link to={`/env-standards-compliance/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
         <Progress total={1} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
+            </Segment>
+          </Portal>
+        ) : ''}
         <form className='brand-form'>
           {isEditing === '1' ? (
-            <div className='editing'>
+            <div className='editing' id='alias'>
               <h5>Add any alternative names the brand might have: </h5>
               <Form.Field inline>
                 <Input
@@ -157,6 +174,7 @@ class SuppDataAlias extends Component {
                 />
                 <button className='add' onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button>
               </Form.Field>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please hit Done or Cancel your current input' : ''}</p>
               <h5>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h5>
               <div className='alias-list'>{
                 _.map(this.state.aliasArr, name => {

@@ -40,6 +40,7 @@ class SuppDataCategory extends Component {
     this.handleCatSave = this.handleCatSave.bind(this)
     this.handleDominantChange = this.handleDominantChange.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
+    this.handleNav = this.handleNav.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -186,7 +187,7 @@ class SuppDataCategory extends Component {
         dominantOptions: [...this.state.dominantOptions, {name: event.target.name, id: parseInt(event.target.value)}],
       })
     }
-    this.setState({changeError: true})
+    this.setState({currentEditing: '#category', changeError: true})
   }
 
   handleDominantChange(event) {
@@ -197,11 +198,27 @@ class SuppDataCategory extends Component {
       current_dominant_name: event.target.name,
       dominant: {dominant: true},
       changeError: true,
+      currentEditing: '#dominant',
     })
   }
 
   handlePortal() {
     this.setState({portal: false})
+  }
+
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/suppDataGender/${id}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/suppDataSku/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
   }
 
   //render contains conditional statements based on state of isEditing as described in functions above.
@@ -216,12 +233,12 @@ class SuppDataCategory extends Component {
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/suppDataGender/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Brand Categories</h3></div>
-            <div><Link to={`/suppDataSku/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>
@@ -231,13 +248,13 @@ class SuppDataCategory extends Component {
           <Portal open={state.portal} className='portal'>
             <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
               <p>Please Save or Cancel your selected answers before proceeding</p>
-              <button onClick={this.handlePortal}>Ok</button>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
             </Segment>
           </Portal>
         ) : ''}
         <form className='brand-form'>
           {isEditing === '1' ? (
-            <div className='editing'>
+            <div className='editing' id='category'>
               <h5>What are the categories?</h5>
               <ul>
                 {this.renderCategories()}

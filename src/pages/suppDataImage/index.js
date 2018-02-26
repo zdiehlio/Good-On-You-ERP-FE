@@ -24,7 +24,6 @@ class SuppDataImage extends Component {
     }
 
 
-    this.handleInput = this.handleInput.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
@@ -35,6 +34,7 @@ class SuppDataImage extends Component {
     this.handleImageUpload = this.handleImageUpload.bind(this)
     this.handleLogoUpload = this.handleLogoUpload.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
+    this.handleNav = this.handleNav.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -91,7 +91,7 @@ class SuppDataImage extends Component {
     const { id }  = this.props.match.params
     event.preventDefault()
     if(this.state.image) {
-      this.setState({images: []})
+      this.setState({images: [], currentEditing: '#image', changeError: true})
       this.props.uploadImage(this.state.image, {brand: id, is_selected: true})
     }
   }
@@ -100,7 +100,7 @@ class SuppDataImage extends Component {
     const { id }  = this.props.match.params
     event.preventDefault()
     if(this.state.logo) {
-      this.setState({logos: []})
+      this.setState({logos: [], currentEditing: '#logo', changeError: true})
       this.props.uploadLogo(this.state.logo, {brand: id, is_selected: true})
     }
   }
@@ -121,17 +121,12 @@ class SuppDataImage extends Component {
     this.setState({renderChangeError: false, changeError: false})
   }
 
-  //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
-  handleInput(event) {
-    this.setState({[event.target.name]: event.target.value})
-  }
-
   handleLogo(event) {
-    this.setState({changeError: true, logo_selected: parseInt(event.target.name), logo_url: event.target.src})
+    this.setState({currentEditing: '#logo', changeError: true, logo_selected: parseInt(event.target.name), logo_url: event.target.src})
   }
 
   handleImage(event) {
-    this.setState({changeError: true, image_selected: parseInt(event.target.name), image_url: event.target.src})
+    this.setState({currentEditing: '#image', changeError: true, image_selected: parseInt(event.target.name), image_url: event.target.src})
   }
 
   renderLogo() {
@@ -182,6 +177,21 @@ class SuppDataImage extends Component {
     this.setState({portal: false})
   }
 
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/suppDataSocialMedia/${id}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/suppDataGender/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
+  }
+
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     console.log('props', this.props.image)
@@ -193,12 +203,12 @@ class SuppDataImage extends Component {
     return(
       <div className='form-container'>
         <SuppHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/suppDataSocialMedia/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Image</h3></div>
-            <div><Link to={`/suppDataGender/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>
@@ -208,13 +218,13 @@ class SuppDataImage extends Component {
           <Portal open={state.portal} className='portal'>
             <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
               <p>Please Save or Cancel your selected answers before proceeding</p>
-              <button onClick={this.handlePortal}>Ok</button>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
             </Segment>
           </Portal>
         ) : ''}
         <Form>
           {isEditing === 'image' ? (
-            <div className='editing'>
+            <div className='editing' id='image'>
               <h5>What is the Brand Cover Image? *</h5>
               {this.renderImage()}
               <Form.Field className='upload'>

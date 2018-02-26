@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, Input, Progress } from 'semantic-ui-react'
+import { Form, Input, Progress, Portal, Segment } from 'semantic-ui-react'
+import { HashLink } from 'react-router-hash-link'
 import { fetchContact, createContact, updateContact } from '../../actions/contact'
 import { OverviewHeading } from '../../components'
 import _ from 'lodash'
@@ -19,6 +20,7 @@ class BrandContact extends Component {
       error_name: true,
       errorContact: false,
       error_relationship_manager: true,
+      changeError: false,
       progressBar: 0,
     }
 
@@ -27,6 +29,8 @@ class BrandContact extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
+    this.handleNav = this.handleNav.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -64,6 +68,8 @@ class BrandContact extends Component {
     event.preventDefault()
     this.setState({
       renderError: false,
+      renderChangeError: false,
+      changeError: false,
       isEditing: null,
       name: this.state.originalName,
       email: this.state.originalEmail,
@@ -85,7 +91,7 @@ class BrandContact extends Component {
           this.props.history.push(`/suppDataAlias/${id}`)
         }
       }
-      this.setState({isEditing: null, renderError: false, error_email: false})
+      this.setState({isEditing: null, renderChangeError: false, changeError: false, enderError: false, error_email: false})
       return this.state.progressBar++
     } else {
       this.setState({renderError: true})
@@ -102,7 +108,26 @@ class BrandContact extends Component {
         this.setState({error_email: true})
       }
     }
-    this.setState({[name]: value})
+    this.setState({currentEditing: '#contact', changeError: true, [name]: value})
+  }
+
+  handlePortal() {
+    this.setState({portal: false})
+  }
+
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/brandGeneral/${id}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/suppDataAlias/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
   }
 
   //render contains conditional statements based on state of isEditing as described in functions above.
@@ -116,20 +141,28 @@ class BrandContact extends Component {
     return(
       <div className='form-container'>
         <OverviewHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
-            <div><Link to={`/brandGeneral/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Brand Contact</h3></div>
-            <div><Link to={`/suppDataAlias/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>
         <h5> Current:</h5>
         <Progress total={1} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
+            </Segment>
+          </Portal>
+        ) : ''}
         <Form>
           {isEditing === '1' ? (
-            <div className='editing'>
+            <div className='editing' id='contact'>
               <Form.Field inline>
                 <Input
                   label='Brand contact name'
@@ -158,6 +191,7 @@ class BrandContact extends Component {
                   value={state.relationship_manager}
                 />
               </Form.Field>
+              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
               <div className='button-container'>
                 <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                 <div><button onClick={this.handleSave} name='1'>Save</button></div>

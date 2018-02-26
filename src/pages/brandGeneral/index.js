@@ -46,6 +46,7 @@ class BrandGeneral extends Component {
     this.handleSizeCancel = this.handleSizeCancel.bind(this)
     this.handleNA = this.handleNA.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
+    this.handleNav = this.handleNav.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -75,8 +76,10 @@ class BrandGeneral extends Component {
           this.setState({none: 'none', noValues: {name: 'none'}})
         } else {
           _.map(nextProps.general.size_criteria, crit => {
-            this.state.sizeValues.push({name: crit.criteria})
-            this.state.originalSizeValues.push({name: crit.criteria})
+            if(crit.criteria) {
+              this.state.sizeValues.push({name: crit.criteria})
+              this.state.originalSizeValues.push({name: crit.criteria})
+            }
             this.setState({[`original${crit.criteria}`]: crit.criteria, [crit.criteria]: crit.criteria})
           })
         }
@@ -193,7 +196,7 @@ class BrandGeneral extends Component {
     this.setState({isEditing: null})
   }
 
-  handleCheckbox(event, { value }) {
+  handleCheckbox(event, { value, name }) {
     const { id }  = this.props.match.params
     if(value === 'none') {
       this.state.sizeOptions.map(val => this.setState({[val]: null}))
@@ -218,7 +221,7 @@ class BrandGeneral extends Component {
       }
       this.setState({none: null, noValues: []})
     }
-    this.setState({changeError: true, sizeError: false})
+    this.setState({currentEditing: `#${name}`, changeError: true, sizeError: false})
   }
 
   renderCriteria() {
@@ -263,7 +266,7 @@ class BrandGeneral extends Component {
         this.setState({sustainability_report: true})
       }
     }
-    this.setState({changeError: true, currentAnswer: name, [name]: value, input: value})
+    this.setState({currentEditing: name === 'parent_company' ? '#size' : `#${name}`, changeError: true, currentAnswer: name, [name]: value, input: value})
   }
 
   capitalize(string) {
@@ -274,9 +277,22 @@ class BrandGeneral extends Component {
     this.setState({portal: false})
   }
 
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'next') {
+        this.props.history.push(`/brandContact/${id}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
+  }
+
   render() {
     console.log('props', this.props)
-    console.log('state', this.state)
+    console.log('state', this.state.currentEditing)
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props
@@ -284,12 +300,12 @@ class BrandGeneral extends Component {
     return(
       <div className='form-container'>
         <OverviewHeading id={id} brand={this.props.brand}/>
-        <div className='forms-header'><Link to={`/brandLanding/${id}`}><button>Back to Summary</button></Link></div>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
             <div><button className='previous disabled' disabled>Previous</button></div>
             <div><h3>Brand General</h3></div>
-            <div><Link to={`/brandContact/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
         <p className='small-divider'></p>
@@ -299,7 +315,7 @@ class BrandGeneral extends Component {
           <Portal open={state.portal} className='portal'>
             <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
               <p>Please Save or Cancel your selected answers before proceeding</p>
-              <button onClick={this.handlePortal}>Ok</button>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
             </Segment>
           </Portal>
         ) : ''}
@@ -426,6 +442,7 @@ class BrandGeneral extends Component {
                   onChange={this.handleCheckbox}
                   checked={state.listed ? true : false}
                   value='listed'
+                  name='size'
                 />
               </Form.Field>
               <Form.Field className='parent-company'>
@@ -434,6 +451,7 @@ class BrandGeneral extends Component {
                   onChange={this.handleCheckbox}
                   checked={state.subsidiary ? true : false}
                   value='subsidiary'
+                  name='size'
                 />
               </Form.Field>
               {state.subsidiary ?
@@ -453,6 +471,7 @@ class BrandGeneral extends Component {
                   onChange={this.handleCheckbox}
                   checked={state.parent ? true : false}
                   value='parent'
+                  name='size'
                 />
               </Form.Field>
               <Form.Field>
@@ -461,6 +480,7 @@ class BrandGeneral extends Component {
                   onChange={this.handleCheckbox}
                   checked={state.alexa ? true : false}
                   value='alexa'
+                  name='size'
                 />
               </Form.Field>
               <Form.Field>
@@ -469,6 +489,7 @@ class BrandGeneral extends Component {
                   onChange={this.handleCheckbox}
                   checked={state['insta-fb'] ? true : false}
                   value='insta-fb'
+                  name='size'
                 />
               </Form.Field>
               <Form.Field>
@@ -477,6 +498,7 @@ class BrandGeneral extends Component {
                   onChange={this.handleCheckbox}
                   checked={state['linked-in'] ? true : false}
                   value='linked-in'
+                  name='size'
                 />
               </Form.Field>
               <Form.Field>
@@ -485,6 +507,7 @@ class BrandGeneral extends Component {
                   onChange={this.handleCheckbox}
                   checked={state['goy-large'] ? true : false}
                   value='goy-large'
+                  name='size'
                 />
               </Form.Field>
               <Form.Field>
@@ -493,6 +516,7 @@ class BrandGeneral extends Component {
                   onChange={this.handleCheckbox}
                   checked={state['none'] ? true : false}
                   value='none'
+                  name='size'
                 />
               </Form.Field>
 
@@ -502,6 +526,7 @@ class BrandGeneral extends Component {
                   onChange={this.handleCheckbox}
                   checked={state['goy-small'] ? true : false}
                   value='goy-small'
+                  name='size'
                 />
               </Form.Field>
 
@@ -512,7 +537,7 @@ class BrandGeneral extends Component {
                   label='Small'
                   onChange={this.handleRadio}
                   name='small'
-                  checked={(state.sizeValues.length <= 0 && state.noValues.length <= 0) || this.state['goy-small'] || this.state.none ? true : false}
+                  checked={(state.size && state.sizeValues.length <= 0 && state.noValues.length <= 0) || this.state['goy-small'] || this.state.none ? true : false}
                 />
               </Form.Field>
               <Form.Field className='brand-size'>
