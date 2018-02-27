@@ -52,14 +52,75 @@ class Rating extends Component {
     this.handleUrl = this.handleUrl.bind(this)
     this.handleComment = this.handleComment.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
+    this.handleNav = this.handleNav.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
     let theme = this.props.match.path.slice(1, -4)
-    this.setState({loading: true})
+    this.setState({loading: true, brandId: id})
     this.props.fetchAllRating(theme, id)
     this.props.fetchRating(id, theme)
     this.props.fetchRatingScore(id)
+    if(theme === 'env-standards-compliance') {
+      this.setState({title: 'Environment/Standards Compliance', prevPage: `/suppDataAlias/${id}`, nextPage: `/env-resource/${id}`})
+    }
+    if(theme === 'env-resource') {
+      this.setState({title: 'Environment/Resource', prevPage: `/env-standards-compliance/${id}`, nextPage: `/env-climate-change/${id}`})
+    }
+    if(theme === 'env-climate-change') {
+      this.setState({title: 'Environment/Climate Change', prevPage: `/env-resource/${id}`, nextPage: `/env-chemicals/${id}`})
+    }
+    if(theme === 'env-chemicals') {
+      this.setState({title: 'Environment/Chemicals', prevPage: `/env-climate-change/${id}`, nextPage: `/env-water/${id}`})
+    }
+    if(theme === 'env-water') {
+      this.setState({title: 'Environment/Water', prevPage: `/env-chemicals/${id}`, nextPage: `/env-positive-citizenship/${id}`})
+    }
+    if(theme === 'env-positive-citizenship') {
+      this.setState({title: 'Environment/Positive Citizenship', revPage: `/env-water/${id}`, nextPage: `/env-negative-citizenship/${id}`})
+    }
+    if(theme === 'env-negative-citizenship') {
+      this.setState({title: 'Environment/Negative Citizenship', prevPage: `/env-positive-citizenship/${id}`, nextPage: `/labour-ethical-fashion-report/${id}`})
+    }
+    if(theme === 'labour-ethical-fashion-report') {
+      this.setState({title: 'Labour/Ethical Fashion Report', prevPage: `/env-negative-citizenship/${id}`, nextPage: `/labour-certification/${id}`})
+    }
+    if(theme === 'labour-certification') {
+      this.setState({title: 'Labour/Certification', prevPage: `/labour-ethical-fashion-report/${id}`, nextPage: `/labour-policies-worker-empowerment/${id}`})
+    }
+    if(theme === 'labour-policies-worker-empowerment') {
+      this.setState({title: 'Labour/Policies and Worker Empowerment', prevPage: `/labour-certification/${id}`, nextPage: `/labour-supply-chain/${id}`})
+    }
+    if(theme === 'labour-supply-chain') {
+      this.setState({title: 'Labour/Supply Chain', prevPage: `/labour-policies-worker-empowerment/${id}`, nextPage: `/labour-low-risk-production/${id}`})
+    }
+    if(theme === 'labour-low-risk-production') {
+      this.setState({title: 'Labour/Low Risk Production', prevPage: `/labour-supply-chain/${id}`, nextPage: `/labour-living-wage/${id}`})
+    }
+    if(theme === 'labour-living-wage') {
+      this.setState({title: 'Labour/Living Wage', prevPage: `/labour-low-risk-production/${id}`, nextPage: `/labour-knowing-suppliers/${id}`})
+    }
+    if(theme === 'labour-knowing-suppliers') {
+      this.setState({title: 'Labour/Knowing Suppliers', prevPage: `/labour-living-wage/${id}`, nextPage: `/labour-supplier-relationships-auditing/${id}`})
+    }
+    if(theme === 'labour-supplier-relationships-auditing') {
+      this.setState({title: 'Labour/Supplier Relationships & Auditing', prevPage: `/labour-knowing-suppliers/${id}`, nextPage: `/labour-positive-citizenship/${id}`})
+    }
+    if(theme === 'labour-positive-citizenship') {
+      this.setState({title: 'Labour/Positive Citizenship', prevPage: `/labour-supplier-relationships-auditing/${id}`, nextPage: `/labour-negative-citizenship/${id}`})
+    }
+    if(theme === 'labour-negative-citizenship') {
+      this.setState({title: 'Labour/Negative Citizenship', prevPage: `/labour-positivie-citizenship/${id}`, nextPage: `/animal-animal-products/${id}`})
+    }
+    if(theme === 'animal-animal-products') {
+      this.setState({title: 'Animal/Products', prevPage: `/labour-negative-citizenship/${id}`, nextPage: `/animal-positive-citizenship/${id}`})
+    }
+    if(theme === 'animal-positive-citizenship') {
+      this.setState({title: 'Animal/Positive Citizenship', prevPage: `/animal-animal-products/${id}`, nextPage: `/animal-negative-citizenship/${id}`})
+    }
+    if(theme === 'animal-negative-citizenship') {
+      this.setState({title: 'Animal/Negative Citizenship', prevPage: `/animal-positive-citizenship/${id}`, nextPage: `/brandCauses/${id}`})
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -97,8 +158,8 @@ class Rating extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     let num = parseInt(event.target.name)
-    this.saveNext()
-    this.setState({ratingValues: this.state.ratingValues.filter(rate => {
+    // this.saveNext()
+    this.setState({currentEditing: `#${event.target.value}`, ratingValues: this.state.ratingValues.filter(rate => {
       if(rate.is_selected === true) {
         return rate.id !== this.state.ratingValues.id
       }
@@ -138,11 +199,12 @@ class Rating extends Component {
     this.setState({changeError: true})
   }
 
-  handleUrl(event) {
+  handleUrl(event, { value, name }) {
     _.map(this.state.ratingValues, val => {
-      if(val.id === parseInt(event.target.name)) {
-        Object.assign(val, {url: event.target.value})
-        this.setState({[`url${val.id}`]: event.target.value})
+      if(val.id === parseInt(name)) {
+        console.log('url', val.id, name)
+        Object.assign(val, {url: value})
+        this.setState({[`url${val.id}`]: value})
       }
     })
     this.setState({changeError: true})
@@ -150,7 +212,6 @@ class Rating extends Component {
   }
 
   handleCheckbox(event, { value }) {
-    event.persist()
     const { id }  = this.props.match.params
     if(this.state[`answer${value}`] === true) {
       new Promise((resolve, reject) => {
@@ -172,136 +233,6 @@ class Rating extends Component {
       }).then(() => this.handleSaveValidation(value))
     }
     this.setState({changeError: true})
-  }
-
-  saveNext() {
-    const id  = this.props.match.params.id
-    let theme = this.props.match.path.slice(1, -4)
-    if(theme === 'env-standards-compliance') {
-      this.setState({nextPage: `/env-resource/${id}`})
-    }
-    if(theme === 'env-resource') {
-      this.setState({nextPage: `/env-climate-change/${id}`})
-    }
-    if(theme === 'env-climate-change') {
-      this.setState({nextPage: `/env-chemicals/${id}`})
-    }
-    if(theme === 'env-chemicals') {
-      this.setState({nextPage: `/env-water/${id}`})
-    }
-    if(theme === 'env-water') {
-      this.setState({nextPage: `/env-positive-citizenship/${id}`})
-    }
-    if(theme === 'env-positive-citizenship') {
-      this.setState({nextPage: `/env-negative-citizenship/${id}`})
-    }
-    if(theme === 'env-negative-citizenship') {
-      this.setState({nextPage: `/labour-ethical-fashion-report/${id}`})
-    }
-    if(theme === 'labour-ethical-fashion-report') {
-      this.setState({nextPage: `/labour-certification/${id}`})
-    }
-    if(theme === 'labour-certification') {
-      this.setState({nextPage: `/labour-policies-worker-empowerment/${id}`})
-    }
-    if(theme === 'labour-policies-worker-empowerment') {
-      this.setState({nextPage: `/labour-supply-chain/${id}`})
-    }
-    if(theme === 'labour-supply-chain') {
-      this.setState({nextPage: `/labour-low-risk-production/${id}`})
-    }
-    if(theme === 'labour-low-risk-production') {
-      this.setState({nextPage: `/labour-living-wage/${id}`})
-    }
-    if(theme === 'labour-living-wage') {
-      this.setState({nextPage: `/labour-knowing-suppliers/${id}`})
-    }
-    if(theme === 'labour-knowing-suppliers') {
-      this.setState({nextPage: `/labour-supplier-relationships-auditing/${id}`})
-    }
-    if(theme === 'labour-supplier-relationships-auditing') {
-      this.setState({nextPage: `/labour-positive-citizenship/${id}`})
-    }
-    if(theme === 'labour-positive-citizenship') {
-      this.setState({nextPage: `/labour-negative-citizenship/${id}`})
-    }
-    if(theme === 'labour-negative-citizenship') {
-      this.setState({nextPage: `/animal-animal-products/${id}`})
-    }
-    if(theme === 'animal-animal-products') {
-      this.setState({nextPage: `/animal-positive-citizenship/${id}`})
-    }
-    if(theme === 'animal-positive-citizenship') {
-      this.setState({nextPage: `/animal-negative-citizenship/${id}`})
-    }
-    if(theme === 'animal-negative-citizenship') {
-      this.setState({nextPage: `/brandCauses/${id}`})
-    }
-  }
-
-  renderHeader() {
-    const id  = this.props.match.params.id
-    let theme = this.props.match.path.slice(1, -4)
-    if(theme === 'env-standards-compliance') {
-      return(<EnvStandards id={id} />)
-    }
-    if(theme === 'env-resource') {
-      return(<EnvResource id={id} />)
-    }
-    if(theme === 'env-climate-change') {
-      return(<EnvClimate id={id} />)
-    }
-    if(theme === 'env-chemicals') {
-      return(<EnvChemicals id={id} />)
-    }
-    if(theme === 'env-water') {
-      return(<EnvWater id={id} />)
-    }
-    if(theme === 'env-positive-citizenship') {
-      return(<EnvPositiveCitizen id={id} />)
-    }
-    if(theme === 'env-negative-citizenship') {
-      return(<EnvNegativeCitizen id={id} />)
-    }
-    if(theme === 'labour-ethical-fashion-report') {
-      return(<LabourEthicalFashion id={id} />)
-    }
-    if(theme === 'labour-certification') {
-      return(<LabourCertification id={id} />)
-    }
-    if(theme === 'labour-policies-worker-empowerment') {
-      return(<LabourPolicies id={id} />)
-    }
-    if(theme === 'labour-supply-chain') {
-      return(<LabourSupplyChain id={id} />)
-    }
-    if(theme === 'labour-low-risk-production') {
-      return(<LabourProduction id={id} />)
-    }
-    if(theme === 'labour-living-wage') {
-      return(<LabourWage id={id} />)
-    }
-    if(theme === 'labour-knowing-suppliers') {
-      return(<LabourSuppliers id={id} />)
-    }
-    if(theme === 'labour-supplier-relationships-auditing') {
-      return(<LabourSupplierAudit id={id} />)
-    }
-    if(theme === 'labour-positive-citizenship') {
-      return(<LabourPositiveCitizen id={id} />)
-    }
-    if(theme === 'labour-negative-citizenship') {
-      return(<LabourNegativeCitizen id={id} />)
-    }
-    if(theme === 'animal-animal-products') {
-      return(<AnimalProducts id={id} />)
-    }
-    if(theme === 'animal-positive-citizenship') {
-      return(<AnimalPositiveCitizen id={id} />)
-    }
-    if(theme === 'animal-negative-citizenship') {
-      return(<AnimalNegativeCitizen id={id} />)
-    }
   }
 
   handleSaveValidation(value) {
@@ -389,95 +320,83 @@ class Rating extends Component {
     if(this.state.loading === true) {
       return(<Loader active inline='centered' />)
     } else {
-      if(!this.props.rating.size && theme === 'env-climate-change') {
-        return(
-          <Portal open={true} className='portal'>
-            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
-              <p>This question requires a brand size</p>
-              <p>Please answer the brand size question in General to continue this rating section</p>
-              <Link to={`/brandGeneral/${id}`}><button>Brand General</button></Link>
-            </Segment>
-          </Portal>
-        )
-      } else {
-        return _.map(this.props.pre_qa, theme => {
-          let lastQuestion = theme.questions[theme.questions.length -1]
-          return _.map(theme.questions, type => {
-            if(this.state.isEditing === type.order) {
-              return(
-                <div className='editing'>
-                  <div key={type.id} id={`${type.order}`}>
-                    <h5>{type.text} {type.is_mandatory === true ? '*' : ''}</h5>
-                  </div>
-                  {_.map(type.answers, ans => {
-                    if(this.state)
-                      return (
-                        <div key={ans.id}>
-                          <Form.Field>
-                            <Checkbox
-                              label={ans.text}
-                              value={ans.id}
-                              onChange={this.handleCheckbox}
-                              checked={this.state[`answer${ans.id}`] === true ? true : false}
-                            />
-                          </Form.Field>
-                          {this.state[`show${ans.id}`] === true ? (
-                            <div className='evidence'>
-                              <h5>Evidence</h5>
-                              <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
-                              <Form.Field className={this.state[`errorWebsite${ans.id}`] === true ? 'ui error input evidence-url' : 'ui input evidence-url'} inline>
-                                <Input
-                                  label='Source URL'
-                                  onChange={this.handleUrl}
-                                  name={ans.id}
-                                  value={this.state[`url${ans.id}`]}
-                                />
-                              </Form.Field>
-                              <Form.Field className='evidence-comments' inline>
-                                <TextArea
-                                  autoHeight
-                                  rows={4}
-                                  label='Comments'
-                                  placeholder='Comments'
-                                  onChange={this.handleComment}
-                                  name={ans.id}
-                                  value={this.state[`comment${ans.id}`]}
-                                />
-                              </Form.Field>
-                            </div>) : ('')}
-                        </div>
-                      )}
-                  )}
-                  <p className='error-message'>{this.state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
-                  <div className='button-container'>
-                    <div><button className='cancel' onClick={this.handleCancel} name={type.id}>Cancel</button></div>
-                    <div><button onClick={this.handleSave} name={type.id}>Save</button></div>
-                    {lastQuestion.id === type.id ? (
-                      <div><button onClick={this.handleSave} name={type.id} value='nextPage'>Save & Next Page</button></div>
-                    ) : (
-                      <div><HashLink to={`#${this.state.nextQuestion}`}><button onClick={this.handleSave} name={type.id} value='next'>Save & Next</button></HashLink></div>
-                    )}
-                  </div>
-                  {_.map(type.answers, ans => {
-                    return (<div key={ans.id} className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please fill out all required fields' : ''}</div>)
-                  })}
-                </div>) } else {
-              return(
-                <div className='not-editing'>
+      return _.map(this.props.pre_qa, theme => {
+        let lastQuestion = theme.questions[theme.questions.length -1]
+        return _.map(theme.questions, type => {
+          if(this.state.isEditing === type.order) {
+            return(
+              <div className='editing'>
+                <div key={type.id} id={`${type.order}`}>
                   <h5>{type.text} {type.is_mandatory === true ? '*' : ''}</h5>
-                  {_.map(type.answers, ans => {
-                    return (this.state[`answer${ans.id}`] === true ? (<p key={ans.id}>{ans.text}</p>) : (''))
-                  })}
-                  <div className='button-container'>
-                    <div></div>
-                    <div><button name={type.order} onClick={this.handleEdit}>Edit</button></div>
-                  </div>
-                  <p className='small-divider'></p>
                 </div>
-              )}
-          })
+                {_.map(type.answers, ans => {
+                  if(this.state)
+                    return (
+                      <div key={ans.id}>
+                        <Form.Field>
+                          <Checkbox
+                            label={ans.text}
+                            value={ans.id}
+                            onChange={this.handleCheckbox}
+                            checked={this.state[`answer${ans.id}`] === true ? true : false}
+                          />
+                        </Form.Field>
+                        {this.state[`show${ans.id}`] === true ? (
+                          <div className='evidence'>
+                            <h5>Evidence</h5>
+                            <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
+                            <Form.Field className={this.state[`errorWebsite${ans.id}`] === true ? 'ui error input evidence-url' : 'ui input evidence-url'} inline>
+                              <Input
+                                label='Source URL'
+                                onChange={this.handleUrl}
+                                name={ans.id}
+                                value={this.state[`url${ans.id}`]}
+                              />
+                            </Form.Field>
+                            <Form.Field className='evidence-comments' inline>
+                              <TextArea
+                                autoHeight
+                                rows={4}
+                                label='Comments'
+                                placeholder='Comments'
+                                onChange={this.handleComment}
+                                name={ans.id}
+                                value={this.state[`comment${ans.id}`]}
+                              />
+                            </Form.Field>
+                          </div>) : ('')}
+                      </div>
+                    )}
+                )}
+                <p id={theme.name} className='error-message'>{this.state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
+                <div className='button-container'>
+                  <div><button className='cancel' onClick={this.handleCancel} name={type.id}>Cancel</button></div>
+                  <div><button onClick={this.handleSave} name={type.id}>Save</button></div>
+                  {lastQuestion.id === type.id ? (
+                    <div><button onClick={this.handleSave} name={type.id} value='nextPage'>Save & Next Page</button></div>
+                  ) : (
+                    <div><HashLink to={`#${this.state.nextQuestion}`}><button onClick={this.handleSave} name={type.id} value='next'>Save & Next</button></HashLink></div>
+                  )}
+                </div>
+                {_.map(type.answers, ans => {
+                  return (<div key={ans.id} className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please fill out all required fields' : ''}</div>)
+                })}
+              </div>) } else {
+            return(
+              <div className='not-editing'>
+                <h5>{type.text} {type.is_mandatory === true ? '*' : ''}</h5>
+                {_.map(type.answers, ans => {
+                  return (this.state[`answer${ans.id}`] === true ? (<p key={ans.id}>{ans.text}</p>) : (''))
+                })}
+                <div className='button-container'>
+                  <div></div>
+                  <div><button name={type.order} value={theme.name} onClick={this.handleEdit}>Edit</button></div>
+                </div>
+                <p className='small-divider'></p>
+              </div>
+            )}
         })
-      }
+      })
     }
   }
 
@@ -485,9 +404,24 @@ class Rating extends Component {
     this.setState({portal: false})
   }
 
+  handleNav(event) {
+    const { id }  = this.props.match.params
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(this.state.prevPage)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(this.state.nextPage)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${id}`)
+      }
+    }
+  }
+
   render() {
     console.log('pre qa props', this.props.pre_qa)
-    console.log('rating', this.props.rating)
+    console.log('rating', this.props.qa)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
@@ -495,15 +429,22 @@ class Rating extends Component {
     return(
       <div className='form-container'>
         <RatingHeading id={id} brand={this.props.brand}/>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
+        <div className='forms-header'>
+          <span className='form-navigation'>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
+            <div><h3>{state.title}</h3></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
+          </span>
+        </div>
         {state.renderChangeError === true ? (
           <Portal open={state.portal} className='portal'>
             <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
               <p>Please Save or Cancel your selected answers before proceeding</p>
-              <button onClick={this.handlePortal}>Ok</button>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Ok</button></HashLink>
             </Segment>
           </Portal>
         ) : ''}
-        {this.renderHeader()}
         <form className='brand-form'>
           {this.renderQA()}
         </form>
