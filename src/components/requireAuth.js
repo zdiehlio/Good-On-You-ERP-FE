@@ -20,7 +20,6 @@ export default function(ComposedComponent) {
       }
     }
     render() {
-      console.log('token', this.props)
       return <ComposedComponent {...this.props} />
     }
   }

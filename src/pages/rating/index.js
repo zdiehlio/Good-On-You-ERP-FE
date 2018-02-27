@@ -37,7 +37,8 @@ class Rating extends Component {
 
     this.state = {
       isEditing: null,
-      ratingValues: [{}],
+      ratingValues: [],
+      originalRatingValues: [],
       errorsWebsite: [],
       errors: [],
       changeError: false,
@@ -139,16 +140,18 @@ class Rating extends Component {
           [`originalComment${rate.answer}`]: rate.comment,
         })
       })
-      this.setState({
-        ratingValues: _.map(nextProps.qa, check => {
-          return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
-        }),
-        originalRatingValues: _.map(nextProps.qa, check => {
-          return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
-        }),
-        loading: false,
+      nextProps.qa.map(check => {
+        this.state.ratingValues.push({id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected})
+        this.state.originalRatingValues.push({id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected})
       })
       this.setState({
+        // ratingValues: _.map(nextProps.qa, check => {
+        //   return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
+        // }),
+        // originalRatingValues: _.map(nextProps.qa, check => {
+        //   return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
+        // }),
+        loading: false,
       })
     }
   }
@@ -208,29 +211,35 @@ class Rating extends Component {
       }
     })
     this.setState({changeError: true})
-    this.handleValidUrl(event)
+    this.handleValidUrl(value, name)
   }
 
   handleCheckbox(event, { value }) {
     const { id }  = this.props.match.params
     if(this.state[`answer${value}`] === true) {
+      console.log('remove')
       new Promise((resolve, reject) => {
         resolve(this.setState({
           [`answer${value}`]: false,
-          ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(value)}),
           [`show${value}`]: false,
-        }))
-      }).then(() => this.handleSaveValidation(value))
-    } else if(this.state[`answer${value}`] === false && this.state[`props${value}`] === parseInt(value)) {
-      this.setState({[`show${value}`]: true, [`answer${value}`]: true})
+          ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(value)}),
+        })
+        )})
+        // .then(() => this.state.ratingValues.filter(rate => {return rate.id !== parseInt(value)}))
+        .then(() => this.handleSaveValidation(value))
+    // } else if(this.state[`answer${value}`] === false && this.state[`props${value}`] === parseInt(value)) {
+    //   console.log('something')
+    //   this.setState({[`show${value}`]: true, [`answer${value}`]: true})
     } else {
       new Promise((resolve, reject) => {
+        console.log('add')
         resolve(this.setState({
           [`show${value}`]: true,
           [`answer${value}`]: true,
-          ratingValues: [...this.state.ratingValues, {id: parseInt(value), is_selected: true}],
-        }))
-      }).then(() => this.handleSaveValidation(value))
+        })
+        )})
+        .then(() => this.state.ratingValues.push({id: parseInt(value), is_selected: true, url: this.state[`url${value}`] ? this.state[`url${value}`] : ''}))
+        .then(() => this.handleSaveValidation(value))
     }
     this.setState({changeError: true})
   }
@@ -250,27 +259,28 @@ class Rating extends Component {
     }
   }
 
-  handleValidUrl(e) {
-    if(e.target.value === '') {
+  handleValidUrl(value, name) {
+    let url = /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
+    if(value === '') {
       this.setState({
-        [`errorWebsite${e.target.name}`]: true,
-        errorsWebsite: [...this.state.errorsWebsite, parseInt(e.target.name)],
+        [`errorWebsite${name}`]: true,
+        errorsWebsite: [...this.state.errorsWebsite, parseInt(name)],
       })
     } else {
       this.setState({
-        [`errorWebsite${e.target.name}`]: false,
-        errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e.target.name)}),
+        [`errorWebsite${name}`]: false,
+        errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(name)}),
       })
     }
-    if((/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(e.target.value) && e.target.value !== '') || (/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(e.target.value) && e.target.value !== '')){
+    if(url.test(value)){
       this.setState({
-        [`errorWebsite${e.target.name}`]: false,
-        errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(e.target.name)}),
+        [`errorWebsite${name}`]: false,
+        errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(name)}),
       })
     } else {
       this.setState({
-        [`errorWebsite${e.target.name}`]: true,
-        errorsWebsite: [...this.state.errorsWebsite, parseInt(e.target.name)],
+        [`errorWebsite${name}`]: true,
+        errorsWebsite: [...this.state.errorsWebsite, parseInt(name)],
       })
     }
   }
@@ -350,7 +360,7 @@ class Rating extends Component {
                                 label='Source URL'
                                 onChange={this.handleUrl}
                                 name={ans.id}
-                                value={this.state[`url${ans.id}`]}
+                                value={this.state[`url${ans.id}`] ? this.state[`url${ans.id}`] : ''}
                               />
                             </Form.Field>
                             <Form.Field className='evidence-comments' inline>
@@ -361,7 +371,7 @@ class Rating extends Component {
                                 placeholder='Comments'
                                 onChange={this.handleComment}
                                 name={ans.id}
-                                value={this.state[`comment${ans.id}`]}
+                                value={this.state[`comment${ans.id}`] ? this.state[`comment${ans.id}`] : ''}
                               />
                             </Form.Field>
                           </div>) : ('')}
@@ -422,7 +432,8 @@ class Rating extends Component {
   render() {
     console.log('pre qa props', this.props.pre_qa)
     console.log('rating', this.props.qa)
-    console.log('state', this.state)
+    console.log('state', this.state.ratingValues)
+    console.log('answer', this.state)
     const isEditing = this.state.isEditing
     const { id }  = this.props.match.params
     const state = this.state

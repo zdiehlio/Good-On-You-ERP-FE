@@ -128,7 +128,7 @@ class SuppDataRetailers extends Component {
         this.setState({isEditing: null, renderChangeError: false, changeError: false, errorname: false})
       }
     } else {
-      this.setState({errorname: this.state.name ? false : true, errorwebsite: this.state.name ? false : true})
+      this.setState({renderError: true, errorname: true})
     }
   }
 
@@ -148,8 +148,7 @@ class SuppDataRetailers extends Component {
     }
     if(name === 'website') {
       let url = /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
-      // if((/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(value) && value !== '') || (/^(www\.)?[A-Za-z0-9]+([\-\.]{1}[A-Za-z0-9]+)*\.[A-Za-z]{2,40}(:[0-9]{1,40})?(\/.*)?$/.test(value) && value !== '')){
-      if(url.test(value) && value !== '') {
+      if(url.test(value) || value === '') {
         this.setState({errorwebsite: false})
       } else {
         this.setState({errorwebsite: true})
@@ -278,7 +277,7 @@ class SuppDataRetailers extends Component {
           {isEditing === 'retailer' ? (
             <div className='editing' id='retailer'>
               <h5>What is the main retailer? *</h5>
-              <Form.Field inline className={state.errorname === true ? 'ui error input' : 'ui input'}>
+              <Form.Field inline className={state.renderError === true && state.errorname === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Retailer Name *'
                   value={state.name}
@@ -286,8 +285,8 @@ class SuppDataRetailers extends Component {
                   name='name'
                 />
               </Form.Field>
-              <p className='error-message'>{state.errorname === true ? 'Please enter retailer name' : ''}</p>
-              <Form.Field inline className={state.errorwebsite === true ? 'ui error input' : 'ui input'}>
+              <p className='error-message'>{state.renderError === true && state.errorname === true ? 'Please enter retailer name' : ''}</p>
+              <Form.Field inline className={state.renderError === true && state.errorwebsite === true ? 'ui error input' : 'ui input'}>
                 <Input
                   label='Retailer Website'
                   value={state.website}
@@ -295,7 +294,7 @@ class SuppDataRetailers extends Component {
                   name='website'
                 />
               </Form.Field>
-              <p className='error-message'>{state.errorwebsite === true ? 'Please enter a valid URL' : ''}</p>
+              <p className='error-message'>{state.renderError === true && state.errorwebsite === true ? 'Please enter a valid URL' : ''}</p>
               <h5>Select one or more Retailer territories</h5>
               <Form.Field>
                 <Select

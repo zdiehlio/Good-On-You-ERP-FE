@@ -229,25 +229,25 @@ class BrandLanding extends Component {
     //     </div>
     //   )
     // } else {
-      return _.map(this.props.score.headlines, check => {
-        if(head === check.name) {
-          return(
-            <div key={check.name} className='rating-summary'>
-              <div>{this.capitalize(check.name)}</div>
-              {check.score ? (
-                <div>{check.score}{check.max_score ? `/${check.max_score}` : ''}</div>
-              ) : (
-                <div><Icon name='remove' color='red' /></div>
-              )}
-              <div>{this.state.show !== head ?
-                (<button name={head} onClick={this.handleShow}>Show</button>) :
-                (<button name={head} onClick={this.handleHide}>Hide</button>)}
-              </div>
-              <div>{check.label}</div>
+    return _.map(this.props.score.headlines, check => {
+      if(head === check.name) {
+        return(
+          <div key={check.name} className='rating-summary'>
+            <div>{this.capitalize(check.name)}</div>
+            {check.score ? (
+              <div>{check.score}{check.max_score ? `/${check.max_score}` : ''}</div>
+            ) : (
+              <div><Icon name='remove' color='red' /></div>
+            )}
+            <div>{this.state.show !== head ?
+              (<button name={head} onClick={this.handleShow}>Show</button>) :
+              (<button name={head} onClick={this.handleHide}>Hide</button>)}
             </div>
-          )
-        }
-      })
+            <div>{check.label}</div>
+          </div>
+        )
+      }
+    })
     // }
   }
 
@@ -274,7 +274,7 @@ class BrandLanding extends Component {
     const props = this.props
     const state = this.state
     console.log('state', state)
-    console.log('props', props.general)
+    console.log('props', props.summary)
     return(
       <div className='summary-container'>
         <div className='landing-header'>
