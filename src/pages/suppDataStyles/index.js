@@ -19,8 +19,19 @@ class SuppDataStyles extends Component {
       currentAnswer: null,
       progress: [],
       styles: [],
-      validateStyles: [],
       deleteStyles: [],
+      menArr: [],
+      ['older-womenArr']: [],
+      ['young-womenArr']: [],
+      fitnessArr: [],
+      designerArr: [],
+      bagsArr: [],
+      basicsArr: [],
+      accessoriesArr: [],
+      luxuryArr: [],
+      outdoorArr: [],
+      shoesArr: [],
+      underwearArr: [],
       style_scores: 0,
       progressBar: 0,
       casual: 0,
@@ -28,8 +39,8 @@ class SuppDataStyles extends Component {
       feminine: 0,
       sporty: 0,
       trendy: 0,
-      tempAnswers: [],
       changeError: false,
+      originalStyleScores: false,
     }
 
 
@@ -40,9 +51,9 @@ class SuppDataStyles extends Component {
     this.handleCheckbox = this.handleCheckbox.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
     this.handleRadio = this.handleRadio.bind(this)
-    this.handleRadio = this.handleRadio.bind(this)
     this.handleSaveRadio = this.handleSaveRadio.bind(this)
     this.handleNav = this.handleNav.bind(this)
+    this.handleSaveScores = this.handleSaveScores.bind(this)
   }
   componentWillMount() {
     const { id } = this.props.match.params
@@ -55,31 +66,37 @@ class SuppDataStyles extends Component {
     if(nextProps.styles !== this.props.styles) {
       _.map(nextProps.styles, compare => {
         if(compare.style_qa.question === 'style-scores') {
+          if(this.state.progress.length <= 0) {
+            this.state.progressBar++
+            console.log('scores')
+          }
           this.setState({
             [compare.style_qa.tag]: compare.score,
             [compare.style_qa.question]: 0,
+            originalStyleScores: true,
           })
           this.state.progress.push(compare.style_qa.tag)
           this.state.style_scores+=compare.score
-          if(!this.state[compare.style_qa.question]) {
-            this.state.progressBar++
-            this.setState({[compare.style_qa.question]: compare.style_qa.question})
-          }
         } else if(compare.style_qa.question === 'plus') {
           this.setState({originalplus: compare.style_qa.tag, plus: compare.style_qa.tag})
           this.state.progressBar++
+          console.log('plus')
         } else if(compare.style_qa.question === 'maternity') {
           this.setState({originalmaternity: compare.style_qa.tag, maternity: compare.style_qa.tag})
           this.state.progressBar++
-        } else if(compare.style_qa.question !== 'kids') {
-          if(!this.state[compare.style_qa.question]) {
+          console.log('maternity')
+        } else if(compare.style_qa.question !== 'kids' && compare.style_qa.question !== 'gender' && compare.style_qa.question !== 'price') {
+          if(this.state[`${compare.style_qa.question}Arr`].length <= 0) {
             this.state.progressBar++
+            console.log('styles')
           }
           this.state.styles.push({brand: id, style: compare.style_qa.tag})
           this.setState({
             [compare.style_qa.question]: compare.style_qa.question,
+            [`original${compare.style_qa.question}`]: compare.style_qa.question,
             [compare.style_qa.tag]: compare.style_qa.tag,
           })
+          this.state[`${compare.style_qa.question}Arr`].push({brand: id, style: compare.style_qa.tag})
         }
       })
     }
@@ -104,13 +121,12 @@ class SuppDataStyles extends Component {
     event.preventDefault()
     const { id }  = this.props.match.params
     _.map(this.state.styles, val => {
-      console.log('styles', val)
       this.setState({[val.style]: null})
     })
     this.state.progress.map(score => {
       this.setState({[score]: 0})
     })
-    this.setState({tempAnswers: [], styles: [], isEditing: null, changeError: false, renderChangeError: false})
+    this.setState({[`${event.target.name}Arr`]: [], isEditing: null, changeError: false, renderChangeError: false})
     this.props.fetchStyles(id)
   }
 
@@ -118,20 +134,13 @@ class SuppDataStyles extends Component {
   handleSave(event) {
     event.preventDefault()
     const { id }  = this.props.match.params
-    this.props.createStyles(this.state.styles)
-    _.map(this.state.styles, check => {
-      if(!this.state[`original${check}`]) {
-        this.state.progressBar++
-      }
-    })
-    if(event.target.name === 'style-scores') {
-      _.map(this.state.progress, style => {
-        this.props.createStyles({brand: id, style: style, score: this.state[style]})
-        event.target.value === 'next' ? this.props.history.push(`/suppDataTypes/${id}`) :this.setState({isEditing: null})
-        if(!this.state[`originalstyle-scores`]) {
-          this.state.progressBar++
-        }
-      })
+    this.props.createStyles(this.state[`${event.target.name}Arr`])
+    if(!this.state[`original${event.target.name}`]) {
+      this.setState({[`$original${event.target.name}`]: event.target.name})
+      this.state.progressBar++
+    } else if(this.state[`original${event.target.name}`] && this.state[`${event.target.name}Arr`].length <=0){
+      this.setState({[`original${event.target.name}`]: null})
+      this.state.progressBar--
     }
     if(event.target.value === 'next') {
       if(event.target.name === 'men') {
@@ -163,6 +172,19 @@ class SuppDataStyles extends Component {
       this.setState({isEditing: null})
     }
     this.setState({changeError: false, renderChangeError: false})
+  }
+
+  handleSaveScores(event) {
+    event.preventDefault()
+    const { id }  = this.props.match.params
+    _.map(this.state.progress, style => {
+      this.props.createStyles({brand: id, style: style, score: this.state[style]})
+      event.target.value === 'next' ? this.props.history.push(`/suppDataTypes/${id}`) : this.setState({isEditing: null})
+    })
+    if(this.state.originalStyleScores === false) {
+      this.setState({originalStyleScores: true})
+      this.state.progressBar++
+    }
   }
 
   handleSaveRadio(event) {
@@ -241,20 +263,13 @@ class SuppDataStyles extends Component {
     const { id }  = this.props.match.params
     if(this.state[value] === value) {
       this.setState({
-        // [`temp${value}`]: value,
         [value]: null,
-        // tempAnswers: this.state.tempAnswers.filter(check => {return check !== value}),
-        deleteValues: [...this.state.styles, {brand: id, style: value}],
-        validateStyles: this.state.styles.filter(check => {return check.style !== value}),
-        styles: this.state.styles.filter(check => {return check.style !== value}),
+        [`${name}Arr`]: this.state[`${name}Arr`].filter(check => {return check.style !== value}),
       })
     } else {
       this.setState({
-        // tempAnswers: [...this.state.tempAnswers, value],
         [value]: value,
-        deleteValues: this.state.styles.filter(check => {return check.style !== value}),
-        validateStyles: [...this.state.styles, {brand: id, style: value}],
-        styles: [...this.state.styles, {brand: id, style: value}],
+        [`${name}Arr`]: [...this.state[`${name}Arr`], {brand: id, style: value}],
       })
     }
     this.setState({changeError: true, currentEditing: `#${name}`})
@@ -316,8 +331,8 @@ class SuppDataStyles extends Component {
         })}
         <div className='button-container'>
           <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-          <div><button name={el} onClick={this.handleSave}>Save</button></div>
-          <div><button name={el} value='next' onClick={this.handleSave}>Save & Next</button></div>
+          <div><button name={el} onClick={this.handleSaveScores}>Save</button></div>
+          <div><button name={el} value='next' onClick={this.handleSaveScores}>Save & Next</button></div>
         </div>
       </div>
     )
