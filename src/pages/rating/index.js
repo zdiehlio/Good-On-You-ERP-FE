@@ -56,7 +56,7 @@ class Rating extends Component {
       this.setState({title: 'Environment/Water', prevPage: `/env-chemicals/${id}`, nextPage: `/env-positive-citizenship/${id}`})
     }
     if(theme === 'env-positive-citizenship') {
-      this.setState({title: 'Environment/Positive Citizenship', revPage: `/env-water/${id}`, nextPage: `/env-negative-citizenship/${id}`})
+      this.setState({title: 'Environment/Positive Citizenship', prevPage: `/env-water/${id}`, nextPage: `/env-negative-citizenship/${id}`})
     }
     if(theme === 'env-negative-citizenship') {
       this.setState({title: 'Environment/Negative Citizenship', prevPage: `/env-positive-citizenship/${id}`, nextPage: `/labour-ethical-fashion-report/${id}`})

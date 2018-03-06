@@ -46,18 +46,22 @@ class BrandGeneral extends Component {
     this.handleSaveReviewDate = this.handleSaveReviewDate.bind(this)
     this.handleSubmitSize = this.handleSubmitSize.bind(this)
     this.handleCheckbox = this.handleCheckbox.bind(this)
-    this.handleSizeCancel = this.handleSizeCancel.bind(this)
     this.handleNA = this.handleNA.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
     this.handleNav = this.handleNav.bind(this)
   }
+
+  //Before componenent loads, fetch current data for Brand General Overview questions
   componentWillMount() {
+    this.setState({isLoading: true})
     this.props.fetchGeneral(this.brandId, 'general')
+    //if the user has been redirected from the ratings section because no size has been entered yet, state will be set to editing mode on size question
     if(this.props.location.hash === '#size') {
-      this.setState({isEditing: 'size', isLoading: true})
+      this.setState({isEditing: 'size'})
     }
   }
 
+  //if the user has been redirected with a hashlink, page will scroll directly to question specified in hashURI
   componentDidUpdate() {
     let hash = this.props.location.hash.replace('#', '')
     if (hash) {
@@ -67,24 +71,24 @@ class BrandGeneral extends Component {
       }
     }
   }
-
+  //Once API call returns data, component will set props to state
   componentWillReceiveProps(nextProps) {
     if(nextProps.general !== this.props.general) {
       if(nextProps.general.size_criteria.length > 0) {
-        console.log('mapping')
+        //if size criteria is set to none, will set state accordingly
         if(nextProps.general.size_criteria[0].criteria === 'none') {
-          console.log('none')
           this.setState({none: 'none', noValues: {name: 'none'}})
         } else {
+          //if size criteria contains at least 1 criteria that is not 'none', will set push criteria into sizeValues array and set each criteria to it's own key in state
           _.map(nextProps.general.size_criteria, crit => {
             if(crit.criteria) {
               this.state.sizeValues.push({name: crit.criteria})
-              this.state.originalSizeValues.push({name: crit.criteria})
             }
-            this.setState({[`original${crit.criteria}`]: crit.criteria, [crit.criteria]: crit.criteria})
+            this.setState({[crit.criteria]: crit.criteria})
           })
         }
       }
+      //Set each key value in props to it's respected state
       this.setState({
         name: nextProps.general.name,
         originalname: nextProps.general.name,
@@ -96,6 +100,7 @@ class BrandGeneral extends Component {
         size: nextProps.general.size,
         isLoading: false,
       })
+      //if props contains name and/or size, increment progress bar by 1 for each
       if(nextProps.general.name) {
         this.state.progressBar++
       }
@@ -105,7 +110,7 @@ class BrandGeneral extends Component {
     }
   }
 
-  //toggles if clause that sets state to target elements value and enables user to edit the answer
+  //if another question is not currently being answered, toggles editing mode for specified question, otherwise renders change error
   handleEdit(event) {
     event.preventDefault()
     if(this.state.changeError === false) {
@@ -115,7 +120,7 @@ class BrandGeneral extends Component {
     }
   }
 
-  //sets state for isEditing to null which will toggle the ability to edit
+  //resets change errors, sets size values to empty array, and makes another API call to ensure all saved data is up to date while canceling changes to current question
   handleCancel(event) {
     this.setState({
       renderChangeError: false,
@@ -127,18 +132,8 @@ class BrandGeneral extends Component {
     this.props.fetchGeneral(this.brandId, 'general')
   }
 
-  handleSizeCancel(event) {
-    this.setState({
-      renderChangeError: false,
-      changeError: false,
-      isEditing: null,
-      isLoading: true,
-      sizeValues: [],
-    })
-    this.props.fetchGeneral(this.brandId, 'general')
-  }
-
-  //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
+  //inputs have at least 1 character, will save inputs for name and website question sending PATCH request to API, resetting change errors
+  //if save and next button is clicked it redirect user to next question automatically
   handleSaveName(event) {
     event.preventDefault()
     if(this.state.name.length <= 0) {
@@ -148,7 +143,8 @@ class BrandGeneral extends Component {
       this.setState({renderChangeError: false, changeError: false, isEditing: event.target.value === 'next' ? 'sustain' : null})
     }
   }
-
+  //if date is valid, will save inputs for sustainability_report question sending PATCH request to API, resetting change errors
+  //if save and next button is clicked it redirect user to next question automatically
   handleSaveSustainDate(event) {
     event.preventDefault()
     if(this.state.dateValid === true) {
@@ -162,14 +158,13 @@ class BrandGeneral extends Component {
         sustainability_report: this.state.sustainability_report,
         sustainability_report_date: this.state.sustainability_report === false ? null : dayMoment(`02/${this.state.sustainability_report_date}`),
       })
-      if(!this.props.sustainability_report_date) {
-        this.state.progressBar++
-      }
     } else {
       this.setState({renderError: true})
     }
   }
 
+  //if date is valid, will save inputs for review_date question sending PATCH request to API, resetting change errors
+  //if save and next button is clicked it redirect user to next question automatically
   handleSaveReviewDate(event) {
     event.preventDefault()
     if(this.state.dateValid === true) {
@@ -180,14 +175,14 @@ class BrandGeneral extends Component {
         isEditing: event.target.value === 'next' ? 'size' : null,
       })
       this.props.updateGeneral(this.brandId, {review_date: dayMoment(`02/${this.state.review_date}`)})
-      if(!this.props.review_date) {
-        this.state.progressBar++
-      }
     } else {
       this.setState({renderError: true})
     }
   }
 
+  //if values exist, will save inputs for size question sending PATCH request to API, resetting change errors
+  //automatically sets size according to criteria
+  //if save and next button is clicked it redirect user to next page automatically
   handleSubmitSize(event) {
     event.preventDefault()
     if(this.state.sizeValues.length <= 0 && this.state.noValues <= 0) {
@@ -207,15 +202,19 @@ class BrandGeneral extends Component {
     }
   }
 
+  //sets state for specified criteria for each checkbox
   handleCheckbox(event, { value, name }) {
     const { id }  = this.props.match.params
+    //if none is checked, removes all criteria from sizeValues array, sets their respective state to null, sets size to small, and pushes none key into noValues array
     if(value === 'none') {
       this.state.sizeOptions.map(val => this.setState({[val]: null}))
       this.setState({
         none: !this.state.none ? value : null,
         sizeValues: [],
-        noValues: [{name: 'none'}], size: 'small',
+        noValues: [{name: 'none'}],
+        size: 'small',
       })
+    //All other checkboxes will set their respective states and set size to large, and sets none to null and noValues to empty array
     } else {
       if(this.state[value]) {
         if(value === 'subsidiary') {
@@ -225,6 +224,7 @@ class BrandGeneral extends Component {
       } else {
         this.setState({[value]: value, sizeValues: [...this.state.sizeValues, {name: value}]})
       }
+      //if last selection is choses, size will be set to small but retain all selected criteria
       if(value === 'goy-small') {
         this.setState({size: this.state.size !== 'small' ? 'small' : 'large'})
       } else {
@@ -232,9 +232,11 @@ class BrandGeneral extends Component {
       }
       this.setState({none: null, noValues: []})
     }
+    //sets state to the current questions id so that if change error is triggered, user will be redirected to current question waiting to be saved/canceled
     this.setState({currentEditing: `#${name}`, changeError: true, sizeError: false})
   }
 
+  //renders currently selected size criteria in non-editing mode
   renderCriteria() {
     return _.map(this.state.sizeValues, crit => {
       return (
@@ -245,11 +247,13 @@ class BrandGeneral extends Component {
     })
   }
 
+  //if NA checkbox in sustainability_report question is checked, will remove the sustainability_report_date and set value to false
   handleNA(event) {
     event.preventDefault()
     this.setState({sustainability_report: false, sustainability_report_date: '', dateValid: true})
   }
 
+  //use moments.js to validate that input is in MM/YYYY format
   validateDate(val) {
     let date = moment(`${val}`, 'MM/YYYY', true)
     if (date.isValid()) {
@@ -259,7 +263,7 @@ class BrandGeneral extends Component {
     }
   }
 
-  //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
+  //if inputs have at least 1 character, will set state to respective names and values
   handleInput(event, {value, name}) {
     this.validateDate(value)
     if(name === 'name') {
@@ -280,14 +284,17 @@ class BrandGeneral extends Component {
     this.setState({currentEditing: name === 'parent_company' ? '#size' : `#${name}`, changeError: true, currentAnswer: name, [name]: value, input: value})
   }
 
+  //capitalize function to be used when rendering BE text that does not have first letter capitalized
   capitalize(string) {
     return string[0].toUpperCase() + string.slice(1)
   }
 
+  //once change error is triggered and portal opens, this will close it after user clicks to be redirected to question
   handlePortal() {
     this.setState({portal: false})
   }
 
+  //if changeError is false, will redirect user to the previous page, next page, or back to brand landing page
   handleNav(event) {
     const { id }  = this.props.match.params
     if(this.state.changeError === true) {
@@ -301,9 +308,8 @@ class BrandGeneral extends Component {
     }
   }
 
+  //render questions for form, will show loading symbol until props containing data are received from BE
   render() {
-    console.log('props', this.props.general)
-    console.log('state', this.state)
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props
@@ -564,7 +570,7 @@ class BrandGeneral extends Component {
                 <p className='error-message'>{state.sizeError === true ? 'Please make a selection' : ''}</p>
                 <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
                 <div className='button-container'>
-                  <div><button className='cancel' onClick={this.handleSizeCancel} name='size'>Cancel</button></div>
+                  <div><button className='cancel' onClick={this.handleCancel} name='size'>Cancel</button></div>
                   <div><button onClick={this.handleSubmitSize} name='size' value='size'>Save</button></div>
                   <div><Link to={`/brandContact/${id}`}><button onClick={this.handleSubmitSize} name='size' value='next'>Save & Next</button></Link></div>
                 </div>
