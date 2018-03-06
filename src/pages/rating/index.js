@@ -5,28 +5,6 @@ import { connect } from 'react-redux'
 import { Form, Input, Checkbox, TextArea, Progress, Portal, Segment, Loader} from 'semantic-ui-react'
 import { fetchAllRating, fetchRating, createRating, updateRating, fetchRatingScore } from '../../actions/rating'
 import { RatingHeading } from '../../components'
-import {
-  EnvStandards,
-  EnvResource,
-  EnvClimate,
-  EnvChemicals,
-  EnvWater,
-  EnvPositiveCitizen,
-  EnvNegativeCitizen,
-  LabourEthicalFashion,
-  LabourCertification,
-  LabourPolicies,
-  LabourSupplyChain,
-  LabourProduction,
-  LabourWage,
-  LabourSuppliers,
-  LabourSupplierAudit,
-  LabourPositiveCitizen,
-  LabourNegativeCitizen,
-  AnimalProducts,
-  AnimalPositiveCitizen,
-  AnimalNegativeCitizen,
-} from '../../components'
 import _ from 'lodash'
 
 import './rating.css'
@@ -359,6 +337,7 @@ class Rating extends Component {
                               <Input
                                 label='Source URL'
                                 onChange={this.handleUrl}
+                                autoFocus={true}
                                 name={ans.id}
                                 value={this.state[`url${ans.id}`] ? this.state[`url${ans.id}`] : ''}
                               />

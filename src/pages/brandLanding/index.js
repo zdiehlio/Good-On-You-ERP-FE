@@ -75,7 +75,7 @@ class BrandLanding extends Component {
       loadingAlias: true,
       loadingRating: true,
       loadingCause: true,
-      loadingSentence: true,
+      // loadingSentence: true,
       loadingSummary: true,
       loadingSocial: true,
       loadingImage: true,
@@ -265,7 +265,7 @@ class BrandLanding extends Component {
                 ) : (
                   <div><Icon name='remove' color='red' /></div>
                 )}
-                <div><Link to={`/${val.name}/${brandId}`}><button>Start</button></Link></div>
+                <div><Link to={`/${val.name}/${brandId}`}><button>{val.score ? 'Continue' : 'Start'}</button></Link></div>
               </span>
             )
           }
@@ -279,7 +279,7 @@ class BrandLanding extends Component {
     const props = this.props
     const state = this.state
     console.log('state', state)
-    console.log('props', props.summary)
+    console.log('props', props.score.headlines)
     return(
       <div className='summary-container'>
         <div className='landing-header'>
