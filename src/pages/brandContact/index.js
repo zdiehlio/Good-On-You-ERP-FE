@@ -17,6 +17,7 @@ class BrandContact extends Component {
       isEditing: null,
       emailValid: false,
       error_email: true,
+      error_your_voice_email: true,
       error_name: true,
       errorContact: false,
       error_relationship_manager: true,
@@ -24,7 +25,7 @@ class BrandContact extends Component {
       progressBar: 0,
     }
 
-
+    this.brandId = this.props.match.params
     this.handleInput = this.handleInput.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
@@ -33,8 +34,7 @@ class BrandContact extends Component {
     this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
-    const { id } = this.props.match.params
-    this.props.fetchContact(id)
+    this.props.fetchContact(this.brandId)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -48,9 +48,8 @@ class BrandContact extends Component {
           name: nextProps.contact.contact.name,
           email: nextProps.contact.contact.email,
           relationship_manager: nextProps.contact.contact.relationship_manager,
-          originalName: nextProps.contact.contact.name,
-          originalEmail: nextProps.contact.contact.email,
-          originalRelationship_manager: nextProps.contact.contact.relationship_manager,
+          your_voice_email: nextProps.contact.contact.your_voice_email,
+          headquarters: nextProps.contact.contact.headquarters,
         })
         return this.state.progressBar++
       }
@@ -60,7 +59,6 @@ class BrandContact extends Component {
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     this.setState({isEditing: event.target.name})
   }
   //sets state for isEditing to null which will toggle the ability to edit
@@ -71,27 +69,42 @@ class BrandContact extends Component {
       renderChangeError: false,
       changeError: false,
       isEditing: null,
-      name: this.state.originalName,
-      email: this.state.originalEmail,
-      relationship_manager: this.state.originalRelationship_manager})
+    })
+    this.props.fetchContact(this.brandId)
   }
+
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
-    if(this.state.error_email === false) {
+    if(this.state.error_email === false && this.state.error_email === false) {
       if(this.props.contact.contact) {
-        this.props.updateContact(id, {name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
+        this.props.updateContact(
+          this.brandId,
+          {
+            name: this.state.name,
+            email:this.state.email,
+            relationship_manager: this.state.relationship_manager,
+            your_voice_email: this.state.your_voice_email,
+            headquarters: this.state.headquarters,
+          }
+        )
         if(event.target.value === 'next') {
-          this.props.history.push(`/suppDataAlias/${id}`)
+          this.props.history.push(`/suppDataAlias/${this.brandId}`)
         }
       } else {
-        this.props.createContact({brand: id, name: this.state.name, email:this.state.email, relationship_manager: this.state.relationship_manager})
+        this.props.createContact({
+          brand: this.brandId,
+          name: this.state.name,
+          email:this.state.email,
+          relationship_manager: this.state.relationship_manager,
+          your_voice_email: this.state.your_voice_email,
+          headquarters: this.state.headquarters,
+        })
         if(event.target.value === 'next') {
-          this.props.history.push(`/suppDataAlias/${id}`)
+          this.props.history.push(`/suppDataAlias/${this.brandId}`)
         }
       }
-      this.setState({isEditing: null, renderChangeError: false, changeError: false, enderError: false, error_email: false})
+      this.setState({isEditing: null, renderChangeError: false, changeError: false, renderError: false, error_email: false, your_voice_email: false})
       return this.state.progressBar++
     } else {
       this.setState({renderError: true})
@@ -99,13 +112,13 @@ class BrandContact extends Component {
   }
   //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
   handleInput(event, { value, name }) {
-    if(name === 'email') {
+    if(name === 'email' || name === 'your_voice_email') {
       if (value=== '') {
-        this.setState({error_email: true})
-      } else if(/^\w+([\.-]?\ w+)*@\w+([\.-]?\ w+)*(\.\w{2,3})+$/.test(value)) {
-        this.setState({error_email: false})
+        this.setState({[`error_${name}`]: true})
+      } else if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        this.setState({[`error_${name}`]: false})
       } else {
-        this.setState({error_email: true})
+        this.setState({[`error_${name}`]: true})
       }
     }
     this.setState({currentEditing: '#contact', changeError: true, [name]: value})
@@ -116,16 +129,15 @@ class BrandContact extends Component {
   }
 
   handleNav(event) {
-    const { id }  = this.props.match.params
     if(this.state.changeError === true) {
       this.setState({renderChangeError: true, portal: true})
     } else {
       if(event.target.name === 'previous') {
-        this.props.history.push(`/brandGeneral/${id}`)
+        this.props.history.push(`/brandGeneral/${this.brandId}`)
       } else if(event.target.name === 'next') {
-        this.props.history.push(`/suppDataAlias/${id}`)
+        this.props.history.push(`/suppDataAlias/${this.brandId}`)
       } else if(event.target.name === 'landing') {
-        this.props.history.push(`/brandLanding/${id}`)
+        this.props.history.push(`/brandLanding/${this.brandId}`)
       }
     }
   }
@@ -135,12 +147,11 @@ class BrandContact extends Component {
     console.log('props', this.props.contact)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
-    const { id }  = this.props.match.params
     const state = this.state
     const props = this.props.contact
     return(
       <div className='form-container'>
-        <OverviewHeading id={id} brand={this.props.brand}/>
+        <OverviewHeading id={this.brandId} brand={this.props.brand}/>
         <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -189,6 +200,25 @@ class BrandContact extends Component {
                   onChange={this.handleInput}
                   name='relationship_manager'
                   value={state.relationship_manager}
+                />
+              </Form.Field>
+              <Form.Field inline>
+                <Input
+                  label='Your voice email'
+                  placeholder='your voice email'
+                  onChange={this.handleInput}
+                  name='your_voice_email'
+                  value={state.your_voice_email}
+                />
+              </Form.Field>
+              <p className='error-message'>{state.renderError === true && state.error_your_voice_email === true ? 'Please enter Valid Email' : ''}</p>
+              <Form.Field inline>
+                <Input
+                  label='Headquarters'
+                  placeholder='headquarters location'
+                  onChange={this.handleInput}
+                  name='headquarters'
+                  value={state.headquarters}
                 />
               </Form.Field>
               <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>

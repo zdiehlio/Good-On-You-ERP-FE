@@ -59,7 +59,7 @@ class App extends Component {
         <div>
           <Header />
           <ScrollToTop>
-            <div className="container-body">
+            <div className={this.props.login.token ? 'container-body' : 'container-body-login'}>
               <Route exact path='/' component={Login}/>
               <Route path='/login' component={Login}/>
               <Route path='/searchBrand' component={Authentication(SearchBrand)} />
@@ -109,4 +109,8 @@ class App extends Component {
   }
 }
 
-export default App
+function mapStateToProps(state) {
+  return {login: state.login}
+}
+
+export default connect(mapStateToProps)(App)

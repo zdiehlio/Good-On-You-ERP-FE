@@ -12,33 +12,41 @@ class Header extends Component {
   render() {
     return (
       <div className="header">
-        <div className="header-container">
-          <div className="logo-container">
-            <img className="logo-img" src={logo} alt='logo' />
-            <img className="logo-text" src={logoText} alt='logo text' />
-          </div>
-
-
-          <div className="links-container-left">
-            <Link to="/searchBrand">Home</Link>
-          </div>
-
-          {this.props.token ? (
-            <div className="links-container-left">
-              <Link to="/searchBrand">Brand</Link>
-            </div>) : (
-            <div>''</div>
-          )}
-
-          {!this.props.token ? (
-            <div className="links-container-left">
-              <Link to="/login">Login</Link>
-            </div>) : (
-            <div className='links-container-left'>
-              <Link onClick={this.props.logout} to="/login">Logout</Link>
+        {!this.props.token ? (
+          <div className="header-container-login">
+            <div className="logo-container">
+              <img className="logo-img" src={logo} alt='logo' />
+              <img className="logo-text" src={logoText} alt='logo text' />
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="header-container">
+            <div className="logo-container">
+              <img className="logo-img" src={logo} alt='logo' />
+              <img className="logo-text" src={logoText} alt='logo text' />
+            </div>
+
+
+            <div className="links-container-left">
+              <Link to="/searchBrand">Home</Link>
+            </div>
+
+            {this.props.token ? (
+              <div className="links-container-left">
+                <Link to="/searchBrand">Brand</Link>
+              </div>) : (
+              <div>''</div>
+            )}
+
+            {!this.props.token ? (
+              <div className="links-container-left">
+                <Link to="/login">Login</Link>
+              </div>) : (
+              <div className='links-container-left'>
+                <Link onClick={this.props.logout} to="/login">Logout</Link>
+              </div>
+            )}
+          </div>)}
       </div>
     )
   }

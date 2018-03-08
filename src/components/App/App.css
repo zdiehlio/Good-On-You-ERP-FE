@@ -9,6 +9,17 @@
   padding: 2em 0em;
 }
 
+.container-body-login {
+  height: 100%;
+  display: flex;
+  width: 100%;
+  flex: 1 0 auto;
+  min-height: calc(100vh - 120px);
+  justify-content: center;
+  background-color: #09b5ab;
+  padding: 2em 0em;
+}
+
 @media (min-width: 960px) {
   .app {
     width: 75%;
@@ -22,7 +33,7 @@ button {
   font-size: 1.3em;
   border: none;
   color: white;
-  background-color: #17CABE;
+  background-color: #09b5ab;
   border-radius: 40px;
   align: right;
 }
@@ -152,7 +163,7 @@ textarea {
     font-size: 16px;
     line-height: 30px;
     border-radius: 25px;
-    background-color: #17CABE;
+    background-color: #09b5ab;
     margin: 0.5em;
 }
 
@@ -193,7 +204,7 @@ textarea {
   height: 0.2em;
   margin-top: 1em;
   display: inline-block;
-  background-color: #17CABE;
+  background-color: #09b5ab;
 }
 
 .small-divider {
@@ -201,7 +212,7 @@ textarea {
     height: 1px;
     margin-top: 1em;
     display: inline-block;
-    background-color: #17CABE;
+    background-color: #09b5ab;
 }
 
 .error-message {
@@ -222,7 +233,7 @@ textarea {
 
 .qa-heading {
   width: 100% !important;
-  color: #17CABE !important;
+  color: #09b5ab !important;
   text-align: left !important;
 }
 
@@ -256,7 +267,7 @@ textarea {
 }
 
 .arrow-divider {
-  color: #17CABE !important;
+  color: #09b5ab !important;
   font-weight: bold;
 }
 
