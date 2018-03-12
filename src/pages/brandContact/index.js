@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, Input, Progress, Portal, Segment, Loader } from 'semantic-ui-react'
+import { Form, Input, Progress, Portal, Segment, Loader, Select } from 'semantic-ui-react'
 import { HashLink } from 'react-router-hash-link'
-import { fetchContact, createContact, updateContact } from '../../actions/contact'
+import { fetchContact, createContact, updateContact, fetchHq } from '../../actions/contact'
 import { OverviewHeading } from '../../components'
 import _ from 'lodash'
 
@@ -23,14 +23,11 @@ class BrandContact extends Component {
       error_relationship_manager: true,
       changeError: false,
       progressBar: 0,
-      your_voice_email: '',
-      name: '',
-      email: '',
-      headquarters: '',
-      relationship_manager: '',
+      territoryOptions: [],
     }
 
     this.brandId = this.props.match.params.id
+
     this.handleInput = this.handleInput.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
@@ -43,10 +40,16 @@ class BrandContact extends Component {
   componentWillMount() {
     this.setState({isLoading: true})
     this.props.fetchContact(this.brandId)
+    this.props.fetchHq()
   }
 
   //when component receives props with data from API, will set details to be managed in state
   componentWillReceiveProps(nextProps) {
+    if(nextProps.pre_qa !== this.props.pre_qa) {
+      nextProps.pre_qa.map(val => {
+        this.state.territoryOptions.push({value: val.name, text: val.name, id: val.id})
+      })
+    }
     if(nextProps.contact.contact !== this.props.contact.contact) {
       if(nextProps.contact.contact) {
         //if clause that catches if there are multiple contacts created for current brand, can be removed if BE is cleared of all multiple contacts
@@ -131,7 +134,7 @@ class BrandContact extends Component {
 
   //set value of input to state and if input is email, will validate that the value meets parameters of email address
   handleInput(event, { value, name }) {
-    if(name === 'email') {
+    if(name === 'email' || name === 'your_voice_email') {
       if (value=== '') {
         this.setState({[`error_${name}`]: true})
       } else if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
@@ -165,7 +168,7 @@ class BrandContact extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.contact)
+    console.log('props', this.props.pre_qa)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
     const state = this.state
@@ -193,7 +196,7 @@ class BrandContact extends Component {
           </Portal>
         ) : ''}
         {state.isLoading === true ? <Loader active inline='centered' /> :
-          <Form>
+          <form className='brand-form'>
             {isEditing === '1' ? (
               <div className='editing' id='contact'>
                 <Form.Field inline>
@@ -234,13 +237,25 @@ class BrandContact extends Component {
                   />
                 </Form.Field>
                 <p className='error-message'>{state.renderError === true && state.error_your_voice_email === true ? 'Please enter Valid Email' : ''}</p>
-                <Form.Field inline>
-                  <Input
-                    label='Headquarters'
-                    placeholder='headquarters location'
-                    onChange={this.handleInput}
+                <h5>Select Headquarters location</h5>
+                <Form.Field>
+                  <Select
                     name='headquarters'
+                    placeholder='Choose Territory'
+                    onChange={this.handleInput}
                     value={state.headquarters}
+                    options={
+                      state.territoryOptions.sort((a, b) => {
+                        let nameA=a.text.toLowerCase()
+                        let nameB=b.text.toLowerCase()
+                        if(nameA < nameB) {
+                          return -1
+                        }
+                        if(nameA > nameB) {
+                          return 1
+                        }
+                        return 0
+                      })}
                   />
                 </Form.Field>
                 <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
@@ -255,6 +270,8 @@ class BrandContact extends Component {
                 <p>{state.name ? `Contact Name: ${state.name}` : ''}</p>
                 <p>{state.email ? `Contact Email: ${state.email}` : ''}</p>
                 <p>{state.relationship_manager ? `GOY Manager: ${state.relationship_manager}` : ''}</p>
+                <p>{state.your_voice_email ? `Your Voice: ${state.your_voice_email}` : ''}</p>
+                <p>{state.headquarters ? `Headquarters location: ${state.headquarters}` : ''}</p>
                 <p className='error-message'>{state.errorContact === true ? 'Multiple Contacts exists, invalid Test Account' : ''}</p>
                 <div className='button-container'>
                   <div></div>
@@ -262,7 +279,7 @@ class BrandContact extends Component {
                 </div>
               </div>
             )}
-          </Form>
+          </form>
         }
       </div>
     )
@@ -272,8 +289,9 @@ class BrandContact extends Component {
 function mapStateToProps(state) {
   return {
     contact: state.contact,
+    pre_qa: state.preQa,
     brand: state.brandInfo,
   }
 }
 
-export default connect(mapStateToProps, { updateContact, fetchContact, createContact })(BrandContact)
+export default connect(mapStateToProps, { updateContact, fetchContact, createContact, fetchHq })(BrandContact)
