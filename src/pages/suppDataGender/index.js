@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { Form, Checkbox, Progress, Portal, Segment } from 'semantic-ui-react'
+import { Form, Checkbox, Progress, Portal, Segment, Loader } from 'semantic-ui-react'
 import { fetchStyles, createStyles } from '../../actions/style'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -24,6 +24,7 @@ class SuppDataGender extends Component {
       'gender-children': '',
     }
 
+    this.brandId = this.props.match.params.id
 
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
@@ -33,67 +34,65 @@ class SuppDataGender extends Component {
     this.handlePortal = this.handlePortal.bind(this)
   }
   componentWillMount() {
-    const { id } = this.props.match.params
-    this.props.fetchStyles(id)
+    this.setState({isLoading: true})
+    this.props.fetchStyles(this.brandId)
   }
 
 
   componentWillReceiveProps(nextProps) {
-    const { id } = this.props.match.params
     if(nextProps.styles !== this.props.styles) {
       _.map(nextProps.styles, compare => {
         if(compare.style_qa.question === 'gender') {
-          this.state.genders.push({brand: id, style: compare.style_qa.tag})
+          this.state.genders.push({brand: this.brandId, style: compare.style_qa.tag})
           this.setState({[compare.style_qa.tag]: compare.style_qa.tag})
           this.state.progressBar++
         }
       })
+      this.setState({isLoading: false})
     }
   }
+
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     this.setState({isEditing: event.target.name})
   }
 
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
-    const { id } = this.props.match.params
-    this.props.fetchStyles(id)
     _.map(this.state.genders, check => {
       this.setState({[check.style]: null})
     })
     this.setState({
       isEditing: null,
+      isLoading: true,
       genders: [],
       error: false,
       renderChangeError: false,
       changeError: false,
     })
+    this.props.fetchStyles(this.brandId)
   }
 
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     if(this.state.genders.length > 0) {
-      this.props.createStyles(this.state.genders, id)
+      this.props.createStyles(this.state.genders, this.brandId)
       this.setState({renderChangeError: false, changeError: false, isEditing: null})
       this.state.progressBar++
-      event.target.value === 'next' ? this.props.history.push(`/suppDataCategory/${id}`) : this.setState({isEditing: null})
+      event.target.value === 'next' ? this.props.history.push(`/suppDataCategory/${this.brandId}`) : this.setState({isEditing: null})
     } else {
       this.setState({error: true})
     }
   }
 
   handleChange(event, { name }){
-    const { id }  = this.props.match.params
     if(this.state[name] === name) {
       this.setState({[name]: null, genders: this.state.genders.filter(gender => {return gender.style !== name})})
     } else {
-      this.setState({[name]: name, genders: [...this.state.genders, {brand: id, style: name}], error: false})
+      this.setState({[name]: name, genders: [...this.state.genders, {brand: this.brandId, style: name}], error: false})
     }
     this.setState({currentEditing: '#gender', changeError: true})
   }
@@ -103,30 +102,26 @@ class SuppDataGender extends Component {
   }
 
   handleNav(event) {
-    const { id }  = this.props.match.params
     if(this.state.changeError === true) {
       this.setState({renderChangeError: true, portal: true})
     } else {
       if(event.target.name === 'previous') {
-        this.props.history.push(`/suppDataImage/${id}`)
+        this.props.history.push(`/suppDataImage/${this.brandId}`)
       } else if(event.target.name === 'next') {
-        this.props.history.push(`/suppDataCategory/${id}`)
+        this.props.history.push(`/suppDataCategory/${this.brandId}`)
       } else if(event.target.name === 'landing') {
-        this.props.history.push(`/brandLanding/${id}`)
+        this.props.history.push(`/brandLanding/${this.brandId}`)
       }
     }
   }
 
   render() {
-    console.log('props', this.props.styles)
-    console.log('state', this.state)
-    const { id }  = this.props.match.params
     const state = this.state
     const props = this.props.styles
     const isEditing = this.state.isEditing
     return(
       <div className='form-container'>
-        <SuppHeading id={id} brand={this.props.brand}/>
+        <SuppHeading id={this.brandId} brand={this.props.brand}/>
         <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -146,55 +141,57 @@ class SuppDataGender extends Component {
             </Segment>
           </Portal>
         ) : ''}
-        <form className='brand-form'>
-          {isEditing === 'gender' ? (
-            <div className='editing' id='gender'>
-              <h4>What are the Genders/Ages offered by the brand? *</h4>
-              <Form.Field inline className={state.error === true ? 'ui error checkbox' : 'ui checkbox'}>
-                <Checkbox
-                  label='Children'
-                  onChange={this.handleChange}
-                  checked={state['gender-children'] ? true : false}
-                  name='gender-children'
-                />
-              </Form.Field>
-              <Form.Field inline>
-                <Checkbox
-                  label='Women'
-                  onChange={this.handleChange}
-                  checked={state['gender-women'] ? true : false}
-                  name='gender-women'
-                />
-              </Form.Field>
-              <Form.Field inline>
-                <Checkbox
-                  label='Men'
-                  onChange={this.handleChange}
-                  checked={state['gender-men'] ? true : false}
-                  name='gender-men'
-                />
-              </Form.Field>
-              <p className='error-message'>{state.error === true ? 'Please select at least one option' : ''}</p>
-              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
-              <div className='button-container'>
-                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-                <div><button onClick={this.handleSave} name='gender'>Save</button></div>
-                <div><button onClick={this.handleSave} name='gender' value='next'>Save & Next</button></div>
+        {state.isLoading === true ? <Loader active inline='centered' /> :
+          <form className='brand-form'>
+            {isEditing === 'gender' ? (
+              <div className='editing' id='gender'>
+                <h4>What are the Genders/Ages offered by the brand? *</h4>
+                <Form.Field inline className={state.error === true ? 'ui error checkbox' : 'ui checkbox'}>
+                  <Checkbox
+                    label='Children'
+                    onChange={this.handleChange}
+                    checked={state['gender-children'] ? true : false}
+                    name='gender-children'
+                  />
+                </Form.Field>
+                <Form.Field inline>
+                  <Checkbox
+                    label='Women'
+                    onChange={this.handleChange}
+                    checked={state['gender-women'] ? true : false}
+                    name='gender-women'
+                  />
+                </Form.Field>
+                <Form.Field inline>
+                  <Checkbox
+                    label='Men'
+                    onChange={this.handleChange}
+                    checked={state['gender-men'] ? true : false}
+                    name='gender-men'
+                  />
+                </Form.Field>
+                <p className='error-message'>{state.error === true ? 'Please select at least one option' : ''}</p>
+                <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
+                <div className='button-container'>
+                  <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                  <div><button onClick={this.handleSave} name='gender'>Save</button></div>
+                  <div><button onClick={this.handleSave} name='gender' value='next'>Save & Next</button></div>
+                </div>
+              </div>) : (
+              <div className='not-editing'>
+                <h4>What are the Genders/Ages offered by the brand? *</h4>
+                {_.map(this.state.genders, check => {
+                  let gender = check.style.slice(7)
+                  return(<div key={check.style}>{gender}</div>)
+                }
+                )}
+                <div className='button-container'>
+                  <div><button name='gender' onClick={this.handleEdit}>Edit</button></div>
+                </div>
               </div>
-            </div>) : (
-            <div className='not-editing'>
-              <h4>What are the Genders/Ages offered by the brand? *</h4>
-              {_.map(this.state.genders, check => {
-                let gender = check.style.slice(7)
-                return(<div key={check.style}>{gender}</div>)
-              }
-              )}
-              <div className='button-container'>
-                <div><button name='gender' onClick={this.handleEdit}>Edit</button></div>
-              </div>
-            </div>
-          )}
-        </form>
+            )}
+          </form>
+        }
       </div>
     )
   }

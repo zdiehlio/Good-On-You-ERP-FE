@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, Input, Progress, Portal, Segment } from 'semantic-ui-react'
+import { Form, Input, Progress, Portal, Segment, Loader } from 'semantic-ui-react'
 import { HashLink } from 'react-router-hash-link'
 import { fetchAlias, createAlias, deleteAlias  } from '../../actions/alias'
 import { SuppHeading } from '../../components'
@@ -24,6 +24,7 @@ class SuppDataAlias extends Component {
       progressBar: 0,
     }
 
+    this.brandId = this.props.match.params.id
 
     this.handleInput = this.handleInput.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
@@ -34,11 +35,14 @@ class SuppDataAlias extends Component {
     this.handleNav = this.handleNav.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
   }
+
+  //calls API to receive currently saved Alias names for brand
   componentWillMount() {
-    const { id } = this.props.match.params
-    this.props.fetchAlias(id)
+    this.setState({isLoading: true})
+    this.props.fetchAlias(this.brandId)
   }
 
+  //when component receives props with data from API, will push alias names in array in state
   componentWillReceiveProps(nextProps) {
     if(nextProps.alias !== this.props.alias) {
       _.map(nextProps.alias, val => {
@@ -47,30 +51,32 @@ class SuppDataAlias extends Component {
       if(nextProps.alias.length > 0) {
         this.state.progressBar++
       }
+      this.setState({isLoading: false})
     }
   }
 
-  //toggles if clause that sets state to target elements value and enables user to edit the answer
+  //toggles editing mode for specified question and sets state of all alias names to be displayed under input
   handleEdit(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     _.map(this.props.alias, name=> {
       this.setState({[name.alias]: name.alias})
     })
-    this.setState({isEditing: event.target.name, save: false})
+    this.setState({isEditing: event.target.name})
   }
-  //sets state for isEditing to null which will toggle the ability to edit
+
+  //clears all errors in state and recalls API to ensure all data displayed to user is up to date
   handleCancel(event) {
     event.preventDefault()
-    this.setState({changeError: false, renderChangeError: false, isEditing: null, renderCurrent: null, currentAnswer: ''})
+    this.setState({aliasArr: [], changeError: false, renderChangeError: false, isLoading: true, isEditing: null, renderCurrent: null, currentAnswer: ''})
+    this.props.fetchAlias(this.brandId)
   }
-  //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
+
+  //handles state of alias names to be displayed in non editing mode
   handleSave(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     this.setState({isEditing: null, renderCurrent: this.state.currentAnswer})
     if(event.target.value === 'next') {
-      this.props.history.push(`/env-standards-compliance/${id}`)
+      this.props.history.push(`/env-standards-compliance/${this.brandId}`)
     }
     if(this.state.aliasArr.length > 0) {
       this.state.progressBar++
@@ -79,25 +85,27 @@ class SuppDataAlias extends Component {
     }
     this.setState({renderCurrent: null, currentAnswer: '', changeError: false, renderChangeError: false})
   }
-  //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
+
+  //sets state of the input value, toggles change error, and sets current editing as hashlink
   handleInput(event, { value }) {
     this.setState({currentEditing: '#alias', changeError: true,  currentAnswer: value})
   }
 
+  //deletes specified alias name from state and sends DELETE request to API
   handleDelete(event) {
-    const { id }  = this.props.match.params
     event.preventDefault()
-    this.props.deleteAlias(id, event.target.name)
+    this.props.deleteAlias(this.brandId, event.target.name)
     this.setState({aliasArr: this.state.aliasArr.filter(ali => {return ali.alias !== event.target.name}), [event.target.name]: null})
   }
 
+  //adds value of current answer to array of alias names in state and sends POST request to API
   handleAdd(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
-    this.props.createAlias({brand: id, alias: this.state.currentAnswer})
+    this.props.createAlias({brand: this.brandId, alias: this.state.currentAnswer})
     this.setState({aliasArr: [...this.state.aliasArr, {alias: this.state.currentAnswer}]})
   }
 
+  //render list of currently saved alias names along with delete button that will remove the name from state and API
   renderAlias() {
     return _.map(this.state.aliasArr, name => {
       if(name) {
@@ -111,21 +119,22 @@ class SuppDataAlias extends Component {
     })
   }
 
+  //closes portal upon clicking Go button
   handlePortal() {
     this.setState({portal: false})
   }
 
+  //handles navigation between pages to prevent users from leaving current page while they are currently editing a question.
   handleNav(event) {
-    const { id }  = this.props.match.params
     if(this.state.changeError === true) {
       this.setState({renderChangeError: true, portal: true})
     } else {
       if(event.target.name === 'previous') {
-        this.props.history.push(`/brandContact/${id}`)
+        this.props.history.push(`/brandContact/${this.brandId}`)
       } else if(event.target.name === 'next') {
-        this.props.history.push(`/env-standards-compliance/${id}`)
+        this.props.history.push(`/env-standards-compliance/${this.brandId}`)
       } else if(event.target.name === 'landing') {
-        this.props.history.push(`/brandLanding/${id}`)
+        this.props.history.push(`/brandLanding/${this.brandId}`)
       }
     }
   }
@@ -160,53 +169,55 @@ class SuppDataAlias extends Component {
             </Segment>
           </Portal>
         ) : ''}
-        <form className='brand-form'>
-          {isEditing === '1' ? (
-            <div className='editing' id='alias'>
-              <h5>Add any alternative names the brand might have: </h5>
-              <Form.Field inline>
-                <Input
-                  label='Brand Alias'
-                  placeholder={this.currentAnswer}
-                  value={state.currentAnswer}
-                  onChange={this.handleInput}
-                  name='summary'
-                />
-                <button className='add' onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button>
-              </Form.Field>
-              <p className='error-message'>{state.renderChangeError === true ? 'Please hit Done or Cancel your current input' : ''}</p>
-              <h5>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h5>
-              <div className='alias-list'>{
-                _.map(this.state.aliasArr, name => {
+        {state.isLoading === true ? <Loader active inline='centered' /> :
+          <form className='brand-form'>
+            {isEditing === '1' ? (
+              <div className='editing' id='alias'>
+                <h5>Add any alternative names the brand might have: </h5>
+                <Form.Field inline>
+                  <Input
+                    label='Brand Alias'
+                    placeholder={this.currentAnswer}
+                    value={state.currentAnswer}
+                    onChange={this.handleInput}
+                    name='summary'
+                  />
+                  <button className='add' onClick={this.handleAdd} value={this.state.currentAnswer}>Add</button>
+                </Form.Field>
+                <p className='error-message'>{state.renderChangeError === true ? 'Please hit Done or Cancel your current input' : ''}</p>
+                <h5>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h5>
+                <div className='alias-list'>{
+                  _.map(this.state.aliasArr, name => {
+                    return(
+                      <div className='alias-item' key={name.alias}>
+                        <div>{name.alias}</div>
+                        <div><button className='delete-alias' onClick={this.handleDelete} name={name.alias}>Delete</button></div>
+                      </div>
+                    )
+                  })}</div>
+                <div className='button-container'>
+                  <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                  <div><button onClick={this.handleSave}>Done</button></div>
+                  <div><button onClick={this.handleSave} value='next'>Next</button></div>
+                </div>
+              </div>) : (
+              <div className='not-editing'>
+                <h5>Add any alternative names the brand might have: </h5>
+                <h5>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h5>
+                <ul>{_.map(state.aliasArr, ali => {
                   return(
-                    <div className='alias-item' key={name.alias}>
-                      <div>{name.alias}</div>
-                      <div><button className='delete-alias' onClick={this.handleDelete} name={name.alias}>Delete</button></div>
-                    </div>
-                  )
-                })}</div>
-              <div className='button-container'>
-                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-                <div><button onClick={this.handleSave}>Done</button></div>
-                <div><button onClick={this.handleSave} value='next'>Next</button></div>
-              </div>
-            </div>) : (
-            <div className='not-editing'>
-              <h5>Add any alternative names the brand might have: </h5>
-              <h5>{state.aliasArr.length > 0 ? 'List of current Brand Aliases:' : ''} </h5>
-              <ul>{_.map(state.aliasArr, ali => {
-                return(
-                  <li key={ali.alias}>{ali.alias}</li>
+                    <li key={ali.alias}>{ali.alias}</li>
+                  )}
                 )}
-              )}
-              </ul>
-              <div className='button-container'>
-                <div></div>
-                <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+                </ul>
+                <div className='button-container'>
+                  <div></div>
+                  <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+                </div>
               </div>
-            </div>
-          )}
-        </form>
+            )}
+          </form>
+        }
       </div>
     )
   }

@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { Form, Radio, Input, Checkbox, Progress, Portal, Segment } from 'semantic-ui-react'
+import { Form, Radio, Input, Checkbox, Progress, Portal, Segment, Loader } from 'semantic-ui-react'
 import { fetchAllStyles, fetchStyles, createStyles, updateStyles } from '../../actions/style'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -43,6 +43,7 @@ class SuppDataStyles extends Component {
       originalStyleScores: false,
     }
 
+    this.brandId = this.props.match.params.id
 
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
@@ -56,19 +57,17 @@ class SuppDataStyles extends Component {
     this.handleSaveScores = this.handleSaveScores.bind(this)
   }
   componentWillMount() {
-    const { id } = this.props.match.params
+    this.setState({isLoading: true})
     this.props.fetchAllStyles()
-    this.props.fetchStyles(id)
+    this.props.fetchStyles(this.brandId)
   }
 
   componentWillReceiveProps(nextProps) {
-    const { id }  = this.props.match.params
     if(nextProps.styles !== this.props.styles) {
       _.map(nextProps.styles, compare => {
         if(compare.style_qa.question === 'style-scores') {
           if(this.state.progress.length <= 0) {
             this.state.progressBar++
-            console.log('scores')
           }
           this.setState({
             [compare.style_qa.tag]: compare.score,
@@ -80,25 +79,23 @@ class SuppDataStyles extends Component {
         } else if(compare.style_qa.question === 'plus') {
           this.setState({originalplus: compare.style_qa.tag, plus: compare.style_qa.tag})
           this.state.progressBar++
-          console.log('plus')
         } else if(compare.style_qa.question === 'maternity') {
           this.setState({originalmaternity: compare.style_qa.tag, maternity: compare.style_qa.tag})
           this.state.progressBar++
-          console.log('maternity')
         } else if(compare.style_qa.question !== 'kids' && compare.style_qa.question !== 'gender' && compare.style_qa.question !== 'price') {
           if(this.state[`${compare.style_qa.question}Arr`].length <= 0) {
             this.state.progressBar++
-            console.log('styles')
           }
-          this.state.styles.push({brand: id, style: compare.style_qa.tag})
+          this.state.styles.push({brand: this.brandId, style: compare.style_qa.tag})
           this.setState({
             [compare.style_qa.question]: compare.style_qa.question,
             [`original${compare.style_qa.question}`]: compare.style_qa.question,
             [compare.style_qa.tag]: compare.style_qa.tag,
           })
-          this.state[`${compare.style_qa.question}Arr`].push({brand: id, style: compare.style_qa.tag})
+          this.state[`${compare.style_qa.question}Arr`].push({brand: this.brandId, style: compare.style_qa.tag})
         }
       })
+      this.setState({isLoading: false})
     }
   }
 
@@ -106,7 +103,6 @@ class SuppDataStyles extends Component {
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     if(this.state.changeError === false) {
       this.setState({
         isEditing: event.target.name,
@@ -119,21 +115,19 @@ class SuppDataStyles extends Component {
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     _.map(this.state.styles, val => {
       this.setState({[val.style]: null})
     })
     this.state.progress.map(score => {
       this.setState({[score]: 0})
     })
-    this.setState({[`${event.target.name}Arr`]: [], isEditing: null, changeError: false, renderChangeError: false})
-    this.props.fetchStyles(id)
+    this.setState({isLoading: true, [`${event.target.name}Arr`]: [], isEditing: null, changeError: false, renderChangeError: false})
+    this.props.fetchStyles(this.brandId)
   }
 
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     this.props.createStyles(this.state[`${event.target.name}Arr`])
     if(!this.state[`original${event.target.name}`]) {
       this.setState({[`$original${event.target.name}`]: event.target.name})
@@ -176,10 +170,9 @@ class SuppDataStyles extends Component {
 
   handleSaveScores(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     _.map(this.state.progress, style => {
-      this.props.createStyles({brand: id, style: style, score: this.state[style]})
-      event.target.value === 'next' ? this.props.history.push(`/suppDataTypes/${id}`) : this.setState({isEditing: null})
+      this.props.createStyles({brand: this.brandId, style: style, score: this.state[style]})
+      event.target.value === 'next' ? this.props.history.push(`/suppDataTypes/${this.brandId}`) : this.setState({isEditing: null})
     })
     if(this.state.originalStyleScores === false) {
       this.setState({originalStyleScores: true})
@@ -189,8 +182,7 @@ class SuppDataStyles extends Component {
 
   handleSaveRadio(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
-    this.props.createStyles({brand: id, style: this.state[event.target.name]})
+    this.props.createStyles({brand: this.brandId, style: this.state[event.target.name]})
     this.setState({[`original${event.target.name}`]: this.state[event.target.name]})
     if(!this.state[`original${event.target.name}`]) { this.state.progressBar++ }
     if(event.target.value === 'next') {
@@ -260,7 +252,6 @@ class SuppDataStyles extends Component {
   }
 
   handleCheckbox(event, { value, name }){
-    const { id }  = this.props.match.params
     if(this.state[value] === value) {
       this.setState({
         [value]: null,
@@ -269,7 +260,7 @@ class SuppDataStyles extends Component {
     } else {
       this.setState({
         [value]: value,
-        [`${name}Arr`]: [...this.state[`${name}Arr`], {brand: id, style: value}],
+        [`${name}Arr`]: [...this.state[`${name}Arr`], {brand: this.brandId, style: value}],
       })
     }
     this.setState({changeError: true, currentEditing: `#${name}`})
@@ -343,16 +334,15 @@ class SuppDataStyles extends Component {
   }
 
   handleNav(event) {
-    const { id }  = this.props.match.params
     if(this.state.changeError === true) {
       this.setState({renderChangeError: true, portal: true})
     } else {
       if(event.target.name === 'previous') {
-        this.props.history.push(`/suppDataSku/${id}`)
+        this.props.history.push(`/suppDataSku/${this.brandId}`)
       } else if(event.target.name === 'next') {
-        this.props.history.push(`/suppDataTypes/${id}`)
+        this.props.history.push(`/suppDataTypes/${this.brandId}`)
       } else if(event.target.name === 'landing') {
-        this.props.history.push(`/brandLanding/${id}`)
+        this.props.history.push(`/brandLanding/${this.brandId}`)
       }
     }
   }
@@ -363,16 +353,12 @@ class SuppDataStyles extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props styles', this.props.styles)
-    console.log('props pre_qa', this.props.pre_qa)
-    console.log('state', this.state)
-    const { id }  = this.props.match.params
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props.styles
     return(
       <div className='form-container'>
-        <SuppHeading id={id} brand={this.props.brand}/>
+        <SuppHeading id={this.brandId} brand={this.props.brand}/>
         <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -392,240 +378,242 @@ class SuppDataStyles extends Component {
             </Segment>
           </Portal>
         ) : ''}
-        <form className='brand-form'>
-          {isEditing === 'men' ? (
-            <div className='editing' id='men'>
-              <h4>Does the Brand sell clothes for men?</h4>
-              {this.renderStyles('men', '#older-women')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the Brand sell clothes for men?</h4>
-              {this.renderAnswers('men')}
-              <p className='small-divider'></p>
-            </div>
-          )}
-
-          {isEditing === 'older-women' ? (
-            <div className='editing' id='older-women'>
-              <h4>Does the Brand sell clothes for older-women?</h4>
-              {this.renderStyles('older-women', '#plus')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the Brand sell clothes for older-women?</h4>
-              {this.renderAnswers('older-women')}
-              <p className='small-divider'></p>
-            </div>
-          )}
-
-          {isEditing === 'plus' ? (
-            <div className='editing' id='plus'>
-              <h4>Does the Brand sell Plus size clothes?</h4>
-              <Form.Field inline>
-                <Radio
-                  label='Yes'
-                  checked={state.plus === 'plus' ? true : false}
-                  name='plus'
-                  onClick={this.handleRadio}
-                  value='plus'
-                />
-              </Form.Field>
-              <Form.Field inline>
-                <Radio
-                  label='No'
-                  checked={state.plus === 'no-plus' ? true : false}
-                  name='plus'
-                  onClick={this.handleRadio}
-                  value='no-plus'
-                />
-              </Form.Field>
-              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
-              <div className='button-container'>
-                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-                <div><button name='plus' onClick={this.handleSaveRadio}>Save</button></div>
-                <div><HashLink to='#maternity'><button name='plus' value='next' onClick={this.handleSaveRadio}>Save & Next</button></HashLink></div>
+        {state.isLoading === true ? <Loader active inline='centered' /> :
+          <form className='brand-form'>
+            {isEditing === 'men' ? (
+              <div className='editing' id='men'>
+                <h4>Does the Brand sell clothes for men?</h4>
+                {this.renderStyles('men', '#older-women')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the Brand sell clothes for men?</h4>
+                {this.renderAnswers('men')}
+                <p className='small-divider'></p>
               </div>
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the Brand sell Plus size clothes?</h4>
-              {state.plus ? <p>{state.plus === 'plus' ? 'Yes' : 'No'}</p> : ''}
-              <div className='button-container'>
-                <div></div>
-                <div><button name='plus' onClick={this.handleEdit}>Edit</button></div>
+            )}
+
+            {isEditing === 'older-women' ? (
+              <div className='editing' id='older-women'>
+                <h4>Does the Brand sell clothes for older-women?</h4>
+                {this.renderStyles('older-women', '#plus')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the Brand sell clothes for older-women?</h4>
+                {this.renderAnswers('older-women')}
+                <p className='small-divider'></p>
               </div>
-              <p className='small-divider'></p>
-            </div>
-          )}
+            )}
 
-          {isEditing === 'maternity' ? (
-            <div className='editing' id='maternity'>
-              <h4>Does the Brand sell Maternity clothes?</h4>
-              <Form.Field inline>
-                <Radio
-                  label='Yes'
-                  checked={state.maternity === 'maternity' ? true : false}
-                  name='maternity'
-                  onClick={this.handleRadio}
-                  value='maternity'
-                />
-              </Form.Field>
-              <Form.Field inline>
-                <Radio
-                  label='No'
-                  checked={state.maternity === 'no-maternity' ? true : false}
-                  name='maternity'
-                  onClick={this.handleRadio}
-                  value='no-maternity'
-                />
-              </Form.Field>
-              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
-              <div className='button-container'>
-                <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
-                <div><button name='maternity' onClick={this.handleSaveRadio}>Save</button></div>
-                <div><HashLink to='#young-women'><button name='maternity' value='next' onClick={this.handleSaveRadio}>Save & Next</button></HashLink></div>
+            {isEditing === 'plus' ? (
+              <div className='editing' id='plus'>
+                <h4>Does the Brand sell Plus size clothes?</h4>
+                <Form.Field inline>
+                  <Radio
+                    label='Yes'
+                    checked={state.plus === 'plus' ? true : false}
+                    name='plus'
+                    onClick={this.handleRadio}
+                    value='plus'
+                  />
+                </Form.Field>
+                <Form.Field inline>
+                  <Radio
+                    label='No'
+                    checked={state.plus === 'no-plus' ? true : false}
+                    name='plus'
+                    onClick={this.handleRadio}
+                    value='no-plus'
+                  />
+                </Form.Field>
+                <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
+                <div className='button-container'>
+                  <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                  <div><button name='plus' onClick={this.handleSaveRadio}>Save</button></div>
+                  <div><HashLink to='#maternity'><button name='plus' value='next' onClick={this.handleSaveRadio}>Save & Next</button></HashLink></div>
+                </div>
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the Brand sell Plus size clothes?</h4>
+                {state.plus ? <p>{state.plus === 'plus' ? 'Yes' : 'No'}</p> : ''}
+                <div className='button-container'>
+                  <div></div>
+                  <div><button name='plus' onClick={this.handleEdit}>Edit</button></div>
+                </div>
+                <p className='small-divider'></p>
               </div>
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the Brand sell Maternity clothes?</h4>
-              {state.maternity ? <p>{state.maternity === 'maternity' ? 'Yes' : 'No'}</p> : ''}
-              <div className='button-container'>
-                <div></div>
-                <div><button name='maternity' onClick={this.handleEdit}>Edit</button></div>
+            )}
+
+            {isEditing === 'maternity' ? (
+              <div className='editing' id='maternity'>
+                <h4>Does the Brand sell Maternity clothes?</h4>
+                <Form.Field inline>
+                  <Radio
+                    label='Yes'
+                    checked={state.maternity === 'maternity' ? true : false}
+                    name='maternity'
+                    onClick={this.handleRadio}
+                    value='maternity'
+                  />
+                </Form.Field>
+                <Form.Field inline>
+                  <Radio
+                    label='No'
+                    checked={state.maternity === 'no-maternity' ? true : false}
+                    name='maternity'
+                    onClick={this.handleRadio}
+                    value='no-maternity'
+                  />
+                </Form.Field>
+                <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
+                <div className='button-container'>
+                  <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                  <div><button name='maternity' onClick={this.handleSaveRadio}>Save</button></div>
+                  <div><HashLink to='#young-women'><button name='maternity' value='next' onClick={this.handleSaveRadio}>Save & Next</button></HashLink></div>
+                </div>
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the Brand sell Maternity clothes?</h4>
+                {state.maternity ? <p>{state.maternity === 'maternity' ? 'Yes' : 'No'}</p> : ''}
+                <div className='button-container'>
+                  <div></div>
+                  <div><button name='maternity' onClick={this.handleEdit}>Edit</button></div>
+                </div>
+                <p className='small-divider'></p>
               </div>
-              <p className='small-divider'></p>
-            </div>
-          )}
+            )}
 
-          {isEditing === 'young-women' ? (
-            <div className='editing' id='young-women'>
-              <h4>Does the Brand sell clothes for young women?</h4>
-              {this.renderStyles('young-women', '#designer')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the Brand sell clothes for young-women?</h4>
-              {this.renderAnswers('young-women')}
-              <p className='small-divider'></p>
-            </div>
-          )}
+            {isEditing === 'young-women' ? (
+              <div className='editing' id='young-women'>
+                <h4>Does the Brand sell clothes for young women?</h4>
+                {this.renderStyles('young-women', '#designer')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the Brand sell clothes for young-women?</h4>
+                {this.renderAnswers('young-women')}
+                <p className='small-divider'></p>
+              </div>
+            )}
 
-          {isEditing === 'designer' ? (
-            <div className='editing' id='designer'>
-              <h4>Where is the brand designed?</h4>
-              {this.renderStyles('designer', '#basics')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Where is the brand designed?</h4>
-              {this.renderAnswers('designer')}
-              <p className='small-divider'></p>
-            </div>
-          )}
+            {isEditing === 'designer' ? (
+              <div className='editing' id='designer'>
+                <h4>Where is the brand designed?</h4>
+                {this.renderStyles('designer', '#basics')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Where is the brand designed?</h4>
+                {this.renderAnswers('designer')}
+                <p className='small-divider'></p>
+              </div>
+            )}
 
-          {isEditing === 'basics' ? (
-            <div className='editing' id='basics'>
-              <h4>Does the brand sell Basics?</h4>
-              {this.renderStyles('basics', '#luxury')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the brand sell basics?</h4>
-              {this.renderAnswers('basics')}
-              <p className='small-divider'></p>
-            </div>
-          )}
+            {isEditing === 'basics' ? (
+              <div className='editing' id='basics'>
+                <h4>Does the brand sell Basics?</h4>
+                {this.renderStyles('basics', '#luxury')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the brand sell basics?</h4>
+                {this.renderAnswers('basics')}
+                <p className='small-divider'></p>
+              </div>
+            )}
 
-          {isEditing === 'luxury' ? (
-            <div className='editing' id='luxury'>
-              <h4>Does the brand sell Luxury clothes?</h4>
-              {this.renderStyles('luxury', '#accessories')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the brand sell Luxury clothes?</h4>
-              {this.renderAnswers('luxury')}
-              <p className='small-divider'></p>
-            </div>
-          )}
+            {isEditing === 'luxury' ? (
+              <div className='editing' id='luxury'>
+                <h4>Does the brand sell Luxury clothes?</h4>
+                {this.renderStyles('luxury', '#accessories')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the brand sell Luxury clothes?</h4>
+                {this.renderAnswers('luxury')}
+                <p className='small-divider'></p>
+              </div>
+            )}
 
-          {isEditing === 'accessories' ? (
-            <div className='editing' id='accessories'>
-              <h4>Does the brand sell accessories?</h4>
-              {this.renderStyles('accessories', '#bags')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the brand sell accessories?</h4>
-              {this.renderAnswers('accessories')}
-              <p className='small-divider'></p>
-            </div>
-          )}
+            {isEditing === 'accessories' ? (
+              <div className='editing' id='accessories'>
+                <h4>Does the brand sell accessories?</h4>
+                {this.renderStyles('accessories', '#bags')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the brand sell accessories?</h4>
+                {this.renderAnswers('accessories')}
+                <p className='small-divider'></p>
+              </div>
+            )}
 
-          {isEditing === 'bags' ? (
-            <div className='editing' id='bags'>
-              <h4>Does the brand sell bags?</h4>
-              {this.renderStyles('bags', '#fitness')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the brand sell bags?</h4>
-              {this.renderAnswers('bags')}
-              <p className='small-divider'></p>
-            </div>
-          )}
+            {isEditing === 'bags' ? (
+              <div className='editing' id='bags'>
+                <h4>Does the brand sell bags?</h4>
+                {this.renderStyles('bags', '#fitness')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the brand sell bags?</h4>
+                {this.renderAnswers('bags')}
+                <p className='small-divider'></p>
+              </div>
+            )}
 
-          {isEditing === 'fitness' ? (
-            <div className='editing' id='fitness'>
-              <h4>Does the brand sell Fitness clothing?</h4>
-              {this.renderStyles('fitness', '#outdoor')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the brand sell Fitness clothing?</h4>
-              {this.renderAnswers('fitness')}
-              <p className='small-divider'></p>
-            </div>
-          )}
+            {isEditing === 'fitness' ? (
+              <div className='editing' id='fitness'>
+                <h4>Does the brand sell Fitness clothing?</h4>
+                {this.renderStyles('fitness', '#outdoor')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the brand sell Fitness clothing?</h4>
+                {this.renderAnswers('fitness')}
+                <p className='small-divider'></p>
+              </div>
+            )}
 
-          {isEditing === 'outdoor' ? (
-            <div className='editing' id='outdoor'>
-              <h4>Does the brand sell Outdoor Gear?</h4>
-              {this.renderStyles('outdoor', '#shoes')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the brand sell Outdoor Gear?</h4>
-              {this.renderAnswers('outdoor')}
-              <p className='small-divider'></p>
-            </div>
-          )}
+            {isEditing === 'outdoor' ? (
+              <div className='editing' id='outdoor'>
+                <h4>Does the brand sell Outdoor Gear?</h4>
+                {this.renderStyles('outdoor', '#shoes')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the brand sell Outdoor Gear?</h4>
+                {this.renderAnswers('outdoor')}
+                <p className='small-divider'></p>
+              </div>
+            )}
 
-          {isEditing === 'shoes' ? (
-            <div className='editing' id='shoes'>
-              <h4>Does the Brand sell shoes?</h4>
-              {this.renderStyles('shoes', '#underwear')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the Brand sell shoes?</h4>
-              {this.renderAnswers('shoes')}
-              <p className='small-divider'></p>
-            </div>
-          )}
+            {isEditing === 'shoes' ? (
+              <div className='editing' id='shoes'>
+                <h4>Does the Brand sell shoes?</h4>
+                {this.renderStyles('shoes', '#underwear')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the Brand sell shoes?</h4>
+                {this.renderAnswers('shoes')}
+                <p className='small-divider'></p>
+              </div>
+            )}
 
-          {isEditing === 'underwear' ? (
-            <div className='editing' id='underwear'>
-              <h4>Does the Brand sell underwear?</h4>
-              {this.renderStyles('underwear', '#style-scores')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Does the Brand sell underwear?</h4>
-              {this.renderAnswers('underwear')}
-              <p className='small-divider'></p>
-            </div>
-          )}
+            {isEditing === 'underwear' ? (
+              <div className='editing' id='underwear'>
+                <h4>Does the Brand sell underwear?</h4>
+                {this.renderStyles('underwear', '#style-scores')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Does the Brand sell underwear?</h4>
+                {this.renderAnswers('underwear')}
+                <p className='small-divider'></p>
+              </div>
+            )}
 
-          {isEditing === 'style-scores' ? (
-            <div className='editing' id='style-scores'>
-              <h4>Style Scores</h4>
-              {this.renderScores('style-scores')}
-            </div>) : (
-            <div className='not-editing'>
-              <h4>Style Scores</h4>
-              {this.renderFinalPercentage('style-scores')}
-            </div>
-          )}
-        </form>
+            {isEditing === 'style-scores' ? (
+              <div className='editing' id='style-scores'>
+                <h4>Style Scores</h4>
+                {this.renderScores('style-scores')}
+              </div>) : (
+              <div className='not-editing'>
+                <h4>Style Scores</h4>
+                {this.renderFinalPercentage('style-scores')}
+              </div>
+            )}
+          </form>
+        }
       </div>
     )
   }

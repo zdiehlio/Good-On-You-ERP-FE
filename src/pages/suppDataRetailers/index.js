@@ -11,7 +11,6 @@ import _ from 'lodash'
 class SuppDataRetailers extends Component {
   constructor(props){
     super(props)
-    this.brandId = this.props.match.params.id
     this.state = {
       isEditing: null,
       errorname: false,
@@ -26,7 +25,7 @@ class SuppDataRetailers extends Component {
       renderChangeError: false,
     }
 
-    // const { id } = this.props.match.params
+    this.brandId = this.props.match.params.id
 
     this.handleInput = this.handleInput.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
@@ -215,11 +214,7 @@ class SuppDataRetailers extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.retailer)
-    console.log('preQA', this.props.pre_qa)
-    console.log('state', this.state)
     const isEditing = this.state.isEditing
-    const { id }  = this.props.match.params
     const state = this.state
     const props = this.props.qa
     let sorted = this.state.territories.sort((a, b) => {
@@ -235,7 +230,7 @@ class SuppDataRetailers extends Component {
     })
     return(
       <div className='form-container'>
-        <SuppHeading id={id} brand={this.props.brand}/>
+        <SuppHeading id={this.brandId} brand={this.props.brand}/>
         <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -351,7 +346,7 @@ class SuppDataRetailers extends Component {
                 <div className='button-container'>
                   <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                   <div><button onClick={this.handleOnlineSave} name='online'>Save</button></div>
-                  <div><Link to={`/brandLanding/${id}`}><button onClick={this.handleOnlineSave} name='online'>Save & Finish</button></Link></div>
+                  <div><Link to={`/brandLanding/${this.brandId}`}><button onClick={this.handleOnlineSave} name='online'>Save & Finish</button></Link></div>
                 </div>
               </div>) : (
               <div className='not-editing'>

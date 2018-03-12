@@ -24,6 +24,8 @@ class Rating extends Component {
       nextPage: '',
     }
 
+    this.brandId = this.props.match.params.id
+
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
@@ -34,93 +36,86 @@ class Rating extends Component {
     this.handleNav = this.handleNav.bind(this)
   }
   componentWillMount() {
-    const { id } = this.props.match.params
     let theme = this.props.match.path.slice(1, -4)
-    this.setState({loading: true, brandId: id})
-    this.props.fetchAllRating(theme, id)
-    this.props.fetchRating(id, theme)
-    this.props.fetchRatingScore(id)
+    this.setState({isLoading: true, brandId: this.brandId})
+    this.props.fetchAllRating(theme, this.brandId)
+    this.props.fetchRating(this.brandId, theme)
+    this.props.fetchRatingScore(this.brandId)
     if(theme === 'env-standards-compliance') {
-      this.setState({title: 'Environment/Standards Compliance', prevPage: `/suppDataAlias/${id}`, nextPage: `/env-resource/${id}`})
+      this.setState({title: 'Environment/Standards Compliance', prevPage: `/suppDataAlias/${this.brandId}`, nextPage: `/env-resource/${this.brandId}`})
     }
     if(theme === 'env-resource') {
-      this.setState({title: 'Environment/Resource', prevPage: `/env-standards-compliance/${id}`, nextPage: `/env-climate-change/${id}`})
+      this.setState({title: 'Environment/Resource', prevPage: `/env-standards-compliance/${this.brandId}`, nextPage: `/env-climate-change/${this.brandId}`})
     }
     if(theme === 'env-climate-change') {
-      this.setState({title: 'Environment/Climate Change', prevPage: `/env-resource/${id}`, nextPage: `/env-chemicals/${id}`})
+      this.setState({title: 'Environment/Climate Change', prevPage: `/env-resource/${this.brandId}`, nextPage: `/env-chemicals/${this.brandId}`})
     }
     if(theme === 'env-chemicals') {
-      this.setState({title: 'Environment/Chemicals', prevPage: `/env-climate-change/${id}`, nextPage: `/env-water/${id}`})
+      this.setState({title: 'Environment/Chemicals', prevPage: `/env-climate-change/${this.brandId}`, nextPage: `/env-water/${this.brandId}`})
     }
     if(theme === 'env-water') {
-      this.setState({title: 'Environment/Water', prevPage: `/env-chemicals/${id}`, nextPage: `/env-positive-citizenship/${id}`})
+      this.setState({title: 'Environment/Water', prevPage: `/env-chemicals/${this.brandId}`, nextPage: `/env-positive-citizenship/${this.brandId}`})
     }
     if(theme === 'env-positive-citizenship') {
-      this.setState({title: 'Environment/Positive Citizenship', prevPage: `/env-water/${id}`, nextPage: `/env-negative-citizenship/${id}`})
+      this.setState({title: 'Environment/Positive Citizenship', prevPage: `/env-water/${this.brandId}`, nextPage: `/env-negative-citizenship/${this.brandId}`})
     }
     if(theme === 'env-negative-citizenship') {
-      this.setState({title: 'Environment/Negative Citizenship', prevPage: `/env-positive-citizenship/${id}`, nextPage: `/labour-ethical-fashion-report/${id}`})
+      this.setState({title: 'Environment/Negative Citizenship', prevPage: `/env-positive-citizenship/${this.brandId}`, nextPage: `/labour-ethical-fashion-report/${this.brandId}`})
     }
     if(theme === 'labour-ethical-fashion-report') {
-      this.setState({title: 'Labour/Ethical Fashion Report', prevPage: `/env-negative-citizenship/${id}`, nextPage: `/labour-certification/${id}`})
+      this.setState({title: 'Labour/Ethical Fashion Report', prevPage: `/env-negative-citizenship/${this.brandId}`, nextPage: `/labour-certification/${this.brandId}`})
     }
     if(theme === 'labour-certification') {
-      this.setState({title: 'Labour/Certification', prevPage: `/labour-ethical-fashion-report/${id}`, nextPage: `/labour-policies-worker-empowerment/${id}`})
+      this.setState({title: 'Labour/Certification', prevPage: `/labour-ethical-fashion-report/${this.brandId}`, nextPage: `/labour-policies-worker-empowerment/${this.brandId}`})
     }
     if(theme === 'labour-policies-worker-empowerment') {
-      this.setState({title: 'Labour/Policies and Worker Empowerment', prevPage: `/labour-certification/${id}`, nextPage: `/labour-supply-chain/${id}`})
+      this.setState({title: 'Labour/Policies and Worker Empowerment', prevPage: `/labour-certification/${this.brandId}`, nextPage: `/labour-supply-chain/${this.brandId}`})
     }
     if(theme === 'labour-supply-chain') {
-      this.setState({title: 'Labour/Supply Chain', prevPage: `/labour-policies-worker-empowerment/${id}`, nextPage: `/labour-low-risk-production/${id}`})
+      this.setState({title: 'Labour/Supply Chain', prevPage: `/labour-policies-worker-empowerment/${this.brandId}`, nextPage: `/labour-low-risk-production/${this.brandId}`})
     }
     if(theme === 'labour-low-risk-production') {
-      this.setState({title: 'Labour/Low Risk Production', prevPage: `/labour-supply-chain/${id}`, nextPage: `/labour-living-wage/${id}`})
+      this.setState({title: 'Labour/Low Risk Production', prevPage: `/labour-supply-chain/${this.brandId}`, nextPage: `/labour-living-wage/${this.brandId}`})
     }
     if(theme === 'labour-living-wage') {
-      this.setState({title: 'Labour/Living Wage', prevPage: `/labour-low-risk-production/${id}`, nextPage: `/labour-knowing-suppliers/${id}`})
+      this.setState({title: 'Labour/Living Wage', prevPage: `/labour-low-risk-production/${this.brandId}`, nextPage: `/labour-knowing-suppliers/${this.brandId}`})
     }
     if(theme === 'labour-knowing-suppliers') {
-      this.setState({title: 'Labour/Knowing Suppliers', prevPage: `/labour-living-wage/${id}`, nextPage: `/labour-supplier-relationships-auditing/${id}`})
+      this.setState({title: 'Labour/Knowing Suppliers', prevPage: `/labour-living-wage/${this.brandId}`, nextPage: `/labour-supplier-relationships-auditing/${this.brandId}`})
     }
     if(theme === 'labour-supplier-relationships-auditing') {
-      this.setState({title: 'Labour/Supplier Relationships & Auditing', prevPage: `/labour-knowing-suppliers/${id}`, nextPage: `/labour-positive-citizenship/${id}`})
+      this.setState({title: 'Labour/Supplier Relationships & Auditing', prevPage: `/labour-knowing-suppliers/${this.brandId}`, nextPage: `/labour-positive-citizenship/${this.brandId}`})
     }
     if(theme === 'labour-positive-citizenship') {
-      this.setState({title: 'Labour/Positive Citizenship', prevPage: `/labour-supplier-relationships-auditing/${id}`, nextPage: `/labour-negative-citizenship/${id}`})
+      this.setState({title: 'Labour/Positive Citizenship', prevPage: `/labour-supplier-relationships-auditing/${this.brandId}`, nextPage: `/labour-negative-citizenship/${this.brandId}`})
     }
     if(theme === 'labour-negative-citizenship') {
-      this.setState({title: 'Labour/Negative Citizenship', prevPage: `/labour-positivie-citizenship/${id}`, nextPage: `/animal-animal-products/${id}`})
+      this.setState({title: 'Labour/Negative Citizenship', prevPage: `/labour-positivie-citizenship/${this.brandId}`, nextPage: `/animal-animal-products/${this.brandId}`})
     }
     if(theme === 'animal-animal-products') {
-      this.setState({title: 'Animal/Products', prevPage: `/labour-negative-citizenship/${id}`, nextPage: `/animal-positive-citizenship/${id}`})
+      this.setState({title: 'Animal/Products', prevPage: `/labour-negative-citizenship/${this.brandId}`, nextPage: `/animal-positive-citizenship/${this.brandId}`})
     }
     if(theme === 'animal-positive-citizenship') {
-      this.setState({title: 'Animal/Positive Citizenship', prevPage: `/animal-animal-products/${id}`, nextPage: `/animal-negative-citizenship/${id}`})
+      this.setState({title: 'Animal/Positive Citizenship', prevPage: `/animal-animal-products/${this.brandId}`, nextPage: `/animal-negative-citizenship/${this.brandId}`})
     }
     if(theme === 'animal-negative-citizenship') {
-      this.setState({title: 'Animal/Negative Citizenship', prevPage: `/animal-positive-citizenship/${id}`, nextPage: `/brandCauses/${id}`})
+      this.setState({title: 'Animal/Negative Citizenship', prevPage: `/animal-positive-citizenship/${this.brandId}`, nextPage: `/brandCauses/${this.brandId}`})
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { id } = this.props.match.params
     if(nextProps.qa !== this.props.qa) {
       _.map(nextProps.qa, rate => {
         this.setState({
           [`answer${rate.answer}`]: rate.is_selected,
-          [`originalAnswer${rate.answer}`]: rate.is_selected,
           [`props${rate.answer}`]: rate.answer,
           [`show${rate.answer}`]: rate.is_selected,
-          [`originalShow${rate.answer}`]: rate.is_selected,
           [`url${rate.answer}`]: rate.url,
-          [`originalUrl${rate.answer}`]: rate.url,
           [`comment${rate.answer}`]: rate.comment,
-          [`originalComment${rate.answer}`]: rate.comment,
         })
       })
       nextProps.qa.map(check => {
         this.state.ratingValues.push({id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected})
-        this.state.originalRatingValues.push({id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected})
       })
       this.setState({
         // ratingValues: _.map(nextProps.qa, check => {
@@ -129,7 +124,7 @@ class Rating extends Component {
         // originalRatingValues: _.map(nextProps.qa, check => {
         //   return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
         // }),
-        loading: false,
+        isLoading: false,
       })
     }
   }
@@ -137,7 +132,6 @@ class Rating extends Component {
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     let num = parseInt(event.target.name)
     // this.saveNext()
     this.setState({currentEditing: `#${event.target.value}`, ratingValues: this.state.ratingValues.filter(rate => {
@@ -159,15 +153,19 @@ class Rating extends Component {
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
     event.preventDefault()
-    _.map(this.state.ratingValues, val => {
+    _.map(this.state.ratingValues, rate => {
       this.setState({
-        [`answer${val.id}`]: this.state[`originalAnswer${val.id}`],
-        [`url${val.id}`]: this.state[`originalUrl${val.id}`],
-        [`comment${val.id}`]: this.state[`originalComment${val.id}`],
-        [`show${val.id}`]: this.state[`originalShow${val.id}`],
+        [`answer${rate.id}`]: null,
+        [`props${rate.id}`]: null,
+        [`show${rate.id}`]: null,
+        [`url${rate.id}`]: null,
+        [`comment${rate.id}`]: null,
+        [`errorWebsite${rate.id}`]: null,
       })
     })
-    this.setState({renderChangeError: false, changeError: false, isEditing: null, ratingValues: this.state.originalRatingValues})
+    let theme = this.props.match.path.slice(1, -4)
+    this.setState({renderChangeError: false, isLoading: true, changeError: false, isEditing: null, ratingValues: []})
+    this.props.fetchRating(this.brandId, theme)
   }
 
   handleComment(event) {
@@ -193,7 +191,6 @@ class Rating extends Component {
   }
 
   handleCheckbox(event, { value }) {
-    const { id }  = this.props.match.params
     if(this.state[`answer${value}`] === true) {
       console.log('remove')
       new Promise((resolve, reject) => {
@@ -266,7 +263,6 @@ class Rating extends Component {
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     if(this.state.errorsWebsite.length <= 0) {
       if(event.target.value === 'next') {
         this.state.isEditing++
@@ -277,15 +273,7 @@ class Rating extends Component {
       } else {
         this.setState({isEditing: null})
       }
-      this.props.createRating({question: event.target.name, brand: id, answers: this.state.ratingValues})
-      _.map(this.state.ratingValues, val => {
-        this.setState({
-          [`originalAnswer${val.id}`]: this.state[`answer${val.id}`],
-          [`originalUrl${val.id}`]: this.state[`url${val.id}`],
-          [`originalComment${val.id}`]: this.state[`comment${val.id}`],
-          [`originalShow${val.id}`]: this.state[`show${val.id}`],
-        })
-      })
+      this.props.createRating({question: event.target.name, brand: this.brandId, answers: this.state.ratingValues})
       this.setState({
         changeError: false,
         renderChangeError: false,
@@ -303,9 +291,8 @@ class Rating extends Component {
   }
 
   renderQA() {
-    const id  = this.props.match.params.id
     let theme = this.props.match.path.slice(1, -4)
-    if(this.state.loading === true) {
+    if(this.state.isLoading === true) {
       return(<Loader active inline='centered' />)
     } else {
       return _.map(this.props.pre_qa, theme => {
@@ -394,7 +381,6 @@ class Rating extends Component {
   }
 
   handleNav(event) {
-    const { id }  = this.props.match.params
     if(this.state.changeError === true) {
       this.setState({renderChangeError: true, portal: true})
     } else {
@@ -403,22 +389,18 @@ class Rating extends Component {
       } else if(event.target.name === 'next') {
         this.props.history.push(this.state.nextPage)
       } else if(event.target.name === 'landing') {
-        this.props.history.push(`/brandLanding/${id}`)
+        this.props.history.push(`/brandLanding/${this.brandId}`)
       }
     }
   }
 
   render() {
-    console.log('pre qa props', this.props.pre_qa)
-    console.log('rating', this.props.qa)
     console.log('state', this.state.ratingValues)
-    console.log('answer', this.state)
     const isEditing = this.state.isEditing
-    const { id }  = this.props.match.params
     const state = this.state
     return(
       <div className='form-container'>
-        <RatingHeading id={id} brand={this.props.brand}/>
+        <RatingHeading id={this.brandId} brand={this.props.brand}/>
         <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>

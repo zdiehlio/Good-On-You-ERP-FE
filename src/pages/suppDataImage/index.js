@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { Form, Progress, Input, Portal, Segment } from 'semantic-ui-react'
+import { Form, Progress, Input, Portal, Segment, Loader } from 'semantic-ui-react'
 import { fetchImage, updateImage, uploadLogo, fetchLogo, updateLogo, uploadImage } from '../../actions/image'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
@@ -23,6 +23,7 @@ class SuppDataImage extends Component {
       changeError: false,
     }
 
+    this.brandId = this.props.match.params.id
 
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
@@ -37,31 +38,33 @@ class SuppDataImage extends Component {
     this.handleNav = this.handleNav.bind(this)
   }
   componentWillMount() {
-    const { id } = this.props.match.params
-    this.props.fetchImage(id)
-    this.props.fetchLogo(id)
+    this.setState({isLoading: true})
+    this.props.fetchImage(this.brandId)
+    this.props.fetchLogo(this.brandId)
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.logo !== this.props.logo) {
       _.map(nextProps.logo, logo => {
         if(logo.is_selected && logo.is_selected === true) {
-          this.setState({logo_selected: logo.id, logo_url: logo.url, originalLogo_selected: logo.id, originalLogo_url: logo.url})
+          this.setState({logo_selected: logo.id, logo_url: logo.url})
           this.state.progressBar++
         }
         this.setState({logo: null})
         this.state.logos.push(logo)
       })
+      this.setState({isLoading: false})
     }
     if(nextProps.image !== this.props.image) {
       _.map(nextProps.image, image => {
         if(image.is_selected && image.is_selected === true) {
-          this.setState({image_selected: image.id, image_url: image.url, originalImage_selected: image.id, originalImage_url: image.url})
+          this.setState({image_selected: image.id, image_url: image.url})
           this.state.progressBar++
         }
         this.setState({image: null})
         this.state.images.push(image)
       })
+      this.setState({isLoading: false})
     }
   }
 
@@ -69,7 +72,6 @@ class SuppDataImage extends Component {
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     if(this.state.changeError === false) {
       this.setState({isEditing: event.target.name})
     } else {
@@ -80,19 +82,20 @@ class SuppDataImage extends Component {
   handleCancel(event) {
     event.preventDefault()
     if(event.target.name === 'image') {
-      this.setState({renderChangeError: false, changeError: false, image_selected: this.state.originalImage_selected, image_url: this.state.originalImage_url})
+      this.setState({images: []})
+      this.props.fetchImage(this.brandId)
     } else if(event.target.name === 'logo') {
-      this.setState({renderChangeError: false, changeError: false, logo_selected: this.state.originalLogo_selected, logo_url: this.state.originalLogo_url})
+      this.setState({logos: []})
+      this.props.fetchLogo(this.brandId)
     }
-    this.setState({isEditing: null, currentAnswer: null})
+    this.setState({isLoading: true, renderChangeError: false, changeError: false, isEditing: null, currentAnswer: null})
   }
 
   handleImageUpload(event) {
-    const { id }  = this.props.match.params
     event.preventDefault()
     if(this.state.image) {
       this.setState({images: [], currentEditing: '#image', changeError: true})
-      this.props.uploadImage(this.state.image, {brand: id, is_selected: true})
+      this.props.uploadImage(this.state.image, {brand: this.brandId, is_selected: true})
     }
   }
 
@@ -108,11 +111,10 @@ class SuppDataImage extends Component {
   //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
   handleSave(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
     if(event.target.name === 'logo') {
       this.props.updateLogo(this.state.logo_selected, {is_selected: true})
       this.state.progressBar++
-      event.target.value === 'next' ? this.props.history.push(`/suppDataGender/${id}`) : this.setState({isEditing: null})
+      event.target.value === 'next' ? this.props.history.push(`/suppDataGender/${this.brandId}`) : this.setState({isEditing: null})
     } else if(event.target.name === 'image') {
       this.props.updateImage(this.state.image_selected, {is_selected: true})
       this.state.progressBar++
@@ -140,7 +142,7 @@ class SuppDataImage extends Component {
       })
     } else {
       if(Object.keys(this.props.logo).length > 0) {
-        return(<p>...Loading New Images</p>)
+        return(<Loader active inline='centered' />)
       } else {
         return(<p>No Logos Found</p>)
       }
@@ -166,7 +168,7 @@ class SuppDataImage extends Component {
       })
     } else {
       if(this.props.image.length > 0) {
-        return(<p>...Loading New Images</p>)
+        return(<Loader active inline='centered' />)
       } else {
         return(<p>No Images Found</p>)
       }
@@ -178,16 +180,15 @@ class SuppDataImage extends Component {
   }
 
   handleNav(event) {
-    const { id }  = this.props.match.params
     if(this.state.changeError === true) {
       this.setState({renderChangeError: true, portal: true})
     } else {
       if(event.target.name === 'previous') {
-        this.props.history.push(`/suppDataSocialMedia/${id}`)
+        this.props.history.push(`/suppDataSocialMedia/${this.brandId}`)
       } else if(event.target.name === 'next') {
-        this.props.history.push(`/suppDataGender/${id}`)
+        this.props.history.push(`/suppDataGender/${this.brandId}`)
       } else if(event.target.name === 'landing') {
-        this.props.history.push(`/brandLanding/${id}`)
+        this.props.history.push(`/brandLanding/${this.brandId}`)
       }
     }
   }
@@ -197,12 +198,11 @@ class SuppDataImage extends Component {
     console.log('props', this.props.image)
     console.log('preQA', this.props.logo)
     const isEditing = this.state.isEditing
-    const { id }  = this.props.match.params
     const state = this.state
     const props = this.props.image
     return(
       <div className='form-container'>
-        <SuppHeading id={id} brand={this.props.brand}/>
+        <SuppHeading id={this.brandId} brand={this.props.brand}/>
         <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
           <span className='form-navigation'>
@@ -222,64 +222,66 @@ class SuppDataImage extends Component {
             </Segment>
           </Portal>
         ) : ''}
-        <Form>
-          {isEditing === 'image' ? (
-            <div className='editing' id='image'>
-              <h5>What is the Brand Cover Image? *</h5>
-              {this.renderImage()}
-              <Form.Field className='upload'>
-                <div><Input type='file' onChange={this.handleImageChange}  label='Upload New Image'/></div>
-              </Form.Field>
-              <div className='button-container'>
-                <div></div>
-                <div><button onClick={this.handleImageUpload}>Upload</button></div>
+        {state.isLoading === true ? <Loader active inline='centered' /> :
+          <Form>
+            {isEditing === 'image' ? (
+              <div className='editing' id='image'>
+                <h5>What is the Brand Cover Image? *</h5>
+                {this.renderImage()}
+                <Form.Field className='upload'>
+                  <div><Input type='file' onChange={this.handleImageChange}  label='Upload New Image'/></div>
+                </Form.Field>
+                <div className='button-container'>
+                  <div></div>
+                  <div><button onClick={this.handleImageUpload}>Upload</button></div>
+                </div>
+                <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
+                <div className='button-container'>
+                  <div><button className='cancel' onClick={this.handleCancel} name='image'>Cancel</button></div>
+                  <div><button onClick={this.handleSave} name='image'>Save</button></div>
+                  <div><HashLink to='#logo'><button onClick={this.handleSave} name='image' value='next'>Save & Next</button></HashLink></div>
+                </div>
+              </div>) : (
+              <div className='not-editing'>
+                <h5>Brand Cover Image *</h5>
+                <div className='image-container'>{state.image_selected ? <img src={state.image_url} className='cover-image' /> : ''}</div>
+                <div className='button-container'>
+                  <div></div>
+                  <div><button name='image' onClick={this.handleEdit}>Edit</button></div>
+                </div>
+                <p className='small-divider'></p>
               </div>
-              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
-              <div className='button-container'>
-                <div><button className='cancel' onClick={this.handleCancel} name='image'>Cancel</button></div>
-                <div><button onClick={this.handleSave} name='image'>Save</button></div>
-                <div><HashLink to='#logo'><button onClick={this.handleSave} name='image' value='next'>Save & Next</button></HashLink></div>
-              </div>
-            </div>) : (
-            <div className='not-editing'>
-              <h5>Brand Cover Image *</h5>
-              <div className='image-container'>{state.image_selected ? <img src={state.image_url} className='cover-image' /> : ''}</div>
-              <div className='button-container'>
-                <div></div>
-                <div><button name='image' onClick={this.handleEdit}>Edit</button></div>
-              </div>
-              <p className='small-divider'></p>
-            </div>
-          )}
+            )}
 
-          {isEditing === 'logo' ? (
-            <div className='editing' id='logo'>
-              <h5>Select the Brand Logo? *</h5>
-              {this.renderLogo()}
-              <Form.Field className='upload'>
-                <div><Input type='file' onChange={this.handleLogoChange}  label='Upload New Logo'/></div>
-              </Form.Field>
-              <div className='button-container'>
-                <div></div>
-                <div><button onClick={this.handleLogoUpload}>Upload</button></div>
+            {isEditing === 'logo' ? (
+              <div className='editing' id='logo'>
+                <h5>Select the Brand Logo? *</h5>
+                {this.renderLogo()}
+                <Form.Field className='upload'>
+                  <div><Input type='file' onChange={this.handleLogoChange}  label='Upload New Logo'/></div>
+                </Form.Field>
+                <div className='button-container'>
+                  <div></div>
+                  <div><button onClick={this.handleLogoUpload}>Upload</button></div>
+                </div>
+                <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
+                <div className='button-container'>
+                  <div><button className='cancel' onClick={this.handleCancel} name='logo'>Cancel</button></div>
+                  <div><button onClick={this.handleSave} name='logo'>Save</button></div>
+                  <div><button onClick={this.handleSave} name='logo' value='next'>Save & Next</button></div>
+                </div>
+              </div>) : (
+              <div className='not-editing'>
+                <h5>Brand Logo *</h5>
+                <div className='image-container'>{this.state.logo_selected ? <img src={state.logo_url} className='logo' /> : ''}</div>
+                <div className='button-container'>
+                  <div></div>
+                  <div><button name='logo' onClick={this.handleEdit}>Edit</button></div>
+                </div>
               </div>
-              <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
-              <div className='button-container'>
-                <div><button className='cancel' onClick={this.handleCancel} name='logo'>Cancel</button></div>
-                <div><button onClick={this.handleSave} name='logo'>Save</button></div>
-                <div><button onClick={this.handleSave} name='logo' value='next'>Save & Next</button></div>
-              </div>
-            </div>) : (
-            <div className='not-editing'>
-              <h5>Brand Logo *</h5>
-              <div className='image-container'>{this.state.logo_selected ? <img src={state.logo_url} className='logo' /> : ''}</div>
-              <div className='button-container'>
-                <div></div>
-                <div><button name='logo' onClick={this.handleEdit}>Edit</button></div>
-              </div>
-            </div>
-          )}
-        </Form>
+            )}
+          </Form>
+        }
       </div>
     )
   }
