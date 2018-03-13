@@ -37,6 +37,9 @@ class Rating extends Component {
   }
   componentWillMount() {
     let theme = this.props.match.path.slice(1, -4)
+    // for(let i = 0; i <= 100; i++) {
+    //   this.setState({[`ratingValues${i}`]: []})
+    // }
     this.setState({isLoading: true, brandId: this.brandId})
     this.props.fetchAllRating(theme, this.brandId)
     this.props.fetchRating(this.brandId, theme)
@@ -104,28 +107,28 @@ class Rating extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.qa !== this.props.qa) {
-      _.map(nextProps.qa, rate => {
-        this.setState({
-          [`answer${rate.answer}`]: rate.is_selected,
-          [`props${rate.answer}`]: rate.answer,
-          [`show${rate.answer}`]: rate.is_selected,
-          [`url${rate.answer}`]: rate.url,
-          [`comment${rate.answer}`]: rate.comment,
+    if(nextProps.pre_qa !== this.props.pre_qa) {
+      _.map(nextProps.pre_qa, check => {
+        check.questions.map(rate => {
+          this.setState({[`ratingValues${rate.id}`]: []})
         })
       })
-      nextProps.qa.map(check => {
-        this.state.ratingValues.push({id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected})
+    }
+    if(nextProps.qa !== this.props.qa) {
+      _.map(nextProps.qa, rate => {
+        new Promise((resolve, reject) => {
+          resolve(
+            this.setState({
+              [`answer${rate.answer}`]: rate.is_selected,
+              [`props${rate.answer}`]: rate.answer,
+              [`show${rate.answer}`]: rate.is_selected,
+              [`url${rate.answer}`]: rate.url,
+              [`comment${rate.answer}`]: rate.comment,
+            })
+          )})
+          .then(this.state[`ratingValues${rate.ratings_answer.question}`].push({id: rate.answer, url: rate.url, comment: rate.comment, is_selected: rate.is_selected}))
       })
-      this.setState({
-        // ratingValues: _.map(nextProps.qa, check => {
-        //   return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
-        // }),
-        // originalRatingValues: _.map(nextProps.qa, check => {
-        //   return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
-        // }),
-        isLoading: false,
-      })
+      this.setState({isLoading: false})
     }
   }
 
@@ -133,7 +136,6 @@ class Rating extends Component {
   handleEdit(event) {
     event.preventDefault()
     let num = parseInt(event.target.name)
-    // this.saveNext()
     this.setState({currentEditing: `#${event.target.value}`, ratingValues: this.state.ratingValues.filter(rate => {
       if(rate.is_selected === true) {
         return rate.id !== this.state.ratingValues.id
@@ -179,25 +181,24 @@ class Rating extends Component {
   }
 
   handleUrl(event, { value, name }) {
-    _.map(this.state.ratingValues, val => {
+    _.map(this.state[`ratingValues${event.target.id}`], val => {
       if(val.id === parseInt(name)) {
-        console.log('url', val.id, name)
         Object.assign(val, {url: value})
         this.setState({[`url${val.id}`]: value})
       }
     })
+    console.log('url', event.target.id)
     this.setState({changeError: true})
     this.handleValidUrl(value, name)
   }
 
-  handleCheckbox(event, { value }) {
+  handleCheckbox(event, { value, name }) {
     if(this.state[`answer${value}`] === true) {
-      console.log('remove')
       new Promise((resolve, reject) => {
         resolve(this.setState({
           [`answer${value}`]: false,
           [`show${value}`]: false,
-          ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(value)}),
+          ratingValues: this.state[`ratingValues${name}`].filter(rate => {return rate.id !== parseInt(value)}),
         })
         )})
         // .then(() => this.state.ratingValues.filter(rate => {return rate.id !== parseInt(value)}))
@@ -213,7 +214,7 @@ class Rating extends Component {
           [`answer${value}`]: true,
         })
         )})
-        .then(() => this.state.ratingValues.push({id: parseInt(value), is_selected: true, url: this.state[`url${value}`] ? this.state[`url${value}`] : ''}))
+        .then(() => this.state[`ratingValues${name}`].push({id: parseInt(value), is_selected: true, url: this.state[`url${value}`] ? this.state[`url${value}`] : ''}))
         .then(() => this.handleSaveValidation(value))
     }
     this.setState({changeError: true})
@@ -273,11 +274,10 @@ class Rating extends Component {
       } else {
         this.setState({isEditing: null})
       }
-      this.props.createRating({question: event.target.name, brand: this.brandId, answers: this.state.ratingValues})
+      this.props.createRating({question: event.target.name, brand: this.brandId, answers: this.state[`ratingValues${event.target.name}`]})
       this.setState({
         changeError: false,
         renderChangeError: false,
-        originalRatingValues: this.state.ratingValues,
       })
     } else {
       _.map(this.state.errorsWebsite, check => {
@@ -312,6 +312,7 @@ class Rating extends Component {
                           <Checkbox
                             label={ans.text}
                             value={ans.id}
+                            name={type.id}
                             onChange={this.handleCheckbox}
                             checked={this.state[`answer${ans.id}`] === true ? true : false}
                           />
@@ -322,6 +323,7 @@ class Rating extends Component {
                             <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
                             <Form.Field className={this.state[`errorWebsite${ans.id}`] === true ? 'ui error input evidence-url' : 'ui input evidence-url'} inline>
                               <Input
+                                id={type.id}
                                 label='Source URL'
                                 onChange={this.handleUrl}
                                 autoFocus={true}
@@ -395,7 +397,11 @@ class Rating extends Component {
   }
 
   render() {
-    console.log('state', this.state.ratingValues)
+    let theme = this.props.match.path.slice(1, -4)
+    console.log(theme)
+    console.log('props', this.props.qa)
+    console.log('pre props', this.props.pre_qa)
+    console.log('state', this.state)
     const isEditing = this.state.isEditing
     const state = this.state
     return(
