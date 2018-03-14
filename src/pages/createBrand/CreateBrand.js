@@ -18,6 +18,7 @@ class CreateBrand extends Component {
       createValue: '',
       nameError: true,
       websiteError: true,
+      brandError: false,
     }
     this.onSubmit = this.onSubmit.bind(this)
     this.handleInput = this.handleInput.bind(this)
@@ -31,6 +32,11 @@ class CreateBrand extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.create !== this.props.create) {
+      if(nextProps.create.status === 201) {
+        this.props.history.push(`/brandLanding/${nextProps.create.data.id}`)
+      } else if(nextProps.create.response.status === 400) {
+        this.setState({brandError: true})
+      }
       if(this.props.create.length > 0) {
         this.setState({name: this.props.create})
       }
@@ -39,14 +45,11 @@ class CreateBrand extends Component {
 
   onSubmit() {
     if(this.state.nameError === false && this.state.websiteError === false) {
-      console.log('submit')
-      this.props.createBrand({name: this.state.name, website: this.state.website}, (response) => {
-        console.log('res', response)
-        this.props.history.push(`/brandLanding/${response.data.id}`)
-      })
+      this.props.createBrand({name: this.state.name, website: this.state.website})
     } else {
       this.setState({renderError: true})
     }
+
   }
 
   handleInput(event, {name, value}) {
@@ -57,14 +60,13 @@ class CreateBrand extends Component {
         if(url.test(value)) {
           this.setState({websiteError: false})
         } else {
-          console.log('website error')
           this.setState({websiteError: true})
         }
       }
     } else {
       this.setState({[`${name}Error`]: true})
     }
-    this.setState({[name]: value})
+    this.setState({[name]: value, brandError: false})
   }
 
   render() {
@@ -74,7 +76,7 @@ class CreateBrand extends Component {
     console.log('props', this.props)
     return (
       <div className="page-container">
-        <h2 className="title">CreateBrand</h2>
+        <h1>CreateBrand</h1>
         <div className="form-container">
           <Form className='create-brand'>
             <div>
@@ -87,11 +89,11 @@ class CreateBrand extends Component {
                 />
               </Form.Field>
               {state.renderError === true && state.nameError === true ? <p>Please enter Brand name</p> : ''}
-              {this.props.create.error === true ?
+              {state.brandError === true ?
                 <p className='error-message'>Brand already exists</p> : ''}
             </div>
             <div>
-              <Form.Field className={state.renderError === true && state.websiteError === true === true ? 'ui error input' : 'ui input'}>
+              <Form.Field className={state.renderError === true && state.websiteError === true ? 'ui error input' : 'ui input'}>
                 <Input
                   placeholder="Brand URL"
                   name="website"

@@ -110,7 +110,7 @@ class Rating extends Component {
     if(nextProps.pre_qa !== this.props.pre_qa) {
       _.map(nextProps.pre_qa, check => {
         check.questions.map(rate => {
-          this.setState({[`ratingValues${rate.id}`]: []})
+          // this.setState({[`ratingValues${rate.id}`]: []})
         })
       })
     }
@@ -124,9 +124,12 @@ class Rating extends Component {
               [`show${rate.answer}`]: rate.is_selected,
               [`url${rate.answer}`]: rate.url,
               [`comment${rate.answer}`]: rate.comment,
+              [`ratingValues${rate.ratings_answer.question}`]: [],
             })
           )})
-          .then(this.state[`ratingValues${rate.ratings_answer.question}`].push({id: rate.answer, url: rate.url, comment: rate.comment, is_selected: rate.is_selected}))
+          .then(() => {
+            this.state[`ratingValues${rate.ratings_answer.question}`].push({id: rate.answer, url: rate.url, comment: rate.comment, is_selected: rate.is_selected})
+          })
       })
       this.setState({isLoading: false})
     }
@@ -195,11 +198,12 @@ class Rating extends Component {
   handleCheckbox(event, { value, name }) {
     if(this.state[`answer${value}`] === true) {
       new Promise((resolve, reject) => {
-        resolve(this.setState({
-          [`answer${value}`]: false,
-          [`show${value}`]: false,
-          ratingValues: this.state[`ratingValues${name}`].filter(rate => {return rate.id !== parseInt(value)}),
-        })
+        resolve(
+          this.setState({
+            [`answer${value}`]: false,
+            [`show${value}`]: false,
+            [`ratingValues${name}`]: this.state[`ratingValues${name}`].filter(rate => {return rate.id !== parseInt(value)}),
+          })
         )})
         // .then(() => this.state.ratingValues.filter(rate => {return rate.id !== parseInt(value)}))
         .then(() => this.handleSaveValidation(value))
@@ -209,11 +213,17 @@ class Rating extends Component {
     } else {
       new Promise((resolve, reject) => {
         console.log('add')
-        resolve(this.setState({
-          [`show${value}`]: true,
-          [`answer${value}`]: true,
-        })
+        resolve(
+          this.setState({
+            [`show${value}`]: true,
+            [`answer${value}`]: true,
+          })
         )})
+        .then(() => {
+          if(!this.state[`ratingValues${name}`]) {
+            this.setState({[`ratingValues${name}`]: []})
+          }
+        })
         .then(() => this.state[`ratingValues${name}`].push({id: parseInt(value), is_selected: true, url: this.state[`url${value}`] ? this.state[`url${value}`] : ''}))
         .then(() => this.handleSaveValidation(value))
     }
@@ -300,7 +310,7 @@ class Rating extends Component {
         return _.map(theme.questions, type => {
           if(this.state.isEditing === type.order) {
             return(
-              <div className='editing'>
+              <div key={type.id} className='editing'>
                 <div key={type.id} id={`${type.order}`}>
                   <h5>{type.text} {type.is_mandatory === true ? '*' : ''}</h5>
                 </div>
