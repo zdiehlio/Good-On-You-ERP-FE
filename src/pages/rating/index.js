@@ -34,12 +34,10 @@ class Rating extends Component {
     this.handleComment = this.handleComment.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
     this.handleNav = this.handleNav.bind(this)
+    this.handlePercentage = this.handlePercentage.bind(this)
   }
   componentWillMount() {
     let theme = this.props.match.path.slice(1, -4)
-    // for(let i = 0; i <= 100; i++) {
-    //   this.setState({[`ratingValues${i}`]: []})
-    // }
     this.setState({isLoading: true, brandId: this.brandId})
     this.props.fetchAllRating(theme, this.brandId)
     this.props.fetchRating(this.brandId, theme)
@@ -205,11 +203,7 @@ class Rating extends Component {
             [`ratingValues${name}`]: this.state[`ratingValues${name}`].filter(rate => {return rate.id !== parseInt(value)}),
           })
         )})
-        // .then(() => this.state.ratingValues.filter(rate => {return rate.id !== parseInt(value)}))
         .then(() => this.handleSaveValidation(value))
-    // } else if(this.state[`answer${value}`] === false && this.state[`props${value}`] === parseInt(value)) {
-    //   console.log('something')
-    //   this.setState({[`show${value}`]: true, [`answer${value}`]: true})
     } else {
       new Promise((resolve, reject) => {
         console.log('add')
@@ -300,6 +294,25 @@ class Rating extends Component {
     this.setState({loading: true})
   }
 
+  handlePercentage(event) {
+    event.preventDefault()
+    if(!this.state[event.target.name]) {
+      this.setState({[event.target.name]: 0})
+    }
+    if(event.target.value === 'add' && this.state[event.target.name] < 1) {
+      this.setState({[event.target.name]: this.state[event.target.name] + 0.25, style_scores: this.state.style_scores + 0.25})
+    }
+    if(event.target.value === 'subtract' && this.state[event.target.name] > 0) {
+      this.setState({[event.target.name]: this.state[event.target.name] - 0.25, style_scores: this.state.style_scores - 0.25})
+    }
+    if(this.state.progress.includes(event.target.name)) {
+      return
+    } else {
+      this.setState({progress: [...this.state.progress, event.target.name]})
+    }
+    this.setState({changeError: true, currentEditing: '#style-scores'})
+  }
+
   renderQA() {
     let theme = this.props.match.path.slice(1, -4)
     if(this.state.isLoading === true) {
@@ -314,8 +327,19 @@ class Rating extends Component {
                 <div key={type.id} id={`${type.order}`}>
                   <h5>{type.text} {type.is_mandatory === true ? '*' : ''}</h5>
                 </div>
+                <div>
+                  {type.id >= 96 && type.id <= 106 ? (
+                    <div key={type.id} className='percentage-container'>
+                      <div className='progress-container'><button onClick={this.handlePercentage} name={type.id} value='subtract'>-</button></div>
+                      <div className='progress-container'><Progress className='progress-bar' total={1} value={this.state[type.id]} progress /></div>
+                      <div className='progress-container'><button onClick={this.handlePercentage} name={type.id} value='add'>+</button></div>
+                      <div className='progress-container'><p>percetn</p></div>
+                    </div>
+                  ) : ''}
+                </div>
+
                 {_.map(type.answers, ans => {
-                  if(this.state)
+                  if(this.state && type.id < 96 || type.id > 106) {
                     return (
                       <div key={ans.id}>
                         <Form.Field>
@@ -355,6 +379,7 @@ class Rating extends Component {
                           </div>) : ('')}
                       </div>
                     )}
+                }
                 )}
                 <p id={theme.name} className='error-message'>{this.state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
                 <div className='button-container'>
@@ -408,7 +433,6 @@ class Rating extends Component {
 
   render() {
     let theme = this.props.match.path.slice(1, -4)
-    console.log(theme)
     console.log('props', this.props.qa)
     console.log('pre props', this.props.pre_qa)
     console.log('state', this.state)
