@@ -55,11 +55,19 @@ export function fetchUserInfo(email) {
 
 export function createBrand(values, callback) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
-  const request = axios.post(`${ROOT_URL}/brands`, {...values})
-    .then((res) => callback(res))
-  return {
-    type: CREATE_BRAND,
-    payload: request,
+  const request = axios.post(`${ROOT_URL}/brands`, values)
+  return function(dispatch){
+    request.then(res => {
+      dispatch({
+        type: CREATE_BRAND,
+        payload: res,
+      })
+    }).catch(err => {
+      dispatch({
+        type:CREATE_BRAND,
+        payload: err,
+      })
+    })
   }
 }
 
@@ -82,6 +90,10 @@ export function fetchBrands(value) {
       dispatch({
         type: FETCH_BRANDS,
         payload: res,
+      })
+      dispatch({
+        type: CREATE_BRAND,
+        payload: value,
       })
     })
   }

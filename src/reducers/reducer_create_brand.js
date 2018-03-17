@@ -7,8 +7,8 @@ export default function(state = {}, action) {
   switch (action.type) {
   case CREATE_BRAND:
     if (!action.error) {
-      console.log(action.payload)
-      return {}
+      console.log('create', action.payload)
+      return action.payload
     }
     return {error: action.error}
   case FETCH_BRAND_INFO:

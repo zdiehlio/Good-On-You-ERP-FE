@@ -1,27 +1,32 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Field, reduxForm } from 'redux-form'
-import { updateCause } from '../../actions'
+import { Form } from 'semantic-ui-react'
+import {  } from '../../actions'
 
-class SuppDataImage extends Component {
-  renderField(field) {
-    return(
-      <div>
-        <h6>{field.label}</h6>
-        <input
-          placeholder={field.label}
-          type={field.type}
-          {...field.input}
-        />
-      </div>
-    )
+class Comp extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      isEditing: null,
+    }
+
+    this.handleEdit = this.handleEdit.bind(this)
+    this.handleSave = this.handleSave.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
-  handleChange(event){
+
+  handleEdit(event){
     console.log(this.props.state);
   }
-  handleSubmit(event){
+  handleSave(event){
     event.preventDefault();
   }
+
+  handleChange(event){
+    event.preventDefault();
+  }
+
   render() {
     return(
       <form>
@@ -31,8 +36,10 @@ class SuppDataImage extends Component {
   }
 }
 
-export default reduxForm({
-  form: ''
-})(
-  connect(null, {})()
-)
+function mapStateToProps(state) {
+  return {
+    state,
+  }
+}
+
+export default connect(mapStateToProps, { })(Comp)

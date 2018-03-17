@@ -20,7 +20,6 @@ export default function(ComposedComponent) {
       }
     }
     render() {
-      console.log(this.props.token)
       return <ComposedComponent {...this.props} />
     }
   }
@@ -29,7 +28,10 @@ export default function(ComposedComponent) {
   }
 
   function mapStateToProps(state) {
-    return {token: state.login.token}
+    return {
+      token: state.login.token,
+      state,
+    }
   }
   return connect(mapStateToProps, { logout })(Authentication)
 }

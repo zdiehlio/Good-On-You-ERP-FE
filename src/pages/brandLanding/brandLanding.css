@@ -9,9 +9,6 @@
   width: calc(100%/4);
 }
 
-/* .progress {
-  float: right;
-} */
 
 .summary-view button {
   text-align: right;
@@ -23,6 +20,9 @@
   margin-left: 1em;
 }
 
+.rating-score {
+  padding-left: 0.5em;
+}
 .summary-heading h1 {
   display: inline-block;
   color: #17CABE;

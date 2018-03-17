@@ -21,14 +21,14 @@ export function createAlias(values) {
   const request = axios.post(`${ROOT_URL}/brands-aliases`, values)
   return (dispatch) => {
     request.then((data) => {
-      dispatch({type: CREATE_ALIAS, payload: data})
+      dispatch({type: CREATE_ALIAS, payload: data.data})
     })
   }
 }
 
-export function deleteAlias(id) {
+export function deleteAlias(id, value) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
-  const request = axios.delete(`${ROOT_URL}/brands-aliases/${id}`)
+  const request = axios.delete(`${ROOT_URL}/brands-aliases?brand=${id}&alias=${value}`)
   return (dispatch) => {
     request.then((data) => {
       dispatch({type: DELETE_ALIAS, payload: data})

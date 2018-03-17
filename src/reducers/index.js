@@ -20,6 +20,8 @@ import retailer from './reducer_retailer'
 import alias from './reducer_alias'
 import ratingScore from './reducer_rating_score'
 import social from './reducer_social'
+import sku from './reducer_sku'
+
 
 
 const rootReducer = combineReducers({
@@ -44,6 +46,7 @@ const rootReducer = combineReducers({
   alias,
   ratingScore,
   social,
+  sku,
 })
 
 export default rootReducer

@@ -6,6 +6,7 @@ export const FETCH_CONTACT = 'fetch_contact'
 export const UPDATE_CONTACT = 'update_contact'
 export const CREATE_CONTACT = 'create_contact'
 export const FETCH_GENERAL = 'fetch_general'
+export const FETCH_HQ = 'fetch_hq'
 
 export function fetchContact(id) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
@@ -31,5 +32,15 @@ export function updateContact(id, values) {
   return {
     type: FETCH_GENERAL,
     payload: request,
+  }
+}
+
+export function fetchHq() {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
+  const request = axios.get(`${ROOT_URL}/territories?section=hq`)
+  return (dispatch) => {
+    request.then((data) => {
+      dispatch({type: FETCH_HQ, payload: data})
+    })
   }
 }

@@ -9,6 +9,26 @@
   border-radius: 10px;
 }
 
+.button {
+  text-align: center;
+}
 .title {
-  color: #09b5ab;
+  color: white;
+  margin-bottom: 4em;
+}
+
+.more-info {
+  margin-top: 4em;
+  margin-bottom: 4em;
+}
+
+.more-info p {
+  color: white;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.more-info h4 {
+  color: white;
+  text-align: center;
 }
