@@ -89,7 +89,7 @@ class SuppDataSku extends Component {
 
   render() {
     console.log('state', this.state)
-    console.log('props', this.props)
+    console.log('props', this.props.sku)
     const state = this.state
     const props = this.props
     const isEditing = this.state.isEditing
@@ -122,7 +122,7 @@ class SuppDataSku extends Component {
                 <h4>What is the number of SKUs for the Brand? *</h4>
                 <Form.Field inline className={this.state.error === true ? 'ui error radio' : 'ui radio'}>
                   <Radio
-                    label='Less than 50'
+                    label='<50'
                     onChange={this.handleChange}
                     checked={state.sku === '<50' ? true : false}
                     value='<50'
@@ -131,65 +131,38 @@ class SuppDataSku extends Component {
                 </Form.Field>
                 <Form.Field inline>
                   <Radio
-                    label='Between 50 and 100'
+                    label='50-99'
                     onChange={this.handleChange}
-                    checked={state.sku === '50-100' ? true : false}
-                    value='50-100'
+                    checked={state.sku === '50-99' ? true : false}
+                    value='50-99'
                     name='sku'
                   />
                 </Form.Field>
                 <Form.Field inline>
                   <Radio
-                    label='Between 100 and 200'
+                    label='100-249'
                     onChange={this.handleChange}
-                    checked={state.sku === '100-200' ? true : false}
+                    checked={state.sku === '100-249' ? true : false}
                     name='sku'
-                    value='100-200'
+                    value='100-249'
                   />
                 </Form.Field>
                 <Form.Field inline>
                   <Radio
-                    label='Between 200 and 300'
+                    label='250-499'
                     onChange={this.handleChange}
-                    checked={state.sku === '200-300'  ? true : false}
+                    checked={state.sku === '250-499'  ? true : false}
                     name='sku'
-                    value='200-300'
+                    value='250-499'
                   />
                 </Form.Field>
                 <Form.Field inline>
                   <Radio
-                    label='Between 300 and 400'
-                    onChange={this.handleChange}
-                    checked={state.sku === '300-400'  ? true : false}
-                    name='sku'
-                    value='300-400'
-                  />
-                </Form.Field>
-                <Form.Field inline>
-                  <Radio
-                    label='Between 400 and 500'
-                    onChange={this.handleChange}
-                    checked={state.sku === '400-500'  ? true : false}
-                    name='sku'
-                    value='400-500'
-                  />
-                </Form.Field>
-                <Form.Field inline>
-                  <Radio
-                    label='More than 500'
+                    label='>500'
                     onChange={this.handleChange}
                     checked={state.sku === '>500'  ? true : false}
                     name='sku'
                     value='>500'
-                  />
-                </Form.Field>
-                <Form.Field inline>
-                  <Radio
-                    label='Unspecified'
-                    onChange={this.handleChange}
-                    checked={state.sku === 'unspecified'  ? true : false}
-                    name='sku'
-                    value='unspecified'
                   />
                 </Form.Field>
                 <p className='error-message'>{state.error === true ? 'Please select an answer' : ''}</p>

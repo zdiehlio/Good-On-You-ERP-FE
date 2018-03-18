@@ -126,7 +126,12 @@ class Rating extends Component {
             })
           )})
           .then(() => {
-            this.state[`ratingValues${rate.ratings_answer.question}`].push({id: rate.answer, url: rate.url, comment: rate.comment, is_selected: rate.is_selected})
+            for(let k in this.state[`ratingValues${rate.ratings_answer.question}`]) {
+              if(k.id !== rate.answer) {
+                console.log('pushed')
+                this.state[`ratingValues${rate.ratings_answer.question}`].push({id: rate.answer, url: rate.url, comment: rate.comment, is_selected: rate.is_selected})
+              }
+            }
           })
       })
       this.setState({isLoading: false})
@@ -171,11 +176,11 @@ class Rating extends Component {
     this.props.fetchRating(this.brandId, theme)
   }
 
-  handleComment(event) {
-    _.map(this.state.ratingValues, val => {
-      if(val.id === parseInt(event.target.name)) {
-        Object.assign(val, {comment: event.target.value})
-        this.setState({[`comment${val.id}`]: event.target.value})
+  handleComment(event, { value, name }) {
+    _.map(this.state[`ratingValues${event.target.id}`], val => {
+      if(val.id === parseInt(name)) {
+        Object.assign(val, {comment: value})
+        this.setState({[`comment${val.id}`]: value})
       }
     })
     this.setState({changeError: true})
@@ -188,7 +193,6 @@ class Rating extends Component {
         this.setState({[`url${val.id}`]: value})
       }
     })
-    console.log('url', event.target.id)
     this.setState({changeError: true})
     this.handleValidUrl(value, name)
   }
@@ -206,7 +210,6 @@ class Rating extends Component {
         .then(() => this.handleSaveValidation(value))
     } else {
       new Promise((resolve, reject) => {
-        console.log('add')
         resolve(
           this.setState({
             [`show${value}`]: true,
@@ -372,6 +375,7 @@ class Rating extends Component {
                                 label='Comments'
                                 placeholder='Comments'
                                 onChange={this.handleComment}
+                                id={type.id}
                                 name={ans.id}
                                 value={this.state[`comment${ans.id}`] ? this.state[`comment${ans.id}`] : ''}
                               />

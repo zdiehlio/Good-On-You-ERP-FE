@@ -31,12 +31,15 @@ class BrandCauses extends Component {
     this.handlePortal = this.handlePortal.bind(this)
     this.handleNav = this.handleNav.bind(this)
   }
+
+  //calls API to receive currently saved causes details for brand and pre-defined questions and answers to display in form
   componentWillMount() {
     this.setState({isLoading: true})
     this.props.fetchCause(this.brandId)
     this.props.fetchAllCause(this.brandId)
   }
 
+  //when component receives props with data from API, will set data to be managed in state
   componentWillReceiveProps(nextProps) {
     if(nextProps.causes !== this.props.causes) {
       _.map(nextProps.causes, quest => {
@@ -50,7 +53,7 @@ class BrandCauses extends Component {
     }
   }
 
-  //toggles if clause that sets state to target elements value and enables user to edit the answer
+  //toggles editing mode for specified question
   handleEdit(event) {
     event.preventDefault()
     if(this.state.changeError === false) {
@@ -64,7 +67,8 @@ class BrandCauses extends Component {
       this.setState({renderChangeError: true, portal: true})
     }
   }
-  //sets state for isEditing to null which will toggle the ability to edit
+
+  //clears all errors in state and recalls API to ensure all data displayed to user is up to date
   handleCancel(event) {
     this.setState({
       isEditing: null,
@@ -76,7 +80,8 @@ class BrandCauses extends Component {
     })
     this.props.fetchCause(this.brandId)
   }
-  //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
+
+  //if contact already exists in props, save will send PATCH request to API to update contact details.  If no previous contact details have been saved, will send POST request to API to create contact details.
   handleSave(event) {
     event.preventDefault()
     if(!this.state.currentAnswer) {
