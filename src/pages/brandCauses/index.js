@@ -93,6 +93,7 @@ class BrandCauses extends Component {
         this.props.createCause({brand: this.brandId, question: event.target.name, answer: this.state.currentAnswer})
         this.state.progressBar++
       }
+      //will check if the value of the button begins with next, if so will set the state of the next question in line to editing mode
       if(event.target.value.slice(0, 4) === 'next') {
         if(event.target.value === 'nextB-corp') {
           this.setState({isEditing: '6'})
@@ -117,12 +118,15 @@ class BrandCauses extends Component {
     }
   }
 
+  //handles changes for radio buttons
   handleChange(event, { value, name }){
+    //finds text for designated answer to be displayed in non-editing mode
     _.map(this.props.pre_qa, check => {
       if(check.id === parseInt(value)) {
         this.setState({tempAnswer: check.text})
       }
     })
+    //sets value of answer to state using ID and assigns appropriate error's and hashlinks for navigation between questions
     this.setState({
       [name]: parseInt(value),
       currentAnswer: parseInt(value),
@@ -133,6 +137,7 @@ class BrandCauses extends Component {
     })
   }
 
+  //maps through pre-defined questions from API based on params from function call in render and displays the appropriate answers
   renderQuestion(quest) {
     return _.map(this.props.pre_qa, ans => {
       if(ans.question === quest)
@@ -150,10 +155,12 @@ class BrandCauses extends Component {
     })
   }
 
+  //close portal upon clicking Go button
   handlePortal() {
     this.setState({portal: false})
   }
 
+  //handles navigation between pages to prevent users from leaving current page while they are currently editing a question.
   handleNav(event) {
     if(this.state.changeError === true) {
       this.setState({renderChangeError: true, portal: true})
@@ -168,11 +175,7 @@ class BrandCauses extends Component {
     }
   }
 
-  //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.causes)
-    console.log('pre_qa', this.props.pre_qa)
-    console.log('state', this.state)
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props.causes

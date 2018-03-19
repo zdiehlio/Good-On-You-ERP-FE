@@ -33,12 +33,15 @@ class BrandSummary extends Component {
     this.handleNav = this.handleNav.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
   }
+
+  //calls API to receive currently saved contact details for brand
   componentWillMount() {
     this.setState({isLoading: true})
     this.props.fetchSummary(this.brandId)
     this.props.fetchRawRating(this.brandId)
   }
 
+  //when component receives props with data from API, will set details to be managed in state
   componentWillReceiveProps(nextProps) {
     if(nextProps.summary !== this.props.summary) {
       _.map(nextProps.summary, summary=> {
@@ -51,17 +54,19 @@ class BrandSummary extends Component {
     }
   }
 
-  //toggles if clause that sets state to target elements value and enables user to edit the answer
+  //toggles editing mode for specified question
   handleEdit(event) {
     event.preventDefault()
     this.setState({isEditing: event.target.value})
   }
-  //sets state for isEditing to null which will toggle the ability to edit
+
+  //clears all errors in state and recalls API to ensure all data displayed to user is up to date
   handleCancel(event) {
     this.setState({changeError: false, renderChangeError: false, isLoading: true, isEditing: null, currentAnswer: ''})
     this.props.fetchSummary(this.brandId)
   }
-  //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
+
+  //if the currently selected summary already exists in props, will send PATCH request to API, otherwise will send POST.
   handleSave(event) {
     event.preventDefault()
     if(this.state.renderSummary) {
@@ -79,11 +84,13 @@ class BrandSummary extends Component {
       this.setState({isEditing: null, changeError: false, renderChangeError: false})
     }
   }
-  //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
+
+  //assigns value in state for input along with appropriate erros and hashlink
   handleInput(event) {
     this.setState({currentEditing: '#summary', changeError: true, textlength: event.target.value.length, currentAnswer: event.target.value})
   }
 
+  //renders ratings that have been completed in ratings sections
   renderRawRatings() {
     if(this.props.pre_qa) {
       if(this.props.pre_qa.length > 0) {
@@ -99,10 +106,12 @@ class BrandSummary extends Component {
     }
   }
 
+  //close portal upon clicking Go button
   handlePortal() {
     this.setState({portal: false})
   }
 
+  //handles navigation between pages to prevent users from leaving current page while they are currently editing a question.
   handleNav(event) {
     if(this.state.changeError === true) {
       this.setState({renderChangeError: true, portal: true})

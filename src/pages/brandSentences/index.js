@@ -21,7 +21,6 @@ class BrandSentences extends Component {
       currentSelect: '',
       currentId: '',
       finalAnswer: '',
-      save: false,
       input: '',
       textlength: 0,
       progressBar: 0,
@@ -36,11 +35,14 @@ class BrandSentences extends Component {
     this.handleNav = this.handleNav.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
   }
+
+  //calls API to receive currently saved contact details for brand
   componentWillMount() {
     this.setState({isLoading: true})
     this.props.fetchSentence(this.brandId)
   }
 
+  //when component receives props with data from API, will set details to be managed in state
   componentWillReceiveProps(nextProps) {
     if(nextProps.sentence !== this.props.sentence) {
       if(nextProps.sentence) {
@@ -56,24 +58,13 @@ class BrandSentences extends Component {
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (nextState.save == true && this.state.save == false) {
-      console.log('update', nextProps)
-    }
-  }
-
-  componentDidUpdate() {
-    if(this.state.save === true) {
-      this.setState({save: false})
-    }
-  }
-
-  //toggles if clause that sets state to target elements value and enables user to edit the answer
+  //toggles editing mode for specified question
   handleEdit(event) {
     event.preventDefault()
     this.setState({isEditing: '1'})
   }
-  //sets state for isEditing to null which will toggle the ability to edit
+
+  //clears all errors in state and recalls API to ensure all data displayed to user is up to date
   handleCancel(event) {
     event.preventDefault()
     this.setState({
@@ -89,7 +80,7 @@ class BrandSentences extends Component {
     this.props.fetchSentence(this.brandId)
   }
 
-  //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
+  //if the currently selected sentence already exists in props, will send PATCH request to API, otherwise will send POST.
   handleSave(event) {
     if(this.props.sentence[this.state.currentSelect]) {
       this.props.updateSentence(this.brandId, this.state.currentId, {text: this.state.finalAnswer, is_selected: true})
@@ -107,7 +98,7 @@ class BrandSentences extends Component {
     }
   }
 
-  //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
+  //Allows users to select pre-defined sentences if they exist in API/props.  Will also assign selected text to value of text area so that it can be edited by user
   handleRadio(event){
     if(this.props.sentence.length > 0) {
       _.map(this.props.sentence, check => {
@@ -121,6 +112,7 @@ class BrandSentences extends Component {
     this.setState({currentEditing: '#sentence', changeError: true})
   }
 
+  //finds pre-defined sentences in API/props if they exist and renders them as inputs that behave as radio buttons
   renderField() {
     return _.map(this.props.sentence, check => {
       if(check.slug === 'default-1' || check.slug === 'default-2') {
@@ -141,16 +133,19 @@ class BrandSentences extends Component {
     })
   }
 
+  //renders message if no pre-defined sentences exist
   renderNone(){
     return(
       <div>No default sentences found, Please create one</div>
     )
   }
 
+  //close portal upon clicking Go button
   handlePortal() {
     this.setState({portal: false})
   }
 
+  //handles navigation between pages to prevent users from leaving current page while they are currently editing a question.
   handleNav(event) {
     if(this.state.changeError === true) {
       this.setState({renderChangeError: true, portal: true})
@@ -165,7 +160,6 @@ class BrandSentences extends Component {
     }
   }
 
-  //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
     const isEditing = this.state.isEditing
     const state = this.state
