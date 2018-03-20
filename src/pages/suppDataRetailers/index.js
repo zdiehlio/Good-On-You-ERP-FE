@@ -8,6 +8,8 @@ import { fetchRetailers, createRetailer, fetchTerritories, updateRetailer } from
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
 
+import { url } from '../../components'
+
 class SuppDataRetailers extends Component {
   constructor(props){
     super(props)
@@ -61,7 +63,6 @@ class SuppDataRetailers extends Component {
           name: check.name,
           website: check.website,
           online_only: check.online_only,
-          isLoading: false,
         })
         if(check.name || check.website) {
           this.state.progressBar++
@@ -70,6 +71,7 @@ class SuppDataRetailers extends Component {
           this.state.progressBar++
         }
       })
+      this.setState({isLoading: false})
     }
   }
 
@@ -111,7 +113,7 @@ class SuppDataRetailers extends Component {
         this.setState({isEditing: null, renderChangeError: false, changeError: false, errorname: false})
       }
     } else {
-      this.setState({renderError: true, errorname: true})
+      this.setState({renderError: true, errorname: !this.state.name ? true : false})
     }
   }
 
@@ -129,7 +131,6 @@ class SuppDataRetailers extends Component {
       this.setState({[`error${name}`]: false})
     }
     if(name === 'website') {
-      let url = /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
       if(url.test(value) || value === '') {
         this.setState({errorwebsite: false})
       } else {
@@ -214,6 +215,8 @@ class SuppDataRetailers extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
+    console.log('state', this.state)
+    console.log('props', this.props.retailer)
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props.qa

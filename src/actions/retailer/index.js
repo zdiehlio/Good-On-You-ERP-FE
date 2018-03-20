@@ -12,6 +12,7 @@ export function fetchRetailers(id) {
   const request = axios.get(`${ROOT_URL}/retailers?brand=${id}`)
   return (dispatch) => {
     request.then((data) => {
+      console.log('fetch retailer', data)
       dispatch({type: FETCH_RETAILER, payload: data})
     })
   }
