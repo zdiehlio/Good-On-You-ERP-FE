@@ -15,6 +15,8 @@ export const FETCH_GENERAL = 'fetch_general'
 export const FETCH_BRAND_INFO = 'fetch_brand_info'
 export const BRAND_INFO = 'brand_info'
 export const AUTH_ERROR = 'auth_error'
+export const FILTERED_SEARCH = 'filtered_search'
+
 
 export function login(values) {
   const strategy = {
@@ -94,6 +96,19 @@ export function fetchBrands(value) {
       dispatch({
         type: CREATE_BRAND,
         payload: value,
+      })
+    })
+  }
+}
+
+export function filteredSearch(value) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
+  const request = axios.post(`${ROOT_URL}/brands-list`, value)
+  return function(dispatch){
+    request.then(res => {
+      dispatch({
+        type: FILTERED_SEARCH,
+        payload: res,
       })
     })
   }

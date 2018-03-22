@@ -21,8 +21,7 @@ import alias from './reducer_alias'
 import ratingScore from './reducer_rating_score'
 import social from './reducer_social'
 import sku from './reducer_sku'
-
-
+import filter from './reducer_filtered_search'
 
 const rootReducer = combineReducers({
   login: LoginReducer,
@@ -47,6 +46,7 @@ const rootReducer = combineReducers({
   ratingScore,
   social,
   sku,
+  filter,
 })
 
 export default rootReducer

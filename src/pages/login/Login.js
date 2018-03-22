@@ -50,24 +50,23 @@ class Login extends Component {
         <div className="form-container">
           <h3>Log on to get started</h3>
           <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-              <Field
-                className={this.props.data.error ? 'ui error input' : 'ui input'}
-                placeholder='Email *'
-                name="email"
-                type="email"
-                component={this.renderField}
-              ></Field>
-              <Field
-                className={this.props.data.error ? 'ui error input' : 'ui input'}
-                placeholder='password *'
-                name="password"
-                type="password"
-                component={this.renderField}
-              ></Field>
+            <Field
+              className={this.props.data.error ? 'ui error input' : 'ui input'}
+              placeholder='Email *'
+              name="email"
+              type="email"
+              component={this.renderField}
+            ></Field>
+            <Field
+              className={this.props.data.error ? 'ui error input' : 'ui input'}
+              placeholder='password *'
+              name="password"
+              type="password"
+              component={this.renderField}
+            ></Field>
             <p className='error-message'>{this.props.data.error ? this.props.data.error : ''}</p>
             <button className="button" >Log In</button>
           </form>
-
         </div>
         <div className='more-info'>
           <h4>More Information</h4>

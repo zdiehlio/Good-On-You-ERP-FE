@@ -15,3 +15,6 @@ npm run start
 npm run deploy
 
 ```
+Production URL:   "homepage": "https://good-on-you-77bce.firebaseapp.com/",     Project Id: "default": "good-on-you-77bce"
+
+Test URL: "homepage": "https://goy-test-dfeb1.firebaseapp.com/",    Project Id: "default": "goy-test-dfeb1"
