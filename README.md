@@ -8,13 +8,18 @@ This project is built using ReactJS for the front end, we load all the questions
 ```
 npm install
 npm run start
+
 ```
 
 ### FireBase deployment guide
+
+Switch Between test and production environments
+```
+firebase use default (production environment)
+firebase use test (test environment)
+
+```
 ```
 npm run deploy
 
 ```
-Production URL:   "homepage": "https://good-on-you-77bce.firebaseapp.com/",     Project Id: "default": "good-on-you-77bce"
-
-Test URL: "homepage": "https://goy-test-dfeb1.firebaseapp.com/",    Project Id: "default": "goy-test-dfeb1"

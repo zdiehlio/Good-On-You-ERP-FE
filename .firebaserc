@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "goy-test-dfeb1"
+    "default": "good-on-you-77bce",
+    "test": "goy-test-dfeb1"
   }
 }
