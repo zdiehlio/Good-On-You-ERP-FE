@@ -1,0 +1,32 @@
+.search-bar-container {
+  width: 100%;
+  background-color: #09b5ab;
+  margin-bottom: 2em;
+  text-align: center;
+}
+
+.zolando-container {
+  width: 100%;
+  text-align: center;
+}
+
+.search-bar {
+  width: 60%;
+  margin: auto;
+}
+
+.filtered-list {
+  width: 100%;
+  background-color: #F2F2F2;
+  border: solid 1px;
+  border-color: black;
+  margin-bottom: 0.5em;
+  padding: 0.5em;
+}
+
+.filtered-list div {
+  display: inline-block;
+  width: calc(100%/7);
+  margin-top: 1em;
+
+}

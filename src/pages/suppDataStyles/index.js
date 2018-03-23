@@ -20,9 +20,8 @@ class SuppDataStyles extends Component {
       progress: [],
       styles: [],
       deleteStyles: [],
-      menArr: [],
-      ['older-womenArr']: [],
-      ['young-womenArr']: [],
+      menswearArr: [],
+      womenswearArr: [],
       fitnessArr: [],
       designerArr: [],
       bagsArr: [],
@@ -82,7 +81,7 @@ class SuppDataStyles extends Component {
         } else if(compare.style_qa.question === 'maternity') {
           this.setState({originalmaternity: compare.style_qa.tag, maternity: compare.style_qa.tag})
           this.state.progressBar++
-        } else if(compare.style_qa.question !== 'kids' && compare.style_qa.question !== 'gender' && compare.style_qa.question !== 'price') {
+        } else if(compare.style_qa.question !== 'kidswear' && compare.style_qa.question !== 'gender' && compare.style_qa.question !== 'price') {
           if(this.state[`${compare.style_qa.question}Arr`].length <= 0) {
             this.state.progressBar++
           }
@@ -137,12 +136,10 @@ class SuppDataStyles extends Component {
       this.state.progressBar--
     }
     if(event.target.value === 'next') {
-      if(event.target.name === 'men') {
-        this.setState({isEditing: 'older-women'})
-      } else if(event.target.name === 'older-women') {
+      if(event.target.name === 'menswear') {
+        this.setState({isEditing: 'womenswear'})
+      } else if(event.target.name === 'womenswear') {
         this.setState({isEditing: 'plus'})
-      } else if(event.target.name === 'young-women') {
-        this.setState({isEditing: 'designer'})
       } else if(event.target.name === 'designer') {
         this.setState({isEditing: 'basics'})
       } else if(event.target.name === 'basics') {
@@ -189,7 +186,7 @@ class SuppDataStyles extends Component {
       if(event.target.name === 'plus') {
         this.setState({isEditing: 'maternity'})
       } else if(event.target.name === 'maternity') {
-        this.setState({isEditing: 'young-women'})
+        this.setState({isEditing: 'designer'})
       }
     } else {
       this.setState({isEditing: null, changeError: false, renderChangeError: false})
@@ -380,26 +377,26 @@ class SuppDataStyles extends Component {
         ) : ''}
         {state.isLoading === true ? <Loader active inline='centered' /> :
           <form className='brand-form'>
-            {isEditing === 'men' ? (
-              <div className='editing' id='men'>
+            {isEditing === 'menswear' ? (
+              <div className='editing' id='menswear'>
                 <h4>Does the Brand sell clothes for men?</h4>
-                {this.renderStyles('men', '#older-women')}
+                {this.renderStyles('menswear', '#womenswear')}
               </div>) : (
               <div className='not-editing'>
                 <h4>Does the Brand sell clothes for men?</h4>
-                {this.renderAnswers('men')}
+                {this.renderAnswers('menswear')}
                 <p className='small-divider'></p>
               </div>
             )}
 
-            {isEditing === 'older-women' ? (
-              <div className='editing' id='older-women'>
-                <h4>Does the Brand sell clothes for older-women?</h4>
-                {this.renderStyles('older-women', '#plus')}
+            {isEditing === 'womenswear' ? (
+              <div className='editing' id='womenswear'>
+                <h4>Does the Brand sell clothes for women?</h4>
+                {this.renderStyles('womenswear', '#plus')}
               </div>) : (
               <div className='not-editing'>
-                <h4>Does the Brand sell clothes for older-women?</h4>
-                {this.renderAnswers('older-women')}
+                <h4>Does the Brand sell clothes for women?</h4>
+                {this.renderAnswers('womenswear')}
                 <p className='small-divider'></p>
               </div>
             )}
@@ -468,7 +465,7 @@ class SuppDataStyles extends Component {
                 <div className='button-container'>
                   <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
                   <div><button name='maternity' onClick={this.handleSaveRadio}>Save</button></div>
-                  <div><HashLink to='#young-women'><button name='maternity' value='next' onClick={this.handleSaveRadio}>Save & Next</button></HashLink></div>
+                  <div><HashLink to='#designer'><button name='maternity' value='next' onClick={this.handleSaveRadio}>Save & Next</button></HashLink></div>
                 </div>
               </div>) : (
               <div className='not-editing'>
@@ -478,18 +475,6 @@ class SuppDataStyles extends Component {
                   <div></div>
                   <div><button name='maternity' onClick={this.handleEdit}>Edit</button></div>
                 </div>
-                <p className='small-divider'></p>
-              </div>
-            )}
-
-            {isEditing === 'young-women' ? (
-              <div className='editing' id='young-women'>
-                <h4>Does the Brand sell clothes for young women?</h4>
-                {this.renderStyles('young-women', '#designer')}
-              </div>) : (
-              <div className='not-editing'>
-                <h4>Does the Brand sell clothes for young-women?</h4>
-                {this.renderAnswers('young-women')}
                 <p className='small-divider'></p>
               </div>
             )}

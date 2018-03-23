@@ -7,41 +7,19 @@ This project is built using ReactJS for the front end, we load all the questions
 ### To run it locally
 ```
 npm install
-npm start
+npm run start
+
 ```
 
-### Heroku deployment guide
-```
-git init
-heroku create -b https://github.com/mars/create-react-app-buildpack.git
-git add .
-git commit -m "react-create-app on Heroku"
-git push heroku master
-heroku open
-```
+### FireBase deployment guide
 
+Switch Between test and production environments
+```
+firebase use default (production environment)
+firebase use test (test environment)
 
-1-for-1
-:
-{brand: 1, question: "1-for-1", answer: 10}
-b-corp
-:
-{brand: 1, question: "b-corp", answer: 5}
-fair-trade
-:
-{brand: 1, question: "fair-trade", answer: 14}
-made-in
-:
-{brand: 1, question: "made-in", answer: 4}
-organic
-:
-{brand: 1, question: "organic", answer: 17}
-recycled
-:
-{brand: 1, question: "recycled", answer: 21}
-social-enterprise
-:
-{brand: 1, question: "social-enterprise", answer: 7}
-vegan
-:
-{brand: 1, question: "vegan", answer: 13}
+```
+```
+npm run deploy
+
+```

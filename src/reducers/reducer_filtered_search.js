@@ -1,12 +1,13 @@
-import { FETCH_RETAILER } from '../actions/retailer'
+import { FILTERED_SEARCH } from '../actions'
 import _ from 'lodash'
+
 
 export default function(state = {}, action) {
   switch (action.type) {
-  case FETCH_RETAILER:
+  case FILTERED_SEARCH:
     if (!action.error) {
-      console.log('fetch retailer', action.payload.data)
-      return action.payload.data.data
+      console.log('filtered search', action.payload.data)
+      return action.payload.data
     }
     return {error: action.error}
   default:

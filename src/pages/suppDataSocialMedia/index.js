@@ -7,6 +7,8 @@ import { updateSocial, fetchSocial } from '../../actions/socialMedia'
 import { SuppHeading } from '../../components'
 import _ from 'lodash'
 
+import { url } from '../../components'
+
 import './social.css'
 
 class SuppDataSocialMedia extends Component {
@@ -15,8 +17,6 @@ class SuppDataSocialMedia extends Component {
 
     this.state = {
       isEditing: null,
-      instagram_url: '',
-      facebook_url: '',
       progressBar: 0,
       renderChangeError: false,
     }
@@ -38,14 +38,10 @@ class SuppDataSocialMedia extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.social != this.props.social) {
       this.setState({
-        facebook_url: nextProps.social.facebook_url,
-        instagram_url: nextProps.social.instagram_url,
-        originalFacebook_url: nextProps.social.facebook_url,
-        originalInstagram_url: nextProps.social.instagram_url,
+        facebook_url: nextProps.social.facebook_url ? nextProps.social.facebook_url : '',
+        instagram_url: nextProps.social.instagram_url ? nextProps.social.instagram_url : '',
         facebook_followers: nextProps.social.facebook_followers,
         instagram_followers: nextProps.social.instagram_followers,
-        originalFacebook_followers: nextProps.social.facebook_followers,
-        originalInstagram_followers: nextProps.social.instagram_followers,
       })
       if(nextProps.social.facebook_url) {
         this.state.progressBar++
@@ -60,7 +56,11 @@ class SuppDataSocialMedia extends Component {
   //toggles if clause that sets state to target elements value and enables user to edit the answer
   handleEdit(event) {
     event.preventDefault()
-    this.setState({isEditing: event.target.name})
+    this.setState({
+      isEditing: event.target.name,
+      instagram_urlError: this.state.instagram_url.length > 0 ? false : true,
+      facebook_urlError: this.state.facebook_url.length > 0 ? false : true,
+    })
   }
   //sets state for isEditing to null which will toggle the ability to edit
   handleCancel(event) {
@@ -120,7 +120,6 @@ class SuppDataSocialMedia extends Component {
       }
     }
     if(name === 'instagram_url' || name === 'facebook_url') {
-      let url = /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
       if((url.test(value) && value !== '') && value !== '') {
         this.setState({[`${name}Error`]: false})
         this.setState({[name]: value})
@@ -151,6 +150,7 @@ class SuppDataSocialMedia extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
+    console.log('state', this.state)
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props.social
@@ -182,45 +182,45 @@ class SuppDataSocialMedia extends Component {
               <div className='editing' id='social'>
                 <h5>Brand Social Media</h5>
                 <p>What is the Facebook URL? *</p>
-                <Form.Field className={state.renderError == true && state.facebook_urlError === true ? 'ui error input' : 'ui input'}>
+                <Form.Field className={state.renderError === true && state.facebook_urlError === true ? 'ui error input' : 'ui input'}>
                   <Input
                     label='Facebook'
                     placeholder='facebook page name'
                     onChange={this.handleInput}
                     name='facebook_url'
-                    value={state.facebook_url}/>
+                    value={state.facebook_url ? state.facebook_url : ''}/>
                 </Form.Field>
                 <div className='followers'>
-                  <Form.Field className={state.renderError == true && state.facebook_followersError === true ? 'ui error input' : 'ui input'}>
+                  <Form.Field className={state.renderError === true && state.facebook_followersError === true ? 'ui error input' : 'ui input'}>
                     <Input
                       label='# of Facebook Followers'
                       onChange={this.handleInput}
                       name='facebook_followers'
-                      value={state.facebook_followers}/>
+                      value={state.facebook_followers ? state.facebook_followers : ''}/>
                   </Form.Field>
-                  {state.renderError == true && state.facebook_followersError === true ? <p className='error-message'>Please enter the # of Facebook followers</p> : ''}
+                  {state.renderError === true && state.facebook_followersError === true ? <p className='error-message'>Please enter the # of Facebook followers</p> : ''}
                 </div>
                 {state.renderError == true && state.facebook_urlError === true ? <p className='error-message'>Please enter a valid facbook url</p> : ''}
                 <p>What is the Instagram URL? *</p>
-                <Form.Field className={state.instagram_urlError === true ? 'ui error input' : 'ui input'}>
+                <Form.Field className={state.renderError === true && state.instagram_urlError === true ? 'ui error input' : 'ui input'}>
                   <Input
                     label='Instagram'
                     placeholder='instagram account name'
                     onChange={this.handleInput}
                     name='instagram_url'
-                    value={state.instagram_url}/>
+                    value={state.instagram_url ? state.instagram_url : ''}/>
                 </Form.Field>
                 <div className='followers'>
-                  <Form.Field className={state.renderError == true && state.instagram_followersError === true ? 'ui error input' : 'ui input'}>
+                  <Form.Field className={state.renderError === true && state.instagram_followersError === true ? 'ui error input' : 'ui input'}>
                     <Input
                       label='# of Instagram Followers'
                       onChange={this.handleInput}
                       name='instagram_followers'
-                      value={state.instagram_followers}/>
+                      value={state.instagram_followers ? state.instagram_followers : ''}/>
                   </Form.Field>
-                  {state.renderError == true && state.instagram_followersError === true ? <p className='error-message'>Please enter the # of Instagram followers</p> : ''}
+                  {state.renderError === true && state.instagram_followersError === true ? <p className='error-message'>Please enter the # of Instagram followers</p> : ''}
                 </div>
-                {state.renderError == true && state.instagram_urlError === true ? <p className='error-message'>Please enter a valid instagram url</p> : ''}
+                {state.renderError === true && state.instagram_urlError === true ? <p className='error-message'>Please enter a valid instagram url</p> : ''}
                 <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
                 <div className='button-container'>
                   <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>

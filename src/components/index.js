@@ -11,3 +11,5 @@ export { default as OverviewHeading } from './overviewHeading'
 export { default as RatingHeading } from './ratingHeading'
 export { default as QualiHeading } from './qualiHeading'
 export { default as SuppHeading } from './suppHeading'
+
+export const url = /^((http|https)?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/

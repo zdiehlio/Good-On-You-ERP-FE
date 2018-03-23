@@ -168,7 +168,6 @@ class BrandContact extends Component {
 
   //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.pre_qa)
     console.log('state', this.state)
     const isEditing = this.state.isEditing
     const state = this.state

@@ -10,6 +10,8 @@ import { Form, Input } from 'semantic-ui-react'
 import { createBrand } from '../../actions'
 import axios from 'axios'
 
+import { url } from '../../components'
+
 class CreateBrand extends Component {
   constructor(props) {
     super(props)
@@ -56,7 +58,6 @@ class CreateBrand extends Component {
     if(value.length > 0) {
       this.setState({[`${name}Error`]: false })
       if(name === 'website') {
-        let url = /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
         if(url.test(value)) {
           this.setState({websiteError: false})
         } else {

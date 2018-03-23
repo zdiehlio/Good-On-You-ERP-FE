@@ -314,6 +314,7 @@ class BrandGeneral extends Component {
     const state = this.state
     const props = this.props
     const { id }  = this.props.match.params
+    console.log('props', this.props.general)
     return(
       <div className='form-container'>
         <OverviewHeading id={id} brand={this.props.brand}/>

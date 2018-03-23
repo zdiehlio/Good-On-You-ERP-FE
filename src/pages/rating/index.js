@@ -7,6 +7,8 @@ import { fetchAllRating, fetchRating, createRating, updateRating, fetchRatingSco
 import { RatingHeading } from '../../components'
 import _ from 'lodash'
 
+import { url } from '../../components'
+
 import './rating.css'
 
 class Rating extends Component {
@@ -34,12 +36,10 @@ class Rating extends Component {
     this.handleComment = this.handleComment.bind(this)
     this.handlePortal = this.handlePortal.bind(this)
     this.handleNav = this.handleNav.bind(this)
+    this.handlePercentage = this.handlePercentage.bind(this)
   }
   componentWillMount() {
     let theme = this.props.match.path.slice(1, -4)
-    // for(let i = 0; i <= 100; i++) {
-    //   this.setState({[`ratingValues${i}`]: []})
-    // }
     this.setState({isLoading: true, brandId: this.brandId})
     this.props.fetchAllRating(theme, this.brandId)
     this.props.fetchRating(this.brandId, theme)
@@ -106,6 +106,34 @@ class Rating extends Component {
     }
   }
 
+  // componentWillReceiveProps(nextProps) {
+  //   const { id } = this.props.match.params
+  //   if(nextProps.qa !== this.props.qa) {
+  //     _.map(nextProps.qa, rate => {
+  //       this.setState({
+  //         [`answer${rate.answer}`]: rate.is_selected,
+  //         [`originalAnswer${rate.answer}`]: rate.is_selected,
+  //         [`props${rate.answer}`]: rate.answer,
+  //         [`show${rate.answer}`]: rate.is_selected,
+  //         [`originalShow${rate.answer}`]: rate.is_selected,
+  //         [`url${rate.answer}`]: rate.url,
+  //         [`originalUrl${rate.answer}`]: rate.url,
+  //         [`comment${rate.answer}`]: rate.comment,
+  //         [`originalComment${rate.answer}`]: rate.comment,
+  //       })
+  //     })
+  //     this.setState({
+  //       ratingValues: _.map(nextProps.qa, check => {
+  //         return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
+  //       }),
+  //       originalRatingValues: _.map(nextProps.qa, check => {
+  //         return {id: check.answer, url: check.url, comment: check.comment, is_selected: check.is_selected}
+  //       }),
+  //       isLoading: false,
+  //     })
+  //   }
+  // }
+
   componentWillReceiveProps(nextProps) {
     if(nextProps.pre_qa !== this.props.pre_qa) {
       _.map(nextProps.pre_qa, check => {
@@ -128,8 +156,11 @@ class Rating extends Component {
             })
           )})
           .then(() => {
-            this.state[`ratingValues${rate.ratings_answer.question}`].push({id: rate.answer, url: rate.url, comment: rate.comment, is_selected: rate.is_selected})
-          })
+            if(rate.is_selected === true) {
+              this.state[`ratingValues${rate.ratings_answer.question}`].push({id: rate.answer, url: rate.url, comment: rate.comment, is_selected: rate.is_selected})
+            }
+          }
+          )
       })
       this.setState({isLoading: false})
     }
@@ -173,11 +204,12 @@ class Rating extends Component {
     this.props.fetchRating(this.brandId, theme)
   }
 
-  handleComment(event) {
-    _.map(this.state.ratingValues, val => {
-      if(val.id === parseInt(event.target.name)) {
-        Object.assign(val, {comment: event.target.value})
-        this.setState({[`comment${val.id}`]: event.target.value})
+  handleComment(event, { value, name }) {
+    _.map(this.state[`ratingValues${event.target.id}`], val => {
+    // _.map(this.state.ratingValues, val => {
+      if(val.id === parseInt(name)) {
+        Object.assign(val, {comment: value})
+        this.setState({[`comment${val.id}`]: value})
       }
     })
     this.setState({changeError: true})
@@ -185,17 +217,41 @@ class Rating extends Component {
 
   handleUrl(event, { value, name }) {
     _.map(this.state[`ratingValues${event.target.id}`], val => {
+    // _.map(this.state.ratingValues, val => {
       if(val.id === parseInt(name)) {
         Object.assign(val, {url: value})
         this.setState({[`url${val.id}`]: value})
       }
     })
-    console.log('url', event.target.id)
     this.setState({changeError: true})
     this.handleValidUrl(value, name)
   }
 
   handleCheckbox(event, { value, name }) {
+    const { id }  = this.props.match.params
+    // if(this.state[`answer${value}`] === true) {
+    //   console.log('remove')
+    //   new Promise((resolve, reject) => {
+    //     resolve(this.setState({
+    //       [`answer${value}`]: false,
+    //       ratingValues: this.state.ratingValues.filter(rate => {return rate.id !== parseInt(value)}),
+    //       [`show${value}`]: false,
+    //     }))
+    //   }).then(() => this.handleSaveValidation(value))
+    // // } else if(this.state[`answer${value}`] === false && this.state[`props${value}`] === parseInt(value)) {
+    // //   console.log('weird')
+    // //   this.setState({[`show${value}`]: true, [`answer${value}`]: true})
+    // } else {
+    //   console.log('add')
+    //   new Promise((resolve, reject) => {
+    //     resolve(this.setState({
+    //       [`show${value}`]: true,
+    //       [`answer${value}`]: true,
+    //       ratingValues: [...this.state.ratingValues, {id: parseInt(value), is_selected: true}],
+    //     }))
+    //   }).then(() => this.handleSaveValidation(value))
+    // }
+    // this.setState({changeError: true})
     if(this.state[`answer${value}`] === true) {
       new Promise((resolve, reject) => {
         resolve(
@@ -205,14 +261,9 @@ class Rating extends Component {
             [`ratingValues${name}`]: this.state[`ratingValues${name}`].filter(rate => {return rate.id !== parseInt(value)}),
           })
         )})
-        // .then(() => this.state.ratingValues.filter(rate => {return rate.id !== parseInt(value)}))
         .then(() => this.handleSaveValidation(value))
-    // } else if(this.state[`answer${value}`] === false && this.state[`props${value}`] === parseInt(value)) {
-    //   console.log('something')
-    //   this.setState({[`show${value}`]: true, [`answer${value}`]: true})
     } else {
       new Promise((resolve, reject) => {
-        console.log('add')
         resolve(
           this.setState({
             [`show${value}`]: true,
@@ -227,6 +278,7 @@ class Rating extends Component {
         .then(() => this.state[`ratingValues${name}`].push({id: parseInt(value), is_selected: true, url: this.state[`url${value}`] ? this.state[`url${value}`] : ''}))
         .then(() => this.handleSaveValidation(value))
     }
+    console.log('check', name)
     this.setState({changeError: true})
   }
 
@@ -246,7 +298,6 @@ class Rating extends Component {
   }
 
   handleValidUrl(value, name) {
-    let url = /^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
     if(value === '') {
       this.setState({
         [`errorWebsite${name}`]: true,
@@ -285,6 +336,7 @@ class Rating extends Component {
         this.setState({isEditing: null})
       }
       this.props.createRating({question: event.target.name, brand: this.brandId, answers: this.state[`ratingValues${event.target.name}`]})
+      // this.props.createRating({question: event.target.name, brand: this.brandId, answers: this.state.ratingValues})
       this.setState({
         changeError: false,
         renderChangeError: false,
@@ -298,6 +350,25 @@ class Rating extends Component {
 
   handleLoading() {
     this.setState({loading: true})
+  }
+
+  handlePercentage(event) {
+    event.preventDefault()
+    if(!this.state[event.target.name]) {
+      this.setState({[event.target.name]: 0})
+    }
+    if(event.target.value === 'add' && this.state[event.target.name] < 1) {
+      this.setState({[event.target.name]: this.state[event.target.name] + 0.25, style_scores: this.state.style_scores + 0.25})
+    }
+    if(event.target.value === 'subtract' && this.state[event.target.name] > 0) {
+      this.setState({[event.target.name]: this.state[event.target.name] - 0.25, style_scores: this.state.style_scores - 0.25})
+    }
+    if(this.state.progress.includes(event.target.name)) {
+      return
+    } else {
+      this.setState({progress: [...this.state.progress, event.target.name]})
+    }
+    this.setState({changeError: true, currentEditing: '#style-scores'})
   }
 
   renderQA() {
@@ -314,47 +385,58 @@ class Rating extends Component {
                 <div key={type.id} id={`${type.order}`}>
                   <h5>{type.text} {type.is_mandatory === true ? '*' : ''}</h5>
                 </div>
+                {/*<div>
+                  {type.id >= 96 && type.id <= 106 ? (
+                    <div key={type.id} className='percentage-container'>
+                      <div className='progress-container'><button onClick={this.handlePercentage} name={type.id} value='subtract'>-</button></div>
+                      <div className='progress-container'><Progress className='progress-bar' total={1} value={this.state[type.id]} progress /></div>
+                      <div className='progress-container'><button onClick={this.handlePercentage} name={type.id} value='add'>+</button></div>
+                      <div className='progress-container'><p>percetn</p></div>
+                    </div>
+                  ) : ''}
+                </div>*/}
+
                 {_.map(type.answers, ans => {
-                  if(this.state)
-                    return (
-                      <div key={ans.id}>
-                        <Form.Field>
-                          <Checkbox
-                            label={ans.text}
-                            value={ans.id}
-                            name={type.id}
-                            onChange={this.handleCheckbox}
-                            checked={this.state[`answer${ans.id}`] === true ? true : false}
-                          />
-                        </Form.Field>
-                        {this.state[`show${ans.id}`] === true ? (
-                          <div className='evidence'>
-                            <h5>Evidence</h5>
-                            <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
-                            <Form.Field className={this.state[`errorWebsite${ans.id}`] === true ? 'ui error input evidence-url' : 'ui input evidence-url'} inline>
-                              <Input
-                                id={type.id}
-                                label='Source URL'
-                                onChange={this.handleUrl}
-                                autoFocus={true}
-                                name={ans.id}
-                                value={this.state[`url${ans.id}`] ? this.state[`url${ans.id}`] : ''}
-                              />
-                            </Form.Field>
-                            <Form.Field className='evidence-comments' inline>
-                              <TextArea
-                                autoHeight
-                                rows={4}
-                                label='Comments'
-                                placeholder='Comments'
-                                onChange={this.handleComment}
-                                name={ans.id}
-                                value={this.state[`comment${ans.id}`] ? this.state[`comment${ans.id}`] : ''}
-                              />
-                            </Form.Field>
-                          </div>) : ('')}
-                      </div>
-                    )}
+                  return (
+                    <div key={ans.id}>
+                      <Form.Field>
+                        <Checkbox
+                          label={ans.text}
+                          value={ans.id}
+                          name={type.id.toString()}
+                          onChange={this.handleCheckbox}
+                          checked={this.state[`answer${ans.id}`] === true ? true : false}
+                        />
+                      </Form.Field>
+                      {this.state[`show${ans.id}`] === true ? (
+                        <div className='evidence' key={ans.id}>
+                          <h5>Evidence</h5>
+                          <div className='error-message'>{this.state[`errorWebsite${ans.id}`] === true ? 'Please enter valid website' : ''}</div>
+                          <Form.Field className={this.state[`errorWebsite${ans.id}`] === true ? 'ui error input evidence-url' : 'ui input evidence-url'} inline>
+                            <Input
+                              id={type.id}
+                              label='Source URL'
+                              onChange={this.handleUrl}
+                              autoFocus={true}
+                              name={ans.id}
+                              value={this.state[`url${ans.id}`] ? this.state[`url${ans.id}`] : ''}
+                            />
+                          </Form.Field>
+                          <Form.Field className='evidence-comments' inline>
+                            <TextArea
+                              autoHeight
+                              rows={4}
+                              label='Comments'
+                              placeholder='Comments'
+                              onChange={this.handleComment}
+                              id={type.id}
+                              name={ans.id}
+                              value={this.state[`comment${ans.id}`] ? this.state[`comment${ans.id}`] : ''}
+                            />
+                          </Form.Field>
+                        </div>) : ('')}
+                    </div>
+                  )}
                 )}
                 <p id={theme.name} className='error-message'>{this.state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
                 <div className='button-container'>
@@ -408,7 +490,6 @@ class Rating extends Component {
 
   render() {
     let theme = this.props.match.path.slice(1, -4)
-    console.log(theme)
     console.log('props', this.props.qa)
     console.log('pre props', this.props.pre_qa)
     console.log('state', this.state)

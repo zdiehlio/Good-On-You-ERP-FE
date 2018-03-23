@@ -31,12 +31,15 @@ class BrandCauses extends Component {
     this.handlePortal = this.handlePortal.bind(this)
     this.handleNav = this.handleNav.bind(this)
   }
+
+  //calls API to receive currently saved causes details for brand and pre-defined questions and answers to display in form
   componentWillMount() {
     this.setState({isLoading: true})
     this.props.fetchCause(this.brandId)
     this.props.fetchAllCause(this.brandId)
   }
 
+  //when component receives props with data from API, will set data to be managed in state
   componentWillReceiveProps(nextProps) {
     if(nextProps.causes !== this.props.causes) {
       _.map(nextProps.causes, quest => {
@@ -50,7 +53,7 @@ class BrandCauses extends Component {
     }
   }
 
-  //toggles if clause that sets state to target elements value and enables user to edit the answer
+  //toggles editing mode for specified question
   handleEdit(event) {
     event.preventDefault()
     if(this.state.changeError === false) {
@@ -64,7 +67,8 @@ class BrandCauses extends Component {
       this.setState({renderChangeError: true, portal: true})
     }
   }
-  //sets state for isEditing to null which will toggle the ability to edit
+
+  //clears all errors in state and recalls API to ensure all data displayed to user is up to date
   handleCancel(event) {
     this.setState({
       isEditing: null,
@@ -76,7 +80,8 @@ class BrandCauses extends Component {
     })
     this.props.fetchCause(this.brandId)
   }
-  //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
+
+  //if contact already exists in props, save will send PATCH request to API to update contact details.  If no previous contact details have been saved, will send POST request to API to create contact details.
   handleSave(event) {
     event.preventDefault()
     if(!this.state.currentAnswer) {
@@ -88,6 +93,7 @@ class BrandCauses extends Component {
         this.props.createCause({brand: this.brandId, question: event.target.name, answer: this.state.currentAnswer})
         this.state.progressBar++
       }
+      //will check if the value of the button begins with next, if so will set the state of the next question in line to editing mode
       if(event.target.value.slice(0, 4) === 'next') {
         if(event.target.value === 'nextB-corp') {
           this.setState({isEditing: '6'})
@@ -112,12 +118,15 @@ class BrandCauses extends Component {
     }
   }
 
+  //handles changes for radio buttons
   handleChange(event, { value, name }){
+    //finds text for designated answer to be displayed in non-editing mode
     _.map(this.props.pre_qa, check => {
       if(check.id === parseInt(value)) {
         this.setState({tempAnswer: check.text})
       }
     })
+    //sets value of answer to state using ID and assigns appropriate error's and hashlinks for navigation between questions
     this.setState({
       [name]: parseInt(value),
       currentAnswer: parseInt(value),
@@ -128,6 +137,7 @@ class BrandCauses extends Component {
     })
   }
 
+  //maps through pre-defined questions from API based on params from function call in render and displays the appropriate answers
   renderQuestion(quest) {
     return _.map(this.props.pre_qa, ans => {
       if(ans.question === quest)
@@ -145,10 +155,12 @@ class BrandCauses extends Component {
     })
   }
 
+  //close portal upon clicking Go button
   handlePortal() {
     this.setState({portal: false})
   }
 
+  //handles navigation between pages to prevent users from leaving current page while they are currently editing a question.
   handleNav(event) {
     if(this.state.changeError === true) {
       this.setState({renderChangeError: true, portal: true})
@@ -163,11 +175,7 @@ class BrandCauses extends Component {
     }
   }
 
-  //render contains conditional statements based on state of isEditing as described in functions above.
   render() {
-    console.log('props', this.props.causes)
-    console.log('pre_qa', this.props.pre_qa)
-    console.log('state', this.state)
     const isEditing = this.state.isEditing
     const state = this.state
     const props = this.props.causes
