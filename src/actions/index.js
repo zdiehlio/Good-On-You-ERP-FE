@@ -17,6 +17,7 @@ export const FETCH_BRAND_INFO = 'fetch_brand_info'
 export const BRAND_INFO = 'brand_info'
 export const AUTH_ERROR = 'auth_error'
 export const FILTERED_SEARCH = 'filtered_search'
+export const BRAND_PAGE = 'brand_page'
 
 
 export function login(values) {
@@ -109,6 +110,19 @@ export function filteredSearch(value) {
     request.then(res => {
       dispatch({
         type: FILTERED_SEARCH,
+        payload: res,
+      })
+    })
+  }
+}
+
+export function brandsHomePage(id) {
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
+  const request = axios.post(`${ROOT_URL}/brands-homepage?brand=${id}`)
+  return function(dispatch){
+    request.then(res => {
+      dispatch({
+        type: BRAND_PAGE,
         payload: res,
       })
     })

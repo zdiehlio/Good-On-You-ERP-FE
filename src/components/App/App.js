@@ -34,6 +34,7 @@ import {
   BrandCauses,
   SuppDataSku,
   ZolandoSearch,
+  ZolandoBrandPage,
 } from '../../pages'
 import ScrollToTop from '../scrollToTop'
 import axios from 'axios'
@@ -64,6 +65,7 @@ class App extends Component {
               <Route exact path='/' component={Login}/>
               <Route path='/login' component={Login}/>
               <Route path='/zolandosearch' component={ZolandoSearch}/>
+              <Route path='/zolandoBrandPage/:id' component={ZolandoBrandPage}/>
               <Route path='/searchBrand' component={Authentication(SearchBrand)} />
               <Route path='/brandLanding/:id' component={Authentication(BrandLanding)} />
               <Route path='/brandSummary/:id' component={Authentication(BrandSummary)}/>
