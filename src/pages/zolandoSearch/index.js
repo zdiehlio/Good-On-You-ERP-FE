@@ -36,10 +36,10 @@ class ZolandoSearch extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.filter !== this.props.filter) {
+    if(nextProps.zolando !== this.props.zolando) {
       this.setState({
         isLoading: false,
-        results: nextProps.filter.brands,
+        results: nextProps.zolando.brands,
       })
     }
   }
@@ -70,42 +70,41 @@ class ZolandoSearch extends Component {
   renderResults() {
     if(this.state.isLoading === true) {
       return (<Loader active inline='centered' />)
+    // } else {
+    //   if(this.state.searchResults.length > 0) {
+    //     return _.map(this.state.searchResults, brand => {
+    //       return(
+    //         <div className='filtered-list' key={brand.id}>
+    //           <div>
+    //             <p>{brand.name}</p>
+    //             <p>{brand.website}</p>
+    //           </div>
+    //           <div>{brand.score}</div>
+    //           <div>{brand.environment.label}</div>
+    //           <div>{brand.labour.label}</div>
+    //           <div>{brand.animal.label}</div>
+    //           <div>{brand.categories}</div>
+    //           <div>{brand.sku}</div>
+    //         </div>
+    //       )
+    //     })
     } else {
-      if(this.state.searchResults.length > 0) {
-        return _.map(this.state.searchResults, brand => {
-          return(
-            <div className='filtered-list' key={brand.id}>
-              <div>
-                <p>{brand.name}</p>
-                <p>{brand.website}</p>
-              </div>
-              <div>{brand.score}</div>
-              <div>{brand.environment.label}</div>
-              <div>{brand.labour.label}</div>
-              <div>{brand.animal.label}</div>
-              <div>{brand.categories}</div>
-              <div>{brand.sku}</div>
+      return _.map(this.props.zolando, brand => {
+        return(
+          <div className='filtered-list' key={brand.id}>
+            <div>
+              <Link to={`/zolandoBrandPage/${brand.id}`}><p>{brand.name}</p></Link>
+              <p>{brand.website}</p>
             </div>
-          )
-        })
-      } else {
-        return _.map(this.state.results, brand => {
-          return(
-            <div className='filtered-list' key={brand.id}>
-              <div>
-                <p>{brand.name}</p>
-                <p>{brand.website}</p>
-              </div>
-              <div>{brand.score}</div>
-              <div>{brand.environment.label}</div>
-              <div>{brand.labour.label}</div>
-              <div>{brand.animal.label}</div>
-              <div>{brand.categories}</div>
-              <div>{brand.sku}</div>
-            </div>
-          )
-        })
-      }
+            <div>{brand.score}</div>
+            <div>{brand.environment.label}</div>
+            <div>{brand.labour.label}</div>
+            <div>{brand.animal.label}</div>
+            <div>{brand.categories}</div>
+            <div>{brand.sku}</div>
+          </div>
+        )
+      })
     }
   }
 
@@ -114,7 +113,7 @@ class ZolandoSearch extends Component {
 
   render() {
     const state = this.state
-    console.log('props', this.props.filter)
+    console.log('props', this.props.zolando)
     console.log('state', this.state)
     return (
       <div className='zolando-container'>
@@ -160,7 +159,7 @@ class ZolandoSearch extends Component {
 
 
 function mapStateToProps(state) {
-  return {filter: state.filter, state}
+  return {zolando: state.zolando, state}
 }
 
 export default connect(mapStateToProps, { filteredSearch })( ZolandoSearch )
