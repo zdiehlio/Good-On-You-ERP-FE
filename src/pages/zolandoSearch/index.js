@@ -70,26 +70,25 @@ class ZolandoSearch extends Component {
   renderResults() {
     if(this.state.isLoading === true) {
       return (<Loader active inline='centered' />)
-    // } else {
-    //   if(this.state.searchResults.length > 0) {
-    //     return _.map(this.state.searchResults, brand => {
-    //       return(
-    //         <div className='filtered-list' key={brand.id}>
-    //           <div>
-    //             <p>{brand.name}</p>
-    //             <p>{brand.website}</p>
-    //           </div>
-    //           <div>{brand.score}</div>
-    //           <div>{brand.environment.label}</div>
-    //           <div>{brand.labour.label}</div>
-    //           <div>{brand.animal.label}</div>
-    //           <div>{brand.categories}</div>
-    //           <div>{brand.sku}</div>
-    //         </div>
-    //       )
-    //     })
-    } else {
+    } else if(!this.props.zolando.brands) {
       return _.map(this.props.zolando, brand => {
+        return(
+          <div className='filtered-list' key={brand.id}>
+            <div>
+              <p>{brand.name}</p>
+              <p>{brand.website}</p>
+            </div>
+            <div>{brand.score}</div>
+            <div>{brand.environment.label}</div>
+            <div>{brand.labour.label}</div>
+            <div>{brand.animal.label}</div>
+            <div>{brand.categories}</div>
+            <div>{brand.sku}</div>
+          </div>
+        )
+      })
+    } else {
+      return _.map(this.props.zolando.brands, brand => {
         return(
           <div className='filtered-list' key={brand.id}>
             <div>
