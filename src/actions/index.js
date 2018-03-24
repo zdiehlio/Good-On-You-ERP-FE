@@ -118,7 +118,7 @@ export function filteredSearch(value) {
 
 export function brandsHomePage(id) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
-  const request = axios.post(`${ROOT_URL}/brands-homepage?brand=${id}`)
+  const request = axios.get(`${ROOT_URL}/brands-homepage?brand=${id}`)
   return function(dispatch){
     request.then(res => {
       dispatch({
