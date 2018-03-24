@@ -13,7 +13,7 @@ class ZolandoBrandPage extends Component {
     super(props)
 
     this.state = {
-
+      isLoading: false,
     }
 
     this.brandId=this.props.match.params.id
