@@ -10,6 +10,12 @@
   text-align: center;
 }
 
+.sort {
+  width: calc(100%/7);
+  display: inline-block;
+}
+
+
 .search-bar {
   width: 60%;
   margin: auto;
@@ -29,4 +35,21 @@
   width: calc(100%/7);
   margin-top: 1em;
 
+}
+
+.zolando-filters {
+  width: 100%;
+}
+
+.zolando-filters div {
+  width: calc(100%/7);
+  display: inline-block;
+}
+
+.field div {
+  width: 100%;
+}
+
+a.ui.label{
+  width: 100%;
 }
