@@ -1,0 +1,42 @@
+.evidence-comments {
+  margin-bottom: 2em;
+}
+
+.evidence-url {
+  margin-bottom: 2em;
+}
+
+.evidence {
+  margin-left: 2em;
+  margin-top: 1em;
+}
+
+textarea {
+  width: 50%;
+}
+
+.percentage-title {
+  text-align: center;
+  margin-top: 1em;
+}
+
+.percentage-container {
+  margin-bottom: 2em;
+  margin-top: 2em;
+  /* text-align: center; */
+}
+
+.ui.progress.progress-bar {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.progress-container {
+  display: inline-block;
+  text-align: center;
+  height: 100%;
+  position: relative;
+  width: calc(100%/4);
+}

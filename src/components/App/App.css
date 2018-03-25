@@ -6,7 +6,17 @@
   min-height: calc(100vh - 120px);
   justify-content: center;
   background-color: #F2F2F2;
-  padding: 0;
+}
+
+.container-body-login {
+  height: 100%;
+  display: flex;
+  width: 100%;
+  flex: 1 0 auto;
+  min-height: calc(100vh - 120px);
+  justify-content: center;
+  background-color: #09b5ab;
+  padding: 2em 0em;
 }
 
 @media (min-width: 960px) {
@@ -20,10 +30,29 @@ button {
   margin: 1em;
   padding: 0.5em 1em;
   font-size: 1.3em;
-  border:none;
+  border: none;
   color: white;
-  background-color: #17CABE;
+  background-color: #09b5ab;
   border-radius: 40px;
+  align: right;
+}
+
+.button-container {
+  width: 100%,
+}
+
+.button-container div {
+  display: inline-block;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  width: calc(90%/3);
+}
+.cancel {
+  background-color: maroon;
+}
+
+.add {
+  margin-left: 5em;
 }
 
 button:hover {
@@ -32,7 +61,14 @@ button:hover {
   color: #17CABE;
 }
 
+h5, p, ul, li {
+  text-align: left;
+  margin-top: 0.5em;
+}
 
+li {
+  list-style-type: none;
+}
 /*Common classNames*/
 .goy-color {
   color: #6ac1bf;
@@ -49,25 +85,62 @@ button:hover {
 }
 
 .brand-form {
-  margin-top: 2em;
-  float:left;
+  margin-top: 1em;
+  width: 80%;
 }
 .brand-form li {
+  display: block;
   list-style-type: none;
-  margin:0.5em;
 }
 
 .form-container {
   width:80%;
 }
 
+.forms-header {
+  width:100%;
+  color: grey;
+}
+
+.forms-header button {
+  margin-top: 2em;
+}
+
+.forms-header div {
+  margin-top: 1em;
+  float: left;
+  color: grey;
+  width: calc(100%/7);
+  font-weight: bold;
+  text-align: center;
+}
+
 .editing {
+  width: 100%;
   background-color: white;
+  padding: 2em;
 }
 
 .not-editing {
+  width: 100%;
   background-color: #F2F2F2;
   padding: 2em;
+}
+
+.ui.form {
+  margin-top: 1em;
+  width: 80%;
+}
+
+input {
+  width: 20em;
+}
+
+textarea {
+  width: 35em;
+}
+.ui.label {
+  width: 15em;
 }
 
 .chip {
@@ -79,6 +152,7 @@ button:hover {
     line-height: 30px;
     border-radius: 25px;
     background-color: #f1f1f1;
+    margin: 0.5em;
 }
 .chip-selected {
     display: inline-block;
@@ -88,26 +162,14 @@ button:hover {
     font-size: 16px;
     line-height: 30px;
     border-radius: 25px;
-    background-color: green;
+    background-color: #09b5ab;
+    margin: 0.5em;
 }
 
-.summary-view {
+
+.summary-button {
   width: 100%;
-  border: 1px;
-  padding: 1em;
-}
-
-.forms-header {
-  margin-top: 3em;
-  width:100%;
-}
-
-.forms-header div {
-  float: left;
-  width: calc(100%/7);
-  color: #17CABE;
-  font-weight: bold;
-  text-align: center;
+  text-align: left
 }
 
 .form-navigation div{
@@ -125,4 +187,93 @@ button:hover {
 
 .next {
   float:right;
+}
+
+.disabled {
+  background-color: #F2F2F2;
+}
+
+.disabled:hover {
+  background-color: #F2F2F2;
+  color: white;
+}
+
+.divider {
+  width: 100%;
+  height: 0.2em;
+  margin-top: 1em;
+  display: inline-block;
+  background-color: #09b5ab;
+}
+
+.small-divider {
+    width: 100%;
+    height: 1px;
+    margin-top: 1em;
+    display: inline-block;
+    background-color: #09b5ab;
+}
+
+.error-message {
+  color: red;
+}
+
+.rating-header {
+  width: 100%;
+}
+
+.field {
+  margin-top: 0.5em;
+}
+
+.progress {
+  width: 80%;
+}
+
+.qa-heading {
+  width: 100% !important;
+  color: #09b5ab !important;
+  text-align: left !important;
+}
+
+.qa-heading h1 {
+  display: inline-block;
+  margin-left: 1em;
+}
+
+.qa-heading p {
+  display: inline-block;
+}
+
+.qa-heading h5 {
+  display: inline-block;
+  margin-left: 1em;
+}
+
+.page-header {
+  width: 100%;
+}
+
+.searchlist-container {
+  width: 60%;
+  padding: 1em;
+  margin-top: 2em;
+  background-color: white;
+}
+
+.searchlist-container a {
+  color: black;
+}
+
+.arrow-divider {
+  color: #09b5ab !important;
+  font-weight: bold;
+}
+
+.portal {
+  text-align: center;
+}
+
+.portal p {
+  text-align: center;
 }

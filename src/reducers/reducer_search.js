@@ -7,7 +7,6 @@ export default function(state = null, action) {
   switch (action.type) {
   case FETCH_BRANDS:
     if (!action.error) {
-      console.log(action);
       return {brands: action.payload.data}
     }
     return {error: action.error}
@@ -19,6 +18,6 @@ export default function(state = null, action) {
   case CLEAR_SEARCH:
     return null
   default:
-    return state;
+    return state
   }
 }

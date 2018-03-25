@@ -4,31 +4,40 @@
   "private": true,
   "homepage": "https://good-on-you-77bce.firebaseapp.com/",
   "dependencies": {
-    "jquery": "^3.2.1",
     "jwt-decode": "^2.2.0",
     "material-design-icons": "^3.0.1",
     "material-ui": "^0.19.2",
-    "material-ui-search-bar": "^0.4.0",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
+    "moment": "^2.19.2",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-progressbar": "^15.4.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
+    "react-router-hash-link": "^1.1.1",
+    "react-router-redux": "^4.0.8",
     "react-scripts": "1.0.13",
     "react-tap-event-plugin": "^2.0.1",
     "react-widgets": "^4.1.0",
     "redux": "^3.7.2",
     "redux-form": "^7.0.4",
-    "redux-promise": "^0.5.3"
+    "redux-promise": "^0.5.3",
+    "semantic-ui-css": "^2.2.12",
+    "semantic-ui-react": "^0.77.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "deploy": "npm run build && firebase deploy",
-    "test": "react-scripts test --env=jsdom",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
     "axios": "^0.16.2",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "material-ui": "^0.19.2",
     "redux-thunk": "^2.2.0"
   }

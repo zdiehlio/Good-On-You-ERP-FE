@@ -1,11 +1,15 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { fetchSentence, createSentence, updateSentence } from '../../actions'
-import { FormsHeader } from '../../components'
+import { fetchSentence, createSentence, updateSentence } from '../../actions/sentence'
+import { Form, TextArea, Radio, Progress, Portal, Segment, Loader} from 'semantic-ui-react'
+import { QualiHeading } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
+
+import './brandSentence.css'
 
 class BrandSentences extends Component {
   constructor(props){
@@ -13,160 +17,220 @@ class BrandSentences extends Component {
 
     this.state = {
       isEditing: null,
-      currentAnswer: null,
-      finalAnswer: null,
-      input: null
+      renderChangeError: false,
+      currentSelect: '',
+      currentId: '',
+      finalAnswer: '',
+      input: '',
+      textlength: 0,
+      progressBar: 0,
     }
 
+    this.brandId = this.props.match.params.id
 
     this.handleRadio = this.handleRadio.bind(this)
-    this.handleInput = this.handleInput.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
-    // this.handleDelete = this.handleDelete.bind(this)
+    this.handleNav = this.handleNav.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
-componentWillMount() {
-  const { id } = this.props.match.params
-  this.props.fetchSentence(id)
-}
 
-componentDidMount() {
-  _.map(this.props.qa, ident => {
-    if(ident.is_selected)
-      console.log('ident', ident.is_selected);
-      this.setState({currentAnswer: ident.id})
-})
-}
+  //calls API to receive currently saved contact details for brand
+  componentWillMount() {
+    this.setState({isLoading: true})
+    this.props.fetchSentence(this.brandId)
+  }
 
-//toggles if clause that sets state to target elements value and enables user to edit the answer
+  //when component receives props with data from API, will set details to be managed in state
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.sentence !== this.props.sentence) {
+      if(nextProps.sentence) {
+        _.map(nextProps.sentence, ident => {
+          if(ident.is_selected === true) {
+            this.setState({currentSelect: ident.slug, currentId: ident.id, finalAnswer: ident.text, finalSource: ident.source})
+            ident.text === '' ? this.setState({progressBar: 0 }) : this.state.progressBar++
+          }
+          this.setState({[ident.slug]: ident.slug})
+        })
+        this.setState({isLoading: false})
+      }
+    }
+  }
+
+  //toggles editing mode for specified question
   handleEdit(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
-    if(this.state.currentAnswer) {
-      console.log('current answer');
-    } else if(this.props.qa) {
-      //if state of target button 'name' already exists, will set state of same target name to the current answer value and also toggle editing
-      _.map(this.props.qa, ident => {
-        if(ident.is_selected === true)
-          this.setState({currentAnswer: `${ident.id}`, input: ident.text})
-          console.log('ident', ident);
-    })
-      //if state of target 'name' does not yet exist, will pull value of answer off props and set state to that answer and also toggle editing
-    }
-    // else {
-    //     this.setState({[event.target.name]: `${this.props.qa[event.target.name].id}`, currentAnswer: `${this.props.qa[event.target.name].id}`, isEditing: event.target.value})
-    //     console.log('props answer');
-    //   }
-    //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
-    else {
-      this.props.createSentence({brand: id, text: 'option 1'})
-      this.props.createSentence({brand: id, text: 'option 2'})
-      console.log('post');
-    }
     this.setState({isEditing: '1'})
   }
-//sets state for isEditing to null which will toggle the ability to edit
+
+  //clears all errors in state and recalls API to ensure all data displayed to user is up to date
   handleCancel(event) {
-    this.setState({isEditing: null})
+    event.preventDefault()
+    this.setState({
+      changeError: false,
+      renderChangeError: false,
+      finalSource: null,
+      finalAnswer: null,
+      currentId: null,
+      currentSelect: null,
+      isEditing: null,
+      isLoading: true,
+    })
+    this.props.fetchSentence(this.brandId)
   }
-  //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
+
+  //if the currently selected sentence already exists in props, will send PATCH request to API, otherwise will send POST.
   handleSave(event) {
-    const { id }  = this.props.match.params
-    this.props.updateSentence(id, this.state.currentAnswer, {text: this.state.finalAnswer, is_selected: true})
-    this.setState({isEditing: null})
-    console.log('save', this.state);
+    if(this.props.sentence[this.state.currentSelect]) {
+      this.props.updateSentence(this.brandId, this.state.currentId, {text: this.state.finalAnswer, is_selected: true})
+    } else {
+      this.props.createSentence({brand: this.brandId, text: this.state.finalAnswer, is_selected: true})
+      this.state.progressBar++
+    }
+    if(this.state.finalAnswer === '') {
+      this.setState({progressBar: 0})
+    }
+    if(event.target.value === 'next') {
+      this.props.history.push(`/brandSummary/${this.brandId}`)
+    } else {
+      this.setState({changeError: false, renderChangeError: false, isEditing: null, save: true})
+    }
   }
-  //handle radio buttons change status, must be written seperate since value properties are inconsistent with text input.
+
+  //Allows users to select pre-defined sentences if they exist in API/props.  Will also assign selected text to value of text area so that it can be edited by user
   handleRadio(event){
-    this.setState({finalAnswer: event.target.name, currentAnswer: event.target.value})
+    if(this.props.sentence.length > 0) {
+      _.map(this.props.sentence, check => {
+        if(event.target.name === check.slug) {
+          this.setState({textlength: event.target.value.length, currentSelect: check.slug, finalAnswer: event.target.value, currentId: check.id, finalSource: check.source})
+        }
+      })
+    } else {
+      this.setState({textlength: event.target.value.length, finalAnswer: event.target.value})
+    }
+    this.setState({currentEditing: '#sentence', changeError: true})
   }
-  //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
-  handleInput(event) {
-    this.setState({finalAnswer: event.target.value, currentAnswer: event.target.name, input: event.target.value})
+
+  //finds pre-defined sentences in API/props if they exist and renders them as inputs that behave as radio buttons
+  renderField() {
+    return _.map(this.props.sentence, check => {
+      if(check.slug === 'default-1' || check.slug === 'default-2') {
+        return(
+          <Form>
+            <Form.Field inline key={check.id}>
+              <Radio
+                label={check.text}
+                onChange={this.handleRadio}
+                checked={this.state.currentSelect===check.slug}
+                name={check.slug}
+                value={check.text}
+              />
+            </Form.Field>
+            <div>Source: {check.source}</div>
+          </Form>
+        )}
+    })
   }
 
+  //renders message if no pre-defined sentences exist
+  renderNone(){
+    return(
+      <div>No default sentences found, Please create one</div>
+    )
+  }
 
-//For development purposes for testing post requests, will delete record according to specific name of question and current brand
-//If using, ensure to uncomment bind function in constructor above
-//   handleDelete(event) {
-//     event.preventDefault()
-//     const { id }  = this.props.match.params
-//     axios.delete(`http://34.212.110.48:3000/brand=${id}&question=${event.target.name}`)
-// }
+  //close portal upon clicking Go button
+  handlePortal() {
+    this.setState({portal: false})
+  }
 
-//render contains conditional statements based on state of isEditing as described in functions above.
+  //handles navigation between pages to prevent users from leaving current page while they are currently editing a question.
+  handleNav(event) {
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/brandCauses/${this.brandId}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/brandSummary/${this.brandId}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${this.brandId}`)
+      }
+    }
+  }
+
   render() {
-    console.log('props', this.props.qa);
-    console.log('state', this.state);
     const isEditing = this.state.isEditing
-    const { id }  = this.props.match.params
+    const state = this.state
+    const props = this.props.sentence
     return(
       <div className='form-container'>
+        <QualiHeading id={this.brandId} brand={this.props.brand}/>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
         <div className='forms-header'>
-          <div>Brand Overview</div>
-          <div>>></div>
-          <div>Rating</div>
-          <div>>></div>
-          <div>Qualitative Ratings</div>
-          <div>>></div>
-          <div>Supplementary Data</div>
           <span className='form-navigation'>
-            <div><Link to={`/brandCauses/${id}`}><button className='previous'>Previous</button></Link></div>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
             <div><h3>Brand Sentences</h3></div>
-            <div><Link to={`/brandSummary/${id}`}><button className='next'>Next</button></Link></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
           </span>
         </div>
-        <form className='brand-form'>
-        {isEditing === '1' ? (
-          <div className='editing'>
-          <h5>What is the one sentence that describes the brand best?</h5>
-          <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p>
-            <ul>
-              <li><Field
-                type='radio'
-                onChange={this.handleRadio}
-                checked={this.state.currentAnswer==='6'}
-                name='New Zealands premium casual lifestyle brand for women and men'
-                component='input'
-                value='6'/> New Zealands premium casual lifestyle brand for women and men
-              </li>
-              <li><Field
-                type='radio'
-                onChange={this.handleRadio}
-                checked={this.state.currentAnswer==='7'}
-                name='New Zealands premium casual lifestyle brand for women and men'
-                component='input'
-                value='7'/> New Zealands luxury lifestyle brand for sustainable and organic fashion for women and men
-              </li>
-              <li><Field
-                placeholder='Create or Edit Description'
-                onFocus={this.handleInput}
-                onChange={this.handleInput}
-                name='8'
-                component='textarea' /> {this.state.input}
-              </li>
-            </ul>
-            <button onClick={this.handleCancel}>Cancel</button>
-            <button onClick={this.handleSave} name='1' value='1'>Save</button>
-          </div>) : (
-          <div className='not-editing'>
-            <h5>What is the one sentence that describes the brand best?</h5>
-            <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
-          </div>
-          )}
-        </form>
+        <p className='small-divider'></p>
+        <h5> Current:</h5>
+        <Progress total={1} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
+            </Segment>
+          </Portal>
+        ) : ''}
+        {state.isLoading === true ? <Loader active inline='centered' /> :
+          <Form>
+            {isEditing === '1' ? (
+              <div className='editing' id='sentence'>
+                <h5>What is the one sentence that describes the brand best?</h5>
+                {state['default-1'] || state['default-2'] ? <p>Select one of the proposed sentences shown below.  If required, edit it and then choose save</p> : <p>No default sentences found, Please create one</p>}
+                {state['default-1'] || state['default-2'] ? this.renderField() : ''}
+                <h5>Edit the one you chose or write a new one</h5>
+                <TextArea
+                  autoHeight
+                  maxLength='255'
+                  onFocus={this.handleRadio}
+                  onChange={this.handleRadio}
+                  value={state.finalAnswer}
+                  name='custom'/>
+                <p>{this.state.textlength}/255</p>
+                <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
+                <div className='button-container'>
+                  <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                  <div><button onClick={this.handleSave}>Save</button></div>
+                  <div><button onClick={this.handleSave} value='next'>Save & Next</button></div>
+                </div>
+              </div>) : (
+              <div className='not-editing'>
+                <h5>What is the one sentence that describes the brand best?</h5>
+                <p>{this.state.finalAnswer}</p>
+                <p>{this.state.finalSource}</p>
+                <div className='button-container'>
+                  <div></div>
+                  <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+                </div>
+              </div>
+            )}
+          </Form>
+        }
       </div>
     )
   }
 }
 
 function mapStateToProps(state) {
-  return {qa: state.qa}
+  return {
+    sentence: state.sentence,
+    brand: state.brandInfo,
+  }
 }
 
-export default reduxForm({
-  form: 'BrandSentenceForm'
-})(
-  connect(mapStateToProps, { updateSentence, fetchSentence, createSentence })(BrandSentences)
-)
+export default connect(mapStateToProps, { updateSentence, fetchSentence, createSentence })(BrandSentences)

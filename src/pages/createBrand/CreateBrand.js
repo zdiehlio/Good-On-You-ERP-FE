@@ -1,119 +1,122 @@
-import React, { Component } from 'react';
-import TextField from 'material-ui/TextField';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {grey900} from 'material-ui/styles/colors';
-import './CreateBrand.css';
+import React, { Component } from 'react'
+import TextField from 'material-ui/TextField'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import {grey900} from 'material-ui/styles/colors'
+import './CreateBrand.css'
 import { Field, reduxForm } from 'redux-form'
-import { connect } from 'react-redux';
-import { createBrand } from '../../actions';
+import { connect } from 'react-redux'
+import { Form, Input } from 'semantic-ui-react'
+import { createBrand } from '../../actions'
 import axios from 'axios'
 
-
-const muiTheme = getMuiTheme({
-  palette: {
-    textColor: grey900
-  }
-});
+import { url } from '../../components'
 
 class CreateBrand extends Component {
+  constructor(props) {
+    super(props)
 
-  renderField(field) {
-    const { meta: { touched, error } } = field
+    this.state = {
+      createValue: '',
+      nameError: true,
+      websiteError: true,
+      brandError: false,
+    }
+    this.onSubmit = this.onSubmit.bind(this)
+    this.handleInput = this.handleInput.bind(this)
+  }
 
+  componentWillMount() {
+    if(this.props.create.length > 0) {
+      this.setState({name: this.props.create})
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.create !== this.props.create) {
+      if(nextProps.create.status === 201) {
+        this.props.history.push(`/brandLanding/${nextProps.create.data.id}`)
+      } else if(nextProps.create.response.status === 400) {
+        this.setState({brandError: true})
+      }
+      if(this.props.create.length > 0) {
+        this.setState({name: this.props.create})
+      }
+    }
+  }
+
+  onSubmit() {
+    if(this.state.nameError === false && this.state.websiteError === false) {
+      this.props.createBrand({name: this.state.name, website: this.state.website})
+    } else {
+      this.setState({renderError: true})
+    }
+
+  }
+
+  handleInput(event, {name, value}) {
+    if(value.length > 0) {
+      this.setState({[`${name}Error`]: false })
+      if(name === 'website') {
+        if(url.test(value)) {
+          this.setState({websiteError: false})
+        } else {
+          this.setState({websiteError: true})
+        }
+      }
+    } else {
+      this.setState({[`${name}Error`]: true})
+    }
+    this.setState({[name]: value, brandError: false})
+  }
+
+  render() {
+    const { handleSubmit } = this.props
+    const state = this.state
+    console.log('state', this.state)
+    console.log('props', this.props)
     return (
-      <div>
-        <MuiThemeProvider>
-          <TextField
-            floatingLabelText={field.label}
-            type={field.type}
-            {...field.input}
-          />
-        </MuiThemeProvider>
-        <div className="text-help">
-          {touched ? error : ""}
+      <div className="page-container">
+        <h1>CreateBrand</h1>
+        <div className="form-container">
+          <Form className='create-brand'>
+            <div>
+              <Form.Field className={state.renderError === true && state.nameError === true ? 'ui error input' : 'ui input'}>
+                <Input
+                  placeholder="Brand Name"
+                  name="name"
+                  onChange={this.handleInput}
+                  value={state.name}
+                />
+              </Form.Field>
+              {state.renderError === true && state.nameError === true ? <p>Please enter Brand name</p> : ''}
+              {state.brandError === true ?
+                <p className='error-message'>Brand already exists</p> : ''}
+            </div>
+            <div>
+              <Form.Field className={state.renderError === true && state.websiteError === true ? 'ui error input' : 'ui input'}>
+                <Input
+                  placeholder="Brand URL"
+                  name="website"
+                  onChange={this.handleInput}
+                  value={state.website}
+                />
+              </Form.Field>
+              {state.renderError === true && state.websiteError === true ? <p>Please enter valid Brand website</p> : ''}
+            </div>
+            <div>
+              <button onClick={this.onSubmit}>Submit</button>
+            </div>
+          </Form>
         </div>
       </div>
     )
   }
-
-  onSubmit(values) {
-    console.log('values', values);
-    this.props.createBrand(values, (response) => {
-      this.getCategories(response)
-    });
-    console.log('submit');
-  }
-
-  getCategories(response) {
-      // get data from JSON
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt');
-      axios.get("/spec.json")
-        .then(res => {
-          console.log('get categories', res);
-          this.setState({
-            categories: res.data.categories
-          })
-
-          this.props.history.push(`brandSummary/${response.data._id}`)
-        })
-  }
-
-  render() {
-    const { handleSubmit } = this.props;
-
-    return (
-      <div className="page-container">
-        <h2 className="title">CreateBrand</h2>
-        <div className="form-container">
-          <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-            <Field
-              label="Brand Name"
-              name="name"
-              type="text"
-              component={this.renderField}
-            ></Field>
-            <Field
-              label="Brand URL"
-              name="website"
-              type="text"
-              component={this.renderField}
-            ></Field>
-            <button type='submit'>Submit</button>
-          </form>
-        </div>
-      </div>
-    );
-  }
-}
-
-function validate(values) {
-  // console.log(values) -> {title: 'dksajkd', categories: "dkjsad", content: "kdsjakdj"}
-  const errors = {};
-
-  console.log(values);
-
-  // // Validate the inputs from "values"
-  if (!values.name) {
-    errors.name = "Enter a name!"
-  }
-
-  if (!values.url) {
-    errors.url = "Enter a url!"
-  }
-
-  // If errors is empty, the form is fine to submit
-  // If errors has *any* properties, redux form assumes form is invalid
-  return errors;
 }
 
 function mapStateToProps(state) {
-  console.log(state);
-  return { error: state.error }
+  return { create: state.createBrand, state }
 }
 
 
-export default reduxForm({
-  validate,
-  form: "CreateBrandForm"
-})(connect(mapStateToProps, { createBrand })(CreateBrand))
+export default connect(mapStateToProps, { createBrand })(CreateBrand)

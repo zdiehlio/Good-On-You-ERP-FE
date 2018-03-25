@@ -1,9 +1,12 @@
 import React, {Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
+import { HashLink } from 'react-router-hash-link'
 import { connect } from 'react-redux'
-import { fetchSummary, createSummary, updateSummary } from '../../actions'
-import { FormsHeader } from '../../components'
+import { Form, TextArea, Progress, Portal, Segment, Loader} from 'semantic-ui-react'
+import { fetchSummary, createSummary, updateSummary } from '../../actions/summary'
+import { fetchRawRating } from '../../actions/rating'
+import { QualiHeading } from '../../components'
 import _ from 'lodash'
 import axios from 'axios'
 
@@ -15,149 +18,194 @@ class BrandSummary extends Component {
       isEditing: null,
       currentAnswer: null,
       renderSummary: null,
+      renderChangeError: false,
+      save: false,
+      textlength: 0,
+      progressBar: 0,
     }
 
+    this.brandId = this.props.match.params.id
 
     this.handleInput = this.handleInput.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleSave = this.handleSave.bind(this)
-    // this.handleDelete = this.handleDelete.bind(this)
+    this.handleNav = this.handleNav.bind(this)
+    this.handlePortal = this.handlePortal.bind(this)
   }
-componentWillMount() {
-  const { id } = this.props.match.params
-  this.props.fetchSummary(id)
-  _.map(this.props.qa, summary=> {
-    this.setState({renderSummary: summary.text})
-  })
 
-}
+  //calls API to receive currently saved contact details for brand
+  componentWillMount() {
+    this.setState({isLoading: true})
+    this.props.fetchSummary(this.brandId)
+    this.props.fetchRawRating(this.brandId)
+  }
 
-componentDidMount() {
-  _.map(this.props.qa, summary=> {
-    this.setState({renderSummary: summary.text})
-  })
-}
+  //when component receives props with data from API, will set details to be managed in state
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.summary !== this.props.summary) {
+      _.map(nextProps.summary, summary=> {
+        this.setState({renderSummary: summary.text, originalAnswer: summary.text, currentAnswer: summary.text})
+        if(summary.text) {
+          summary.text === '' ? this.setState({progressBar: 0}) : this.state.progressBar++
+        }
+      })
+      this.setState({isLoading: false})
+    }
+  }
 
-componentWillReceiveProps() {
-  _.map(this.props.qa, summary=> {
-    this.setState({renderSummary: summary.text})
-  })
-}
-
-//toggles if clause that sets state to target elements value and enables user to edit the answer
+  //toggles editing mode for specified question
   handleEdit(event) {
     event.preventDefault()
-    const { id }  = this.props.match.params
-    if(this.props.qa) {
-      //if a summary already exists, will set state of same target name to the current answer value and also toggle editing
-      _.map(this.props.qa, summary=> {
-        this.setState({currentAnswer: summary.text, isEditing: '1'})
-      })
-      console.log('set state', this.state);
-    }
-    //if an answer has not yet been created(first time visiting this specific question for this brand), will create a post request and toggle editing
-    else {
-      this.props.createSummary({brand: id, text: 'option 1'})
-      this.setState({isEditing: '1'})
-      console.log('post');
-    }
+    this.setState({isEditing: event.target.value})
   }
-//sets state for isEditing to null which will toggle the ability to edit
+
+  //clears all errors in state and recalls API to ensure all data displayed to user is up to date
   handleCancel(event) {
-    this.setState({isEditing: null, currentAnswer: null})
+    this.setState({changeError: false, renderChangeError: false, isLoading: true, isEditing: null, currentAnswer: ''})
+    this.props.fetchSummary(this.brandId)
   }
-  //upon hitting save, will send a PATCH request updating the answer according to the current state of targe 'name' and toggle editing.
+
+  //if the currently selected summary already exists in props, will send PATCH request to API, otherwise will send POST.
   handleSave(event) {
-    const { id }  = this.props.match.params
-    this.props.updateSummary(id, {text: this.state.currentAnswer})
-    this.setState({isEditing: null, renderSummary: this.state.currentAnswer})
-    console.log('save', this.state);
+    event.preventDefault()
+    if(this.state.renderSummary) {
+      this.props.updateSummary(this.brandId, {text: this.state.currentAnswer})
+      this.setState({renderSummary: this.state.currentAnswer})
+      this.state.currentAnswer === '' ? this.setState({progressBar: 0}) : this.state.progressBar++
+    } else {
+      this.props.createSummary({brand: this.brandId, text: this.state.currentAnswer})
+      this.setState({renderSummary: this.state.currentAnswer})
+      this.state.currentAnswer === '' ? this.setState({progressBar: 0}) : this.state.progressBar++
+    }
+    if(event.target.value === 'next') {
+      this.props.history.push(`/suppDataSocialMedia/${this.brandId}`)
+    } else {
+      this.setState({isEditing: null, changeError: false, renderChangeError: false})
+    }
   }
-  //handle text input change status, must be written seperate since value properties are inconsistent with radio buttons.
+
+  //assigns value in state for input along with appropriate erros and hashlink
   handleInput(event) {
-    this.setState({currentAnswer: event.target.value})
+    this.setState({currentEditing: '#summary', changeError: true, textlength: event.target.value.length, currentAnswer: event.target.value})
   }
 
-  renderSummary() {
-    return _.map(this.props.qa, summary => {
-      return(
-        <li key={summary.id}>
-          {summary.text}
-        </li>
-      )
-    })
+  //renders ratings that have been completed in ratings sections
+  renderRawRatings() {
+    if(this.props.pre_qa) {
+      if(this.props.pre_qa.length > 0) {
+        let count = 0
+        return _.map(this.props.pre_qa, answer => {
+          return(
+            <div key={count++}>{answer.text}</div>
+          )
+        })
+      } else {
+        return <p>There is no answer at the rating section yet</p>
+      }
+    }
   }
 
+  //close portal upon clicking Go button
+  handlePortal() {
+    this.setState({portal: false})
+  }
 
+  //handles navigation between pages to prevent users from leaving current page while they are currently editing a question.
+  handleNav(event) {
+    if(this.state.changeError === true) {
+      this.setState({renderChangeError: true, portal: true})
+    } else {
+      if(event.target.name === 'previous') {
+        this.props.history.push(`/brandSentences/${this.brandId}`)
+      } else if(event.target.name === 'next') {
+        this.props.history.push(`/suppDataSocialMedia/${this.brandId}`)
+      } else if(event.target.name === 'landing') {
+        this.props.history.push(`/brandLanding/${this.brandId}`)
+      }
+    }
+  }
 
-//For development purposes for testing post requests, will delete record according to specific name of question and current brand
-//If using, ensure to uncomment bind function in constructor above
-//   handleDelete(event) {
-//     event.preventDefault()
-//     const { id }  = this.props.match.params
-//     axios.delete(`http://34.212.110.48:3000/brand=${id}&question=${event.target.name}`)
-// }
-
-//render contains conditional statements based on state of isEditing as described in functions above.
-render() {
-  console.log('props', this.props.qa[3]);
-  console.log('state', this.state);
-  const isEditing = this.state.isEditing
-  const { id }  = this.props.match.params
-  return(
-    <div className='form-container'>
-      <div className='forms-header'>
-        <div>Brand Overview</div>
-        <div>>></div>
-        <div>Rating</div>
-        <div>>></div>
-        <div>Qualitative Ratings</div>
-        <div>>></div>
-        <div>Supplementary Data</div>
-        <span className='form-navigation'>
-          <div><Link to={`/brandSentences/${id}`}><button className='previous'>Previous</button></Link></div>
-          <div><h3>Brand Summary</h3></div>
-          <div><Link to={`/suppDataCategory/${id}`}><button className='next'>Next</button></Link></div>
-        </span>
-      </div>
-      <form className='brand-form'>
-      {isEditing === '1' ? (
-        <div className='editing'>
-        <h5>What is the Summary for the Brand?</h5>
-          <Field
-            placeholder={this.currentAnswer}
-            onFocus={this.handleInput}
-            onChange={this.handleInput}
-            name='summary'
-            component='textarea'/>
-          <button onClick={this.handleCancel}>Cancel</button>
-          <button onClick={this.handleSave} name='1' value='1'>Save</button>
-        </div>) : (
-        <div className='not-editing'>
-          <h5>What is the Summary for the Brand?</h5>
-          <button name='1' onClick={this.handleEdit} value='1'>Edit</button>
+  //render contains conditional statements based on state of isEditing as described in functions above.
+  render() {
+    console.log('props', this.props.summary)
+    console.log('pre props', this.props.pre_qa)
+    console.log('state', this.state)
+    const isEditing = this.state.isEditing
+    const props = this.props.summary
+    const state = this.state
+    return(
+      <div className='form-container'>
+        <QualiHeading id={this.brandId} brand={this.props.brand}/>
+        <div className='forms-header'><button onClick={this.handleNav} name='landing'>Back to Summary</button></div>
+        <div className='forms-header'>
+          <span className='form-navigation'>
+            <div><button onClick={this.handleNav} name='previous' className='previous'>Previous</button></div>
+            <div><h3>Brand Summary</h3></div>
+            <div><button onClick={this.handleNav} name='next' className='next'>Next</button></div>
+          </span>
         </div>
-        )}
-        <h4>Current Brand Summary</h4>
-        <ul>
-        {this.state.currentAnswer ? (
-          this.state.currentAnswer) : (
-          this.renderSummary()
-        )}
-        </ul>
-      </form>
-    </div>
-  )
-}
+        <p className='small-divider'></p>
+        <h5> Current:</h5>
+        <Progress total={1} value={state.progressBar} progress />
+        {state.renderChangeError === true ? (
+          <Portal open={state.portal} className='portal'>
+            <Segment style={{ left: '35%', position: 'fixed', top: '50%', zIndex: 1000}}>
+              <p>Please Save or Cancel your selected answers before proceeding</p>
+              <HashLink to={state.currentEditing}><button onClick={this.handlePortal}>Go</button></HashLink>
+            </Segment>
+          </Portal>
+        ) : ''}
+        {state.isLoading === true ? <Loader active inline='centered' /> :
+          <Form>
+            {isEditing === '1' ? (
+              <div className='editing' id='summary'>
+                <h5>What is the Summary for the Brand? *</h5>
+                <TextArea
+                  autoHeight
+                  maxLength='3000'
+                  placeholder={this.currentAnswer}
+                  onChange={this.handleInput}
+                  value={state.currentAnswer}
+                  name='summary'/>
+                <p>{this.state.textlength}/3000</p>
+                <p className='error-message'>{state.renderChangeError === true ? 'Please Save or Cancel your selections' : ''}</p>
+                <div className='button-container'>
+                  <div><button className='cancel' onClick={this.handleCancel}>Cancel</button></div>
+                  <div><button onClick={this.handleSave}>Save</button></div>
+                  <div><button onClick={this.handleSave} value='next'>Save & Next</button></div>
+                </div>
+              </div>) : (
+              <div className='not-editing'>
+                <h5>What is the Summary for the Brand?</h5>
+                <div className='button-container'>
+                  <div></div>
+                  <div><button name='1' onClick={this.handleEdit} value='1'>Edit</button></div>
+                </div>
+              </div>
+            )}
+            <div className='not-editing'>
+              <h4>{state.renderSummary ? 'Current Brand Summary' : ''}</h4>
+              <div>{state.renderSummary}</div>
+            </div>
+            <div className='not-editing'>
+              <p className='small-divider'></p>
+              <h4>Rating Answers</h4>
+              {this.renderRawRatings()}
+            </div>
+          </Form>
+        }
+      </div>
+    )
+  }
 }
 
 function mapStateToProps(state) {
-  return {qa: state.qa}
+  return {
+    summary: state.summary,
+    pre_qa: state.preQa,
+    brand: state.brandInfo,
+  }
 }
 
-export default reduxForm({
-  form: 'BrandSummaryForm'
-})(
-  connect(mapStateToProps, { updateSummary, fetchSummary, createSummary })(BrandSummary)
-)
+export default connect(mapStateToProps, { updateSummary, fetchSummary, createSummary, fetchRawRating })(BrandSummary)
