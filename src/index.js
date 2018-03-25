@@ -14,7 +14,7 @@ import { AUTH_USER, BRAND_INFO } from './actions'
 import 'semantic-ui-css/semantic.min.css'
 
 const createStoreWithMiddleware = applyMiddleware(promise, thunk)(createStore)
-const store = createStoreWithMiddleware(reducers)
+const store = createStoreWithMiddleware(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
 const token = sessionStorage.getItem('jwt')
 const name = sessionStorage.getItem('name')

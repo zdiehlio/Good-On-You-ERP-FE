@@ -118,7 +118,8 @@ export function filteredSearch(value) {
 
 export function brandsHomePage(id) {
   axios.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('jwt')
-  const request = axios.get(`${ROOT_URL}/brands-homepage?brand=${id}`)
+  // const request = axios.get(`${ROOT_URL}/brands-homepage?brand=${id}`)
+  const request = axios.get('https://goy-ed-2079.nodechef.com/brands-homepage?brand=1')
   return function(dispatch){
     request.then(res => {
       dispatch({

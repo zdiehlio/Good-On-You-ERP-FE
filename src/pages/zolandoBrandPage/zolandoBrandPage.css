@@ -1,0 +1,63 @@
+.body {
+  color: #5D5D5D;
+  font-size: 14px;
+}
+
+.brand-container {
+  display: flex;
+  flex: 1 1 100%;
+}
+
+.brand-cover {
+  display: flex;
+  height: 240px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  width: 80%;
+}
+
+.brand-card {
+    display: flex;
+    justify-content: center;
+    background: #FFFFFF;
+    align-items: center;
+    margin: 5px;
+    padding: 44px;
+  }
+
+.brand-logo {
+  border-radius: 50%;
+  width: 211px;
+  height: 211px;
+}
+
+.brand-info {
+  flex: 1;
+}
+
+.item {
+  padding: 20px;
+}
+
+.brand-ratings {
+  display: flex;
+  flex: 1
+}
+
+.total-score {
+  justify-content: center;
+}
+
+.rating {
+  flex: 1;
+}
+
+.brand-info {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
