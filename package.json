@@ -10,6 +10,7 @@
     "moment": "^2.19.2",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
+    "react-csv": "^1.0.14",
     "react-dom": "^16.2.0",
     "react-progressbar": "^15.4.1",
     "react-redux": "^5.0.6",
