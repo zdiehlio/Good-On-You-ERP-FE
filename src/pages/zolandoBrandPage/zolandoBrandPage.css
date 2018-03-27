@@ -13,11 +13,12 @@
   height: 240px;
 }
 
-.brand {
+.brand-page {
   display: flex;
   flex-direction: column;
   font-size: 14px;
   width: 80%;
+  margin-top: -100px;
 }
 
 .brand-card {
@@ -26,13 +27,74 @@
     background: #FFFFFF;
     align-items: center;
     margin: 5px;
-    padding: 44px;
-  }
+    padding: 34px;
+    font-size: 14px;
+}
+
+.brand-home {
+  flex: 1;
+  padding: 25px;
+}
+
+.brand-details {
+  flex: 3;
+}
+
+.brand-name {
+  font-size: 26px;
+  color: #09B5AB;
+  margin-top: 7px;
+}
+
+.brand-hq {
+  font-size: 14px;
+  color: #09B5AB;
+  margin-top: 7px;
+  margin-bottom: 5px;
+}
+
+.web {
+  color: #09B5AB;  
+}
+
+a.web:hover {
+  color: rgb(61, 59, 59);
+}
+
+.contact-email {
+  color: #09B5AB;
+}
+
+.contact-email:hover {
+  color: #FFFFFF;
+}
+
+.item {
+  font-size: 16px;
+}
+.brand-sentence {
+  font-size: 16px;
+}
+
+.card-title {
+  display: flex;
+  align-items: flex-start;
+  font-size: 24px;
+  color: #09B5AB;
+  flex: 1;
+}
+
+.card-content {
+  display: flex;
+  flex: 4;
+}
 
 .brand-logo {
   border-radius: 50%;
   width: 211px;
   height: 211px;
+  margin-top: -30px;
+  margin-bottom: 30px;
 }
 
 .brand-info {
@@ -45,19 +107,43 @@
 
 .brand-ratings {
   display: flex;
-  flex: 1
+  flex: 1 1 100%;
 }
 
 .total-score {
   justify-content: center;
 }
 
-.rating {
-  flex: 1;
-}
-
 .brand-info {
   display: flex;
   flex-direction: column;
   align-content: center;
+}
+
+.table-details {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-details td, .table-details th{
+  border-bottom: 1px solid #ddd;
+  padding: 15px;
+}
+
+.table-details tr:hover {
+  background-color: #ddd;
+}
+
+.table-ratings {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-ratings td, .table-ratings th{
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+.table-ratings tr:hover {
+  background-color: #ddd;
 }
