@@ -23,6 +23,7 @@ class ZolandoSearch extends Component {
       order: 'asc',
       filter: {filters: {}, sort: {}},
       filterOptions: ['sku', 'categories', 'score', 'environment', 'labour', 'animal'],
+      filteredArr: [],
       results: [],
       searchResults: [],
       sku: [],
@@ -31,12 +32,14 @@ class ZolandoSearch extends Component {
       environment: [],
       labour: [],
       animal: [],
+      filterApplied: false,
     }
     this.handleSearch=this.handleSearch.bind(this)
     this.handleFilter=this.handleFilter.bind(this)
     this.handleSort=this.handleSort.bind(this)
     this.handleSubmit=this.handleSubmit.bind(this)
     this.handleClear=this.handleClear.bind(this)
+    this.handleChip=this.handleChip.bind(this)
   }
 
   componentWillMount() {
@@ -47,48 +50,95 @@ class ZolandoSearch extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.zolando !== this.props.zolando) {
+      if(!nextProps.zolando.brands) {
+        this.setState({
+          results: _.map(nextProps.zolando, val => {
+            return {
+              id: val.id,
+              name: val.name,
+              website: val.website,
+              overall_score: val.score,
+              environment: val.environment.label,
+              labour: val.labour.label,
+              animal: val.animal.label,
+              categories: val.categories,
+              dots: val.dots,
+              sku: val.sku,
+            }
+          }),
+        })
+      } else {
+        this.setState({
+          results: _.map(nextProps.zolando.brands, val => {
+            return {
+              id: val.id,
+              name: val.name,
+              website: val.website,
+              overall_score: val.score,
+              environment: val.environment.label,
+              labour: val.labour.label,
+              animal: val.animal.label,
+              categories: val.categories,
+              dots: val.dots,
+              sku: val.sku,
+            }
+          }),
+        })
+      }
       this.setState({
         isLoading: false,
-        results: _.map(nextProps.zolando.brands, val => {
-          return {
-            id: val.id,
-            name: val.name,
-            website: val.website,
-            overall_score: val.score,
-            environment: val.environment.label,
-            labour: val.labour.label,
-            animal: val.animal.label,
-            categories: val.categories,
-            sku: val.sku,
-          }
-        }),
       })
     }
   }
 
   handleFilter(event, { value, name }) {
     event.preventDefault()
-    Object.assign(this.state.filter.filters, { [name]: value })
-    if(this.state.filter.filters[name].length <=0) {
-      delete this.state.filter.filters[name]
+    // this.state.filter.filters[name].push(value)
+    if(this.state.filter.filters[name]) {
+      this.state.filter.filters[name].push(value)
+    } else {
+      Object.assign(this.state.filter.filters, {[name]: [value] })
     }
-    this.setState({sku: value})
-    console.log('filter', value)
+    this.setState({filteredArr: [...this.state.filteredArr, name + ': ' + value + ' X']})
+    // if(this.state.filter.filters[name].length <=0) {
+    //   delete this.state.filter.filters[name]
+    // }
+  }
+
+  handleChip(event) {
+    event.preventDefault()
+    console.log(event.target.value)
+    this.setState({filteredArr: this.state.filteredArr.filter(val => val !== event.target.value)})
   }
 
   handleSort(event, { name }) {
     event.preventDefault()
-    new Promise(resolve => {
-      resolve(this.setState({isLoading: true, [`sort${name}`]: this.state[`sort${name}`]=== 'asc' ? 'desc' : 'asc'}))
-    })
+    Promise.resolve(this.setState({isLoading: true, [`sort${name}`]: !this.state[`sort${name}`] || this.state[`sort${name}`] === 'asc' ? 'desc' : 'asc'}))
       .then(Object.assign(this.state.filter.sort, { key: name, order: this.state[`sort${name}`]}))
       .then(this.props.filteredSearch(this.state.filter))
   }
 
   handleSearch(event, { value }) {
     event.preventDefault()
-    this.props.filteredSearch({name: value})
-    this.setState({isLoading: true})
+    let searchArr = []
+    Promise.resolve(
+      this.state.results.map(brand => {
+        if(brand.name.toLowerCase().includes(value.toLowerCase())) {
+          searchArr.push({
+            id: brand.id,
+            name: brand.name,
+            website: brand.website,
+            overall_score: brand.score,
+            environment: brand.environment,
+            labour: brand.labour,
+            animal: brand.animal,
+            categories: brand.categories,
+            dots: brand.dots,
+            sku: brand.sku,
+          })
+        }
+      })
+    ).then(this.setState({searchResults: searchArr}))
   }
 
   handleSubmit(event) {
@@ -98,70 +148,50 @@ class ZolandoSearch extends Component {
 
   handleClear(event) {
     event.preventDefault()
-    this.state.filterOptions.map(val => {
-      this.setState({[val]: []})
-    })
+    this.setState({filteredArr: [], filterApplied: false})
+  }
+
+  populateRender(brand) {
+    return(
+      <div className='filtered-list' key={brand.id}>
+        <div>
+          <Link to={`/zolandoBrandPage/${brand.id}`}><p>{brand.name}</p></Link>
+          <p>{brand.website}</p>
+        </div>
+        <div>
+          {brand.dots >= 1 ? <Icon name='circle'/> : <Icon name='circle thin' />}
+          {brand.dots >= 2 ? <Icon name='circle'/> : <Icon name='circle thin' />}
+          {brand.dots >= 3 ? <Icon name='circle'/> : <Icon name='circle thin' />}
+          {brand.dots >= 4 ? <Icon name='circle'/> : <Icon name='circle thin' />}
+          {brand.dots >= 5 ? <Icon name='circle'/> : <Icon name='circle thin' />}
+          {}
+        </div>
+        <div>{brand.environment}</div>
+        <div>{brand.labour}</div>
+        <div>{brand.animal}</div>
+        <div>{brand.categories}</div>
+        <div>{brand.sku}</div>
+      </div>
+    )
   }
 
   renderResults() {
     if(this.state.isLoading === true) {
       return (<Loader active inline='centered' />)
-    } else if(!this.props.zolando.brands) {
-      return _.map(this.props.zolando, brand => {
-        return(
-          <div className='filtered-list' key={brand.id}>
-            <div>
-              <p>{brand.name}</p>
-              <p>{brand.website}</p>
-            </div>
-            <div>
-              {brand.dots >= 1 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-              {brand.dots >= 2 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-              {brand.dots >= 3 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-              {brand.dots >= 4 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-              {brand.dots >= 5 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-              {}
-            </div>
-            <div>{brand.environment.label}</div>
-            <div>{brand.labour.label}</div>
-            <div>{brand.animal.label}</div>
-            <div>{brand.categories}</div>
-            <div>{brand.sku}</div>
-          </div>
-        )
+    } else if(this.state.searchResults.length > 0) {
+      return _.map(this.state.searchResults, brand => {
+        return this.populateRender(brand)
       })
     } else {
-      return _.map(this.props.zolando.brands, brand => {
-        return(
-          <div className='filtered-list' key={brand.id}>
-            <div>
-              <Link to={`/zolandoBrandPage/${brand.id}`}><p>{brand.name}</p></Link>
-              <p>{brand.website}</p>
-            </div>
-            <div>
-              {brand.dots >= 1 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-              {brand.dots >= 2 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-              {brand.dots >= 3 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-              {brand.dots >= 4 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-              {brand.dots >= 5 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-            </div>
-            <div>{brand.environment.label}</div>
-            <div>{brand.labour.label}</div>
-            <div>{brand.animal.label}</div>
-            <div>{brand.categories}</div>
-            <div>{brand.sku}</div>
-          </div>
-        )
+      return _.map(this.state.results, brand => {
+        return this.populateRender(brand)
       })
     }
   }
 
-
-  // setTimeout(() => {sessionStorage.clear()}, 1000 * 60 * 60 * 24)
-
   render() {
     const state = this.state
-    console.log('props', this.props.zolando.brands)
+    console.log('props', this.props.zolando)
     console.log('state', this.state)
     return (
       <div className='zolando-container'>
@@ -176,17 +206,15 @@ class ZolandoSearch extends Component {
             </Form.Field>
           </div>
         </div>
-        <CSVLink data={this.state.results}>Export to Excel</CSVLink>
+        <CSVLink data={state.searchResults.length > 0 ? state.searchResults : state.results}>Export to Excel</CSVLink>
         <div className='zolando-filters'>
           <Form.Field>
             <Select
               name='sku'
               placeholder='SKU'
               onChange={this.handleFilter}
-              fluid
-              multiple
               selection
-              value={this.state.sku}
+              text='SKU'
               options={[
                 { key: '<50', value: '<50', text: '<50'},
                 { key: '50-99', value: '50-99', text: '50-99'},
@@ -201,7 +229,8 @@ class ZolandoSearch extends Component {
               name='categories'
               placeholder='Categories'
               onChange={this.handleFilter}
-              multiple selection
+              text='Categories'
+              selection
               options={[
                 { key: 'menswear', value: 'menswear', text: 'menswear'},
                 { key: 'womenswear', value: 'womenswear', text: 'womenswear'},
@@ -224,7 +253,8 @@ class ZolandoSearch extends Component {
               name='score'
               placeholder='Score'
               onChange={this.handleFilter}
-              multiple selection
+              text='Score'
+              selection
               options={[
                 { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
                 { key: 'good', value: 'good', text: 'good'},
@@ -237,7 +267,8 @@ class ZolandoSearch extends Component {
               name='environment'
               placeholder='Environment'
               onChange={this.handleFilter}
-              multiple selection
+              text='Environment'
+              selection
               options={[
                 { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
                 { key: 'good', value: 'good', text: 'good'},
@@ -250,7 +281,8 @@ class ZolandoSearch extends Component {
               name='labour'
               placeholder='Labour'
               onChange={this.handleFilter}
-              multiple selection
+              text='Labour'
+              selection
               options={[
                 { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
                 { key: 'good', value: 'good', text: 'good'},
@@ -263,7 +295,8 @@ class ZolandoSearch extends Component {
               name='animal'
               placeholder='Animal'
               onChange={this.handleFilter}
-              multiple selection
+              text='Animal'
+              selection
               options={[
                 { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
                 { key: 'good', value: 'good', text: 'good'},
@@ -271,17 +304,17 @@ class ZolandoSearch extends Component {
               ]}
             />
           </Form.Field>
-          <div><button onClick={this.handleSubmit}>Apply</button></div>
+          <div>{!state.filterApplied ? <button onClick={this.handleSubmit}>Apply</button> : <div onClick={this.handleClear}>Clear All</div>}</div>
         </div>
-        <p onClick={this.handleClear}>Clear All</p>
+        {_.map(this.state.filteredArr, val => <button value={val} onClick={this.handleChip} key={val} className='chip'>{val}</button>)}
         <div className='zolando-container'>
-          <div className='sort'><Button name='name' onClick={this.handleSort}>Brand name<Icon name={this.state.sortname === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
-          <div className='sort'><Button name='score' onClick={this.handleSort}>Overall Score<Icon name={this.state.sortscore === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
-          <div className='sort'><Button name='environment' onClick={this.handleSort}>Environment<Icon name={this.state.sortenvironment === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
-          <div className='sort'><Button name='labour' onClick={this.handleSort}>Labour<Icon name={this.state.sortlabour === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
-          <div className='sort'><Button name='animal' onClick={this.handleSort}>Animal<Icon name={this.state.sortanimal === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
-          <div className='sort'><Button name='categories' onClick={this.handleSort}>Categories<Icon name={this.state.sortcategories === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
-          <div className='sort'><Button name='sku' onClick={this.handleSort}>SKU<Icon name={this.state.sortsku === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
+          <div className='sort'><Button name='name' onClick={this.handleSort}>Brand name<Icon name={state.sortname === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
+          <div className='sort'><Button name='score' onClick={this.handleSort}>Overall Score<Icon name={state.sortscore === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
+          <div className='sort'><Button name='environment' onClick={this.handleSort}>Environment<Icon name={state.sortenvironment === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
+          <div className='sort'><Button name='labour' onClick={this.handleSort}>Labour<Icon name={state.sortlabour === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
+          <div className='sort'><Button name='animal' onClick={this.handleSort}>Animal<Icon name={state.sortanimal === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
+          <div className='sort'><Button name='categories' onClick={this.handleSort}>Categories<Icon name={state.sortcategories === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
+          <div className='sort'><Button name='sku' onClick={this.handleSort}>SKU<Icon name={state.sortsku === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
           {this.renderResults()}
         </div>
       </div>
