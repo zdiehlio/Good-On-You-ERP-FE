@@ -127,14 +127,6 @@ class ZolandoBrandPage extends Component {
       
       return (
         <table className='table-details'>
-          {/* <table className='item'>{ratings_label} / {ratings_dots} stars</div>
-          <div className='item'>[]</div>
-          <div className='item'>{sku}</div>
-          <div className='item'>{price}</div>
-          <div className='item'>{parent_company}</div>
-          <div className='item'>{size}</div>
-          <div className='item'>{contact_name} ' '</div>
-          <div className='item contact-email'>{contact_email}</div> */}
           <tr><td>Overall Rating</td><td className='item'>{ratings_label} / {ratings_dots} stars</td></tr>
           <tr><td>Categories</td><td className='item'>[]</td></tr>
           <tr><td>SKUs</td><td className='item'>{sku}</td></tr>
@@ -156,15 +148,15 @@ class ZolandoBrandPage extends Component {
     return (
       <div className='brand-container'>
         <div className='brand-cover'>
-          <img src='https://placeimg.com/1500/200/nature/grayscale' />
-          {/* <img src={zprops.cover}/> */}
+          {/* <img src='https://placeimg.com/1500/200/nature/grayscale' /> */}
+          <img src={zprops.cover}/>
         </div>
         <div className='brand-page'>
           <div className='brand-card'>
             <div className='brand-home'>
               <img src={zprops.logo} className='brand-logo' />
               <div className='brand-name'>{zprops.name}</div>
-              <p className='brand-hq'>Headquarters / <a href={`https://${zprops.website}`} target='_blank' className='web'>Website</a></p>
+              <p className='brand-hq'>{zprops.headquarters} / <a href={`https://${zprops.website}`} target='_blank' className='web'>Website</a></p>
               <p className='brand-sentence'>{zprops.sentence}</p>
             </div>
 
