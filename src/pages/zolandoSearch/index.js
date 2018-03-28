@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { filteredSearch, fetchUsers } from '../../actions'
 import { Field, reduxForm } from 'redux-form'
 import { fetchUserInfo } from '../../actions'
-import { Form, Input, Header, Label, List, Loader, Icon, Select, Button } from 'semantic-ui-react'
+import { Form, Input, Header, Label, List, Loader, Icon, Select, Button, Dropdown } from 'semantic-ui-react'
 import { CSVLink } from 'react-csv'
 import _ from 'lodash'
 
@@ -24,6 +24,7 @@ class ZolandoSearch extends Component {
       filter: {filters: {}, sort: {}},
       filterOptions: ['sku', 'categories', 'score', 'environment', 'labour', 'animal'],
       filteredArr: [],
+      renderFilteredArr: [],
       results: [],
       searchResults: [],
       sku: [],
@@ -99,10 +100,11 @@ class ZolandoSearch extends Component {
     } else {
       Object.assign(this.state.filter.filters, {[name]: [value] })
     }
-    this.setState({filteredArr: [...this.state.filteredArr, name + ': ' + value + ' X']})
-    // if(this.state.filter.filters[name].length <=0) {
-    //   delete this.state.filter.filters[name]
-    // }
+    if(this.state.filteredArr.includes(name + ': ' + value + ' X')) {
+      console.log(value)
+    } else {
+      this.setState({filteredArr: [...this.state.filteredArr, name + ': ' + value + ' X']})
+    }
   }
 
   handleChip(event) {
@@ -143,17 +145,18 @@ class ZolandoSearch extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
+    Promise.resolve(this.setState({renderFilteredArr: this.state.filteredArr})).then(this.setState({filterApplied: true, filteredArr: []}))
     this.props.filteredSearch(this.state.filter)
   }
 
   handleClear(event) {
-    event.preventDefault()
-    this.setState({filteredArr: [], filterApplied: false})
+    this.setState({isLoading: true, filterApplied: false, renderFilteredArr: []})
+    this.props.filteredSearch()
   }
 
   populateRender(brand) {
     return(
-      <div className='filtered-list' key={brand.id}>
+      <div className='filtered-items' key={brand.id}>
         <div>
           <Link to={`/zolandoBrandPage/${brand.id}`}><p>{brand.name}</p></Link>
           <p>{brand.website}</p>
@@ -206,108 +209,110 @@ class ZolandoSearch extends Component {
             </Form.Field>
           </div>
         </div>
-        <CSVLink data={state.searchResults.length > 0 ? state.searchResults : state.results}>Export to Excel</CSVLink>
-        <div className='zolando-filters'>
-          <Form.Field>
-            <Select
-              name='sku'
-              placeholder='SKU'
-              onChange={this.handleFilter}
-              selection
-              text='SKU'
-              options={[
-                { key: '<50', value: '<50', text: '<50'},
-                { key: '50-99', value: '50-99', text: '50-99'},
-                { key: '100-249', value: '100-249', text: '100-249'},
-                { key: '250-499', value: '250-499', text: '250-499'},
-                { key: '>500', value: '>500', text: '>500'},
-              ]}
-            />
-          </Form.Field>
-          <Form.Field>
-            <Select
-              name='categories'
-              placeholder='Categories'
-              onChange={this.handleFilter}
-              text='Categories'
-              selection
-              options={[
-                { key: 'menswear', value: 'menswear', text: 'menswear'},
-                { key: 'womenswear', value: 'womenswear', text: 'womenswear'},
-                { key: 'basics', value: 'basics', text: 'basics'},
-                { key: 'designer', value: 'designer', text: 'designer'},
-                { key: 'underwear', value: 'underwear', text: 'underwear'},
-                { key: 'shoes', value: 'shoes', text: 'shoes'},
-                { key: 'bags', value: 'bags', text: 'bags'},
-                { key: 'fitness', value: 'fitness', text: 'fitness'},
-                { key: 'outdoor', value: 'outdoor', text: 'outdoor'},
-                { key: 'accessories', value: 'accessories', text: 'accessories'},
-                { key: 'maternity', value: 'maternity', text: 'maternity'},
-                { key: 'plus', value: 'plus', text: 'plus'},
+        <div className='filtered-list'>
+          <div className='excel'><CSVLink data={state.searchResults.length > 0 ? state.searchResults : state.results}><Button>Export to Excel <Icon name='file excel outline' /></Button></CSVLink></div>
+          <div>{_.map(this.state.filteredArr, val => <button value={val} onClick={this.handleChip} key={val} className='chip'>{val}</button>)}</div>
+          <div className='zolando-filters'>
+            <Form.Field>
+              <Select
+                name='sku'
+                placeholder='SKU'
+                onChange={this.handleFilter}
+                selection
+                text='SKU'
+                options={[
+                  { key: '<50', value: '<50', text: '<50'},
+                  { key: '50-99', value: '50-99', text: '50-99'},
+                  { key: '100-249', value: '100-249', text: '100-249'},
+                  { key: '250-499', value: '250-499', text: '250-499'},
+                  { key: '>500', value: '>500', text: '>500'},
+                ]}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Select
+                name='categories'
+                placeholder='Categories'
+                onChange={this.handleFilter}
+                text='Categories'
+                selection
+                options={[
+                  { key: 'menswear', value: 'menswear', text: 'menswear'},
+                  { key: 'womenswear', value: 'womenswear', text: 'womenswear'},
+                  { key: 'basics', value: 'basics', text: 'basics'},
+                  { key: 'designer', value: 'designer', text: 'designer'},
+                  { key: 'underwear', value: 'underwear', text: 'underwear'},
+                  { key: 'shoes', value: 'shoes', text: 'shoes'},
+                  { key: 'bags', value: 'bags', text: 'bags'},
+                  { key: 'fitness', value: 'fitness', text: 'fitness'},
+                  { key: 'outdoor', value: 'outdoor', text: 'outdoor'},
+                  { key: 'accessories', value: 'accessories', text: 'accessories'},
+                  { key: 'maternity', value: 'maternity', text: 'maternity'},
+                  { key: 'plus', value: 'plus', text: 'plus'},
 
-              ]}
-            />
-          </Form.Field>
-          <Form.Field>
-            <Select
-              name='score'
-              placeholder='Score'
-              onChange={this.handleFilter}
-              text='Score'
-              selection
-              options={[
-                { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
-                { key: 'good', value: 'good', text: 'good'},
-                { key: 'great', value: 'great', text: 'great'},
-              ]}
-            />
-          </Form.Field>
-          <Form.Field>
-            <Select
-              name='environment'
-              placeholder='Environment'
-              onChange={this.handleFilter}
-              text='Environment'
-              selection
-              options={[
-                { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
-                { key: 'good', value: 'good', text: 'good'},
-                { key: 'great', value: 'great', text: 'great'},
-              ]}
-            />
-          </Form.Field>
-          <Form.Field>
-            <Select
-              name='labour'
-              placeholder='Labour'
-              onChange={this.handleFilter}
-              text='Labour'
-              selection
-              options={[
-                { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
-                { key: 'good', value: 'good', text: 'good'},
-                { key: 'great', value: 'great', text: 'great'},
-              ]}
-            />
-          </Form.Field>
-          <Form.Field>
-            <Select
-              name='animal'
-              placeholder='Animal'
-              onChange={this.handleFilter}
-              text='Animal'
-              selection
-              options={[
-                { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
-                { key: 'good', value: 'good', text: 'good'},
-                { key: 'great', value: 'great', text: 'great'},
-              ]}
-            />
-          </Form.Field>
-          <div>{!state.filterApplied ? <button onClick={this.handleSubmit}>Apply</button> : <div onClick={this.handleClear}>Clear All</div>}</div>
-        </div>
-        {_.map(this.state.filteredArr, val => <button value={val} onClick={this.handleChip} key={val} className='chip'>{val}</button>)}
-        <div className='zolando-container'>
+                ]}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Select
+                name='score'
+                placeholder='Score'
+                onChange={this.handleFilter}
+                text='Score'
+                selection
+                options={[
+                  { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
+                  { key: 'good', value: 'good', text: 'good'},
+                  { key: 'great', value: 'great', text: 'great'},
+                ]}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Select
+                name='environment'
+                placeholder='Environment'
+                onChange={this.handleFilter}
+                text='Environment'
+                selection
+                options={[
+                  { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
+                  { key: 'good', value: 'good', text: 'good'},
+                  { key: 'great', value: 'great', text: 'great'},
+                ]}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Select
+                name='labour'
+                placeholder='Labour'
+                onChange={this.handleFilter}
+                text='Labour'
+                selection
+                options={[
+                  { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
+                  { key: 'good', value: 'good', text: 'good'},
+                  { key: 'great', value: 'great', text: 'great'},
+                ]}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Select
+                name='animal'
+                placeholder='Animal'
+                onChange={this.handleFilter}
+                text='Animal'
+                selection
+                options={[
+                  { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
+                  { key: 'good', value: 'good', text: 'good'},
+                  { key: 'great', value: 'great', text: 'great'},
+                ]}
+              />
+            </Form.Field>
+            <div>{!state.filterApplied ? <button onClick={this.handleSubmit}>Apply</button> : <div className='clear' onClick={this.handleClear}>Clear All</div>}</div>
+          </div>
+          <div>{_.map(this.state.renderFilteredArr, val => <button value={val} onClick={this.handleChip} key={val} className='chip'>{val}</button>)}</div>
+
           <div className='sort'><Button name='name' onClick={this.handleSort}>Brand name<Icon name={state.sortname === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
           <div className='sort'><Button name='score' onClick={this.handleSort}>Overall Score<Icon name={state.sortscore === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
           <div className='sort'><Button name='environment' onClick={this.handleSort}>Environment<Icon name={state.sortenvironment === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>

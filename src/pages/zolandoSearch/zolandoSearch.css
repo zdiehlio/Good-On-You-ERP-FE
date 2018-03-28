@@ -13,6 +13,7 @@
 .sort {
   width: calc(100%/7);
   display: inline-block;
+  margin-top: 1em;
 }
 
 
@@ -22,15 +23,18 @@
 }
 
 .filtered-list {
+  padding: 0.5em;
+}
+.filtered-items {
   width: 100%;
   background-color: #F2F2F2;
   border: solid 1px;
   border-color: black;
-  margin-bottom: 0.5em;
   padding: 0.5em;
+  margin: 1em 0em;
 }
 
-.filtered-list div {
+.filtered-items div {
   display: inline-block;
   width: calc(100%/7);
   margin-top: 1em;
@@ -52,4 +56,14 @@
 
 a.ui.label{
   width: 100%;
+}
+
+.clear:hover{
+  cursor: pointer;
+}
+
+.excel {
+  width: 100%;
+  text-align: right;
+  margin-bottom: 1em;
 }
