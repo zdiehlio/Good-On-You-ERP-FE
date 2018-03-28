@@ -9,9 +9,9 @@ import { Form, Input, Header, Label, List, Loader, Icon, Select, Button, Dropdow
 import { CSVLink } from 'react-csv'
 import _ from 'lodash'
 
-import './zolandoSearch.css'
+import './zalandoSearch.css'
 
-class ZolandoSearch extends Component {
+class ZalandoSearch extends Component {
 
 
   constructor(props) {
@@ -23,6 +23,7 @@ class ZolandoSearch extends Component {
       order: 'asc',
       filter: {filters: {}, sort: {}},
       filterOptions: ['sku', 'categories', 'score', 'environment', 'labour', 'animal'],
+      sortOptions: ['name', 'score', 'environment', 'labour', 'animal', 'categories', 'sku'],
       filteredArr: [],
       renderFilteredArr: [],
       results: [],
@@ -115,7 +116,12 @@ class ZolandoSearch extends Component {
 
   handleSort(event, { name }) {
     event.preventDefault()
-    Promise.resolve(this.setState({isLoading: true, [`sort${name}`]: !this.state[`sort${name}`] || this.state[`sort${name}`] === 'asc' ? 'desc' : 'asc'}))
+    this.state.filterOptions.map(opt => {
+      if(name !== opt) {
+        this.setState({[`sort${opt}`]: null})
+      }
+    })
+    Promise.resolve(this.setState({isLoading: true, [`sort${name}`]: !this.state[`sort${name}`] || this.state[`sort${name}`] === 'desc' ? 'asc' : 'desc'}))
       .then(Object.assign(this.state.filter.sort, { key: name, order: this.state[`sort${name}`]}))
       .then(this.props.filteredSearch(this.state.filter))
   }
@@ -150,7 +156,7 @@ class ZolandoSearch extends Component {
   }
 
   handleClear(event) {
-    this.setState({isLoading: true, filterApplied: false, renderFilteredArr: []})
+    this.setState({isLoading: true, filterApplied: false, renderFilteredArr: [], filter: {filters: {}, sort: {}}})
     this.props.filteredSearch()
   }
 
@@ -158,8 +164,8 @@ class ZolandoSearch extends Component {
     return(
       <div className='filtered-items' key={brand.id}>
         <div>
-          <Link to={`/zolandoBrandPage/${brand.id}`}><p>{brand.name}</p></Link>
-          <p>{brand.website}</p>
+          <Link to={`/zalandoBrandPage/${brand.id}`}><p>{brand.name}</p></Link>
+          <p><a href={brand.website.slice(0, 3) !== 'http' ? `http://${brand.website}` : brand.website}>Website</a></p>
         </div>
         <div>
           {brand.dots >= 1 ? <Icon name='circle'/> : <Icon name='circle thin' />}
@@ -176,6 +182,14 @@ class ZolandoSearch extends Component {
         <div>{brand.sku}</div>
       </div>
     )
+  }
+
+  renderSortButtons() {
+    return this.state.sortOptions.map(val => {
+      return (
+        <div key={val} className='sort'><Button basic color={this.state[`sort${val}`] ? 'teal' : 'grey'} name={val} onClick={this.handleSort}>{val} <Icon name={!this.state[`sort${val}`] || this.state[`sort${val}`] === 'desc' ? 'arrow down' : 'arrow up'}/></Button></div>
+      )
+    })
   }
 
   renderResults() {
@@ -218,7 +232,7 @@ class ZolandoSearch extends Component {
                 name='sku'
                 placeholder='SKU'
                 onChange={this.handleFilter}
-                selection
+                selectOnNavigation={false}
                 text='SKU'
                 options={[
                   { key: '<50', value: '<50', text: '<50'},
@@ -313,13 +327,8 @@ class ZolandoSearch extends Component {
           </div>
           <div>{_.map(this.state.renderFilteredArr, val => <button value={val} onClick={this.handleChip} key={val} className='chip'>{val}</button>)}</div>
 
-          <div className='sort'><Button name='name' onClick={this.handleSort}>Brand name<Icon name={state.sortname === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
-          <div className='sort'><Button name='score' onClick={this.handleSort}>Overall Score<Icon name={state.sortscore === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
-          <div className='sort'><Button name='environment' onClick={this.handleSort}>Environment<Icon name={state.sortenvironment === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
-          <div className='sort'><Button name='labour' onClick={this.handleSort}>Labour<Icon name={state.sortlabour === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
-          <div className='sort'><Button name='animal' onClick={this.handleSort}>Animal<Icon name={state.sortanimal === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
-          <div className='sort'><Button name='categories' onClick={this.handleSort}>Categories<Icon name={state.sortcategories === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
-          <div className='sort'><Button name='sku' onClick={this.handleSort}>SKU<Icon name={state.sortsku === 'asc' ? 'arrow down' : 'arrow up'}/></Button></div>
+
+          <div className='sort-buttons'>{this.renderSortButtons()}</div>
           {this.renderResults()}
         </div>
       </div>
@@ -336,4 +345,4 @@ function mapStateToProps(state) {
   return {zolando: state.zolando, state}
 }
 
-export default connect(mapStateToProps, { filteredSearch })( ZolandoSearch )
+export default connect(mapStateToProps, { filteredSearch })( ZalandoSearch )
