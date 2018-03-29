@@ -44,10 +44,13 @@
   display: inline-block;
   width: calc(100%/7);
   margin-top: 1em;
-
 }
 
-.zolando-filters {
+.filtered-items p {
+  text-align: center;
+}
+
+.ui.form.zolando-filters {
   width: 100%;
 }
 
@@ -56,7 +59,7 @@
   display: inline-block;
 }
 
-.field div {
+.field div{
   width: 100%;
 }
 
@@ -76,4 +79,16 @@ a.ui.label{
 
 .sort-buttons {
   width: 100%;
+}
+
+.filter-text {
+  text-align: center;
+  color: #09b5ab;
+}
+
+.brand-name {
+  font-size: 14px !important;
+  color: black !important;
+  text-decoration: underline;
+  padding: 0.5em;
 }

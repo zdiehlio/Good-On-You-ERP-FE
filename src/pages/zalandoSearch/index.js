@@ -66,6 +66,7 @@ class ZalandoSearch extends Component {
               categories: val.categories,
               dots: val.dots,
               sku: val.sku,
+              label: val.label,
             }
           }),
         })
@@ -83,6 +84,7 @@ class ZalandoSearch extends Component {
               categories: val.categories,
               dots: val.dots,
               sku: val.sku,
+              label: val.label,
             }
           }),
         })
@@ -95,7 +97,7 @@ class ZalandoSearch extends Component {
 
   handleFilter(event, { value, name }) {
     event.preventDefault()
-    // this.state.filter.filters[name].push(value)
+    this.setState({[name]: value, filterApplied: false})
     if(this.state.filter.filters[name]) {
       this.state.filter.filters[name].push(value)
     } else {
@@ -151,12 +153,13 @@ class ZalandoSearch extends Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    Promise.resolve(this.setState({renderFilteredArr: this.state.filteredArr})).then(this.setState({filterApplied: true, filteredArr: []}))
+    this.setState({renderFilteredArr: this.state.filteredArr, filterApplied: true})
     this.props.filteredSearch(this.state.filter)
   }
 
   handleClear(event) {
-    this.setState({isLoading: true, filterApplied: false, renderFilteredArr: [], filter: {filters: {}, sort: {}}})
+    this.setState({isLoading: true, filterApplied: false, filteredArr: [], renderFilteredArr: [], filter: {filters: {}, sort: {}}})
+    this.state.filterOptions.map(val => this.setState({[val]: []}))
     this.props.filteredSearch()
   }
 
@@ -164,16 +167,19 @@ class ZalandoSearch extends Component {
     return(
       <div className='filtered-items' key={brand.id}>
         <div>
-          <Link to={`/zalandoBrandPage/${brand.id}`}><p>{brand.name}</p></Link>
+          <Link to={`/zalandoBrandPage/${brand.id}`}><p className='brand-name'>{brand.name}</p></Link>
           <p><a href={brand.website.slice(0, 3) !== 'http' ? `http://${brand.website}` : brand.website}>Website</a></p>
         </div>
         <div>
-          {brand.dots >= 1 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-          {brand.dots >= 2 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-          {brand.dots >= 3 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-          {brand.dots >= 4 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-          {brand.dots >= 5 ? <Icon name='circle'/> : <Icon name='circle thin' />}
-          {}
+          <p>
+            {brand.dots >= 1 ? <Icon color='teal' name='circle'/> : <Icon name='circle thin' />}
+            {brand.dots >= 2 ? <Icon color='teal' name='circle'/> : <Icon name='circle thin' />}
+            {brand.dots >= 3 ? <Icon color='teal' name='circle'/> : <Icon name='circle thin' />}
+            {brand.dots >= 4 ? <Icon color='teal' name='circle'/> : <Icon name='circle thin' />}
+            {brand.dots >= 5 ? <Icon color='teal' name='circle'/> : <Icon name='circle thin' />}
+            {}
+          </p>
+          <p>{brand.label}</p>
         </div>
         <div>{brand.environment}</div>
         <div>{brand.labour}</div>
@@ -225,14 +231,15 @@ class ZalandoSearch extends Component {
         </div>
         <div className='filtered-list'>
           <div className='excel'><CSVLink data={state.searchResults.length > 0 ? state.searchResults : state.results}><Button>Export to Excel <Icon name='file excel outline' /></Button></CSVLink></div>
-          <div>{_.map(this.state.filteredArr, val => <button value={val} onClick={this.handleChip} key={val} className='chip'>{val}</button>)}</div>
-          <div className='zolando-filters'>
+          <Form className='zolando-filters'>
             <Form.Field>
               <Select
                 name='sku'
                 placeholder='SKU'
                 onChange={this.handleFilter}
                 selectOnNavigation={false}
+                multiple
+                value={this.state.sku}
                 text='SKU'
                 options={[
                   { key: '<50', value: '<50', text: '<50'},
@@ -250,6 +257,9 @@ class ZalandoSearch extends Component {
                 onChange={this.handleFilter}
                 text='Categories'
                 selection
+                selectOnNavigation={false}
+                multiple
+                value={this.state.categories}
                 options={[
                   { key: 'menswear', value: 'menswear', text: 'menswear'},
                   { key: 'womenswear', value: 'womenswear', text: 'womenswear'},
@@ -274,6 +284,9 @@ class ZalandoSearch extends Component {
                 onChange={this.handleFilter}
                 text='Score'
                 selection
+                selectOnNavigation={false}
+                multiple
+                value={this.state.score}
                 options={[
                   { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
                   { key: 'good', value: 'good', text: 'good'},
@@ -288,6 +301,9 @@ class ZalandoSearch extends Component {
                 onChange={this.handleFilter}
                 text='Environment'
                 selection
+                selectOnNavigation={false}
+                multiple
+                value={this.state.environment}
                 options={[
                   { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
                   { key: 'good', value: 'good', text: 'good'},
@@ -302,6 +318,9 @@ class ZalandoSearch extends Component {
                 onChange={this.handleFilter}
                 text='Labour'
                 selection
+                selectOnNavigation={false}
+                multiple
+                value={this.state.labour}
                 options={[
                   { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
                   { key: 'good', value: 'good', text: 'good'},
@@ -316,6 +335,9 @@ class ZalandoSearch extends Component {
                 onChange={this.handleFilter}
                 text='Animal'
                 selection
+                selectOnNavigation={false}
+                multiple
+                value={this.state.animal}
                 options={[
                   { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
                   { key: 'good', value: 'good', text: 'good'},
@@ -324,9 +346,9 @@ class ZalandoSearch extends Component {
               />
             </Form.Field>
             <div>{!state.filterApplied ? <button onClick={this.handleSubmit}>Apply</button> : <div className='clear' onClick={this.handleClear}>Clear All</div>}</div>
-          </div>
-          <div>{_.map(this.state.renderFilteredArr, val => <button value={val} onClick={this.handleChip} key={val} className='chip'>{val}</button>)}</div>
+          </Form>
 
+          <p className='filter-text'>{state.filterApplied ? 'Filter Applied!' : ''}</p>
 
           <div className='sort-buttons'>{this.renderSortButtons()}</div>
           {this.renderResults()}
@@ -336,6 +358,7 @@ class ZalandoSearch extends Component {
   }
 }
 
+// <div>{_.map(this.state.renderFilteredArr, val => <button value={val} onClick={this.handleChip} key={val} className='chip'>{val}</button>)}</div>
 
 
 
