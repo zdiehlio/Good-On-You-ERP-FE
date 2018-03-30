@@ -1,8 +1,8 @@
 import axios from 'axios'
 import _ from 'lodash'
 
-export const ROOT_URL = 'https://goy-ed-2079.nodechef.com'
-// export const ROOT_URL = 'https://goy-ed-test-2079.nodechef.com'
+// export const ROOT_URL = 'https://goy-ed-2079.nodechef.com'
+export const ROOT_URL = 'https://goy-ed-test-2079.nodechef.com'
 
 export const LOG_IN = 'log_in'
 export const AUTH_USER = 'auth_user'

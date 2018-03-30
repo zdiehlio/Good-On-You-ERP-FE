@@ -13,8 +13,15 @@
 .sort {
   width: calc(100%/7);
   display: inline-block;
+  margin-top: 1em;
 }
 
+.sorted {
+  width: calc(100%/7);
+  display: inline-block;
+  margin-top: 1em;
+  color: #09b5ab;
+}
 
 .search-bar {
   width: 60%;
@@ -22,22 +29,28 @@
 }
 
 .filtered-list {
+  padding: 0.5em;
+}
+.filtered-items {
   width: 100%;
   background-color: #F2F2F2;
   border: solid 1px;
   border-color: black;
-  margin-bottom: 0.5em;
   padding: 0.5em;
+  margin: 1em 0em;
 }
 
-.filtered-list div {
+.filtered-items div {
   display: inline-block;
   width: calc(100%/7);
   margin-top: 1em;
-
 }
 
-.zolando-filters {
+.filtered-items p {
+  text-align: center;
+}
+
+.ui.form.zolando-filters {
   width: 100%;
 }
 
@@ -46,10 +59,36 @@
   display: inline-block;
 }
 
-.field div {
+.field div{
   width: 100%;
 }
 
 a.ui.label{
   width: 100%;
+}
+
+.clear:hover{
+  cursor: pointer;
+}
+
+.excel {
+  width: 100%;
+  text-align: right;
+  margin-bottom: 1em;
+}
+
+.sort-buttons {
+  width: 100%;
+}
+
+.filter-text {
+  text-align: center;
+  color: #09b5ab;
+}
+
+.brand-name {
+  font-size: 14px !important;
+  color: black !important;
+  text-decoration: underline;
+  padding: 0.5em;
 }
