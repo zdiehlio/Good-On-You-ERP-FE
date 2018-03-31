@@ -56,25 +56,14 @@ class ZalandoBrandPage extends Component {
     if (this.state.isLoading === true ){
       return ( <Loader active inline='centered'/>)
     } else if (!zprops) {
-      return _.map(zprops.ratings.headlines, headline => {
-        const name = (headline.name).replace(/\b\w/g, function (l) { return l.toUpperCase() })
-        return (
-          <div key={this.brandId} className="rating">
-            <h5>{name}</h5>
-            <h5>{headline.score} / {headline.max_score}</h5>
-            <h5>{headline.label}</h5>
-          </div>
-        )
-      })
+      return (
+        <div> Loading... </div>
+      )
     } else {
       return _.map(zprops.ratings.headlines, headline => {
         const name = (headline.name).replace(/\b\w/g, function (l) { return l.toUpperCase() })
         return (
-          <div key={this.brandId} className="rating">
-            <h5>{name}</h5>
-            <h5>{headline.score} / {headline.max_score}</h5>
-            <h5>{headline.label}</h5>
-          </div>
+          <tr><td>{name}</td><td>{headline.score} / {headline.max_score}</td><td>{headline.label}</td></tr>
         )
       })
     }
@@ -132,16 +121,16 @@ class ZalandoBrandPage extends Component {
       let contact_email = this.props.zolando.contact.email
 
       return (
-        <div>
-          <div className="item">{ratings_label} / {ratings_dots} stars</div>
-          <div className="item">[]</div>
-          <div className="item">{sku}</div>
-          <div className="item">{price}</div>
-          <div className="item">{parent_company}</div>
-          <div className="item">{size}</div>
-          <div className="item">{contact_name} " "</div>
-          <div className="item">{contact_email}</div>
-        </div>
+        <table className='table-details'>
+          <tr><td>Overall Rating</td><td className='item'>{ratings_label} / {ratings_dots} stars</td></tr>
+          <tr><td>Categories</td><td className='item'>[]</td></tr>
+          <tr><td>SKUs</td><td className='item'>{sku}</td></tr>
+          <tr><td>Price</td><td className='item'>{price}</td></tr>
+          <tr><td>Parent Company</td><td className='item'>{parent_company}</td></tr>
+          <tr><td>Size</td><td className='item'>{size}</td></tr>
+          <tr><td>Contact Name</td><td className='item'>{contact_name} ' '</td></tr>
+          <tr><td>Contact Email</td><td className='item contact-email'>{contact_email}</td></tr>
+        </table>
       )
     }
   }
@@ -152,52 +141,39 @@ class ZalandoBrandPage extends Component {
     console.log('zprops', this.props.zolando)
     console.log('zstate', this.state)
     return (
-      <div className="brand-container">
+      <div className='brand-container'>
         <div className='brand-cover'>
-          <img src="https://placeimg.com/1500/200/nature/grayscale" />
-          {/* <img src={zprops.cover}/> */}
+          <img src={zprops.cover} />
         </div>
-        <div className="brand">
-          <div className="brand-card">
-            <div className='brand-info'>
-              <img src={zprops.logo} className="brand-logo" />
-              <h2>{zprops.name}</h2>
-              <h4>Headquarters | <a href={`https://${zprops.website}`} target="_blank">Website</a></h4>
-              <p>{zprops.sentence}</p>
+        <div className='brand-page'>
+          <div className='brand-card'>
+            <div className='brand-home'>
+              <img src={zprops.logo} className='brand-logo' />
+              <div className='brand-name'>{zprops.name}</div>
+              <p className='brand-hq'>{zprops.headquarters} / <a href={`https://${zprops.website}`} target='_blank' className='web'>Website</a></p>
+              <p className='brand-sentence'>{zprops.sentence}</p>
             </div>
 
-            <div className="brand-info brand-details">
-              <div className="item">Overall Rating</div>
-              <div className="item">Categories</div>
-              <div className="item">SKUs</div>
-              <div className="item">Price</div>
-              <div className="item">Parent Company</div>
-              <div className="item">Size</div>
-              <div className="item">Contact Name</div>
-              <div className="item">Contact Email</div>
-            </div>
-            <div className="brand-info">
+            <div className='brand-details'>
               <div>{this.renderDetails()}</div>
             </div>
           </div>
-
-          <div className="brand-card">
-            <h2>Ratings</h2>
-            <div className='brand-ratings rating'>
-              {this.renderTotalScore()}
-            </div>
-
-            <div className='brand-ratings ratings'>
-              {this.renderRatings()}
+          <div className='brand-card'>
+            <div className='card-title'>Ratings</div>
+            <div className='card-content'>
+              <table className='table-ratings'>
+                {this.renderTotalScore()}
+                {this.renderRatings()}
+              </table>
             </div>
           </div>
 
           <div className='brand-card brand-summary'>
-            <h2>Details</h2>
-            {this.renderLorem()}
-            <div className="last-update">{this.renderDate()}</div>
+            <div className='card-title'>Details</div>
+            <div className='card-content'> {this.renderLorem()} </div>
 
           </div>
+          <div className='last-update'><i>{this.renderDate()}</i></div>
         </div>
       </div>
     )
