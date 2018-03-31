@@ -21,6 +21,7 @@
   flex-direction: row;
   margin: 0 auto;
   padding: 1em;
+  color: #A7A7A5;
 }
 
 
@@ -35,6 +36,7 @@
 
 .links-container-left {
   display: flex;
+  margin-left: 2em;
   align-items: center;
 }
 
@@ -46,12 +48,8 @@
   align-self: center;
 }
 
-.links-container-left:hover{
-  background-color: #121d1f;
-}
-
 .links-container-left:hover a{
-  color: white;
+  color: #121d1f;
 }
 
 
@@ -72,17 +70,12 @@
   padding: 0 10px;
 }
 
-.links-container-right:hover{
-  text-decoration: none;
-  background-color: #121d1f;
+.username:hover {
+  color: #121d1f;
 }
 
-.links-container-right:hover a {
-  color: white;
-}
-
-.links-container-right:hover .username {
-  color: white;
+.logout:hover {
+  color: #121d1f;
 }
 
 .logo-container{

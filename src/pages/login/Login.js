@@ -29,10 +29,15 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.data !== this.props.data) {
-      console.log('login', nextProps.data)
-      if(nextProps.data.token) {
-        this.props.history.push('/searchBrand')
+    if(nextProps.user !== this.props.user) {
+      if(nextProps.user.id) {
+        if(nextProps.user.group === 5) {
+          console.log('zalando user', nextProps.user)
+          this.props.history.push('/zalandoSearch')
+        } else {
+          console.log('reg user', nextProps.user)
+          this.props.history.push('/searchBrand')
+        }
       }
     }
   }
@@ -43,7 +48,8 @@ class Login extends Component {
 
   render() {
     const { handleSubmit } = this.props
-    console.log('props', this.props.data)
+    console.log('props login', this.props.token)
+    console.log('props user', this.props.user)
     return (
       <div className="page-container">
         <h2 className="title">Welcome to the Good on You brand rating system</h2>
@@ -51,20 +57,20 @@ class Login extends Component {
           <h3>Log on to get started</h3>
           <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
             <Field
-              className={this.props.data.error ? 'ui error input' : 'ui input'}
+              className={this.props.token.error ? 'ui error input' : 'ui input'}
               placeholder='Email *'
               name="email"
               type="email"
               component={this.renderField}
             ></Field>
             <Field
-              className={this.props.data.error ? 'ui error input' : 'ui input'}
+              className={this.props.token.error ? 'ui error input' : 'ui input'}
               placeholder='password *'
               name="password"
               type="password"
               component={this.renderField}
             ></Field>
-            <p className='error-message'>{this.props.data.error ? this.props.data.error : ''}</p>
+            <p className='error-message'>{this.props.token.error ? this.props.token.error : ''}</p>
             <button className="button" >Log In</button>
           </form>
         </div>
@@ -79,7 +85,11 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  return { data: state.login }
+  return {
+    token: state.login,
+    user: state.user,
+    state,
+  }
 }
 
 export default reduxForm({

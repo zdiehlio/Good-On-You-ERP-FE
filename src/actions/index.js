@@ -18,6 +18,7 @@ export const BRAND_INFO = 'brand_info'
 export const AUTH_ERROR = 'auth_error'
 export const FILTERED_SEARCH = 'filtered_search'
 export const BRAND_PAGE = 'brand_page'
+export const USER_INFO = 'user_info'
 
 
 export function login(values) {
@@ -32,6 +33,10 @@ export function login(values) {
         type: LOG_IN,
         payload: res,
       })
+      dispatch({
+        type: USER_INFO,
+        payload: res,
+      })
     })
       .catch(error => {
         console.log('error', error)
@@ -41,7 +46,7 @@ export function login(values) {
 }
 
 export function logout() {
-  sessionStorage.removeItem('jwt')
+  sessionStorage.clear()
   return {
     type: LOG_OUT,
   }

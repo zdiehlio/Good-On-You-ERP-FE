@@ -230,7 +230,6 @@ class ZalandoSearch extends Component {
           </div>
         </div>
         <div className='filtered-list'>
-          <div className='excel'><CSVLink data={state.searchResults.length > 0 ? state.searchResults : state.results}><Button>Export to Excel <Icon name='file excel outline' /></Button></CSVLink></div>
           <Form className='zolando-filters'>
             <Form.Field>
               <Select
@@ -347,7 +346,7 @@ class ZalandoSearch extends Component {
             </Form.Field>
             <div>{!state.filterApplied ? <button onClick={this.handleSubmit}>Apply</button> : <div className='clear' onClick={this.handleClear}>Clear All</div>}</div>
           </Form>
-
+          <div className='excel'><CSVLink data={state.searchResults.length > 0 ? state.searchResults : state.results}><button>Export to Excel <Icon name='file excel outline' /></button></CSVLink></div>
           <p className='filter-text'>{state.filterApplied ? 'Filter Applied!' : ''}</p>
 
           <div className='sort-buttons'>{this.renderSortButtons()}</div>
