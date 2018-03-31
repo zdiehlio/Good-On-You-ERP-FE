@@ -149,7 +149,7 @@ class ZalandoBrandPage extends Component {
           <div className='brand-card'>
             <div className='brand-home'>
               <img src={zprops.logo} className='brand-logo' />
-              <div className='brand-name'>{zprops.name}</div>
+              <div className='brand-title'>{zprops.name}</div>
               <p className='brand-hq'>{zprops.headquarters} / <a href={`https://${zprops.website}`} target='_blank' className='web'>Website</a></p>
               <p className='brand-sentence'>{zprops.sentence}</p>
             </div>
