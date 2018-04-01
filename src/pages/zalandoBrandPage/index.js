@@ -144,6 +144,7 @@ class ZalandoBrandPage extends Component {
       <div className='brand-container'>
         <div className='brand-cover'>
           <img src={zprops.cover} />
+          <Link to='/zalandoSearch'>Back to Search Results</Link>
         </div>
         <div className='brand-page'>
           <div className='brand-card'>
@@ -158,7 +159,6 @@ class ZalandoBrandPage extends Component {
               <div>{this.renderDetails()}</div>
             </div>
           </div>
-
           <div className='brand-card'>
             <div className='card-title'>Ratings</div>
             <div className='card-content'>

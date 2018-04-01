@@ -7,14 +7,14 @@ export default function(ComposedComponent) {
   class Authentication extends Component {
 
     componentWillMount() {
-      if(!this.props.token || !sessionStorage.jwt) {
+      if(!this.props.login.token || !sessionStorage.jwt) {
         this.context.router.history.push('/login')
         this.props.logout()
       }
     }
 
     componentWillUpdate(nextProps) {
-      if(!nextProps.token || !sessionStorage.jwt) {
+      if(!this.props.login.token || !sessionStorage.jwt) {
         this.context.router.history.push('/login')
         this.props.logout()
       }
@@ -29,7 +29,8 @@ export default function(ComposedComponent) {
 
   function mapStateToProps(state) {
     return {
-      token: state.login.token,
+      login: state.login,
+      user: state.user,
       state,
     }
   }

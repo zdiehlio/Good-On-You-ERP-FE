@@ -20,7 +20,12 @@ class ZalandoSearch extends Component {
     this.state = {
       search: '',
       brand: '',
-      order: 'asc',
+      sortsku: null,
+      sortcategories: null,
+      sortscore: null,
+      sortenvironment: null,
+      sortlabour: null,
+      sortanimal: null,
       filter: {filters: {}, sort: {}},
       filterOptions: ['sku', 'categories', 'score', 'environment', 'labour', 'animal'],
       sortOptions: ['name', 'score', 'environment', 'labour', 'animal', 'categories', 'sku'],
@@ -69,6 +74,7 @@ class ZalandoSearch extends Component {
               label: val.label,
             }
           }),
+          isLoading: false,
         })
       } else {
         this.setState({
@@ -87,27 +93,23 @@ class ZalandoSearch extends Component {
               label: val.label,
             }
           }),
+          isLoading: false,
         })
       }
-      this.setState({
-        isLoading: false,
-      })
     }
   }
 
   handleFilter(event, { value, name }) {
     event.preventDefault()
+    Object.assign(this.state.filter.filters, {[name]: value })
     this.setState({[name]: value, filterApplied: false})
-    if(this.state.filter.filters[name]) {
-      this.state.filter.filters[name].push(value)
-    } else {
-      Object.assign(this.state.filter.filters, {[name]: [value] })
-    }
-    if(this.state.filteredArr.includes(name + ': ' + value + ' X')) {
-      console.log(value)
-    } else {
-      this.setState({filteredArr: [...this.state.filteredArr, name + ': ' + value + ' X']})
-    }
+
+    // }
+    // if(this.state.filteredArr.includes(name + ': ' + value + ' X')) {
+    //   console.log(value)
+    // } else {
+    //   this.setState({filteredArr: [...this.state.filteredArr, name + ': ' + value + ' X']})
+    // }
   }
 
   handleChip(event) {
@@ -124,7 +126,7 @@ class ZalandoSearch extends Component {
       }
     })
     Promise.resolve(this.setState({isLoading: true, [`sort${name}`]: !this.state[`sort${name}`] || this.state[`sort${name}`] === 'desc' ? 'asc' : 'desc'}))
-      .then(Object.assign(this.state.filter.sort, { key: name, order: this.state[`sort${name}`]}))
+      .then(Object.assign(this.state.filter.sort, { key: name, order: !this.state[`sort${name}`] || this.state[`sort${name}`] === 'desc' ? 'asc' : 'desc'}))
       .then(this.props.filteredSearch(this.state.filter))
   }
 
@@ -230,7 +232,6 @@ class ZalandoSearch extends Component {
           </div>
         </div>
         <div className='filtered-list'>
-          <div className='excel'><CSVLink data={state.searchResults.length > 0 ? state.searchResults : state.results}><Button>Export to Excel <Icon name='file excel outline' /></Button></CSVLink></div>
           <Form className='zolando-filters'>
             <Form.Field>
               <Select
@@ -347,7 +348,7 @@ class ZalandoSearch extends Component {
             </Form.Field>
             <div>{!state.filterApplied ? <button onClick={this.handleSubmit}>Apply</button> : <div className='clear' onClick={this.handleClear}>Clear All</div>}</div>
           </Form>
-
+          <div className='excel'><CSVLink data={state.searchResults.length > 0 ? state.searchResults : state.results}><button>Export to Excel <Icon name='file excel outline' /></button></CSVLink></div>
           <p className='filter-text'>{state.filterApplied ? 'Filter Applied!' : ''}</p>
 
           <div className='sort-buttons'>{this.renderSortButtons()}</div>
