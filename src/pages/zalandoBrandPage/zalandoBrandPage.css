@@ -40,11 +40,12 @@
   flex: 3;
 }
 
-.brand-name {
+.brand-title {
   font-size: 26px;
   color: #09B5AB;
   margin-top: 7px;
 }
+
 
 .brand-hq {
   font-size: 14px;

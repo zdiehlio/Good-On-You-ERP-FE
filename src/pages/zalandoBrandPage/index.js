@@ -5,10 +5,10 @@ import { brandsHomePage } from '../../actions'
 import { Field, reduxForm } from 'redux-form'
 import { Loader, Form } from 'semantic-ui-react'
 import _ from 'lodash'
-import './zolandoBrandPage.css'
+import './zalandoBrandPage.css'
 
 
-class ZolandoBrandPage extends Component {
+class ZalandoBrandPage extends Component {
 
 
   constructor(props) {
@@ -41,11 +41,11 @@ class ZolandoBrandPage extends Component {
       return (<Loader active inline='centered' />)
     } else if (!zprops) {
       return (
-        <div> loading... </div>
+        <div> {zprops.ratings.score} / {zprops.ratings.max_score} </div>
       )
     } else {
       return (
-        <tr><td>Total Score</td><td>{zprops.ratings.score} / {zprops.ratings.max_score}</td> <td>{zprops.ratings.label} / {zprops.ratings.dots}</td></tr>
+        <div> Total Score {zprops.ratings.score} / {zprops.ratings.max_score} </div>
       )
     }
 
@@ -56,11 +56,9 @@ class ZolandoBrandPage extends Component {
     if (this.state.isLoading === true ){
       return ( <Loader active inline='centered'/>)
     } else if (!zprops) {
-      return _.map(zprops.ratings.headlines, headline => {
-        return (
-          <div>Loading...</div>
-        )
-      })
+      return (
+        <div> Loading... </div>
+      )
     } else {
       return _.map(zprops.ratings.headlines, headline => {
         const name = (headline.name).replace(/\b\w/g, function (l) { return l.toUpperCase() })
@@ -75,8 +73,9 @@ class ZolandoBrandPage extends Component {
     if (this.state.isLoading === true) {
       return( <Loader active inline='centered' />)
     } else if (!this.props.zolando) {
+      let date = this.props.zolando.last_updated
       return(
-        <h5>Loading...</h5>
+        <h5> {date}</h5>
       )
     } else {
       let date = (this.props.zolando.last_updated)
@@ -90,19 +89,15 @@ class ZolandoBrandPage extends Component {
   renderLorem() {
     return (
       <div>
-        <p>Know The Origin’s environment rating is ‘great’. It is certified by 
-          OEKO-TEX standard 100 and uses 100% Global Organic Textile Standard 
-          certified organic cotton to create high-quality, long-lasting products. 
-          It re-uses off cuts created during the manufacturing process and reduces 
-          its carbon footprint by hand-manufacturing its products. 
+        <p>Lorem ipsum dolor sit amet, dicat tation intellegat pro te. Error mucius scaevola mel ea,
+          inani epicurei incorrupte vel et. Ad dolorum suscipiantur mea, ad eam quando oportere euripidis.
+          Cu soleat euismod moderatius vim. At quo alii inani moderatius, sea ut omnium conceptam.
         </p>
+
         <p>
-         It uses OEKO-TEX standard 100 certified dyes and publishes water 
-           reduction policies with targets. Its labour rating is ‘great’. 
-           It is certified by the Fair Trade Small Producer Standard and the 
-           Global Organic Textile Standard. Its animal rating is ‘great’. 
-           It does not use any animal products. Know The Origin is rated ‘Great’ 
-           based on information from our own research.
+          Utamur abhorreant ea his, antiopam conceptam dissentiet cum at. At sea scripta integre
+          repudiandae. Nec meis nusquam moderatius ne, vim id vitae apeirian facilisi.
+          Te vis brute option.
         </p>
       </div>
     )
@@ -124,7 +119,7 @@ class ZolandoBrandPage extends Component {
       let size  = this.props.zolando.size
       let contact_name = this.props.zolando.contact.name
       let contact_email = this.props.zolando.contact.email
-      
+
       return (
         <table className='table-details'>
           <tr><td>Overall Rating</td><td className='item'>{ratings_label} / {ratings_dots} stars</td></tr>
@@ -148,26 +143,25 @@ class ZolandoBrandPage extends Component {
     return (
       <div className='brand-container'>
         <div className='brand-cover'>
-          {/* <img src='https://placeimg.com/1500/200/nature/grayscale' /> */}
-          <img src={zprops.cover}/>
+          <img src={zprops.cover} />
         </div>
         <div className='brand-page'>
           <div className='brand-card'>
             <div className='brand-home'>
               <img src={zprops.logo} className='brand-logo' />
-              <div className='brand-name'>{zprops.name}</div>
+              <div className='brand-title'>{zprops.name}</div>
               <p className='brand-hq'>{zprops.headquarters} / <a href={`https://${zprops.website}`} target='_blank' className='web'>Website</a></p>
               <p className='brand-sentence'>{zprops.sentence}</p>
             </div>
 
             <div className='brand-details'>
-              <div>{this.renderDetails()}</div>            
+              <div>{this.renderDetails()}</div>
             </div>
           </div>
 
           <div className='brand-card'>
             <div className='card-title'>Ratings</div>
-            <div className='card-content'>          
+            <div className='card-content'>
               <table className='table-ratings'>
                 {this.renderTotalScore()}
                 {this.renderRatings()}
@@ -191,4 +185,4 @@ function mapStateToProps(state) {
   return {zolando: state.zolando, state}
 }
 
-export default connect(mapStateToProps, { brandsHomePage })( ZolandoBrandPage )
+export default connect(mapStateToProps, { brandsHomePage })( ZalandoBrandPage )
