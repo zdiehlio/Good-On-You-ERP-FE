@@ -158,7 +158,6 @@ class ZalandoBrandPage extends Component {
               <div>{this.renderDetails()}</div>
             </div>
           </div>
-
           <div className='brand-card'>
             <div className='card-title'>Ratings</div>
             <div className='card-content'>

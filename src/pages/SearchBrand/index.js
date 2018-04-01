@@ -72,7 +72,6 @@ class SearchBrand extends Component {
         <div className='form-container'>
           <div className='button-and-search'>
             <Link to='/createBrand'><button>Create Brand</button></Link>
-            <Link to='/zalandoSearch'><button className="button">Zalando Search</button></Link>
           </div>
           <div className='button-and-search'>OR</div>
           <div className='button-and-search'>
