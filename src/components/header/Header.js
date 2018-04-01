@@ -10,7 +10,6 @@ import { login, logout, clearSearch } from '../../actions'
 class Header extends Component {
 
   render() {
-    console.log('header props', sessionStorage.user)
     return (
       <div className="header">
         {!this.props.login.token || sessionStorage.user === '5' ? (

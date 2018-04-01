@@ -11,9 +11,6 @@ export default function(ComposedComponent) {
         this.context.router.history.push('/login')
         this.props.logout()
       }
-      // if(!this.props.login.token.user.group === 5) {
-      //   this.context.router.history.push('/zalandoSearch')
-      // }
     }
 
     componentWillUpdate(nextProps) {
@@ -23,8 +20,6 @@ export default function(ComposedComponent) {
       }
     }
     render() {
-      console.log('auth', this.props.login)
-      console.log('user', this.props.user)
       return <ComposedComponent {...this.props} />
     }
   }
