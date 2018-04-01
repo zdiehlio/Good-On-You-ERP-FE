@@ -170,7 +170,7 @@ class ZalandoSearch extends Component {
       <div className='filtered-items' key={brand.id}>
         <div>
           <Link to={`/zalandoBrandPage/${brand.id}`}><p className='brand-name'>{brand.name}</p></Link>
-          <p><a href={brand.website.slice(0, 3) !== 'http' ? `http://${brand.website}` : brand.website}>Website</a></p>
+          <p><a target='_blank' href={brand.website.slice(0, 3) !== 'http' ? `http://${brand.website}` : brand.website}>Website</a></p>
         </div>
         <div>
           <p>
