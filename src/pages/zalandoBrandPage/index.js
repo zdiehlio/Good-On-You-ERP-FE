@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { brandsHomePage } from '../../actions'
 import { Field, reduxForm } from 'redux-form'
-import { Loader, Form } from 'semantic-ui-react'
+import { Loader, Form, Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 import './zalandoBrandPage.css'
 
@@ -35,17 +35,47 @@ class ZalandoBrandPage extends Component {
     }
   }
 
+  renderBrandCover() {
+    if (this.state.isLoading === true) {
+      return (<Loader active inline='centered' />)
+    } else if (!this.props.zolando) {
+      return (
+        <div> <img src='https://picsum.photos/1500/300' /> </div>
+      )
+    } else {
+      const zcover = this.props.zolando.cover
+      return (
+        <div>
+          <img src={zcover} />
+        </div>
+      )
+    }
+  }
+  renderDots() {
+    if (this.state.isLoading === true) {
+      return (<Loader active inline='centered' />)
+    } else {
+      const dots = this.props.zolando.ratings.dots
+      return (
+        <span>
+          {dots >= 1 ? <Icon color='teal' name='circle' /> : <Icon name='circle thin' />}
+          {dots >= 2 ? <Icon color='teal' name='circle' /> : <Icon name='circle thin' />}
+          {dots >= 3 ? <Icon color='teal' name='circle' /> : <Icon name='circle thin' />}
+          {dots >= 4 ? <Icon color='teal' name='circle' /> : <Icon name='circle thin' />}
+          {dots >= 5 ? <Icon color='teal' name='circle' /> : <Icon name='circle thin' />}
+        </span>
+      )
+    }
+  }
+
+
   renderTotalScore() {
     const zprops = this.props.zolando
     if (this.state.isLoading === true) {
       return (<Loader active inline='centered' />)
-    } else if (!zprops) {
-      return (
-        <div> {zprops.ratings.score} / {zprops.ratings.max_score} </div>
-      )
     } else {
       return (
-        <div> Total Score {zprops.ratings.score} / {zprops.ratings.max_score} </div>
+        <span> {zprops.ratings.score} / {zprops.ratings.max_score} </span>
       )
     }
 
@@ -55,10 +85,6 @@ class ZalandoBrandPage extends Component {
     const zprops = this.props.zolando
     if (this.state.isLoading === true ){
       return ( <Loader active inline='centered'/>)
-    } else if (!zprops) {
-      return (
-        <div> Loading... </div>
-      )
     } else {
       return _.map(zprops.ratings.headlines, headline => {
         const name = (headline.name).replace(/\b\w/g, function (l) { return l.toUpperCase() })
@@ -119,21 +145,42 @@ class ZalandoBrandPage extends Component {
       let size  = this.props.zolando.size
       let contact_name = this.props.zolando.contact.name
       let contact_email = this.props.zolando.contact.email
+      let categories_array = this.props.zolando.categories
+
+      let categories = _.map(categories, category => {
+
+      })
 
       return (
         <table className='table-details'>
-          <tr><td>Overall Rating</td><td className='item'>{ratings_label} / {ratings_dots} stars</td></tr>
+          <tr><td>Overall Rating</td><td className='item'>{ratings_label} {this.renderDots()}</td></tr>
           <tr><td>Categories</td><td className='item'>[]</td></tr>
-          <tr><td>SKUs</td><td className='item'>{sku}</td></tr>
-          <tr><td>Price</td><td className='item'>{price}</td></tr>
-          <tr><td>Parent Company</td><td className='item'>{parent_company}</td></tr>
-          <tr><td>Size</td><td className='item'>{size}</td></tr>
-          <tr><td>Contact Name</td><td className='item'>{contact_name} ' '</td></tr>
-          <tr><td>Contact Email</td><td className='item contact-email'>{contact_email}</td></tr>
+          { (sku) ? <tr><td>SKUs</td><td className='item'>{sku}</td></tr> : null }
+          { (price) ? <tr><td>Price</td><td className='item'>{price}</td></tr> : null }
+          { (parent_company) ? <tr><td>Parent Company</td><td className='item'>{parent_company}</td></tr> : null }
+          { (size) ? <tr><td>Size</td><td className='item'>{size}</td></tr> : null }
+          { (contact_name) ? <tr><td>Contact Name</td><td className='item'>{contact_name} ' '</td></tr> : null }
+          { (contact_email) ? <tr><td>Contact Email</td><td className='item contact-email'>{contact_email}</td></tr>  : null }
         </table>
       )
     }
   }
+
+  renderLabel() {
+    if (this.state.isLoading === true) {
+      return (<Loader active inline='centered' />)
+    } else if (!this.props.zolando) {
+      return (
+        <h5> loading... </h5>
+      )
+    } else {
+      let ratings_label = this.props.zolando.ratings.label
+      return (
+        <span>{ratings_label}</span>
+      )
+    }
+  }
+
 
   render() {
     const state = this.state
@@ -163,7 +210,13 @@ class ZalandoBrandPage extends Component {
             <div className='card-title'>Ratings</div>
             <div className='card-content'>
               <table className='table-ratings'>
-                {this.renderTotalScore()}
+                <tr>
+                  <td> Total Score </td>
+                  <td>{this.renderTotalScore()}</td>
+                  <td>
+                    {this.renderLabel()} <span> {this.renderDots()}</span>
+                  </td>
+                </tr>  
                 {this.renderRatings()}
               </table>
             </div>
