@@ -107,7 +107,7 @@ class ZalandoBrandPage extends Component {
       let date = (this.props.zolando.last_updated)
       date = date.substring(0,10)
       return (
-        <div> Last updated {date} </div>
+        <div><span className='update'>Last updated {date}</span></div>
       )
     }
   }
@@ -146,7 +146,7 @@ class ZalandoBrandPage extends Component {
       let contact_name = this.props.zolando.contact.name
       let contact_email = this.props.zolando.contact.email
       let categories = (this.props.zolando.categories).join(', ')
-
+      let contact_mail_to = 'mailto:' + contact_email
       return (
         <table className='table-details'>
           <tr><td>Overall Rating</td><td className='item'>{ratings_label} {this.renderDots()}</td></tr>
@@ -156,7 +156,7 @@ class ZalandoBrandPage extends Component {
           { (parent_company) ? <tr><td>Parent Company</td><td className='item'>{parent_company}</td></tr> : null }
           { (size) ? <tr><td>Size</td><td className='item'>{size}</td></tr> : null }
           { (contact_name) ? <tr><td>Contact Name</td><td className='item'>{contact_name} ' '</td></tr> : null }
-          { (contact_email) ? <tr><td>Contact Email</td><td className='item contact-email'>{contact_email}</td></tr>  : null }
+          {(contact_email) ? <tr><td>Contact Email</td><td className='item '><a className='contact-email' href={contact_mail_to}>{ contact_email }</a></td></tr>  : null }
         </table>
       )
     }
