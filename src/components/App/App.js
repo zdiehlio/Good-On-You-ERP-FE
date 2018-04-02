@@ -5,6 +5,7 @@ import {
   Route,
 } from 'react-router-dom'
 import Authentication from '../requireAuth'
+import ZalandoAuth from '../zalandoAuth'
 import { ROOT_URL } from '../../actions'
 import { Header, Footer } from '../index'
 import {
@@ -64,8 +65,8 @@ class App extends Component {
             <div className={this.props.login.token ? 'container-body' : 'container-body-login'}>
               <Route exact path='/' component={Login}/>
               <Route path='/login' component={Login}/>
-              <Route path='/zalandosearch' component={Authentication(ZalandoSearch)}/>
-              <Route path='/zalandoBrandPage/:id' component={Authentication(ZalandoBrandPage)}/>
+              <Route path='/zalandosearch' component={ZalandoAuth(ZalandoSearch)}/>
+              <Route path='/zalandoBrandPage/:id' component={ZalandoAuth(ZalandoBrandPage)}/>
               <Route path='/searchBrand' component={Authentication(SearchBrand)} />
               <Route path='/brandLanding/:id' component={Authentication(BrandLanding)} />
               <Route path='/brandSummary/:id' component={Authentication(BrandSummary)}/>
