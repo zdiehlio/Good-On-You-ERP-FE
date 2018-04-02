@@ -62,7 +62,7 @@ a.web:hover {
   color: rgb(61, 59, 59);
 }
 
-.contact-email {
+a.contact-email {
   color: #09B5AB;
 }
 
@@ -153,4 +153,8 @@ a.web:hover {
   position: absolute;
   background-color: black;
   z-index: 100;
+}
+
+span.update {
+  padding-left: 6px;
 }
