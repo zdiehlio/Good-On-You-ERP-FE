@@ -4,14 +4,14 @@ import PropTypes from 'prop-types'
 import { logout } from '../actions'
 
 export default function(ComposedComponent) {
-  class Authentication extends Component {
+  class ZalandoAuth extends Component {
 
     componentWillMount() {
       if(!this.props.login.token || !sessionStorage.jwt) {
         this.context.router.history.push('/login')
         this.props.logout()
-      } else if(sessionStorage.user === '5') {
-        this.context.router.history.push('/zalandoSearch')
+      } else if(sessionStorage.user !== '5') {
+        this.context.router.history.push('/searchBrand')
       }
     }
 
@@ -19,16 +19,16 @@ export default function(ComposedComponent) {
       if(!this.props.login.token || !sessionStorage.jwt) {
         this.context.router.history.push('/login')
         this.props.logout()
-      } else if(sessionStorage.user === '5') {
-        this.context.router.history.push('/zalandoSearch')
+      } else if(sessionStorage.user !== '5') {
+        this.context.router.history.push('/searchBrand')
       }
     }
     render() {
-      console.log('auth', this.props)
+      console.log('zalando auth', this.props)
       return <ComposedComponent {...this.props} />
     }
   }
-  Authentication.contextTypes = {
+  ZalandoAuth.contextTypes = {
     router: PropTypes.object,
   }
 
@@ -39,5 +39,5 @@ export default function(ComposedComponent) {
       state,
     }
   }
-  return connect(mapStateToProps, { logout })(Authentication)
+  return connect(mapStateToProps, { logout })(ZalandoAuth)
 }
