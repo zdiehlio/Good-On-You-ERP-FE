@@ -193,7 +193,7 @@ class ZalandoBrandPage extends Component {
             <div className='brand-home'>
               <img src={zprops.logo} className='brand-logo' />
               <div className='brand-title'>{zprops.name}</div>
-              <p className='brand-hq'>{(zprops.headquarters) ? zprops.headquarters : 'Headquarters'} / <a href={`https://${zprops.website}`} target='_blank' className='web'>Website</a></p>
+              <p className='brand-hq'>{(zprops.headquarters) ? zprops.headquarters : 'Headquarters'} / <a href={zprops.website ? zprops.website.slice(0, 3) !== 'http' ? `http://${zprops.website}` : zprops.website : ''} target='_blank' className='web'>Website</a></p>
               <p className='brand-sentence'>{zprops.sentence}</p>
             </div>
 
@@ -211,7 +211,7 @@ class ZalandoBrandPage extends Component {
                   <td>
                     {this.renderLabel()} <span> {this.renderDots()}</span>
                   </td>
-                </tr>  
+                </tr>
                 {this.renderRatings()}
               </table>
             </div>

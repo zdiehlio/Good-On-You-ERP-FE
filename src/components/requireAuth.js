@@ -20,6 +20,7 @@ export default function(ComposedComponent) {
       }
     }
     render() {
+      console.log('auth', this.props)
       return <ComposedComponent {...this.props} />
     }
   }
