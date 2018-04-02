@@ -40,6 +40,7 @@ class ZalandoSearch extends Component {
       labour: [],
       animal: [],
       filterApplied: false,
+      showPages: 19,
     }
     this.handleSearch=this.handleSearch.bind(this)
     this.handleFilter=this.handleFilter.bind(this)
@@ -47,6 +48,7 @@ class ZalandoSearch extends Component {
     this.handleSubmit=this.handleSubmit.bind(this)
     this.handleClear=this.handleClear.bind(this)
     this.handleChip=this.handleChip.bind(this)
+    this.handleShowMore=this.handleShowMore.bind(this)
   }
 
   componentWillMount() {
@@ -72,6 +74,7 @@ class ZalandoSearch extends Component {
               dots: val.dots,
               sku: val.sku,
               label: val.label,
+              headquarters: val.headquarters,
             }
           }),
           isLoading: false,
@@ -91,6 +94,7 @@ class ZalandoSearch extends Component {
               dots: val.dots,
               sku: val.sku,
               label: val.label,
+              headquarters: val.headquarters,
             }
           }),
           isLoading: false,
@@ -101,7 +105,12 @@ class ZalandoSearch extends Component {
 
   handleFilter(event, { value, name }) {
     event.preventDefault()
-    Object.assign(this.state.filter.filters, {[name]: value })
+    Promise.resolve(Object.assign(this.state.filter.filters, {[name]: value }))
+      .then(() => {
+        if(this.state.filter.filters[name].length <= 0) {
+          delete this.state.filter.filters[name]
+        }
+      })
     this.setState({[name]: value, filterApplied: false})
 
     // }
@@ -120,7 +129,7 @@ class ZalandoSearch extends Component {
 
   handleSort(event, { name }) {
     event.preventDefault()
-    this.state.filterOptions.map(opt => {
+    this.state.sortOptions.map(opt => {
       if(name !== opt) {
         this.setState({[`sort${opt}`]: null})
       }
@@ -165,11 +174,16 @@ class ZalandoSearch extends Component {
     this.props.filteredSearch()
   }
 
+  handleShowMore() {
+    this.setState({showPages: this.state.showPages += 20})
+  }
+
   populateRender(brand) {
     return(
       <div className='filtered-items' key={brand.id}>
         <div>
           <Link to={`/zalandoBrandPage/${brand.id}`}><p className='brand-name'>{brand.name}</p></Link>
+          <p>{brand.headquarters}</p>
           <p><a target='_blank' href={brand.website.slice(0, 3) !== 'http' ? `http://${brand.website}` : brand.website}>Website</a></p>
         </div>
         <div>
@@ -209,7 +223,9 @@ class ZalandoSearch extends Component {
       })
     } else {
       return _.map(this.state.results, brand => {
-        return this.populateRender(brand)
+        if(this.state.results.indexOf(brand) <= this.state.showPages) {
+          return this.populateRender(brand)
+        }
       })
     }
   }
@@ -233,51 +249,6 @@ class ZalandoSearch extends Component {
         </div>
         <div className='filtered-list'>
           <Form className='zolando-filters'>
-            <Form.Field>
-              <Select
-                name='sku'
-                placeholder='SKU'
-                onChange={this.handleFilter}
-                selectOnNavigation={false}
-                multiple
-                value={this.state.sku}
-                text='SKU'
-                options={[
-                  { key: '<50', value: '<50', text: '<50'},
-                  { key: '50-99', value: '50-99', text: '50-99'},
-                  { key: '100-249', value: '100-249', text: '100-249'},
-                  { key: '250-499', value: '250-499', text: '250-499'},
-                  { key: '>500', value: '>500', text: '>500'},
-                ]}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Select
-                name='categories'
-                placeholder='Categories'
-                onChange={this.handleFilter}
-                text='Categories'
-                selection
-                selectOnNavigation={false}
-                multiple
-                value={this.state.categories}
-                options={[
-                  { key: 'menswear', value: 'menswear', text: 'menswear'},
-                  { key: 'womenswear', value: 'womenswear', text: 'womenswear'},
-                  { key: 'basics', value: 'basics', text: 'basics'},
-                  { key: 'designer', value: 'designer', text: 'designer'},
-                  { key: 'underwear', value: 'underwear', text: 'underwear'},
-                  { key: 'shoes', value: 'shoes', text: 'shoes'},
-                  { key: 'bags', value: 'bags', text: 'bags'},
-                  { key: 'fitness', value: 'fitness', text: 'fitness'},
-                  { key: 'outdoor', value: 'outdoor', text: 'outdoor'},
-                  { key: 'accessories', value: 'accessories', text: 'accessories'},
-                  { key: 'maternity', value: 'maternity', text: 'maternity'},
-                  { key: 'plus', value: 'plus', text: 'plus'},
-
-                ]}
-              />
-            </Form.Field>
             <Form.Field>
               <Select
                 name='score'
@@ -346,6 +317,51 @@ class ZalandoSearch extends Component {
                 ]}
               />
             </Form.Field>
+            <Form.Field>
+              <Select
+                name='categories'
+                placeholder='Categories'
+                onChange={this.handleFilter}
+                text='Categories'
+                selection
+                selectOnNavigation={false}
+                multiple
+                value={this.state.categories}
+                options={[
+                  { key: 'menswear', value: 'menswear', text: 'menswear'},
+                  { key: 'womenswear', value: 'womenswear', text: 'womenswear'},
+                  { key: 'basics', value: 'basics', text: 'basics'},
+                  { key: 'designer', value: 'designer', text: 'designer'},
+                  { key: 'underwear', value: 'underwear', text: 'underwear'},
+                  { key: 'shoes', value: 'shoes', text: 'shoes'},
+                  { key: 'bags', value: 'bags', text: 'bags'},
+                  { key: 'fitness', value: 'fitness', text: 'fitness'},
+                  { key: 'outdoor', value: 'outdoor', text: 'outdoor'},
+                  { key: 'accessories', value: 'accessories', text: 'accessories'},
+                  { key: 'maternity', value: 'maternity', text: 'maternity'},
+                  { key: 'plus', value: 'plus', text: 'plus'},
+
+                ]}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Select
+                name='sku'
+                placeholder='SKU'
+                onChange={this.handleFilter}
+                selectOnNavigation={false}
+                multiple
+                value={this.state.sku}
+                text='SKU'
+                options={[
+                  { key: '<50', value: '<50', text: '<50'},
+                  { key: '50-99', value: '50-99', text: '50-99'},
+                  { key: '100-249', value: '100-249', text: '100-249'},
+                  { key: '250-499', value: '250-499', text: '250-499'},
+                  { key: '>500', value: '>500', text: '>500'},
+                ]}
+              />
+            </Form.Field>
             <div>{!state.filterApplied ? <button onClick={this.handleSubmit}>Apply</button> : <div className='clear' onClick={this.handleClear}>Clear All</div>}</div>
           </Form>
           <div className='excel'><CSVLink data={state.searchResults.length > 0 ? state.searchResults : state.results}><button>Export to Excel <Icon name='file excel outline' /></button></CSVLink></div>
@@ -353,6 +369,7 @@ class ZalandoSearch extends Component {
 
           <div className='sort-buttons'>{this.renderSortButtons()}</div>
           {this.renderResults()}
+          {this.state.results.length <= state.showPages ? '' : <button onClick={this.handleShowMore}>Show More</button>}
         </div>
       </div>
     )
