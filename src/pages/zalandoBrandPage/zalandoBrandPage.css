@@ -55,7 +55,7 @@
 }
 
 .web {
-  color: #09B5AB;  
+  color: #09B5AB;
 }
 
 a.web:hover {
@@ -147,4 +147,10 @@ a.web:hover {
 
 .table-ratings tr:hover {
   background-color: #ddd;
+}
+
+.back-to-search {
+  position: absolute;
+  background-color: black;
+  z-index: 100;
 }

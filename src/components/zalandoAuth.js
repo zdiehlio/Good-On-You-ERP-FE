@@ -24,7 +24,6 @@ export default function(ComposedComponent) {
       }
     }
     render() {
-      console.log('zalando auth', this.props)
       return <ComposedComponent {...this.props} />
     }
   }
