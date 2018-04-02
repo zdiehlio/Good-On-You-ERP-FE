@@ -30,10 +30,11 @@
 
 .filtered-list {
   padding: 0.5em;
+  background-color: white;
 }
 .filtered-items {
   width: 100%;
-  background-color: #F2F2F2;
+  background-color: #D6EBF2;
   border: solid 1px;
   border-color: black;
   padding: 0.5em;

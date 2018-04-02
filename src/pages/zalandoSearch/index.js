@@ -178,11 +178,17 @@ class ZalandoSearch extends Component {
     this.setState({showPages: this.state.showPages += 20})
   }
 
+  // handleBrandLink(event) {
+  //   if(event.target.name !== 'brandWebsite') {
+  //     this.props.history.push(`/zalandoBrandPage/${.id}`)
+  //   }
+  // }
+
   populateRender(brand) {
     return(
-      <div className='filtered-items' key={brand.id}>
+      <div className='filtered-items' id={brand.id} key={brand.id}>
         <div>
-          <Link to={`/zalandoBrandPage/${brand.id}`}><p className='brand-name'>{brand.name}</p></Link>
+          <Link to={`/zalandoBrandPage/${brand.id}`}><p name='brandWebsite' className='brand-name'>{brand.name}</p></Link>
           <p>{brand.headquarters}</p>
           <p><a target='_blank' href={brand.website.slice(0, 3) !== 'http' ? `http://${brand.website}` : brand.website}>Website</a></p>
         </div>
@@ -247,123 +253,129 @@ class ZalandoSearch extends Component {
             </Form.Field>
           </div>
         </div>
-        <div className='filtered-list'>
-          <Form className='zolando-filters'>
-            <Form.Field>
-              <Select
-                name='score'
-                placeholder='Score'
-                onChange={this.handleFilter}
-                text='Score'
-                selection
-                selectOnNavigation={false}
-                multiple
-                value={this.state.score}
-                options={[
-                  { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
-                  { key: 'good', value: 'good', text: 'good'},
-                  { key: 'great', value: 'great', text: 'great'},
-                ]}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Select
-                name='environment'
-                placeholder='Environment'
-                onChange={this.handleFilter}
-                text='Environment'
-                selection
-                selectOnNavigation={false}
-                multiple
-                value={this.state.environment}
-                options={[
-                  { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
-                  { key: 'good', value: 'good', text: 'good'},
-                  { key: 'great', value: 'great', text: 'great'},
-                ]}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Select
-                name='labour'
-                placeholder='Labour'
-                onChange={this.handleFilter}
-                text='Labour'
-                selection
-                selectOnNavigation={false}
-                multiple
-                value={this.state.labour}
-                options={[
-                  { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
-                  { key: 'good', value: 'good', text: 'good'},
-                  { key: 'great', value: 'great', text: 'great'},
-                ]}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Select
-                name='animal'
-                placeholder='Animal'
-                onChange={this.handleFilter}
-                text='Animal'
-                selection
-                selectOnNavigation={false}
-                multiple
-                value={this.state.animal}
-                options={[
-                  { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
-                  { key: 'good', value: 'good', text: 'good'},
-                  { key: 'great', value: 'great', text: 'great'},
-                ]}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Select
-                name='categories'
-                placeholder='Categories'
-                onChange={this.handleFilter}
-                text='Categories'
-                selection
-                selectOnNavigation={false}
-                multiple
-                value={this.state.categories}
-                options={[
-                  { key: 'menswear', value: 'menswear', text: 'menswear'},
-                  { key: 'womenswear', value: 'womenswear', text: 'womenswear'},
-                  { key: 'basics', value: 'basics', text: 'basics'},
-                  { key: 'designer', value: 'designer', text: 'designer'},
-                  { key: 'underwear', value: 'underwear', text: 'underwear'},
-                  { key: 'shoes', value: 'shoes', text: 'shoes'},
-                  { key: 'bags', value: 'bags', text: 'bags'},
-                  { key: 'fitness', value: 'fitness', text: 'fitness'},
-                  { key: 'outdoor', value: 'outdoor', text: 'outdoor'},
-                  { key: 'accessories', value: 'accessories', text: 'accessories'},
-                  { key: 'maternity', value: 'maternity', text: 'maternity'},
-                  { key: 'plus', value: 'plus', text: 'plus'},
+        <Form className='zolando-filters'>
+          <Form.Field>
+            <Select
+              name='score'
+              placeholder='Score'
+              onChange={this.handleFilter}
+              text='Score'
+              selection
+              selectOnNavigation={false}
+              multiple
+              value={this.state.score}
+              options={[
+                { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
+                { key: 'good', value: 'good', text: 'good'},
+                { key: 'great', value: 'great', text: 'great'},
+              ]}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Select
+              name='environment'
+              placeholder='Environment'
+              onChange={this.handleFilter}
+              text='Environment'
+              selection
+              selectOnNavigation={false}
+              multiple
+              value={this.state.environment}
+              options={[
+                { key: 'very poor', value: 'very poor', text: 'very poor'},
+                { key: 'not good enough', value: 'not good enough', text: 'not good enough'},
+                { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
+                { key: 'good', value: 'good', text: 'good'},
+                { key: 'great', value: 'great', text: 'great'},
+              ]}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Select
+              name='labour'
+              placeholder='Labour'
+              onChange={this.handleFilter}
+              text='Labour'
+              selection
+              selectOnNavigation={false}
+              multiple
+              value={this.state.labour}
+              options={[
+                { key: 'very poor', value: 'very poor', text: 'very poor'},
+                { key: 'not good enough', value: 'not good enough', text: 'not good enough'},
+                { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
+                { key: 'good', value: 'good', text: 'good'},
+                { key: 'great', value: 'great', text: 'great'},
+              ]}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Select
+              name='animal'
+              placeholder='Animal'
+              onChange={this.handleFilter}
+              text='Animal'
+              selection
+              selectOnNavigation={false}
+              multiple
+              value={this.state.animal}
+              options={[
+                { key: 'very poor', value: 'very poor', text: 'very poor'},
+                { key: 'not good enough', value: 'not good enough', text: 'not good enough'},
+                { key: 'it\'s a start', value: 'it\'s a start', text: 'it\'s a start'},
+                { key: 'good', value: 'good', text: 'good'},
+                { key: 'great', value: 'great', text: 'great'},
+              ]}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Select
+              name='categories'
+              placeholder='Categories'
+              onChange={this.handleFilter}
+              text='Categories'
+              selection
+              selectOnNavigation={false}
+              multiple
+              value={this.state.categories}
+              options={[
+                { key: 'menswear', value: 'menswear', text: 'menswear'},
+                { key: 'womenswear', value: 'womenswear', text: 'womenswear'},
+                { key: 'basics', value: 'basics', text: 'basics'},
+                { key: 'designer', value: 'designer', text: 'designer'},
+                { key: 'underwear', value: 'underwear', text: 'underwear'},
+                { key: 'shoes', value: 'shoes', text: 'shoes'},
+                { key: 'bags', value: 'bags', text: 'bags'},
+                { key: 'fitness', value: 'fitness', text: 'fitness'},
+                { key: 'outdoor', value: 'outdoor', text: 'outdoor'},
+                { key: 'accessories', value: 'accessories', text: 'accessories'},
+                { key: 'maternity', value: 'maternity', text: 'maternity'},
+                { key: 'plus', value: 'plus', text: 'plus'},
 
-                ]}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Select
-                name='sku'
-                placeholder='SKU'
-                onChange={this.handleFilter}
-                selectOnNavigation={false}
-                multiple
-                value={this.state.sku}
-                text='SKU'
-                options={[
-                  { key: '<50', value: '<50', text: '<50'},
-                  { key: '50-99', value: '50-99', text: '50-99'},
-                  { key: '100-249', value: '100-249', text: '100-249'},
-                  { key: '250-499', value: '250-499', text: '250-499'},
-                  { key: '>500', value: '>500', text: '>500'},
-                ]}
-              />
-            </Form.Field>
-            <div>{!state.filterApplied ? <button onClick={this.handleSubmit}>Apply</button> : <div className='clear' onClick={this.handleClear}>Clear All</div>}</div>
-          </Form>
+              ]}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Select
+              name='sku'
+              placeholder='SKU'
+              onChange={this.handleFilter}
+              selectOnNavigation={false}
+              multiple
+              value={this.state.sku}
+              text='SKU'
+              options={[
+                { key: '<50', value: '<50', text: '<50'},
+                { key: '50-99', value: '50-99', text: '50-99'},
+                { key: '100-249', value: '100-249', text: '100-249'},
+                { key: '250-499', value: '250-499', text: '250-499'},
+                { key: '>500', value: '>500', text: '>500'},
+              ]}
+            />
+          </Form.Field>
+          <div>{!state.filterApplied ? <button onClick={this.handleSubmit}>Apply</button> : <div className='clear' onClick={this.handleClear}>Clear All</div>}</div>
+        </Form>
+        <div className='filtered-list'>
           <div className='excel'><CSVLink data={state.searchResults.length > 0 ? state.searchResults : state.results}><button>Export to Excel <Icon name='file excel outline' /></button></CSVLink></div>
           <p className='filter-text'>{state.filterApplied ? 'Filter Applied!' : ''}</p>
 
