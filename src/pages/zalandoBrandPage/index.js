@@ -6,6 +6,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Loader, Form, Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 import './zalandoBrandPage.css'
+import { Price } from '../../components'
 
 
 class ZalandoBrandPage extends Component {
@@ -58,11 +59,11 @@ class ZalandoBrandPage extends Component {
       const dots = this.props.zolando.ratings.dots
       return (
         <span>
-          {dots >= 1 ? <Icon color='teal' name='circle' /> : <Icon name='circle thin' />}
-          {dots >= 2 ? <Icon color='teal' name='circle' /> : <Icon name='circle thin' />}
-          {dots >= 3 ? <Icon color='teal' name='circle' /> : <Icon name='circle thin' />}
-          {dots >= 4 ? <Icon color='teal' name='circle' /> : <Icon name='circle thin' />}
-          {dots >= 5 ? <Icon color='teal' name='circle' /> : <Icon name='circle thin' />}
+          {dots >= 1 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
+          {dots >= 2 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
+          {dots >= 3 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
+          {dots >= 4 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
+          {dots >= 5 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
         </span>
       )
     }
@@ -78,7 +79,6 @@ class ZalandoBrandPage extends Component {
         <span> {zprops.ratings.score} / {zprops.ratings.max_score} </span>
       )
     }
-
   }
 
   renderRatings() {
@@ -145,18 +145,14 @@ class ZalandoBrandPage extends Component {
       let size  = this.props.zolando.size
       let contact_name = this.props.zolando.contact.name
       let contact_email = this.props.zolando.contact.email
-      let categories_array = this.props.zolando.categories
-
-      let categories = _.map(categories, category => {
-
-      })
+      let categories = (this.props.zolando.categories).join(', ')
 
       return (
         <table className='table-details'>
           <tr><td>Overall Rating</td><td className='item'>{ratings_label} {this.renderDots()}</td></tr>
-          <tr><td>Categories</td><td className='item'>[]</td></tr>
+          { (categories) ? <tr><td>Categories</td><td className='item'>{categories}</td></tr> : null }
           { (sku) ? <tr><td>SKUs</td><td className='item'>{sku}</td></tr> : null }
-          { (price) ? <tr><td>Price</td><td className='item'>{price}</td></tr> : null }
+          { (price) ? <tr><td>Price</td><td className='item'><Price price={price} /></td></tr> : null }
           { (parent_company) ? <tr><td>Parent Company</td><td className='item'>{parent_company}</td></tr> : null }
           { (size) ? <tr><td>Size</td><td className='item'>{size}</td></tr> : null }
           { (contact_name) ? <tr><td>Contact Name</td><td className='item'>{contact_name} ' '</td></tr> : null }
@@ -181,7 +177,6 @@ class ZalandoBrandPage extends Component {
     }
   }
 
-
   render() {
     const state = this.state
     const zprops = this.props.zolando
@@ -198,7 +193,7 @@ class ZalandoBrandPage extends Component {
             <div className='brand-home'>
               <img src={zprops.logo} className='brand-logo' />
               <div className='brand-title'>{zprops.name}</div>
-              <p className='brand-hq'>{zprops.headquarters} / <a href={`https://${zprops.website}`} target='_blank' className='web'>Website</a></p>
+              <p className='brand-hq'>{(zprops.headquarters) ? zprops.headquarters : 'Headquarters'} / <a href={`https://${zprops.website}`} target='_blank' className='web'>Website</a></p>
               <p className='brand-sentence'>{zprops.sentence}</p>
             </div>
 
