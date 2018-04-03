@@ -8,6 +8,7 @@ export default function(state = {}, action) {
     if (!action.error) {
       sessionStorage.setItem('user', action.payload.data.user.group)
       sessionStorage.setItem('userName', action.payload.data.user.username)
+      sessionStorage.setItem('firstName', action.payload.data.user.firstname)
       return action.payload.data.user
     }
     return {error: action.error}

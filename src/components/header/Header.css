@@ -63,11 +63,15 @@
   margin-left: auto;
 }
 
-.links-container-right a{
+.links-container-right div{
   text-decoration: none;
   color: gray;
-  font-size: 20px;
+  font-size: 14px;
   padding: 0 10px;
+}
+
+.logout-link {
+  text-decoration: underline !important;
 }
 
 .username:hover {
