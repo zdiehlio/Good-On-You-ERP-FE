@@ -20,8 +20,8 @@ class Header extends Component {
             </div>
             {this.props.login.token ? (
               <div className="links-container-right">
-                <div>{sessionStorage.userName} (Zalando)</div>
-                <Link className='logout' onClick={this.props.logout} to="/login">Logout</Link>
+                <div>{sessionStorage.firstName} (Zalando)</div>
+                <Link className='logout' onClick={this.props.logout} to="/login"><div className='logout-link'>Logout</div></Link>
               </div>) : ''}
           </div>
         ) : (

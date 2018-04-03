@@ -112,13 +112,6 @@ class ZalandoSearch extends Component {
         }
       })
     this.setState({[name]: value, filterApplied: false})
-
-    // }
-    // if(this.state.filteredArr.includes(name + ': ' + value + ' X')) {
-    //   console.log(value)
-    // } else {
-    //   this.setState({filteredArr: [...this.state.filteredArr, name + ': ' + value + ' X']})
-    // }
   }
 
   handleChip(event) {
@@ -134,9 +127,19 @@ class ZalandoSearch extends Component {
         this.setState({[`sort${opt}`]: null})
       }
     })
-    Promise.resolve(this.setState({isLoading: true, [`sort${name}`]: !this.state[`sort${name}`] || this.state[`sort${name}`] === 'desc' ? 'asc' : 'desc'}))
-      .then(Object.assign(this.state.filter.sort, { key: name, order: !this.state[`sort${name}`] || this.state[`sort${name}`] === 'desc' ? 'asc' : 'desc'}))
-      .then(this.props.filteredSearch(this.state.filter))
+    if(!this.state[`sort${name}`]) {
+      Promise.resolve(this.setState({isLoading: true, [`sort${name}`]: 'desc'}))
+        .then(Object.assign(this.state.filter.sort, { key: name, order: 'desc'}))
+        .then(this.props.filteredSearch(this.state.filter))
+    } else if(this.state[`sort${name}`] === 'desc') {
+      Promise.resolve(this.setState({isLoading: true, [`sort${name}`]: 'asc'}))
+        .then(Object.assign(this.state.filter.sort, { key: name, order: 'asc'}))
+        .then(this.props.filteredSearch(this.state.filter))
+    } else {
+      this.props.filteredSearch()
+      this.setState({isLoading: true, [`sort${name}`]: null})
+      Object.assign(this.state.filter.sort, { key: name, order: null})
+    }
   }
 
   handleSearch(event, { value }) {
@@ -159,7 +162,7 @@ class ZalandoSearch extends Component {
           })
         }
       })
-    ).then(this.setState({searchResults: searchArr}))
+    ).then(this.setState({searchApplied: value.length >= 2 ? true : false, searchResults: value.length >= 2 ? searchArr : this.state.results}))
   }
 
   handleSubmit(event) {
@@ -194,11 +197,11 @@ class ZalandoSearch extends Component {
         </div>
         <div>
           <p>
-            {brand.dots >= 1 ? <Icon color='teal' name='circle'/> : <Icon name='circle thin' />}
-            {brand.dots >= 2 ? <Icon color='teal' name='circle'/> : <Icon name='circle thin' />}
-            {brand.dots >= 3 ? <Icon color='teal' name='circle'/> : <Icon name='circle thin' />}
-            {brand.dots >= 4 ? <Icon color='teal' name='circle'/> : <Icon name='circle thin' />}
-            {brand.dots >= 5 ? <Icon color='teal' name='circle'/> : <Icon name='circle thin' />}
+            {brand.dots >= 1 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+            {brand.dots >= 2 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+            {brand.dots >= 3 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+            {brand.dots >= 4 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+            {brand.dots >= 5 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
             {}
           </p>
           <p>{brand.label}</p>
@@ -223,7 +226,7 @@ class ZalandoSearch extends Component {
   renderResults() {
     if(this.state.isLoading === true) {
       return (<Loader active inline='centered' />)
-    } else if(this.state.searchResults.length > 0) {
+    } else if(this.state.searchApplied) {
       return _.map(this.state.searchResults, brand => {
         return this.populateRender(brand)
       })
@@ -239,11 +242,11 @@ class ZalandoSearch extends Component {
   render() {
     const state = this.state
     console.log('props', this.props.zolando)
-    console.log('state', this.state)
+    console.log('state', this.state.searchResults)
     return (
       <div className='zolando-container'>
         <div className='search-bar-container'>
-          <div className='button-and-search'>
+          <div className='search-bar'>
             <Form.Field>
               <Input
                 placeholder='Search Brands'
@@ -381,7 +384,8 @@ class ZalandoSearch extends Component {
 
           <div className='sort-buttons'>{this.renderSortButtons()}</div>
           {this.renderResults()}
-          {this.state.results.length <= state.showPages ? '' : <button onClick={this.handleShowMore}>Show More</button>}
+          <p className='no-results'>{state.searchApplied && state.searchResults.length <= 0 ? 'No Results Found' : ''}</p>
+          {this.state.results.length <= state.showPages || state.searchApplied ? '' : <button onClick={this.handleShowMore}>Show More</button>}
         </div>
       </div>
     )

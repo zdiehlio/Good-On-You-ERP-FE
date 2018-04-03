@@ -2,6 +2,8 @@
   width: 100%;
   background-color: #09b5ab;
   margin-bottom: 2em;
+  padding: 1em;
+  margin: auto;
   text-align: center;
 }
 
@@ -24,7 +26,7 @@
 }
 
 .search-bar {
-  width: 60%;
+  width: 40%;
   margin: auto;
 }
 
@@ -92,4 +94,11 @@ a.ui.label{
   color: black !important;
   text-decoration: underline;
   padding: 0.5em;
+}
+
+.no-results {
+  color: red;
+  text-align: center;
+  margin: 3em;
+  padding: 3em;
 }
