@@ -6,7 +6,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Loader, Form, Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 import './zalandoBrandPage.css'
-import { Price } from '../../components'
+import { Price, Causes } from '../../components'
 
 
 class ZalandoBrandPage extends Component {
@@ -177,6 +177,18 @@ class ZalandoBrandPage extends Component {
     }
   }
 
+  renderBrandSummary() {
+    const zprops = this.props.zolando
+    return (
+      <div>
+        <div className='card-title'>Details</div>
+        <div className='card-content'> {this.renderLorem()}</div>
+        <div className='card-content'><Causes causes={zprops.causes} /></div>
+      </div>
+    )
+  }
+
+
   render() {
     const state = this.state
     const zprops = this.props.zolando
@@ -218,9 +230,7 @@ class ZalandoBrandPage extends Component {
           </div>
 
           <div className='brand-card brand-summary'>
-            <div className='card-title'>Details</div>
-            <div className='card-content'> {this.renderLorem()} </div>
-
+            <div>{this.renderBrandSummary()}</div>
           </div>
           <div className='last-update'><i>{this.renderDate()}</i></div>
         </div>
