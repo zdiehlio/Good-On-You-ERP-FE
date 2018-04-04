@@ -50,17 +50,20 @@ class SearchBrand extends Component {
   }
 
   handleChange(e, { value }){
+    let str = value.replace(/&/g, '%26')
+    let val = str.replace(/ /g, '+')
     new Promise((resolve, reject) => {
       resolve(
         this.loadContent(),
         this.setState({
           results: [],
-          brand: value,
+          brand: val,
           loading: true,
         }))
     })
       .then(() => {
-        this.props.fetchBrands(value)
+        console.log(val)
+        this.props.fetchBrands(val)
       })
   }
 

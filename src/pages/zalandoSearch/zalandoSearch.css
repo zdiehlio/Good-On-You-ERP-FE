@@ -27,7 +27,7 @@
 
 .search-bar {
   width: 40%;
-  margin: auto;
+  margin: 1em auto;
 }
 
 .filtered-list {
@@ -35,22 +35,35 @@
   background-color: white;
 }
 .filtered-items {
-  width: 100%;
+  width: 90%;
   background-color: #D6EBF2;
   border: solid 1px;
   border-color: black;
   padding: 0.5em;
-  margin: 1em 0em;
+  margin: auto;
+  margin-bottom: 1em;
+}
+
+.even {
+  background-color: rgba(197, 227, 226, 0.7);
+}
+.odd {
+  background-color: rgba(197, 227, 226, 0.3);
 }
 
 .filtered-items div {
   display: inline-block;
   width: calc(100%/7);
   margin-top: 1em;
+  color: black;
+  text-align: left;
+  vertical-align: middle;
+  padding: 0.5em;
 }
 
 .filtered-items p {
-  text-align: center;
+  text-align: left;
+  margin-bottom: 0px;
 }
 
 .ui.form.zolando-filters {
@@ -58,8 +71,11 @@
 }
 
 .zolando-filters div {
-  width: calc(100%/7);
+  color: #47C2BF;
+  width: calc(95%/8);
   display: inline-block;
+  padding: 0.5em;
+  vertical-align: top;
 }
 
 .field div{
@@ -68,6 +84,12 @@
 
 a.ui.label{
   width: 100%;
+}
+
+.clear {
+  width: 100%;
+  text-decoration: underline;
+  text-align: center;
 }
 
 .clear:hover{
@@ -90,10 +112,7 @@ a.ui.label{
 }
 
 .brand-name {
-  font-size: 14px !important;
-  color: black !important;
   text-decoration: underline;
-  padding: 0.5em;
 }
 
 .no-results {
@@ -101,4 +120,35 @@ a.ui.label{
   text-align: center;
   margin: 3em;
   padding: 3em;
+}
+
+.sort-buttons {
+  width: 90%;
+  margin: auto;
+  text-align: left;
+}
+
+.sort-active {
+  color: #09b5ab;
+  background-color: white;
+}
+
+.sort-active:hover {
+  color: #09b5ab;
+  background-color: white;
+}
+
+.sort-inactive {
+  color: grey;
+  background-color: white;
+  text-align: left;
+}
+
+.sort-inactive:hover{
+  color: grey;
+  background-color: white;
+}
+
+.delete.icon {
+  float: right;
 }
