@@ -20,6 +20,7 @@ class ZalandoSearch extends Component {
     this.state = {
       search: '',
       brand: '',
+      sortname: null,
       sortsku: null,
       sortcategories: null,
       sortscore: null,
@@ -120,25 +121,28 @@ class ZalandoSearch extends Component {
     this.setState({filteredArr: this.state.filteredArr.filter(val => val !== event.target.value)})
   }
 
-  handleSort(event, { name }) {
+  handleSort(event) {
     event.preventDefault()
     this.state.sortOptions.map(opt => {
-      if(name !== opt) {
+      if(event.target.name !== opt) {
         this.setState({[`sort${opt}`]: null})
       }
     })
-    if(!this.state[`sort${name}`]) {
-      Promise.resolve(this.setState({isLoading: true, [`sort${name}`]: 'desc'}))
-        .then(Object.assign(this.state.filter.sort, { key: name, order: 'desc'}))
+    if(!this.state[`sort${event.target.name}`]) {
+      console.log('desc')
+      Promise.resolve(this.setState({isLoading: true, [`sort${event.target.name}`]: 'desc'}))
+        .then(Object.assign(this.state.filter.sort, { key: event.target.name, order: 'desc'}))
         .then(this.props.filteredSearch(this.state.filter))
-    } else if(this.state[`sort${name}`] === 'desc') {
-      Promise.resolve(this.setState({isLoading: true, [`sort${name}`]: 'asc'}))
-        .then(Object.assign(this.state.filter.sort, { key: name, order: 'asc'}))
+    } else if(this.state[`sort${event.target.name}`] === 'desc') {
+      console.log('asc')
+      Promise.resolve(this.setState({isLoading: true, [`sort${event.target.name}`]: 'asc'}))
+        .then(Object.assign(this.state.filter.sort, { key: event.target.name, order: 'asc'}))
         .then(this.props.filteredSearch(this.state.filter))
     } else {
       this.props.filteredSearch()
-      this.setState({isLoading: true, [`sort${name}`]: null})
-      Object.assign(this.state.filter.sort, { key: name, order: null})
+      console.log('null')
+      this.setState({isLoading: true, [`sort${event.target.name}`]: null})
+      Object.assign(this.state.filter.sort, { key: event.target.name, order: null})
     }
   }
 
@@ -177,63 +181,77 @@ class ZalandoSearch extends Component {
     this.props.filteredSearch()
   }
 
-  handleShowMore() {
-    this.setState({showPages: this.state.showPages += 20})
-  }
-
-  // handleBrandLink(event) {
-  //   if(event.target.name !== 'brandWebsite') {
-  //     this.props.history.push(`/zalandoBrandPage/${.id}`)
-  //   }
-  // }
-
-  populateRender(brand) {
-    return(
-      <div className='filtered-items' id={brand.id} key={brand.id}>
-        <div>
-          <Link to={`/zalandoBrandPage/${brand.id}`}><p name='brandWebsite' className='brand-name'>{brand.name}</p></Link>
-          <p>{brand.headquarters}</p>
-          <p><a target='_blank' href={brand.website.slice(0, 3) !== 'http' ? `http://${brand.website}` : brand.website}>Website</a></p>
-        </div>
-        <div>
-          <p>
-            {brand.dots >= 1 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-            {brand.dots >= 2 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-            {brand.dots >= 3 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-            {brand.dots >= 4 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-            {brand.dots >= 5 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-            {}
-          </p>
-          <p>{brand.label}</p>
-        </div>
-        <div>{brand.environment}</div>
-        <div>{brand.labour}</div>
-        <div>{brand.animal}</div>
-        <div>{brand.categories}</div>
-        <div>{brand.sku}</div>
-      </div>
-    )
+  capitalize(string) {
+    return string[0].toUpperCase() + string.slice(1)
   }
 
   renderSortButtons() {
     return this.state.sortOptions.map(val => {
       return (
-        <div key={val} className='sort'><Button basic color={this.state[`sort${val}`] ? 'teal' : 'grey'} name={val} onClick={this.handleSort}>{val} <Icon name={!this.state[`sort${val}`] || this.state[`sort${val}`] === 'desc' ? 'arrow down' : 'arrow up'}/></Button></div>
+        <div key={val} className='sort'><button className={this.state[`sort${val}`] ? 'sort-active' : 'sort-inactive'} name={val} onClick={this.handleSort}>{val === 'score' ? 'Overall Score' : this.capitalize(val)} <Icon name={!this.state[`sort${val}`] || this.state[`sort${val }`] === 'desc' ? 'arrow down' : 'arrow up'}/></button></div>
       )
     })
+  }
+
+  handleShowMore() {
+    this.setState({showPages: this.state.showPages += 20})
+  }
+
+  checkNumber(n) {
+    if(n % 2 === 0) {
+      return 'even'
+    } else {
+      return 'odd'
+    }
+  }
+
+  populateRender(brand, index) {
+    console.log('index', index)
+    return(
+      <Link key={brand.id} to={`/zalandoBrandPage/${brand.id}`}>
+        <div className={this.checkNumber(index) === 'even' ? 'filtered-items even' : 'filtered-items odd'} id={brand.id}>
+          <div>
+            <p>{brand.name}</p>
+            <p>{brand.headquarters}</p>
+            <p name='brandWebsite' className='brand-name'>View Brand Details</p>
+          </div>
+          <div>
+            <p>
+              {brand.dots >= 1 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand.dots >= 2 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand.dots >= 3 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand.dots >= 4 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand.dots >= 5 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {}
+            </p>
+            <p>{brand.label}</p>
+            <p>{' '}</p>
+          </div>
+          <div>
+            <p></p>
+            <p>{brand.environment}</p>
+            <p></p>
+          </div>
+          <div>{brand.labour}</div>
+          <div>{brand.animal}</div>
+          <div>{brand.categories}</div>
+          <div>{brand.sku}</div>
+        </div>
+      </Link>
+    )
   }
 
   renderResults() {
     if(this.state.isLoading === true) {
       return (<Loader active inline='centered' />)
     } else if(this.state.searchApplied) {
-      return _.map(this.state.searchResults, brand => {
-        return this.populateRender(brand)
+      return _.map(this.state.searchResults, (brand, index) => {
+        return this.populateRender(brand, index)
       })
     } else {
-      return _.map(this.state.results, brand => {
+      return _.map(this.state.results, (brand, index)=> {
         if(this.state.results.indexOf(brand) <= this.state.showPages) {
-          return this.populateRender(brand)
+          return this.populateRender(brand, index)
         }
       })
     }
@@ -242,7 +260,7 @@ class ZalandoSearch extends Component {
   render() {
     const state = this.state
     console.log('props', this.props.zolando)
-    console.log('state', this.state.searchResults)
+    console.log('state', this.state)
     return (
       <div className='zolando-container'>
         <div className='search-bar-container'>
@@ -257,13 +275,15 @@ class ZalandoSearch extends Component {
           </div>
         </div>
         <Form className='zolando-filters'>
+          <div><h4>Filter</h4></div>
           <Form.Field>
             <Select
               name='score'
-              placeholder='Score'
+              placeholder='Overall Score'
               onChange={this.handleFilter}
-              text='Score'
+              text='Overall Score'
               selection
+              compact
               selectOnNavigation={false}
               multiple
               value={this.state.score}
@@ -281,6 +301,7 @@ class ZalandoSearch extends Component {
               onChange={this.handleFilter}
               text='Environment'
               selection
+              compact
               selectOnNavigation={false}
               multiple
               value={this.state.environment}
@@ -300,6 +321,7 @@ class ZalandoSearch extends Component {
               onChange={this.handleFilter}
               text='Labour'
               selection
+              compact
               selectOnNavigation={false}
               multiple
               value={this.state.labour}
@@ -319,6 +341,7 @@ class ZalandoSearch extends Component {
               onChange={this.handleFilter}
               text='Animal'
               selection
+              compact
               selectOnNavigation={false}
               multiple
               value={this.state.animal}
@@ -338,6 +361,7 @@ class ZalandoSearch extends Component {
               onChange={this.handleFilter}
               text='Categories'
               selection
+              compact
               selectOnNavigation={false}
               multiple
               value={this.state.categories}
@@ -365,6 +389,7 @@ class ZalandoSearch extends Component {
               onChange={this.handleFilter}
               selectOnNavigation={false}
               multiple
+              compact
               value={this.state.sku}
               text='SKU'
               options={[
@@ -376,7 +401,7 @@ class ZalandoSearch extends Component {
               ]}
             />
           </Form.Field>
-          <div>{!state.filterApplied ? <button onClick={this.handleSubmit}>Apply</button> : <div className='clear' onClick={this.handleClear}>Clear All</div>}</div>
+          <div>{!state.filterApplied ? <button onClick={this.handleSubmit}>Apply</button> : <p className='clear' onClick={this.handleClear}>Clear All</p>}</div>
         </Form>
         <div className='filtered-list'>
           <div className='excel'><CSVLink data={state.searchResults.length > 0 ? state.searchResults : state.results}><button>Export to Excel <Icon name='file excel outline' /></button></CSVLink></div>
@@ -384,7 +409,7 @@ class ZalandoSearch extends Component {
 
           <div className='sort-buttons'>{this.renderSortButtons()}</div>
           {this.renderResults()}
-          <p className='no-results'>{state.searchApplied && state.searchResults.length <= 0 ? 'No Results Found' : ''}</p>
+          {state.searchApplied && state.searchResults.length <= 0 ? <p className='no-results'>No Results Found</p> : ''}
           {this.state.results.length <= state.showPages || state.searchApplied ? '' : <button onClick={this.handleShowMore}>Show More</button>}
         </div>
       </div>
