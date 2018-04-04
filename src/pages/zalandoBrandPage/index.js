@@ -58,7 +58,7 @@ class ZalandoBrandPage extends Component {
     } else {
       const dots = this.props.zolando.ratings.dots
       return (
-        <span>
+        <span className='dots-space'>
           {dots >= 1 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
           {dots >= 2 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
           {dots >= 3 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
@@ -99,34 +99,36 @@ class ZalandoBrandPage extends Component {
     if (this.state.isLoading === true) {
       return( <Loader active inline='centered' />)
     } else if (!this.props.zolando) {
-      let date = this.props.zolando.last_updated
       return(
-        <h5> {date}</h5>
+        <h5> loading... </h5>
       )
     } else {
       let date = (this.props.zolando.last_updated)
       date = date.substring(0,10)
       return (
-        <div><span className='update'>Last updated {date}</span></div>
+        <div><span>Last updated {date}</span></div>
       )
     }
   }
 
-  renderLorem() {
-    return (
-      <div>
-        <p>Lorem ipsum dolor sit amet, dicat tation intellegat pro te. Error mucius scaevola mel ea,
-          inani epicurei incorrupte vel et. Ad dolorum suscipiantur mea, ad eam quando oportere euripidis.
-          Cu soleat euismod moderatius vim. At quo alii inani moderatius, sea ut omnium conceptam.
-        </p>
-
-        <p>
-          Utamur abhorreant ea his, antiopam conceptam dissentiet cum at. At sea scripta integre
-          repudiandae. Nec meis nusquam moderatius ne, vim id vitae apeirian facilisi.
-          Te vis brute option.
-        </p>
-      </div>
-    )
+  renderSummary() {
+    if (this.state.isLoading === true) {
+      return (<Loader active inline='centered' />)
+    } else if (!this.props.zolando) {
+      return (
+        <h5> loading... </h5>
+      )
+    } else {
+      return (
+        <div>
+          {(this.props.zolando.summary ) ?<p>{this.props.zolando.summary}</p> :
+            <p>Lorem ipsum dolor sit amet, dicat tation intellegat pro te. Error mucius scaevola mel ea,
+            inani epicurei incorrupte vel et. Ad dolorum suscipiantur mea, ad eam quando oportere euripidis.
+            Cu soleat euismod moderatius vim. At quo alii inani moderatius, sea ut omnium conceptam.
+            </p>}
+        </div>
+      )
+    }
   }
 
   renderDetails() {
@@ -182,7 +184,7 @@ class ZalandoBrandPage extends Component {
     return (
       <div>
         <div className='card-title'>Details</div>
-        <div className='card-content'> {this.renderLorem()}</div>
+        <div className='card-content'> {this.renderSummary()}</div>
         <div className='card-content'><Causes causes={zprops.causes} /></div>
       </div>
     )
@@ -213,19 +215,22 @@ class ZalandoBrandPage extends Component {
               <div>{this.renderDetails()}</div>
             </div>
           </div>
+
           <div className='brand-card'>
-            <div className='card-title'>Ratings</div>
-            <div className='card-content'>
-              <table className='table-ratings'>
-                <tr>
-                  <td> Total Score </td>
-                  <td>{this.renderTotalScore()}</td>
-                  <td>
-                    {this.renderLabel()} <span> {this.renderDots()}</span>
-                  </td>
-                </tr>
-                {this.renderRatings()}
-              </table>
+            <div className='brand-ratings'>
+              <div className='card-title'>Ratings</div>
+              <div className='card-content'>
+                <table className='table-ratings'>
+                  <tr>
+                    <td> Total Score </td>
+                    <td>{this.renderTotalScore()}</td>
+                    <td>
+                      {this.renderLabel()} <span> {this.renderDots()}</span>
+                    </td>
+                  </tr>
+                  {this.renderRatings()}
+                </table>
+              </div>
             </div>
           </div>
 
