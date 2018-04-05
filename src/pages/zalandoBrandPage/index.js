@@ -47,7 +47,7 @@ class ZalandoBrandPage extends Component {
       const zcover = this.props.zolando.cover
       return (
         <div>
-          <img src={zcover} />
+          <div><img src={zcover} /></div>
         </div>
       )
     }
@@ -185,10 +185,11 @@ class ZalandoBrandPage extends Component {
       <div>
         <div className='card-title'>Details</div>
         <div className='card-content'> {this.renderSummary()}</div>
-        <div className='card-content'><Causes causes={zprops.causes} /></div>
+        <Causes causes={zprops.causes} />
       </div>
     )
   }
+  // <img src={zprops.cover} />
 
 
   render() {
@@ -199,10 +200,10 @@ class ZalandoBrandPage extends Component {
     return (
       <div className='brand-container'>
         <div className='brand-cover'>
-          <img src={zprops.cover} />
-          <Link to='/zalandoSearch' className='back-to-search'>Back to Search Results</Link>
+          <div style={{backgroundImage: 'url(' + zprops.cover + ')'}}></div>
         </div>
         <div className='brand-page'>
+          <div className='back-to-search'><Link to='/zalandoSearch'>Back to Search Results</Link></div>
           <div className='brand-card'>
             <div className='brand-home'>
               <img src={zprops.logo} className='brand-logo' />

@@ -162,6 +162,7 @@ class ZalandoSearch extends Component {
             animal: brand.animal,
             categories: brand.categories,
             dots: brand.dots,
+            headquarters: brand.headquarters,
             sku: brand.sku,
           })
         }
