@@ -185,7 +185,7 @@ class ZalandoBrandPage extends Component {
       <div>
         <div className='card-title'>Details</div>
         <div className='card-content'> {this.renderSummary()}</div>
-        <div className='card-content'><Causes causes={zprops.causes} /></div>
+        <Causes causes={zprops.causes} />
       </div>
     )
   }
