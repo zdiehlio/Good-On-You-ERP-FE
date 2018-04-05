@@ -10,7 +10,15 @@
 
 .brand-cover {
   display: flex;
+  width: 100%;
+  text-align: center;
+}
+
+.brand-cover div {
   height: 240px;
+  margin: auto;
+  width: 100%;
+  clip: rect(0px,60px,200px,0px);
 }
 
 .brand-page {
@@ -157,9 +165,16 @@ a.contact-email {
 }
 
 .back-to-search {
-  position: absolute;
-  background-color: black;
+  /* background-color: rgba(255, 255, 255, .4); */
+  text-decoration: underline;
+  text-align: center;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.back-to-search a {
   z-index: 100;
+  color: white !important;
 }
 
 .last-update {
@@ -174,7 +189,9 @@ a.contact-email {
 
 .cause-item {
   flex: 1;
-  width: 100px;
+  width: calc(95%/2);
+  margin: 1em;
+  border-bottom: 1px solid #ddd;
   /* background-color: blue; */
 }
 
