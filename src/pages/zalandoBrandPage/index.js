@@ -59,11 +59,11 @@ class ZalandoBrandPage extends Component {
       const dots = this.props.zolando.ratings.dots
       return (
         <span className='dots-space'>
-          {dots >= 1 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
-          {dots >= 2 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
-          {dots >= 3 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
-          {dots >= 4 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
-          {dots >= 5 ? <Icon color='teal' name='circle fitted' /> : <Icon name='circle fitted thin' />}
+          {dots >= 1 ? <Icon color='teal' name='circle fitted' /> : <Icon color='grey' name='circle fitted thin' />}
+          {dots >= 2 ? <Icon color='teal' name='circle fitted' /> : <Icon color='grey' name='circle fitted thin' />}
+          {dots >= 3 ? <Icon color='teal' name='circle fitted' /> : <Icon color='grey' name='circle fitted thin' />}
+          {dots >= 4 ? <Icon color='teal' name='circle fitted' /> : <Icon color='grey' name='circle fitted thin' />}
+          {dots >= 5 ? <Icon color='teal' name='circle fitted' /> : <Icon color='grey' name='circle fitted thin' />}
         </span>
       )
     }
@@ -121,9 +121,12 @@ class ZalandoBrandPage extends Component {
     } else {
       return (
         <div>
-          {(this.props.zolando.summary ) ?<p>{this.props.zolando.summary}</p> :
+          {(this.props.zolando.summary ) ? this.props.zolando.summary.split('<p>').map(item => <p>{item}<br/></p>) :
             <p>Lorem ipsum dolor sit amet, dicat tation intellegat pro te. Error mucius scaevola mel ea,
-            inani epicurei incorrupte vel et. Ad dolorum suscipiantur mea, ad eam quando oportere euripidis.
+            inani epicurei incorrupte vel et. <br /> Ad dolorum suscipiantur mea, ad eam quando oportere euripidis.
+            Cu soleat euismod moderatius vim. At quo alii inani moderatius, sea ut omnium conceptam.<br />
+            Lorem ipsum dolor sit amet, dicat tation intellegat pro te. Error mucius scaevola mel ea,
+            inani epicurei incorrupte vel et. <br /> Ad dolorum suscipiantur mea, ad eam quando oportere euripidis.
             Cu soleat euismod moderatius vim. At quo alii inani moderatius, sea ut omnium conceptam.
             </p>}
         </div>
@@ -208,7 +211,7 @@ class ZalandoBrandPage extends Component {
             <div className='brand-home'>
               <img src={zprops.logo} className='brand-logo' />
               <div className='brand-title'>{zprops.name}</div>
-              <p className='brand-hq'>{(zprops.headquarters) ? zprops.headquarters : 'Headquarters'} / <a href={zprops.website ? zprops.website.slice(0, 3) !== 'http' ? `http://${zprops.website}` : zprops.website : ''} target='_blank' className='web'>Website</a></p>
+              <p className='brand-hq'>{(zprops.headquarters) ? zprops.headquarters : 'Headquarters'} / <a href={zprops.website && zprops.website.includes('http') ?  zprops.website : `http://${zprops.website}`} target='_blank' className='web'>Website</a></p>
               <p className='brand-sentence'>{zprops.sentence}</p>
             </div>
 
