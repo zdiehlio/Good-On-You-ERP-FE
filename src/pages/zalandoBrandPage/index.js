@@ -28,7 +28,14 @@ class ZalandoBrandPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    let error = nextProps.zolando.error
     if(nextProps.zolando !== this.props.zolando) {
+      if(error) {
+        console.log('error', error)
+        if(error.message === 'Access Denied!') {
+          this.props.history.push('/zalandoSearch')
+        }
+      }
       this.setState({
         isLoading: false,
         results: nextProps.zolando,
@@ -198,53 +205,57 @@ class ZalandoBrandPage extends Component {
   render() {
     const state = this.state
     const zprops = this.props.zolando
-    console.log('zprops', this.props.zolando)
+    console.log('zprops', this.props)
     console.log('zstate', this.state)
-    return (
-      <div className='brand-container'>
-        <div className='brand-cover'>
-          <div style={{backgroundImage: 'url(' + zprops.cover + ')'}}></div>
-        </div>
-        <div className='brand-page'>
-          <div className='back-to-search'><Link to='/zalandoSearch'>Back to Search Results</Link></div>
-          <div className='brand-card'>
-            <div className='brand-home'>
-              <img src={zprops.logo} className='brand-logo' />
-              <div className='brand-title'>{zprops.name}</div>
-              <p className='brand-hq'>{(zprops.headquarters) ? zprops.headquarters : 'Headquarters'} / <a href={zprops.website && zprops.website.includes('http') ?  zprops.website : `http://${zprops.website}`} target='_blank' className='web'>Website</a></p>
-              <p className='brand-sentence'>{zprops.sentence}</p>
-            </div>
-
-            <div className='brand-details'>
-              <div>{this.renderDetails()}</div>
-            </div>
+    if(!zprops.name) {
+      return null
+    } else {
+      return (
+        <div className='brand-container'>
+          <div className='brand-cover'>
+            <div style={{backgroundImage: 'url(' + zprops.cover + ')'}}></div>
           </div>
+          <div className='brand-page'>
+            <div className='back-to-search'><Link to='/zalandoSearch'>Back to Search Results</Link></div>
+            <div className='brand-card'>
+              <div className='brand-home'>
+                <img src={zprops.logo} className='brand-logo' />
+                <div className='brand-title'>{zprops.name}</div>
+                <p className='brand-hq'>{(zprops.headquarters) ? zprops.headquarters : 'Headquarters'} / <a href={zprops.website && zprops.website.includes('http') ?  zprops.website : `http://${zprops.website}`} target='_blank' className='web'>Website</a></p>
+                <p className='brand-sentence'>{zprops.sentence}</p>
+              </div>
 
-          <div className='brand-card'>
-            <div className='brand-ratings'>
-              <div className='card-title'>Ratings</div>
-              <div className='card-content'>
-                <table className='table-ratings'>
-                  <tr>
-                    <td> Total Score </td>
-                    <td>{this.renderTotalScore()}</td>
-                    <td>
-                      {this.renderLabel()} <span> {this.renderDots()}</span>
-                    </td>
-                  </tr>
-                  {this.renderRatings()}
-                </table>
+              <div className='brand-details'>
+                <div>{this.renderDetails()}</div>
               </div>
             </div>
-          </div>
 
-          <div className='brand-card brand-summary'>
-            <div>{this.renderBrandSummary()}</div>
+            <div className='brand-card'>
+              <div className='brand-ratings'>
+                <div className='card-title'>Ratings</div>
+                <div className='card-content'>
+                  <table className='table-ratings'>
+                    <tr>
+                      <td> Total Score </td>
+                      <td>{this.renderTotalScore()}</td>
+                      <td>
+                        {this.renderLabel()} <span> {this.renderDots()}</span>
+                      </td>
+                    </tr>
+                    {this.renderRatings()}
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div className='brand-card brand-summary'>
+              <div>{this.renderBrandSummary()}</div>
+            </div>
+            <div className='last-update'><i>{this.renderDate()}</i></div>
           </div>
-          <div className='last-update'><i>{this.renderDate()}</i></div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
 

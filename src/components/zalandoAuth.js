@@ -35,6 +35,7 @@ export default function(ComposedComponent) {
     return {
       login: state.login,
       user: state.user,
+      zolando: state.zolando,
       state,
     }
   }
