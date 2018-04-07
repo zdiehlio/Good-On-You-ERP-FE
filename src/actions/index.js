@@ -130,6 +130,11 @@ export function brandsHomePage(id) {
         type: BRAND_PAGE,
         payload: res,
       })
+    }).catch(error => {
+      dispatch({
+        type: BRAND_PAGE,
+        error,
+      })
     })
   }
 }

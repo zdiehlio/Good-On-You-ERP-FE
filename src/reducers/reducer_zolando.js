@@ -13,7 +13,7 @@ export default function(state = {}, action) {
     if (!action.error) {
       return action.payload.data
     }
-    return {error: action.error}
+    return {error: action.error.response.data}
   default:
     return state
   }
