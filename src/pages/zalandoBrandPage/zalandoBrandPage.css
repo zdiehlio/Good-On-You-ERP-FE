@@ -40,7 +40,7 @@
 }
 
 .brand-home {
-  flex: 1;
+  flex: 2;
   padding: 25px;
 }
 
@@ -105,8 +105,8 @@ a.contact-email {
 
 .brand-logo {
   border-radius: 50%;
-  width: 211px;
-  height: 211px;
+  width: 180px;
+  height: 180px;
   margin-top: -30px;
   margin-bottom: 30px;
 }

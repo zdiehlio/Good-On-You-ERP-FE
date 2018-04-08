@@ -6,7 +6,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Loader, Form, Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 import './zalandoBrandPage.css'
-import { Price, Causes } from '../../components'
+import { Price, Causes, Dots } from '../../components'
 
 
 class ZalandoBrandPage extends Component {
@@ -59,23 +59,6 @@ class ZalandoBrandPage extends Component {
       )
     }
   }
-  renderDots() {
-    if (this.state.isLoading === true) {
-      return (<Loader active inline='centered' />)
-    } else {
-      const dots = this.props.zolando.ratings.dots
-      return (
-        <span className='dots-space'>
-          {dots >= 1 ? <Icon color='teal' name='circle fitted' /> : <Icon color='grey' name='circle fitted thin' />}
-          {dots >= 2 ? <Icon color='teal' name='circle fitted' /> : <Icon color='grey' name='circle fitted thin' />}
-          {dots >= 3 ? <Icon color='teal' name='circle fitted' /> : <Icon color='grey' name='circle fitted thin' />}
-          {dots >= 4 ? <Icon color='teal' name='circle fitted' /> : <Icon color='grey' name='circle fitted thin' />}
-          {dots >= 5 ? <Icon color='teal' name='circle fitted' /> : <Icon color='grey' name='circle fitted thin' />}
-        </span>
-      )
-    }
-  }
-
 
   renderTotalScore() {
     const zprops = this.props.zolando
@@ -161,13 +144,13 @@ class ZalandoBrandPage extends Component {
       let contact_mail_to = 'mailto:' + contact_email
       return (
         <table className='table-details'>
-          <tr><td>Overall Rating</td><td className='item'>{ratings_label} {this.renderDots()}</td></tr>
+          <tr><td>Overall Rating</td><td className='item'>{ratings_label}<Dots dots={ratings_dots}/></td></tr>
           { (categories) ? <tr><td>Categories</td><td className='item'>{categories}</td></tr> : null }
           { (sku) ? <tr><td>SKUs</td><td className='item'>{sku}</td></tr> : null }
           { (price) ? <tr><td>Price</td><td className='item'><Price price={price} /></td></tr> : null }
           { (parent_company) ? <tr><td>Parent Company</td><td className='item'>{parent_company}</td></tr> : null }
           { (size) ? <tr><td>Size</td><td className='item'>{size}</td></tr> : null }
-          { (contact_name) ? <tr><td>Contact Name</td><td className='item'>{contact_name} ' '</td></tr> : null }
+          { (contact_name) ? <tr><td>Contact Name</td><td className='item'>{contact_name}</td></tr> : null }
           {(contact_email) ? <tr><td>Contact Email</td><td className='item '><a className='contact-email' href={contact_mail_to}>{ contact_email }</a></td></tr>  : null }
         </table>
       )
@@ -199,17 +182,20 @@ class ZalandoBrandPage extends Component {
       </div>
     )
   }
-  // <img src={zprops.cover} />
-
 
   render() {
-    const state = this.state
-    const zprops = this.props.zolando
-    console.log('zprops', this.props)
-    console.log('zstate', this.state)
-    if(!zprops.name) {
-      return null
+    if (this.state.isLoading === true) {
+      return (<Loader active inline='centered' />)
+    } else if (!this.props.zolando) {
+      return (
+        <h5> loading... </h5>
+      )
     } else {
+      const zprops = this.props.zolando
+      let ratings_label = this.props.zolando.ratings.label
+      let ratings_dots = this.props.zolando.ratings.dots
+      console.log('zprops', this.props)
+      console.log('zstate', this.state)
       return (
         <div className='brand-container'>
           <div className='brand-cover'>
@@ -239,7 +225,7 @@ class ZalandoBrandPage extends Component {
                       <td> Total Score </td>
                       <td>{this.renderTotalScore()}</td>
                       <td>
-                        {this.renderLabel()} <span> {this.renderDots()}</span>
+                        {this.renderLabel()} <span> <Dots dots={ratings_dots} /></span>
                       </td>
                     </tr>
                     {this.renderRatings()}
