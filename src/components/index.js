@@ -13,6 +13,6 @@ export { default as QualiHeading } from './qualiHeading'
 export { default as SuppHeading } from './suppHeading'
 export { default as Price } from './price'
 export { default as Causes } from './causes'
-
+export { default as Dots } from './dots'
 
 export const url = /^((http|https)?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
