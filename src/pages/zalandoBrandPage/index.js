@@ -167,7 +167,7 @@ class ZalandoBrandPage extends Component {
           { (price) ? <tr><td>Price</td><td className='item'><Price price={price} /></td></tr> : null }
           { (parent_company) ? <tr><td>Parent Company</td><td className='item'>{parent_company}</td></tr> : null }
           { (size) ? <tr><td>Size</td><td className='item'>{size}</td></tr> : null }
-          { (contact_name) ? <tr><td>Contact Name</td><td className='item'>{contact_name} ' '</td></tr> : null }
+          { (contact_name) ? <tr><td>Contact Name</td><td className='item'>{contact_name}</td></tr> : null }
           {(contact_email) ? <tr><td>Contact Email</td><td className='item '><a className='contact-email' href={contact_mail_to}>{ contact_email }</a></td></tr>  : null }
         </table>
       )
