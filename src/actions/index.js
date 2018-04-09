@@ -19,6 +19,7 @@ export const AUTH_ERROR = 'auth_error'
 export const FILTERED_SEARCH = 'filtered_search'
 export const BRAND_PAGE = 'brand_page'
 export const USER_INFO = 'user_info'
+export const SEARCH_RESULTS = 'search_results'
 
 
 export function login(values) {
@@ -118,6 +119,14 @@ export function filteredSearch(value) {
         payload: res,
       })
     })
+  }
+}
+
+export function finalSearchResults(res) {
+  console.log('search function', res)
+  return {
+    type:SEARCH_RESULTS,
+    payload: res,
   }
 }
 

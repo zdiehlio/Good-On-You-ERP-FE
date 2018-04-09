@@ -23,6 +23,7 @@ import social from './reducer_social'
 import sku from './reducer_sku'
 import zolando from './reducer_zolando'
 import user from './reducer_user'
+import zalandoSearchResults from './reducer_zalandoSearchResults'
 
 const rootReducer = combineReducers({
   login: LoginReducer,
@@ -49,6 +50,7 @@ const rootReducer = combineReducers({
   sku,
   zolando,
   user,
+  zalandoSearchResults,
 })
 
 export default rootReducer

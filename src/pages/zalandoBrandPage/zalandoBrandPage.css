@@ -19,6 +19,19 @@
   width: 100%;
 }
 
+.brand-name-container {
+  width: 80%;
+  color: white;
+  margin: auto;
+  z-index: 100;
+  text-decoration: underline;
+}
+
+.brand-name-container p {
+  width: max-content;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
 .cover-overlay {
   height: 240px;
   background-color: rgba(0, 0, 0, 0.4);
@@ -174,7 +187,6 @@ a.contact-email {
 }
 
 .back-to-search {
-  /* background-color: rgba(255, 255, 255, .4); */
   text-decoration: underline;
   text-align: center;
   margin-left: 5px;
@@ -184,6 +196,7 @@ a.contact-email {
 .back-to-search a {
   z-index: 100;
   color: white !important;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .last-update {
@@ -211,3 +224,9 @@ a.contact-email {
   margin-top: 30px;
 }
 
+.nav-button {
+  border: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0em;
+  border-radius: 0px;
+}

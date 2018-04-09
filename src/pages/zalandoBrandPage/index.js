@@ -29,9 +29,19 @@ class ZalandoBrandPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     let error = nextProps.zolando.error
+    if(nextProps.searchResults !== this.props.searchResults) {
+      _.map(nextProps.searchResults, (val, i) => {
+        if(val.id == this.brandId) {
+          this.setState({
+            currentBrandIndex: nextProps.searchResults.indexOf(val),
+            prevBrand: nextProps.searchResults.indexOf(val) !== 0 ? nextProps.searchResults[nextProps.searchResults.indexOf(val) - 1].id : null,
+            nextBrand: nextProps.searchResults[nextProps.searchResults.indexOf(val) + 1].id,
+          })
+        }
+      })
+    }
     if(nextProps.zolando !== this.props.zolando) {
       if(error) {
-        console.log('error', error)
         if(error.message === 'Access Denied!') {
           this.props.history.push('/zalandoSearch')
         }
@@ -183,6 +193,24 @@ class ZalandoBrandPage extends Component {
     )
   }
 
+  handleNav(id, indx, name) {
+    if(name === 'prev') {
+      this.setState({
+        currentBrandIndex: this.state.currentBrandIndex - 1,
+        prevBrand: indx !== 1 ? this.props.searchResults[indx - 2].id : null,
+        nextBrand: this.props.searchResults[indx].id,
+      })
+    } else if(name === 'next') {
+      this.setState({
+        currentBrandIndex: this.state.currentBrandIndex + 1,
+        prevBrand: this.props.searchResults[indx].id,
+        nextBrand: indx !== this.props.searchResults.length - 1 ? this.props.searchResults[indx + 2].id : null,
+      })
+    }
+    this.props.brandsHomePage(id)
+    this.props.history.push(`/zalandoBrandPage/${this.state.prevBrand}`)
+  }
+
   render() {
     if (this.state.isLoading === true) {
       return (<Loader active inline='centered' />)
@@ -194,7 +222,8 @@ class ZalandoBrandPage extends Component {
       const zprops = this.props.zolando
       let ratings_label = this.props.zolando.ratings.label
       let ratings_dots = this.props.zolando.ratings.dots
-      console.log('zprops', this.props)
+      console.log('zprops', this.props.zolando)
+      console.log('searchProps', this.props.searchResults)
       console.log('zstate', this.state)
 
       const image = (zprops.cover ? zprops.cover : <img src="https://picsum.photos/1500/300" /> )
@@ -213,9 +242,12 @@ class ZalandoBrandPage extends Component {
           <div className='brand-cover-container'>
             <div style={coverStyle}></div>
           </div>
-          <div className='cover-overlay'></div>
+
+          <div className='cover-overlay'><div className='brand-name-container'><p>Search Results > {zprops.name}</p></div></div>
           <div className='brand-page'>
+            <div className='prev-brand'><button onClick={() => this.handleNav(this.state.prevBrand, this.state.currentBrandIndex, 'prev')} className='nav-button'>Previous</button></div>
             <div className='back-to-search'><Link to='/zalandoSearch'>Back to Search Results</Link></div>
+            <div className='next-brand'><button className='nav-button' onClick={() => this.handleNav(this.state.nextBrand, this.state.currentBrandIndex, 'next')}>Next</button></div>
             <div className='brand-card'>
               <div className='brand-home'>
                 <img src={zprops.logo} className='brand-logo' />
@@ -259,7 +291,7 @@ class ZalandoBrandPage extends Component {
 }
 
 function mapStateToProps(state) {
-  return {zolando: state.zolando, state}
+  return {zolando: state.zolando, searchResults: state.zalandoSearchResults, state}
 }
 
 export default connect(mapStateToProps, { brandsHomePage })( ZalandoBrandPage )
