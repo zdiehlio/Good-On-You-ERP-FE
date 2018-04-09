@@ -1,3 +1,7 @@
 .gray-out {
   color: #CDD0D1;
 }
+
+.price div {
+  display: inline-block;
+}
