@@ -5,20 +5,35 @@
 
 .brand-container {
   display: flex;
-  flex: 1 1 100%;
 }
 
-.brand-cover {
+/* .brand-cover {
   display: flex;
   width: 100%;
   text-align: center;
+} */
+
+.brand-cover-container {
+  display: flex;
+  width: 100%;
+  background-size: cover;
 }
 
-.brand-cover div {
+.brand-cover-container div {
   height: 240px;
   margin: auto;
   width: 100%;
-  clip: rect(0px,60px,200px,0px);
+}
+
+.cover-overlay {
+  height: 240px;
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  margin-top: -240px;
+}
+
+.brand-cover-image {
+  background-size: cover;
 }
 
 .brand-page {
@@ -31,7 +46,6 @@
 
 .brand-card {
     display: flex;
-    justify-content: center;
     background: #FFFFFF;
     align-items: center;
     margin: 5px;
@@ -45,7 +59,7 @@
 }
 
 .brand-details {
-  flex: 3;
+  flex: 4;
   padding: 0px 200px 0px 30px;
   margin-top: -50px;
 }
@@ -182,27 +196,6 @@ a.contact-email {
   padding-left: 6px;
 }
 
-.cause {
-  /* display: flex; */
-  width: calc(100%/2);
-  display: inline-block;
-  /* border-style: solid; */
-}
-
-.cause-item {
-  /* flex: 2; */
-  margin: 1em;
-  border-bottom: 1px solid #ddd;
-  /* background-color: blue; */
-}
-
-.cause-name {
-  margin: auto;
-}
-
-.cause-value {
-  margin: auto;
-}
 
 .dots-space {
   margin-left: 7px;
@@ -215,4 +208,18 @@ a.contact-email {
 
 .brand-ratings > * {
   flex: 1 100%;
+}
+
+.cause {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.cause-name {
+  flex: 1;
+}
+
+.cause-value {
+  flex: 1;
 }
