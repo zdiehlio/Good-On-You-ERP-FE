@@ -1,0 +1,20 @@
+
+.cause-content {
+  width: calc(92%/2);
+  border-bottom: 1px solid #ddd;
+  margin: 0px 15px;
+}
+
+.cause-item {
+  margin: 1em;
+  display: flex;
+}
+
+.cause-name {
+  flex: 1;
+}
+
+.cause-value {
+  flex: 1;
+}
+

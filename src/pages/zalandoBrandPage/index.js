@@ -6,7 +6,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Loader, Form, Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 import './zalandoBrandPage.css'
-import { Price, Causes, Dots } from '../../components'
+import { Price, Causes, Dots, url } from '../../components'
 
 
 class ZalandoBrandPage extends Component {
@@ -48,13 +48,13 @@ class ZalandoBrandPage extends Component {
       return (<Loader active inline='centered' />)
     } else if (!this.props.zolando) {
       return (
-        <div> <img src='https://picsum.photos/1500/300' /> </div>
+        <div> loading... </div>
       )
     } else {
       const zcover = this.props.zolando.cover
       return (
-        <div>
-          <div><img src={zcover} /></div>
+        <div className='brand-cover'>
+          { (zcover) ? <img className='brand-cover-image' src={zcover} /> : <img src="https://picsum.photos/1500/300" /> }
         </div>
       )
     }
@@ -178,7 +178,7 @@ class ZalandoBrandPage extends Component {
       <div>
         <div className='card-title'>Details</div>
         <div className='card-content'> {this.renderSummary()}</div>
-        <Causes causes={zprops.causes} />
+        <div className='cause'><Causes causes={zprops.causes} /></div>
       </div>
     )
   }
@@ -196,11 +196,24 @@ class ZalandoBrandPage extends Component {
       let ratings_dots = this.props.zolando.ratings.dots
       console.log('zprops', this.props)
       console.log('zstate', this.state)
+
+      const image = (zprops.cover ? zprops.cover : <img src="https://picsum.photos/1500/300" /> )
+      console.log('image', image)
+
+      const coverStyle = {
+        color: 'white',
+        backgroundSize: 'cover',
+        backgroundImage: 'url(' + image + ')',
+        WebkitTransition: 'all', // note the capital 'W' here
+        msTransition: 'all', // 'ms' is the only lowercase vendor prefix
+      }
+
       return (
         <div className='brand-container'>
-          <div className='brand-cover'>
-            <div style={{backgroundImage: 'url(' + zprops.cover + ')'}}></div>
+          <div className='brand-cover-container'>
+            <div style={coverStyle}></div>
           </div>
+          <div className='cover-overlay'></div>
           <div className='brand-page'>
             <div className='back-to-search'><Link to='/zalandoSearch'>Back to Search Results</Link></div>
             <div className='brand-card'>
@@ -234,7 +247,7 @@ class ZalandoBrandPage extends Component {
               </div>
             </div>
 
-            <div className='brand-card brand-summary'>
+            <div className='brand-card'>
               <div>{this.renderBrandSummary()}</div>
             </div>
             <div className='last-update'><i>{this.renderDate()}</i></div>
