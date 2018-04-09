@@ -1,0 +1,26 @@
+
+/* .cause-content {
+  width: calc(100%/2);
+  display: inline-block;
+  border-bottom: 1px solid #ddd;
+} */
+
+.cause-content {
+  width: calc(92%/2);
+  border-bottom: 1px solid #ddd;
+  margin: 0px 15px;
+}
+
+.cause-item {
+  margin: 1em;
+  display: flex;
+}
+
+.cause-name {
+  margin: auto;
+}
+
+.cause-value {
+  margin: auto;
+}
+
