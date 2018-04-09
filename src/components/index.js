@@ -14,5 +14,7 @@ export { default as SuppHeading } from './suppHeading'
 export { default as Price } from './price'
 export { default as Causes } from './causes'
 export { default as Dots } from './dots'
+export { default as Size } from './size'
+
 
 export const url = /^((http|https)?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/

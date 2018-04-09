@@ -6,7 +6,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Loader, Form, Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 import './zalandoBrandPage.css'
-import { Price, Causes, Dots, url } from '../../components'
+import { Price, Causes, Dots, url, Size } from '../../components'
 
 
 class ZalandoBrandPage extends Component {
@@ -159,7 +159,7 @@ class ZalandoBrandPage extends Component {
           { (sku) ? <tr><td>SKUs</td><td className='item'>{sku}</td></tr> : null }
           { (price) ? <tr><td>Price</td><td className='item'><Price price={price} /></td></tr> : null }
           { (parent_company) ? <tr><td>Parent Company</td><td className='item'>{parent_company}</td></tr> : null }
-          { (size) ? <tr><td>Size</td><td className='item'>{size}</td></tr> : null }
+          { (size) ? <tr><td>Size</td><td><Size size={size} /></td></tr> : null }
           { (contact_name) ? <tr><td>Contact Name</td><td className='item'>{contact_name}</td></tr> : null }
           {(contact_email) ? <tr><td>Contact Email</td><td className='item '><a className='contact-email' href={contact_mail_to}>{ contact_email }</a></td></tr>  : null }
         </table>
