@@ -7,12 +7,6 @@
   display: flex;
 }
 
-/* .brand-cover {
-  display: flex;
-  width: 100%;
-  text-align: center;
-} */
-
 .brand-cover-container {
   display: flex;
   width: 100%;
@@ -80,6 +74,7 @@
 
 .web {
   color: #09B5AB;
+  text-decoration: underline;
 }
 
 a.web:hover {
@@ -216,10 +211,3 @@ a.contact-email {
   margin-top: 30px;
 }
 
-.cause-name {
-  flex: 1;
-}
-
-.cause-value {
-  flex: 1;
-}

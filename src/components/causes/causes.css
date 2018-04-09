@@ -1,10 +1,4 @@
 
-/* .cause-content {
-  width: calc(100%/2);
-  display: inline-block;
-  border-bottom: 1px solid #ddd;
-} */
-
 .cause-content {
   width: calc(92%/2);
   border-bottom: 1px solid #ddd;
@@ -17,10 +11,10 @@
 }
 
 .cause-name {
-  margin: auto;
+  flex: 1;
 }
 
 .cause-value {
-  margin: auto;
+  flex: 1;
 }
 
