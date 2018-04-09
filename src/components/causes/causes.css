@@ -2,11 +2,11 @@
 .cause-content {
   width: calc(92%/2);
   border-bottom: 1px solid #ddd;
-  margin: 0px 15px;
+  margin-top: 1em;
+  margin-right: 2em;
 }
 
 .cause-item {
-  margin: 1em;
   display: flex;
 }
 
@@ -17,4 +17,3 @@
 .cause-value {
   flex: 1;
 }
-

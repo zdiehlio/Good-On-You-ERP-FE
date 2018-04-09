@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Brand, BrandSearchBar, UserSearchBar, DetailedList } from '../../components'
 import { connect } from 'react-redux'
-import { filteredSearch, fetchUsers } from '../../actions'
+import { filteredSearch, fetchUsers, finalSearchResults } from '../../actions'
 import { Field, reduxForm } from 'redux-form'
 import { fetchUserInfo } from '../../actions'
 import { Form, Input, Header, Label, List, Loader, Icon, Select, Button, Dropdown } from 'semantic-ui-react'
@@ -40,6 +40,7 @@ class ZalandoSearch extends Component {
       environment: [],
       labour: [],
       animal: [],
+      searchApplied: false,
       filterApplied: false,
       showPages: 19,
     }
@@ -104,6 +105,10 @@ class ZalandoSearch extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.state.searchApplied ? this.props.finalSearchResults(this.state.searchResults) : this.props.finalSearchResults(this.state.results)
+  }
+
   handleFilter(event, { value, name }) {
     event.preventDefault()
     Promise.resolve(Object.assign(this.state.filter.filters, {[name]: value }))
@@ -117,7 +122,6 @@ class ZalandoSearch extends Component {
 
   handleChip(event) {
     event.preventDefault()
-    console.log(event.target.value)
     this.setState({filteredArr: this.state.filteredArr.filter(val => val !== event.target.value)})
   }
 
@@ -129,18 +133,15 @@ class ZalandoSearch extends Component {
       }
     })
     if(!this.state[`sort${event.target.name}`]) {
-      console.log('desc')
       Promise.resolve(this.setState({isLoading: true, [`sort${event.target.name}`]: 'desc'}))
         .then(Object.assign(this.state.filter.sort, { key: event.target.name, order: 'desc'}))
         .then(this.props.filteredSearch(this.state.filter))
     } else if(this.state[`sort${event.target.name}`] === 'desc') {
-      console.log('asc')
       Promise.resolve(this.setState({isLoading: true, [`sort${event.target.name}`]: 'asc'}))
         .then(Object.assign(this.state.filter.sort, { key: event.target.name, order: 'asc'}))
         .then(this.props.filteredSearch(this.state.filter))
     } else {
       this.props.filteredSearch()
-      console.log('null')
       this.setState({isLoading: true, [`sort${event.target.name}`]: null})
       Object.assign(this.state.filter.sort, { key: event.target.name, order: null})
     }
@@ -207,7 +208,6 @@ class ZalandoSearch extends Component {
   }
 
   populateRender(brand, index) {
-    console.log('index', index)
     return(
       <Link key={brand.id} to={`/zalandoBrandPage/${brand.id}`}>
         <div className={this.checkNumber(index) === 'even' ? 'filtered-items even' : 'filtered-items odd'} id={brand.id}>
@@ -428,4 +428,4 @@ function mapStateToProps(state) {
   return {zolando: state.zolando, state}
 }
 
-export default connect(mapStateToProps, { filteredSearch })( ZalandoSearch )
+export default connect(mapStateToProps, { filteredSearch, finalSearchResults })( ZalandoSearch )
