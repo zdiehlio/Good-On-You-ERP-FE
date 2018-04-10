@@ -58,11 +58,12 @@
     margin: 10px;
     padding: 34px;
     font-size: 14px;
+    max-width: 1036px;
 }
 
 .brand-home {
   flex: 2;
-  padding: 25px;
+  padding-top: 30px;
 }
 
 .brand-details {
@@ -201,7 +202,8 @@ a.contact-email {
 
 .last-update {
   margin: 10px 0px 70px 0px;
-  padding-left: 6px;
+  padding-left: 10px;
+  color: #95989A;
 }
 
 
