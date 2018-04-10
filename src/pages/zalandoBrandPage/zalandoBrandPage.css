@@ -55,7 +55,7 @@
     display: flex;
     background: #FFFFFF;
     align-items: center;
-    margin: 5px;
+    margin: 10px;
     padding: 34px;
     font-size: 14px;
 }
@@ -67,8 +67,8 @@
 
 .brand-details {
   flex: 4;
-  padding: 0px 200px 0px 30px;
-  margin-top: -50px;
+  padding: 0px 150px 0px 69px;
+  margin-top: -125px;
 }
 
 .brand-title {
