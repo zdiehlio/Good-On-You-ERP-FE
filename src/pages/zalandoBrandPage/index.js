@@ -246,9 +246,9 @@ class ZalandoBrandPage extends Component {
 
           <div className='brand-page'>
             <div className='brand-nav-container'>
-              <div className='prev-brand'><button onClick={() => this.handleNav(this.state.prevBrand, this.state.currentBrandIndex, 'prev')} className='nav-button'>View previous brand</button></div>
+              <div className='prev-brand'><button onClick={() => this.handleNav(this.state.prevBrand, this.state.currentBrandIndex, 'prev')} className='nav-button'><Icon name='chevron left'/> View previous brand</button></div>
               <div className='back-to-search'><Link to='/zalandoSearch'>Back to Search Results</Link></div>
-              <div className='next-brand'><button className='nav-button' onClick={() => this.handleNav(this.state.nextBrand, this.state.currentBrandIndex, 'next')}>View next brand</button></div>
+              <div className='next-brand'><button className='nav-button' onClick={() => this.handleNav(this.state.nextBrand, this.state.currentBrandIndex, 'next')}>View next brand <Icon name='chevron right' /></button></div>
             </div>
             <div className='brand-card'>
               <div className='brand-home'>
