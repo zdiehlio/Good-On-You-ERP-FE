@@ -48,7 +48,14 @@
   flex-direction: column;
   font-size: 14px;
   width: 80%;
-  margin-top: -100px;
+  margin-top: -160px;
+}
+
+.brand-nav-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1036px;
+  font-size: 18px;
 }
 
 .brand-card {
@@ -197,7 +204,9 @@ a.contact-email {
 .back-to-search a {
   z-index: 100;
   color: white !important;
-  background-color: rgba(0, 0, 0, 0.2);
+}
+.back-to-search a:hover {
+  color: #09B5AB;
 }
 
 .last-update {
@@ -228,7 +237,12 @@ a.contact-email {
 
 .nav-button {
   border: none;
-  background-color: rgba(0, 0, 0, 0.2);
   padding: 0em;
   border-radius: 0px;
+  background-color: rgba(0, 0, 0, 0)
+  
+}
+
+.nav-button:hover {
+  background-color: rgba(0, 0, 0, 0)
 }

@@ -242,12 +242,14 @@ class ZalandoBrandPage extends Component {
           <div className='brand-cover-container'>
             <div style={coverStyle}></div>
           </div>
-
           <div className='cover-overlay'><div className='brand-name-container'><p>Search Results > {zprops.name}</p></div></div>
+
           <div className='brand-page'>
-            <div className='prev-brand'><button onClick={() => this.handleNav(this.state.prevBrand, this.state.currentBrandIndex, 'prev')} className='nav-button'>Previous</button></div>
-            <div className='back-to-search'><Link to='/zalandoSearch'>Back to Search Results</Link></div>
-            <div className='next-brand'><button className='nav-button' onClick={() => this.handleNav(this.state.nextBrand, this.state.currentBrandIndex, 'next')}>Next</button></div>
+            <div className='brand-nav-container'>
+              <div className='prev-brand'><button onClick={() => this.handleNav(this.state.prevBrand, this.state.currentBrandIndex, 'prev')} className='nav-button'><Icon name='chevron left'/> View previous brand</button></div>
+              <div className='back-to-search'><Link to='/zalandoSearch'>Back to Search Results</Link></div>
+              <div className='next-brand'><button className='nav-button' onClick={() => this.handleNav(this.state.nextBrand, this.state.currentBrandIndex, 'next')}>View next brand <Icon name='chevron right' /></button></div>
+            </div>
             <div className='brand-card'>
               <div className='brand-home'>
                 <img src={zprops.logo} className='brand-logo' />
