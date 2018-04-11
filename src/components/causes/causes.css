@@ -1,9 +1,12 @@
 
 .cause-content {
-  width: calc(92%/2);
+  width: calc(96%/2);
   border-bottom: 1px solid #ddd;
-  margin-top: 1em;
-  margin-right: 2em;
+  padding: 15px 0px;
+}
+
+.cause-content:nth-child(even) {
+  margin-left: 20px;
 }
 
 .cause-item {
