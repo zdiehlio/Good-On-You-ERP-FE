@@ -69,13 +69,13 @@ class ZalandoSearch extends Component {
               name: val.name,
               website: val.website,
               overall_score: val.score,
+              'score-out-of-5': val.dots,
+              label: val.label,
               environment: val.environment.label,
               labour: val.labour.label,
               animal: val.animal.label,
               categories: val.categories,
-              dots: val.dots,
               sku: val.sku,
-              label: val.label,
               headquarters: val.headquarters,
             }
           }),
@@ -89,13 +89,13 @@ class ZalandoSearch extends Component {
               name: val.name,
               website: val.website,
               overall_score: val.score,
+              'score-out-of-5': val.dots,
+              label: val.label,
               environment: val.environment.label,
               labour: val.labour.label,
               animal: val.animal.label,
               categories: val.categories,
-              dots: val.dots,
               sku: val.sku,
-              label: val.label,
               headquarters: val.headquarters,
             }
           }),
@@ -162,7 +162,7 @@ class ZalandoSearch extends Component {
             labour: brand.labour,
             animal: brand.animal,
             categories: brand.categories,
-            dots: brand.dots,
+            'score-out-of-5': brand['score-out-of-5'],
             headquarters: brand.headquarters,
             sku: brand.sku,
           })
@@ -218,11 +218,11 @@ class ZalandoSearch extends Component {
           </div>
           <div>
             <p>
-              {brand.dots >= 1 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-              {brand.dots >= 2 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-              {brand.dots >= 3 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-              {brand.dots >= 4 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-              {brand.dots >= 5 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand['score-out-of-5'] >= 1 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand['score-out-of-5'] >= 2 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand['score-out-of-5'] >= 3 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand['score-out-of-5'] >= 4 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand['score-out-of-5'] >= 5 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
               {}
             </p>
             <p>{brand.label}</p>
