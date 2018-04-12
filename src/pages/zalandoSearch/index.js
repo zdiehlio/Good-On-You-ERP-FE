@@ -65,18 +65,18 @@ class ZalandoSearch extends Component {
         this.setState({
           results: _.map(nextProps.zolando, val => {
             return {
-              id: val.id,
-              name: val.name,
-              website: val.website,
-              overall_score: val.score,
-              'score-out-of-5': val.dots,
-              label: val.label,
-              environment: val.environment.label,
-              labour: val.labour.label,
-              animal: val.animal.label,
-              categories: val.categories,
-              sku: val.sku,
-              headquarters: val.headquarters,
+              Id: val.id,
+              Name: val.name,
+              Website: val.website,
+              'Overall Score': val.score,
+              'Score Out Of 5': val.dots,
+              Label: val.label,
+              Environment: val.environment.label,
+              Labour: val.labour.label,
+              Animal: val.animal.label,
+              Categories: val.categories,
+              Sku: val.sku,
+              Headquarters: val.headquarters,
             }
           }),
           isLoading: false,
@@ -85,18 +85,18 @@ class ZalandoSearch extends Component {
         this.setState({
           results: _.map(nextProps.zolando.brands, val => {
             return {
-              id: val.id,
-              name: val.name,
-              website: val.website,
-              overall_score: val.score,
-              'score-out-of-5': val.dots,
-              label: val.label,
-              environment: val.environment.label,
-              labour: val.labour.label,
-              animal: val.animal.label,
-              categories: val.categories,
-              sku: val.sku,
-              headquarters: val.headquarters,
+              Id: val.id,
+              Name: val.name,
+              Website: val.website,
+              'Overall Score': val.score,
+              'Score Out Of 5': val.dots,
+              Label: val.label,
+              Environment: val.environment.label,
+              Labour: val.labour.label,
+              Animal: val.animal.label,
+              Categories: val.categories,
+              Sku: val.sku,
+              Headquarters: val.headquarters,
             }
           }),
           isLoading: false,
@@ -152,19 +152,20 @@ class ZalandoSearch extends Component {
     let searchArr = []
     Promise.resolve(
       this.state.results.map(brand => {
-        if(brand.name.toLowerCase().includes(value.toLowerCase())) {
+        if(brand.Name.toLowerCase().includes(value.toLowerCase())) {
           searchArr.push({
-            id: brand.id,
-            name: brand.name,
-            website: brand.website,
-            overall_score: brand.score,
-            environment: brand.environment,
-            labour: brand.labour,
-            animal: brand.animal,
-            categories: brand.categories,
-            'score-out-of-5': brand['score-out-of-5'],
-            headquarters: brand.headquarters,
-            sku: brand.sku,
+            Id: brand.Id,
+            Name: brand.Name,
+            Website: brand.Website,
+            'Overall Score': brand['Overall Score'],
+            Label: brand.Label,
+            Environment: brand.Environment,
+            Labour: brand.Labour,
+            Animal: brand.Animal,
+            Categories: brand.Categories,
+            'Score Out Of 5': brand['Score Out Of 5'],
+            Headquarters: brand.Headquarters,
+            Sku: brand.Sku,
           })
         }
       })
@@ -209,34 +210,34 @@ class ZalandoSearch extends Component {
 
   populateRender(brand, index) {
     return(
-      <Link key={brand.id} to={`/zalandoBrandPage/${brand.id}`}>
-        <div className={this.checkNumber(index) === 'even' ? 'filtered-items even' : 'filtered-items odd'} id={brand.id}>
+      <Link key={brand.Id} to={`/zalandoBrandPage/${brand.Id}`}>
+        <div className={this.checkNumber(index) === 'even' ? 'filtered-items even' : 'filtered-items odd'} Id={brand.Id}>
           <div>
-            <p>{brand.name}</p>
-            <p>{brand.headquarters}</p>
+            <p>{brand.Name}</p>
+            <p>{brand.Headquarters}</p>
             <p name='brandWebsite' className='brand-name'>View Brand Details</p>
           </div>
           <div>
             <p>
-              {brand['score-out-of-5'] >= 1 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-              {brand['score-out-of-5'] >= 2 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-              {brand['score-out-of-5'] >= 3 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-              {brand['score-out-of-5'] >= 4 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
-              {brand['score-out-of-5'] >= 5 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand['Score Out Of 5'] >= 1 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand['Score Out Of 5'] >= 2 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand['Score Out Of 5'] >= 3 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand['Score Out Of 5'] >= 4 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
+              {brand['Score Out Of 5'] >= 5 ? <Icon color='teal' name='circle'/> : <Icon color='grey' name='circle thin' />}
               {}
             </p>
-            <p>{brand.label}</p>
+            <p>{brand.Label}</p>
             <p>{' '}</p>
           </div>
           <div>
             <p></p>
-            <p>{brand.environment}</p>
+            <p>{brand.Environment}</p>
             <p></p>
           </div>
-          <div>{brand.labour}</div>
-          <div>{brand.animal}</div>
-          <div>{brand.categories}</div>
-          <div>{brand.sku}</div>
+          <div>{brand.Labour}</div>
+          <div>{brand.Animal}</div>
+          <div>{brand.Categories}</div>
+          <div>{brand.Sku}</div>
         </div>
       </Link>
     )
