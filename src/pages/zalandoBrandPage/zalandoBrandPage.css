@@ -76,7 +76,7 @@
 .brand-details {
   flex: 4;
   padding: 0px 150px 0px 69px;
-  margin-top: -125px;
+  /* margin-top: -125px; */
 }
 
 .brand-title {
