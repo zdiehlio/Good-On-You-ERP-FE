@@ -154,14 +154,14 @@ class ZalandoBrandPage extends Component {
       let contact_mail_to = 'mailto:' + contact_email
       return (
         <table className='table-details'>
-          <tr><td>Overall Rating</td><td className='item'>{ratings_label}<Dots dots={ratings_dots}/></td></tr>
-          { (categories) ? <tr><td>Categories</td><td className='item'>{categories}</td></tr> : null }
-          { (sku) ? <tr><td>SKUs</td><td className='item'>{sku}</td></tr> : null }
-          { (price) ? <tr><td>Price</td><td className='item'><Price price={price} /></td></tr> : null }
-          { (parent_company) ? <tr><td>Parent Company</td><td className='item'>{parent_company}</td></tr> : null }
-          { (size) ? <tr><td>Size</td><td><Size size={size} /></td></tr> : null }
-          { (contact_name) ? <tr><td>Contact Name</td><td className='item'>{contact_name}</td></tr> : null }
-          {(contact_email) ? <tr><td>Contact Email</td><td className='item '><a className='contact-email' href={contact_mail_to}>{ contact_email }</a></td></tr>  : null }
+          <tr><td>Overall Rating<span><Icon name='question circle' color='gray' /></span></td><td className='item'>{ratings_label}<Dots dots={ratings_dots}/></td></tr>
+          {(categories) ? <tr><td>Categories<span><Icon name='question circle' color='gray' /></span> </td><td className='item'>{categories}</td></tr> : null }
+          {(sku) ? <tr><td>SKUs<span><Icon name='question circle' color='gray' /></span></td><td className='item'>{sku}</td></tr> : null }
+          {(price) ? <tr><td>Price<span><Icon name='question circle' color='gray' /></span></td><td className='item'><Price price={price} /></td></tr> : null }
+          {(parent_company) ? <tr><td>Parent Company<span><Icon name='question circle' color='gray' /></span></td><td className='item'>{parent_company}</td></tr> : null }
+          {(size) ? <tr><td>Size<span><Icon name='question circle' color='gray' /></span></td><td><Size size={size} /></td></tr> : null }
+          {(contact_name) ? <tr><td>Contact Name<span><Icon name='question circle' color='gray' /></span></td><td className='item'>{contact_name}</td></tr> : null }
+          {(contact_email) ? <tr><td>Contact Email<span><Icon name='question circle' color='gray' /></span></td><td className='item '><a className='contact-email' href={contact_mail_to}>{ contact_email }</a></td></tr>  : null }
         </table>
       )
     }
