@@ -110,10 +110,11 @@ a.web:hover {
 
 a.contact-email {
   color: #09B5AB;
+  text-decoration: underline;
 }
 
 .contact-email:hover {
-  color: #FFFFFF;
+  color: rgb(61, 59, 59);
 }
 
 .item {
