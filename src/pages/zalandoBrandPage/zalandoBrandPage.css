@@ -228,10 +228,6 @@ a.contact-email {
   flex-direction: column;
 }
 
-.brand-ratings > * {
-  flex: 1 100%;
-}
-
 .cause {
   display: flex;
   flex-wrap: wrap;
@@ -269,6 +265,7 @@ i.gray.question.circle.icon {
 
 li { 
   border-bottom: 1px solid #DDDFE0; 
+  margin: 0px !important;
 }
 
 li:last-child { 
@@ -278,4 +275,21 @@ li:last-child {
 i.question.circle.icon {
   color: #CDD0D1;
   font-size: 19px;
+}
+
+ul.table-ratings {
+  padding: 0px;
+}
+
+.table-ratings>li {
+  padding: 10px 0px;
+  display: flex;
+}
+
+.rating-item-head {
+  flex: 3;
+}
+
+.rating-item {
+  flex: 1;
 }

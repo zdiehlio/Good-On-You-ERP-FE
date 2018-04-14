@@ -89,7 +89,7 @@ class ZalandoBrandPage extends Component {
       return _.map(zprops.ratings.headlines, (headline, index) => {
         const name = (headline.name).replace(/\b\w/g, function (l) { return l.toUpperCase() })
         return (
-          <li key={index}><span>{name}</span><span>{headline.score} / {headline.max_score}</span><span>{headline.label}</span></li>
+          <li key={index}><span className='rating-item-head'>{name}</span><span className='rating-item'>{headline.score} / {headline.max_score}</span><span className='rating-item'>{headline.label}</span></li>
         )
       })
     }
@@ -271,10 +271,11 @@ class ZalandoBrandPage extends Component {
                 <div className='card-content'>
                   <ul className='table-ratings'>
                     <li>
-                      <span> Total Score </span>
-                      <span>{this.renderTotalScore()}</span>
-                      <span>
-                        {this.renderLabel()} <span> <Dots dots={ratings_dots} /></span>
+                      <span className='rating-item-head'> Total Score </span>
+                      <span className='rating-item'>{this.renderTotalScore()}</span>
+                      <span className='rating-item'> 
+                        {this.renderLabel()} 
+                        <span><Dots dots={ratings_dots} /></span>
                       </span>
                     </li>
                     {this.renderRatings()}
