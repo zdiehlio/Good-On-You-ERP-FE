@@ -274,3 +274,8 @@ li {
 li:last-child { 
   border-bottom: none; 
 }
+
+i.question.circle.icon {
+  color: #CDD0D1;
+  font-size: 19px;
+}

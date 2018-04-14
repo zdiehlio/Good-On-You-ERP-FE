@@ -86,10 +86,10 @@ class ZalandoBrandPage extends Component {
     if (this.state.isLoading === true ){
       return ( <Loader active inline='centered'/>)
     } else {
-      return _.map(zprops.ratings.headlines, headline => {
+      return _.map(zprops.ratings.headlines, (headline, index) => {
         const name = (headline.name).replace(/\b\w/g, function (l) { return l.toUpperCase() })
         return (
-          <tr><td>{name}</td><td>{headline.score} / {headline.max_score}</td><td>{headline.label}</td></tr>
+          <li key={index}><span>{name}</span><span>{headline.score} / {headline.max_score}</span><span>{headline.label}</span></li>
         )
       })
     }
@@ -154,14 +154,14 @@ class ZalandoBrandPage extends Component {
       let contact_mail_to = 'mailto:' + contact_email
       return (
         <ul className='table-details'>
-          <li className='details-row'><span className='item'>Overall Rating<span><Icon name='question circle' color='gray' /></span></span><span className='item'>{ratings_label}<Dots dots={ratings_dots}/></span></li>
-          {(categories) ? <li className='details-row'><span className='item'>Categories<span><Icon name='question circle' color='gray' /></span> </span><span className='item'>{categories}</span></li> : null }
-          {(sku) ? <li className='details-row'><span className='item'>SKUs<span><Icon name='question circle' color='gray' /></span></span><span className='item'>{sku}</span></li> : null }
-          {(price) ? <li className='details-row'><span className='item'>Price<span><Icon name='question circle' color='gray' /></span></span><span className='item'><Price price={price} /></span></li> : null }
-          {(parent_company) ? <li className='details-row'><span className='item'>Parent Company<span><Icon name='question circle' color='gray' /></span></span><span className='item'>{parent_company}</span></li> : null }
-          {(size) ? <li className='details-row'><span className='item'>Size<span><Icon name='question circle' color='gray' /></span></span><span className='item'><Size size={size} /></span></li> : null }
-          {(contact_name) ? <li className='details-row'><span className='item'>Contact Name<span><Icon name='question circle' color='gray' /></span></span><span className='item'>{contact_name}</span></li> : null }
-          {(contact_email) ? <li className='details-row'><span className='item'>Contact Email<span><Icon name='question circle' color='gray' /></span></span><span className='item '><a className='contact-email' href={contact_mail_to}>{ contact_email }</a></span></li>  : null }
+          <li className='details-row'><span className='item'>Overall Rating<span><Icon name='question circle' /></span></span><span className='item'>{ratings_label}<Dots dots={ratings_dots}/></span></li>
+          {(categories) ? <li className='details-row'><span className='item'>Categories<span><Icon name='question circle' /></span> </span><span className='item'>{categories}</span></li> : null }
+          {(sku) ? <li className='details-row'><span className='item'>SKUs<span><Icon name='question circle' /></span></span><span className='item'>{sku}</span></li> : null }
+          {(price) ? <li className='details-row'><span className='item'>Price<span><Icon name='question circle' /></span></span><span className='item'><Price price={price} /></span></li> : null }
+          {(parent_company) ? <li className='details-row'><span className='item'>Parent Company<span><Icon name='question circle' /></span></span><span className='item'>{parent_company}</span></li> : null }
+          {(size) ? <li className='details-row'><span className='item'>Size<span><Icon name='question circle' /></span></span><span className='item'><Size size={size} /></span></li> : null }
+          {(contact_name) ? <li className='details-row'><span className='item'>Contact Name<span><Icon name='question circle' /></span></span><span className='item'>{contact_name}</span></li> : null }
+          {(contact_email) ? <li className='details-row'><span className='item'>Contact Email<span><Icon name='question circle' /></span></span><span className='item '><a className='contact-email' href={contact_mail_to}>{ contact_email }</a></span></li>  : null }
         </ul>
       )
     }
@@ -269,16 +269,16 @@ class ZalandoBrandPage extends Component {
               <div className='brand-ratings'>
                 <div className='card-title'>Ratings</div>
                 <div className='card-content'>
-                  <table className='table-ratings'>
-                    <tr>
-                      <td> Total Score </td>
-                      <td>{this.renderTotalScore()}</td>
-                      <td>
+                  <ul className='table-ratings'>
+                    <li>
+                      <span> Total Score </span>
+                      <span>{this.renderTotalScore()}</span>
+                      <span>
                         {this.renderLabel()} <span> <Dots dots={ratings_dots} /></span>
-                      </td>
-                    </tr>
+                      </span>
+                    </li>
                     {this.renderRatings()}
-                  </table>
+                  </ul>
                 </div>
               </div>
             </div>
