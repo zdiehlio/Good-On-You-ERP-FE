@@ -68,15 +68,21 @@
     max-width: 1036px;
 }
 
+.brand-card-home {
+  display: flex;
+  margin-top: 10px;
+}
+
 .brand-home {
-  flex: 2;
+  flex: 1;
   padding-top: 30px;
+  width: 250px;
 }
 
 .brand-details {
-  flex: 4;
-  padding: 0px 150px 0px 69px;
-  /* margin-top: -125px; */
+  padding-left: 15px;
+  flex: 1;
+  margin-top: -25px;
 }
 
 .brand-title {
@@ -112,7 +118,8 @@ a.contact-email {
 
 .item {
   font-size: 16px;
-  width: 300px;
+  width: 265px;
+  padding: 20px 20px 20px 0px;
 }
 .brand-sentence {
   font-size: 16px;
@@ -145,10 +152,6 @@ a.contact-email {
   flex: 1;
 }
 
-.item {
-  padding: 20px;
-}
-
 .brand-ratings {
   display: flex;
   flex: 1 1 100%;
@@ -170,7 +173,7 @@ a.contact-email {
 }
 
 .table-details td, .table-details th{
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #DDDFE0;
   padding: 20px 20px 20px 0px;
   width: 100px;
   font-size: 16px;
@@ -186,7 +189,7 @@ a.contact-email {
 }
 
 .table-ratings td, .table-ratings th{
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #DDDFE0;
   padding: 10px;
 }
 
@@ -251,4 +254,23 @@ i.gray.question.circle.icon {
   color:#CDD0D1;
   padding-left: 5px;
   font-size: 20px;
+}
+
+.table-details {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.details-row {
+  display: flex;
+  flex: 1;
+}
+
+li { 
+  border-bottom: 1px solid #DDDFE0; 
+}
+
+li:last-child { 
+  border-bottom: none; 
 }
