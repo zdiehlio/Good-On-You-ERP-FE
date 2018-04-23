@@ -178,7 +178,7 @@ class ZalandoSearch extends Component {
           }
         })
     }
-    this.setState({ [values[0].name]: values, filterApplied: false })
+    this.setState({ [values[0].name]: values, filteredArr: [...values], filterApplied: false })
   }
 
   handleChip(event) {
@@ -335,7 +335,7 @@ class ZalandoSearch extends Component {
   render() {
     const state = this.state
     console.log('props', this.props.zolando)
-    console.log('state', this.state.filter.filters)
+    console.log('state', this.state.filteredArr)
     return (
       <MuiThemeProvider>
         <div className='zolando-container'>
@@ -352,15 +352,17 @@ class ZalandoSearch extends Component {
           </div>
           <Form className='zolando-filters'>
             <div className='filter-section'><h4>Filter</h4></div>
-            <SelectField
-              className='filter-section'
-              multiple={true}
-              hintText="Score"
-              value={state.score}
-              onChange={this.handleFilter}
-            >
-              {this.menuItems(state.score, 'score', scoreOptions)}
-            </SelectField>
+            <div className='filter-section filter-dropdown'>
+              <SelectField
+                multiple={true}
+                hintText="Score"
+                value={state.score}
+                onChange={this.handleFilter}
+                // labelStyle={{color: 'red' }}
+              >
+                {this.menuItems(state.score, 'score', scoreOptions)}
+              </SelectField>
+            </div>
             {/* <Form.Field>
               <Select
                 name='score'
@@ -379,15 +381,16 @@ class ZalandoSearch extends Component {
                 ]}
               />
             </Form.Field> */}
-            <SelectField
-              className='filter-section'
-              multiple={true}
-              hintText="Environment"
-              value={state.environment}
-              onChange={this.handleFilter}
-            >
-              {this.menuItems(state.environment, 'environment', environmentOptions)}
-            </SelectField>
+            <div className='filter-section filter-dropdown'>
+              <SelectField
+                multiple={true}
+                hintText="Environment"
+                value={state.environment}
+                onChange={this.handleFilter}
+              >
+                {this.menuItems(state.environment, 'environment', environmentOptions)}
+              </SelectField>
+            </div>
             {/* <Form.Field>
               <Select
                 name='environment'
@@ -408,15 +411,16 @@ class ZalandoSearch extends Component {
                 ]}
               />
             </Form.Field> */}
-            <SelectField
-              className='filter-section'
-              multiple={true}
-              hintText="Labour"
-              value={state.labour}
-              onChange={this.handleFilter}
-            >
-              {this.menuItems(state.labour, 'labour', labourOptions)}
-            </SelectField>
+            <div className='filter-section filter-dropdown'>
+              <SelectField
+                multiple={true}
+                hintText="Labour"
+                value={state.labour}
+                onChange={this.handleFilter}
+              >
+                {this.menuItems(state.labour, 'labour', labourOptions)}
+              </SelectField>
+            </div>
             {/* <Form.Field>
               <Select
                 name='labour'
@@ -437,15 +441,16 @@ class ZalandoSearch extends Component {
                 ]}
               />
             </Form.Field> */}
-            <SelectField
-              className='filter-section'
-              multiple={true}
-              hintText="Animal"
-              value={state.animal}
-              onChange={this.handleFilter}
-            >
-              {this.menuItems(state.animal, 'animal', animalOptions)}
-            </SelectField>
+            <div className='filter-section filter-dropdown'>
+              <SelectField
+                multiple={true}
+                hintText="Animal"
+                value={state.animal}
+                onChange={this.handleFilter}
+              >
+                {this.menuItems(state.animal, 'animal', animalOptions)}
+              </SelectField>
+            </div>
             {/* <Form.Field>
               <Select
                 name='animal'
@@ -466,15 +471,16 @@ class ZalandoSearch extends Component {
                 ]}
               />
             </Form.Field> */}
-            <SelectField
-              className='filter-section'
-              multiple={true}
-              hintText="Categories"
-              value={state.categories}
-              onChange={this.handleFilter}
-            >
-              {this.menuItems(state.categories, 'categories', categoriesOptions)}
-            </SelectField>
+            <div className='filter-section filter-dropdown'>
+              <SelectField
+                multiple={true}
+                hintText="Categories"
+                value={state.categories}
+                onChange={this.handleFilter}
+              >
+                {this.menuItems(state.categories, 'categories', categoriesOptions)}
+              </SelectField>
+            </div>
             {/* <Form.Field>
               <Select
                 name='categories'
@@ -503,15 +509,16 @@ class ZalandoSearch extends Component {
                 ]}
               />
             </Form.Field> */}
-            <SelectField
-              className='filter-section'
-              multiple={true}
-              hintText="SKU"
-              value={state.sku}
-              onChange={this.handleFilter}
-            >
-              {this.menuItems(state.sku, 'sku', skuOptions)}
-            </SelectField>
+            <div className='filter-section filter-dropdown'>
+              <SelectField
+                multiple={true}
+                hintText="SKU"
+                value={state.sku}
+                onChange={this.handleFilter}
+              >
+                {this.menuItems(state.sku, 'sku', skuOptions)}
+              </SelectField>
+            </div>
             {/* <Form.Field>
               <Select
                 name='sku'
@@ -535,7 +542,8 @@ class ZalandoSearch extends Component {
           </Form>
           <div className='filtered-list'>
             <div className='excel'><CSVLink data={state.searchResults.length > 0 ? state.searchResults : state.results}><button>Export to Excel <Icon name='file excel outline' /></button></CSVLink></div>
-            <p className='filter-text'>{state.filterApplied ? 'Filter Applied!' : ''}</p>
+            {/* <p className='filter-text'>{state.filterApplied ? 'Filter Applied!' : ''}</p> */}
+            {state.filterApplied ? this.state.filteredArr.map(val => <div className='chip'>{`${val.name} : ${val.value}`}</div> ) : ''}
 
             <div className='sort-buttons'>{this.renderSortButtons()}</div>
             {this.renderResults()}
