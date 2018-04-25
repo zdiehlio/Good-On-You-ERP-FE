@@ -224,7 +224,7 @@ class Rating extends Component {
       }
     })
     this.setState({changeError: true})
-    this.handleValidUrl(value, name)
+    // this.handleValidUrl(value, name)
   }
 
   handleCheckbox(event, { value, name }) {
@@ -284,11 +284,11 @@ class Rating extends Component {
 
   handleSaveValidation(value) {
     if(this.state[`answer${value}`] === true) {
-      if(!this.state[`url${value}`]) {
-        this.setState({errorsWebsite: [...this.state.errorsWebsite, parseInt(value)]})
-      } else {
-        this.setState({errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(value)}), [`errorWebsite${value}`]: false})
-      }
+      // if(!this.state[`url${value}`]) {
+      //   this.setState({errorsWebsite: [...this.state.errorsWebsite, parseInt(value)]})
+      // } else {
+      //   this.setState({errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(value)}), [`errorWebsite${value}`]: false})
+      // }
     } else if(this.state[`answer${value}`] === false){
       this.setState({
         errorsWebsite: this.state.errorsWebsite.filter(rate => {return rate !== parseInt(value)}),
